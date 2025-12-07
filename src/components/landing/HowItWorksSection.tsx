@@ -9,7 +9,7 @@ const steps = [
     number: "01",
     title: "Vous vous inscrivez en 20 secondes",
     description:
-      "Indiquez votre ville et vos besoins (internet, électricité ou les deux).",
+      "Indiquez vos besoins (internet, électricité ou les deux).",
   },
   {
     icon: Users,
