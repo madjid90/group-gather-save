@@ -4,18 +4,47 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Link, useNavigate } from "react-router-dom";
-import { Zap, Wifi, Check, ArrowRight, Loader2 } from "lucide-react";
+import { Zap, Wifi, Check, ArrowRight, Loader2, MapPin } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { z } from "zod";
 
+const VILLES = [
+  { value: "paris", label: "Paris", codePostal: "75000" },
+  { value: "lyon", label: "Lyon", codePostal: "69000" },
+  { value: "marseille", label: "Marseille", codePostal: "13000" },
+  { value: "toulouse", label: "Toulouse", codePostal: "31000" },
+  { value: "nice", label: "Nice", codePostal: "06000" },
+  { value: "nantes", label: "Nantes", codePostal: "44000" },
+  { value: "strasbourg", label: "Strasbourg", codePostal: "67000" },
+  { value: "montpellier", label: "Montpellier", codePostal: "34000" },
+  { value: "bordeaux", label: "Bordeaux", codePostal: "33000" },
+  { value: "lille", label: "Lille", codePostal: "59000" },
+  { value: "rennes", label: "Rennes", codePostal: "35000" },
+  { value: "reims", label: "Reims", codePostal: "51100" },
+  { value: "saint-etienne", label: "Saint-Étienne", codePostal: "42000" },
+  { value: "toulon", label: "Toulon", codePostal: "83000" },
+  { value: "le-havre", label: "Le Havre", codePostal: "76600" },
+  { value: "grenoble", label: "Grenoble", codePostal: "38000" },
+  { value: "dijon", label: "Dijon", codePostal: "21000" },
+  { value: "angers", label: "Angers", codePostal: "49000" },
+  { value: "nimes", label: "Nîmes", codePostal: "30000" },
+  { value: "clermont-ferrand", label: "Clermont-Ferrand", codePostal: "63000" },
+];
+
 const inscriptionSchema = z.object({
   prenom: z.string().min(2, "Le prénom doit contenir au moins 2 caractères"),
   nom: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
-  email: z.string().email("Email invalide"),
-  telephone: z.string().regex(/^(\+33|0)[1-9]\d{8}$/, "Numéro de téléphone invalide"),
-  codePostal: z.string().regex(/^\d{5}$/, "Code postal invalide"),
+  telephone: z.string().regex(/^(\+33|0)[1-9]\d{8}$/, "Numéro de téléphone invalide (ex: 0612345678)"),
+  ville: z.string().min(1, "Veuillez sélectionner une ville"),
   password: z.string().min(8, "Le mot de passe doit contenir au moins 8 caractères"),
   contrats: z.enum(["electricite", "internet", "les_deux"]),
 });
@@ -26,9 +55,8 @@ export default function Inscription() {
   const [formData, setFormData] = useState({
     prenom: "",
     nom: "",
-    email: "",
     telephone: "",
-    codePostal: "",
+    ville: "",
     password: "",
     contrats: "les_deux" as "electricite" | "internet" | "les_deux",
   });
@@ -37,9 +65,15 @@ export default function Inscription() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    // Clear error when user types
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+  };
+
+  const handleVilleChange = (value: string) => {
+    setFormData((prev) => ({ ...prev, ville: value }));
+    if (errors.ville) {
+      setErrors((prev) => ({ ...prev, ville: "" }));
     }
   };
 
@@ -47,7 +81,6 @@ export default function Inscription() {
     e.preventDefault();
     setErrors({});
 
-    // Validate form
     const result = inscriptionSchema.safeParse(formData);
     if (!result.success) {
       const fieldErrors: Record<string, string> = {};
@@ -63,15 +96,15 @@ export default function Inscription() {
     setIsLoading(true);
 
     try {
-      // Get city from postal code (simplified - in reality you'd use an API)
-      const ville = formData.codePostal.startsWith("75") ? "Paris" : 
-                    formData.codePostal.startsWith("69") ? "Lyon" :
-                    formData.codePostal.startsWith("13") ? "Marseille" :
-                    formData.codePostal.startsWith("44") ? "Nantes" :
-                    formData.codePostal.startsWith("33") ? "Bordeaux" : "Autre";
+      const selectedVille = VILLES.find((v) => v.value === formData.ville);
+      const villeLabel = selectedVille?.label || formData.ville;
+      const codePostal = selectedVille?.codePostal || "00000";
+
+      // Create email from phone number for Supabase auth
+      const email = `${formData.telephone.replace(/[^0-9]/g, "")}@switchly.temp`;
 
       const { error } = await supabase.auth.signUp({
-        email: formData.email,
+        email,
         password: formData.password,
         options: {
           emailRedirectTo: `${window.location.origin}/`,
@@ -79,8 +112,8 @@ export default function Inscription() {
             prenom: formData.prenom,
             nom: formData.nom,
             telephone: formData.telephone,
-            code_postal: formData.codePostal,
-            ville: ville,
+            code_postal: codePostal,
+            ville: villeLabel,
             contrats: formData.contrats,
           },
         },
@@ -88,14 +121,14 @@ export default function Inscription() {
 
       if (error) {
         if (error.message.includes("already registered")) {
-          toast.error("Cet email est déjà utilisé. Connectez-vous ou utilisez un autre email.");
+          toast.error("Ce numéro de téléphone est déjà utilisé. Connectez-vous ou utilisez un autre numéro.");
         } else {
           toast.error(error.message);
         }
         return;
       }
 
-      toast.success("Inscription réussie ! Vérifiez votre email pour confirmer votre compte.");
+      toast.success("Inscription réussie ! Vous pouvez maintenant vous connecter.");
       navigate("/connexion");
     } catch (error) {
       toast.error("Une erreur est survenue. Veuillez réessayer.");
@@ -125,7 +158,7 @@ export default function Inscription() {
               Créer mon compte
             </h1>
             <p className="text-muted-foreground">
-              Rejoignez le groupement de votre ville en 20 secondes
+              Rejoignez Switchly en 20 secondes
             </p>
           </div>
 
@@ -163,18 +196,43 @@ export default function Inscription() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="telephone">Numéro de téléphone</Label>
               <Input
-                id="email"
-                name="email"
-                type="email"
-                value={formData.email}
+                id="telephone"
+                name="telephone"
+                type="tel"
+                value={formData.telephone}
                 onChange={handleChange}
-                placeholder="jean.dupont@email.com"
-                className={errors.email ? "border-destructive" : ""}
+                placeholder="0612345678"
+                className={errors.telephone ? "border-destructive" : ""}
               />
-              {errors.email && (
-                <p className="text-xs text-destructive">{errors.email}</p>
+              {errors.telephone && (
+                <p className="text-xs text-destructive">{errors.telephone}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="ville">Ville</Label>
+              <Select value={formData.ville} onValueChange={handleVilleChange}>
+                <SelectTrigger 
+                  id="ville"
+                  className={errors.ville ? "border-destructive" : ""}
+                >
+                  <div className="flex items-center gap-2">
+                    <MapPin className="w-4 h-4 text-muted-foreground" />
+                    <SelectValue placeholder="Sélectionnez votre ville" />
+                  </div>
+                </SelectTrigger>
+                <SelectContent className="bg-card border border-border z-50">
+                  {VILLES.map((ville) => (
+                    <SelectItem key={ville.value} value={ville.value}>
+                      {ville.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {errors.ville && (
+                <p className="text-xs text-destructive">{errors.ville}</p>
               )}
             </div>
 
@@ -192,37 +250,6 @@ export default function Inscription() {
               {errors.password && (
                 <p className="text-xs text-destructive">{errors.password}</p>
               )}
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="telephone">Téléphone</Label>
-                <Input
-                  id="telephone"
-                  name="telephone"
-                  value={formData.telephone}
-                  onChange={handleChange}
-                  placeholder="06 12 34 56 78"
-                  className={errors.telephone ? "border-destructive" : ""}
-                />
-                {errors.telephone && (
-                  <p className="text-xs text-destructive">{errors.telephone}</p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="codePostal">Code postal</Label>
-                <Input
-                  id="codePostal"
-                  name="codePostal"
-                  value={formData.codePostal}
-                  onChange={handleChange}
-                  placeholder="75001"
-                  className={errors.codePostal ? "border-destructive" : ""}
-                />
-                {errors.codePostal && (
-                  <p className="text-xs text-destructive">{errors.codePostal}</p>
-                )}
-              </div>
             </div>
 
             <div className="space-y-3">
