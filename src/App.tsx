@@ -16,6 +16,13 @@ import MesOffres from "./pages/dashboard/MesOffres";
 import MesSouscriptions from "./pages/dashboard/MesSouscriptions";
 import Profil from "./pages/dashboard/Profil";
 import Notifications from "./pages/dashboard/Notifications";
+import AdminLayout from "./pages/admin/AdminLayout";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminUtilisateurs from "./pages/admin/AdminUtilisateurs";
+import AdminCampagne from "./pages/admin/AdminCampagne";
+import AdminOffres from "./pages/admin/AdminOffres";
+import AdminExport from "./pages/admin/AdminExport";
+import AdminParametres from "./pages/admin/AdminParametres";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -41,6 +48,14 @@ const App = () => (
             <Route path="souscriptions" element={<MesSouscriptions />} />
             <Route path="profil" element={<Profil />} />
             <Route path="notifications" element={<Notifications />} />
+          </Route>
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="utilisateurs" element={<AdminUtilisateurs />} />
+            <Route path="campagne" element={<AdminCampagne />} />
+            <Route path="offres" element={<AdminOffres />} />
+            <Route path="export" element={<AdminExport />} />
+            <Route path="parametres" element={<AdminParametres />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

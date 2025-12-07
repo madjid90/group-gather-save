@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_settings: {
+        Row: {
+          collecte_avancee_active: boolean | null
+          created_at: string | null
+          email_confirmation_active: boolean | null
+          email_offre_active: boolean | null
+          email_statut_active: boolean | null
+          id: string
+          message_global: string | null
+          nom_site: string | null
+          pixel_publicitaire: string | null
+          script_analytics: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          collecte_avancee_active?: boolean | null
+          created_at?: string | null
+          email_confirmation_active?: boolean | null
+          email_offre_active?: boolean | null
+          email_statut_active?: boolean | null
+          id?: string
+          message_global?: string | null
+          nom_site?: string | null
+          pixel_publicitaire?: string | null
+          script_analytics?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          collecte_avancee_active?: boolean | null
+          created_at?: string | null
+          email_confirmation_active?: boolean | null
+          email_offre_active?: boolean | null
+          email_statut_active?: boolean | null
+          id?: string
+          message_global?: string | null
+          nom_site?: string | null
+          pixel_publicitaire?: string | null
+          script_analytics?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       campagnes: {
         Row: {
           actif: boolean | null
@@ -68,6 +110,78 @@ export type Database = {
           },
         ]
       }
+      campaign_settings: {
+        Row: {
+          created_at: string | null
+          date_debut: string | null
+          date_fin: string | null
+          description_publique: string | null
+          id: string
+          message_officiel: string | null
+          objectif: number | null
+          prochaine_etape: string | null
+          statut: Database["public"]["Enums"]["campaign_status"] | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          date_debut?: string | null
+          date_fin?: string | null
+          description_publique?: string | null
+          id?: string
+          message_officiel?: string | null
+          objectif?: number | null
+          prochaine_etape?: string | null
+          statut?: Database["public"]["Enums"]["campaign_status"] | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          date_debut?: string | null
+          date_fin?: string | null
+          description_publique?: string | null
+          id?: string
+          message_officiel?: string | null
+          objectif?: number | null
+          prochaine_etape?: string | null
+          statut?: Database["public"]["Enums"]["campaign_status"] | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      campaign_timeline: {
+        Row: {
+          completee: boolean | null
+          created_at: string | null
+          date_prevue: string | null
+          description: string | null
+          etape_numero: number
+          id: string
+          titre: string
+          updated_at: string | null
+        }
+        Insert: {
+          completee?: boolean | null
+          created_at?: string | null
+          date_prevue?: string | null
+          description?: string | null
+          etape_numero: number
+          id?: string
+          titre: string
+          updated_at?: string | null
+        }
+        Update: {
+          completee?: boolean | null
+          created_at?: string | null
+          date_prevue?: string | null
+          description?: string | null
+          etape_numero?: number
+          id?: string
+          titre?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       groupements: {
         Row: {
           code_postal: string
@@ -118,37 +232,58 @@ export type Database = {
       offres: {
         Row: {
           actif: boolean | null
+          avantage_client: string | null
           commission: number | null
+          conditions: string | null
           created_at: string | null
+          date_validite: string | null
           details_tarifs: Json | null
           economie_estimee: number | null
+          fichier_url: string | null
           fournisseur: string
+          groupe_cible: Database["public"]["Enums"]["offer_target"] | null
           id: string
           lien_affilie: string | null
+          prix_negocie: number | null
+          publie: boolean | null
           type: Database["public"]["Enums"]["offer_type"]
           updated_at: string | null
         }
         Insert: {
           actif?: boolean | null
+          avantage_client?: string | null
           commission?: number | null
+          conditions?: string | null
           created_at?: string | null
+          date_validite?: string | null
           details_tarifs?: Json | null
           economie_estimee?: number | null
+          fichier_url?: string | null
           fournisseur: string
+          groupe_cible?: Database["public"]["Enums"]["offer_target"] | null
           id?: string
           lien_affilie?: string | null
+          prix_negocie?: number | null
+          publie?: boolean | null
           type: Database["public"]["Enums"]["offer_type"]
           updated_at?: string | null
         }
         Update: {
           actif?: boolean | null
+          avantage_client?: string | null
           commission?: number | null
+          conditions?: string | null
           created_at?: string | null
+          date_validite?: string | null
           details_tarifs?: Json | null
           economie_estimee?: number | null
+          fichier_url?: string | null
           fournisseur?: string
+          groupe_cible?: Database["public"]["Enums"]["offer_target"] | null
           id?: string
           lien_affilie?: string | null
+          prix_negocie?: number | null
+          publie?: boolean | null
           type?: Database["public"]["Enums"]["offer_type"]
           updated_at?: string | null
         }
@@ -160,11 +295,21 @@ export type Database = {
           contrats: Database["public"]["Enums"]["contract_type"] | null
           created_at: string | null
           email: string
+          fournisseur_energie_actuel: string | null
+          fournisseur_internet_actuel: string | null
           id: string
+          inclusion_campagne: boolean | null
           nom: string
+          notes_admin: string | null
           prenom: string
+          prix_actuel_internet: number | null
+          puissance_compteur: string | null
           statut: Database["public"]["Enums"]["user_status"] | null
           telephone: string | null
+          type_compteur: Database["public"]["Enums"]["compteur_type"] | null
+          type_connexion_internet:
+            | Database["public"]["Enums"]["connexion_type"]
+            | null
           updated_at: string | null
           ville: string | null
         }
@@ -173,11 +318,21 @@ export type Database = {
           contrats?: Database["public"]["Enums"]["contract_type"] | null
           created_at?: string | null
           email: string
+          fournisseur_energie_actuel?: string | null
+          fournisseur_internet_actuel?: string | null
           id: string
+          inclusion_campagne?: boolean | null
           nom: string
+          notes_admin?: string | null
           prenom: string
+          prix_actuel_internet?: number | null
+          puissance_compteur?: string | null
           statut?: Database["public"]["Enums"]["user_status"] | null
           telephone?: string | null
+          type_compteur?: Database["public"]["Enums"]["compteur_type"] | null
+          type_connexion_internet?:
+            | Database["public"]["Enums"]["connexion_type"]
+            | null
           updated_at?: string | null
           ville?: string | null
         }
@@ -186,11 +341,21 @@ export type Database = {
           contrats?: Database["public"]["Enums"]["contract_type"] | null
           created_at?: string | null
           email?: string
+          fournisseur_energie_actuel?: string | null
+          fournisseur_internet_actuel?: string | null
           id?: string
+          inclusion_campagne?: boolean | null
           nom?: string
+          notes_admin?: string | null
           prenom?: string
+          prix_actuel_internet?: number | null
+          puissance_compteur?: string | null
           statut?: Database["public"]["Enums"]["user_status"] | null
           telephone?: string | null
+          type_compteur?: Database["public"]["Enums"]["compteur_type"] | null
+          type_connexion_internet?:
+            | Database["public"]["Enums"]["connexion_type"]
+            | null
           updated_at?: string | null
           ville?: string | null
         }
@@ -315,12 +480,21 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "user"
+      campaign_status:
+        | "ouverte"
+        | "fermee"
+        | "en_negociation"
+        | "offre_prete"
+        | "archivee"
+      compteur_type: "linky" | "ancien"
+      connexion_type: "fibre" | "adsl" | "4g_box"
       contract_type: "electricite" | "internet" | "les_deux"
       groupement_status:
         | "en_attente"
         | "negociation"
         | "offre_disponible"
         | "termine"
+      offer_target: "energie" | "internet" | "tous"
       offer_type: "electricite" | "internet" | "combo"
       sms_status: "envoye" | "delivre" | "echec"
       subscription_status: "en_attente" | "validee" | "annulee"
@@ -453,6 +627,15 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "user"],
+      campaign_status: [
+        "ouverte",
+        "fermee",
+        "en_negociation",
+        "offre_prete",
+        "archivee",
+      ],
+      compteur_type: ["linky", "ancien"],
+      connexion_type: ["fibre", "adsl", "4g_box"],
       contract_type: ["electricite", "internet", "les_deux"],
       groupement_status: [
         "en_attente",
@@ -460,6 +643,7 @@ export const Constants = {
         "offre_disponible",
         "termine",
       ],
+      offer_target: ["energie", "internet", "tous"],
       offer_type: ["electricite", "internet", "combo"],
       sms_status: ["envoye", "delivre", "echec"],
       subscription_status: ["en_attente", "validee", "annulee"],
