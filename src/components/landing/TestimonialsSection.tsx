@@ -24,7 +24,7 @@ const testimonials = [
 
 export function TestimonialsSection() {
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section className="py-16 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-subtle" />
 
       <div className="container mx-auto px-4 relative z-10">

@@ -10,8 +10,8 @@ const advantages = [
   },
   {
     icon: MapPin,
-    title: "Offre vraiment locale",
-    description: "Votre réduction dépend du nombre de gens de votre ville.",
+    title: "Offre collective",
+    description: "Votre réduction dépend du nombre de participants.",
     color: "secondary",
   },
   {
@@ -30,7 +30,7 @@ const advantages = [
 
 export function AdvantagesSection() {
   return (
-    <section className="py-24 bg-card">
+    <section className="py-16 bg-card">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
