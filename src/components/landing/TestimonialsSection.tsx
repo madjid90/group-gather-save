@@ -4,23 +4,20 @@ import { Star } from "lucide-react";
 const testimonials = [
   {
     name: "Pierre",
-    city: "Nantes",
     rating: 5,
-    text: "J'ai économisé 320€/an grâce au groupement Nantes.",
+    text: "J'ai économisé 320€/an grâce à Switchly.",
     avatar: "P",
   },
   {
     name: "Laura",
-    city: "Lyon",
     rating: 5,
     text: "Simple et sans engagement. J'ai rejoint en 20 secondes.",
     avatar: "L",
   },
   {
     name: "Sofiane",
-    city: "Marseille",
     rating: 5,
-    text: "On devrait tous faire ça dans chaque ville.",
+    text: "On devrait tous faire ça, c'est tellement simple !",
     avatar: "S",
   },
 ];
@@ -81,7 +78,7 @@ export function TestimonialsSection() {
                       {testimonial.name}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      Groupement {testimonial.city}
+                      Membre Switchly
                     </p>
                   </div>
                 </div>

@@ -22,7 +22,7 @@ export function CTASection() {
 
           <div className="relative z-10">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-6">
-              Rejoignez maintenant le groupement de votre ville.
+              Rejoignez Switchly et économisez dès maintenant.
             </h2>
             <p className="text-lg text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
               Inscription gratuite en 20 secondes. Sans engagement.
@@ -34,7 +34,7 @@ export function CTASection() {
               asChild
             >
               <Link to="/inscription">
-                Je rejoins mon groupement
+                Je m'inscris gratuitement
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
