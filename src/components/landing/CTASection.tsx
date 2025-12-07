@@ -22,22 +22,34 @@ export function CTASection() {
 
           <div className="relative z-10">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-6">
-              Rejoignez Switchly et économisez dès maintenant.
+              Prêt à payer moins cher vos contrats ?
             </h2>
             <p className="text-lg text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
-              Inscription gratuite en 20 secondes. Sans engagement.
+              Rejoignez gratuitement le groupe et recevez votre offre négociée, sans engagement.
             </p>
-            <Button
-              variant="secondary"
-              size="xl"
-              className="group"
-              asChild
-            >
-              <Link to="/inscription">
-                Je m'inscris gratuitement
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button
+                variant="secondary"
+                size="xl"
+                className="group"
+                asChild
+              >
+                <Link to="/inscription">
+                  Je m'inscris gratuitement
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </Button>
+              <Button
+                variant="outline"
+                size="xl"
+                className="bg-transparent border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
+                asChild
+              >
+                <Link to="#comment-ca-marche">
+                  Comment ça marche ?
+                </Link>
+              </Button>
+            </div>
           </div>
         </motion.div>
       </div>

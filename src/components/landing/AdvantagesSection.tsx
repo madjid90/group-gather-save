@@ -1,29 +1,31 @@
 import { motion } from "framer-motion";
-import { Sparkles, MapPin, PhoneOff, Wallet } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { TrendingDown, Scale, Sparkles, ShieldCheck } from "lucide-react";
 
 const advantages = [
   {
-    icon: Sparkles,
-    title: "Aucune démarche compliquée",
-    description: "Nous comparons & négocions pour vous.",
+    icon: TrendingDown,
+    title: "Des tarifs exclusifs grâce au volume",
+    description: "Vous accédez à des prix réservés aux achats groupés, indisponibles pour un particulier.",
     color: "primary",
   },
   {
-    icon: MapPin,
-    title: "Offre collective",
-    description: "Votre réduction dépend du nombre de participants.",
+    icon: Scale,
+    title: "Une démarche 100 % indépendante",
+    description: "Nous sélectionnons uniquement les offres réellement avantageuses.",
     color: "secondary",
   },
   {
-    icon: PhoneOff,
-    title: "Pas d'appel commercial",
-    description: "100% digital, aucune pression.",
+    icon: Sparkles,
+    title: "Aucune démarche compliquée",
+    description: "On compare et on négocie pour vous. Vous recevez directement le meilleur prix.",
     color: "primary",
   },
   {
-    icon: Wallet,
-    title: "Économies réelles",
-    description: "Jusqu'à 400€/an sur deux contrats.",
+    icon: ShieldCheck,
+    title: "Vous gardez le contrôle",
+    description: "Vous êtes libre d'accepter ou refuser l'offre finale, sans engagement.",
     color: "secondary",
   },
 ];
@@ -40,14 +42,14 @@ export function AdvantagesSection() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Pourquoi choisir <span className="gradient-text">Switchly</span> ?
+            Pourquoi payer vos contrats plus cher alors que le collectif permet d'obtenir mieux ?
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Des avantages concrets pour votre portefeuille et votre tranquillité
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {advantages.map((advantage, index) => (
             <motion.div
               key={index}
@@ -86,6 +88,18 @@ export function AdvantagesSection() {
             </motion.div>
           ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="text-center"
+        >
+          <Button variant="hero" size="lg" asChild>
+            <Link to="/inscription">Je veux profiter de l'offre négociée</Link>
+          </Button>
+        </motion.div>
       </div>
     </section>
   );

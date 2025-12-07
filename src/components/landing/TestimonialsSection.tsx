@@ -1,24 +1,26 @@
 import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import { Star } from "lucide-react";
 
 const testimonials = [
   {
-    name: "Pierre",
+    name: "Nadia",
     rating: 5,
-    text: "J'ai économisé 320€/an grâce à Switchly.",
-    avatar: "P",
+    text: "Inscription simple, offre plus avantageuse que mon ancien contrat.",
+    avatar: "N",
   },
   {
-    name: "Laura",
+    name: "Karim",
     rating: 5,
-    text: "Simple et sans engagement. J'ai rejoint en 20 secondes.",
-    avatar: "L",
+    text: "J'ai économisé sans rien faire. Le concept est génial.",
+    avatar: "K",
   },
   {
-    name: "Sofiane",
+    name: "Julie",
     rating: 5,
-    text: "On devrait tous faire ça, c'est tellement simple !",
-    avatar: "S",
+    text: "Service clair, gratuit, et vraiment utile en période de hausse des prix.",
+    avatar: "J",
   },
 ];
 
@@ -36,14 +38,14 @@ export function TestimonialsSection() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Ce que disent nos membres
+            Ils ont déjà économisé grâce au groupe
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Des milliers de français nous font confiance
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-8 mb-12">
           {testimonials.map((testimonial, index) => (
             <motion.div
               key={index}
@@ -86,6 +88,18 @@ export function TestimonialsSection() {
             </motion.div>
           ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="text-center"
+        >
+          <Button variant="hero" size="lg" asChild>
+            <Link to="/inscription">Rejoindre gratuitement l'achat groupé</Link>
+          </Button>
+        </motion.div>
       </div>
     </section>
   );
