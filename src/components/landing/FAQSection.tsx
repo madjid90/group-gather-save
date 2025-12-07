@@ -9,34 +9,24 @@ import { HelpCircle } from "lucide-react";
 
 const faqItems = [
   {
-    question: "Comment fonctionne l'achat groupé ?",
+    question: "Est-ce vraiment gratuit ?",
     answer:
-      "L'achat groupé permet de négocier de meilleurs tarifs grâce au nombre. Plus il y a de participants, plus notre pouvoir de négociation augmente auprès des fournisseurs d'énergie et d'internet. Une fois le nombre de membres suffisant atteint, nous négocions les meilleures offres et vous les présentons.",
+      "Oui. L'inscription et la réception des offres sont totalement gratuites.",
   },
   {
-    question: "Est-ce vraiment gratuit et sans engagement ?",
+    question: "Suis-je obligé d'accepter l'offre ?",
     answer:
-      "Oui, l'inscription est 100% gratuite. Vous n'êtes engagé à rien. Quand une offre négociée vous est proposée, vous êtes libre de l'accepter ou non. Nous ne prélevons aucun frais d'adhésion ou de souscription.",
-  },
-  {
-    question: "Combien puis-je économiser ?",
-    answer:
-      "Les économies varient selon le nombre de participants et les offres négociées. En moyenne, nos membres économisent entre 150€ et 400€ par an en combinant électricité et internet. Plus le groupement est important, plus les réductions sont avantageuses.",
+      "Non. Vous gardez le contrôle du début à la fin.",
   },
   {
     question: "Comment êtes-vous rémunérés ?",
     answer:
-      "Nous percevons une commission de la part des fournisseurs lorsque vous souscrivez à une offre. Cette commission n'impacte pas le prix que vous payez - au contraire, les tarifs négociés sont inférieurs aux tarifs publics.",
+      "Uniquement via les fournisseurs si vous choisissez leur offre. Jamais par les utilisateurs.",
   },
   {
-    question: "Que se passe-t-il si je refuse l'offre proposée ?",
+    question: "Quels fournisseurs participent ?",
     answer:
-      "Rien du tout ! Vous êtes libre de refuser l'offre sans aucune conséquence. Vous pouvez rester membre et attendre la prochaine campagne de négociation pour bénéficier d'une nouvelle offre.",
-  },
-  {
-    question: "Mes données sont-elles sécurisées ?",
-    answer:
-      "Absolument. Nous utilisons les dernières technologies de sécurité pour protéger vos données. Vos informations ne sont jamais partagées avec des tiers à des fins commerciales. Nous respectons strictement le RGPD.",
+      "Nous travaillons uniquement avec des acteurs fiables et reconnus.",
   },
 ];
 
@@ -56,7 +46,7 @@ export function FAQSection() {
             <span className="text-sm font-medium">Questions fréquentes</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Tout savoir sur Switchly
+            Questions fréquentes
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Les réponses à vos questions sur l'achat groupé

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Shield, PhoneOff, TrendingDown, Zap, Wifi } from "lucide-react";
+import { Shield, PhoneOff, TrendingDown, Zap, Wifi, CheckCircle2 } from "lucide-react";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 
 export function HeroSection() {
@@ -52,23 +52,26 @@ export function HeroSection() {
 
             {/* Title */}
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
-              Payez votre{" "}
-              <span className="gradient-text">électricité & internet</span>{" "}
-              moins cher grâce à l'achat groupé.
+              Payez moins cher votre{" "}
+              <span className="gradient-text">électricité et votre internet</span>{" "}
+              grâce à la négociation collective.
             </h1>
 
             {/* Subtitle */}
             <p className="text-lg md:text-xl text-muted-foreground max-w-xl">
-              Inscription 100% gratuite • Sans engagement
-              <br />
-              Plus nous sommes nombreux, plus l'offre est avantageuse.
+              Nous regroupons des consommateurs pour négocier des tarifs exclusifs auprès des fournisseurs. L'inscription est gratuite, rapide et sans engagement.
             </p>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
               <Button variant="hero" size="xl" asChild>
                 <Link to="/inscription">
-                  Rejoindre gratuitement
+                  Rejoindre gratuitement l'achat groupé
+                </Link>
+              </Button>
+              <Button variant="outline" size="xl" asChild>
+                <Link to="#comment-ca-marche">
+                  Voir comment ça marche
                 </Link>
               </Button>
             </div>
@@ -100,6 +103,31 @@ export function HeroSection() {
             {/* Main card */}
             <div className="relative bg-card rounded-3xl p-8 shadow-switchly-xl border border-border">
               <div className="space-y-6">
+                {/* Social proof text */}
+                <div className="text-center">
+                  <p className="text-muted-foreground">
+                    Déjà <span className="font-bold text-foreground"><AnimatedCounter value={12847} /></span> foyers ont rejoint la prochaine négociation.
+                  </p>
+                  <p className="text-sm text-primary font-medium mt-1">
+                    Plus nous sommes nombreux, plus les prix baissent.
+                  </p>
+                </div>
+
+                {/* Trust points */}
+                <div className="space-y-3">
+                  {[
+                    "Service gratuit et sans engagement",
+                    "Offres négociées auprès de fournisseurs reconnus",
+                    "Transparence totale, aucune surprise",
+                    "Inscription en moins de 30 secondes",
+                  ].map((point, index) => (
+                    <div key={index} className="flex items-center gap-3 text-sm">
+                      <CheckCircle2 className="w-5 h-5 text-secondary flex-shrink-0" />
+                      <span className="text-foreground">{point}</span>
+                    </div>
+                  ))}
+                </div>
+
                 {/* Stats */}
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-gradient-subtle rounded-2xl p-4 text-center">
@@ -124,45 +152,12 @@ export function HeroSection() {
                   </div>
                 </div>
 
-                {/* Progress */}
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Membres actifs</span>
-                    <span className="font-medium text-foreground">
-                      <AnimatedCounter value={12847} />
-                    </span>
-                  </div>
-                  <div className="h-3 bg-muted rounded-full overflow-hidden">
-                    <motion.div
-                      className="h-full bg-gradient-hero rounded-full"
-                      initial={{ width: 0 }}
-                      animate={{ width: "85%" }}
-                      transition={{ duration: 1.5, delay: 0.5 }}
-                    />
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Plus nous sommes nombreux, plus les remises sont importantes
-                  </p>
-                </div>
-
-                {/* Countdown */}
-                <div className="bg-primary/5 rounded-2xl p-4">
-                  <p className="text-sm text-muted-foreground mb-2">Prochaine négociation dans</p>
-                  <div className="flex gap-3">
-                    {[
-                      { value: 12, label: "jours" },
-                      { value: 8, label: "heures" },
-                      { value: 45, label: "min" },
-                    ].map((item) => (
-                      <div key={item.label} className="bg-card rounded-lg p-2 text-center flex-1">
-                        <div className="text-xl font-bold text-primary">
-                          <AnimatedCounter value={item.value} duration={1} />
-                        </div>
-                        <p className="text-xs text-muted-foreground">{item.label}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                {/* CTA */}
+                <Button variant="hero" className="w-full" asChild>
+                  <Link to="/inscription">
+                    Rejoindre le groupe dès maintenant
+                  </Link>
+                </Button>
               </div>
             </div>
 

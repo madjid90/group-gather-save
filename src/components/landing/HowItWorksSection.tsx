@@ -7,29 +7,29 @@ const steps = [
   {
     icon: UserPlus,
     number: "01",
-    title: "Vous vous inscrivez en 20 secondes",
+    title: "Vous vous inscrivez gratuitement",
     description:
-      "Indiquez vos besoins (internet, électricité ou les deux).",
+      "En quelques clics, vous rejoignez un groupe d'acheteurs comme vous.",
   },
   {
     icon: Users,
     number: "02",
-    title: "Nous négocions pour tout le groupement",
+    title: "Nous négocions les prix avec les fournisseurs",
     description:
-      "Plus il y a d'inscrits, plus la remise est importante.",
+      "Plus le groupe est grand, meilleures sont les offres obtenues.",
   },
   {
     icon: Gift,
     number: "03",
-    title: "Vous recevez une offre personnalisée",
+    title: "Vous recevez l'offre finale",
     description:
-      "Vous décidez si vous souhaitez souscrire ou non.",
+      "Vous choisissez librement d'accepter ou non. Aucune obligation.",
   },
 ];
 
 export function HowItWorksSection() {
   return (
-    <section className="py-16 bg-card">
+    <section id="comment-ca-marche" className="py-16 bg-card">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -90,7 +90,7 @@ export function HowItWorksSection() {
           className="text-center"
         >
           <Button variant="hero" size="lg" asChild>
-            <Link to="/inscription">Créer mon compte</Link>
+            <Link to="/inscription">Je veux rejoindre la prochaine campagne</Link>
           </Button>
         </motion.div>
       </div>
