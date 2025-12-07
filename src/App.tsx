@@ -7,7 +7,6 @@ import { PublicLayout } from "@/components/layout/PublicLayout";
 import Index from "./pages/Index";
 import Inscription from "./pages/Inscription";
 import Connexion from "./pages/Connexion";
-import GroupementVille from "./pages/GroupementVille";
 import FAQ from "./pages/FAQ";
 import Contact from "./pages/Contact";
 import MentionsLegales from "./pages/MentionsLegales";
@@ -32,7 +31,6 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/inscription" element={<Inscription />} />
             <Route path="/connexion" element={<Connexion />} />
-            <Route path="/groupement/:ville" element={<GroupementVille />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/mentions-legales" element={<MentionsLegales />} />

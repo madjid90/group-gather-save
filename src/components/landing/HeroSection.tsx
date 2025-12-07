@@ -54,7 +54,7 @@ export function HeroSection() {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
               Payez votre{" "}
               <span className="gradient-text">électricité & internet</span>{" "}
-              moins cher grâce à l'achat groupé de votre ville.
+              moins cher grâce à l'achat groupé.
             </h1>
 
             {/* Subtitle */}
@@ -68,7 +68,7 @@ export function HeroSection() {
             <div className="flex flex-col sm:flex-row gap-4">
               <Button variant="hero" size="xl" asChild>
                 <Link to="/inscription">
-                  Rejoindre gratuitement le groupement de ma ville
+                  Rejoindre gratuitement
                 </Link>
               </Button>
             </div>
@@ -127,21 +127,21 @@ export function HeroSection() {
                 {/* Progress */}
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Membres du groupement</span>
+                    <span className="text-muted-foreground">Membres actifs</span>
                     <span className="font-medium text-foreground">
-                      <AnimatedCounter value={847} />
+                      <AnimatedCounter value={12847} />
                     </span>
                   </div>
                   <div className="h-3 bg-muted rounded-full overflow-hidden">
                     <motion.div
                       className="h-full bg-gradient-hero rounded-full"
                       initial={{ width: 0 }}
-                      animate={{ width: "67%" }}
+                      animate={{ width: "85%" }}
                       transition={{ duration: 1.5, delay: 0.5 }}
                     />
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    Objectif : 1 250 membres pour une réduction maximale
+                    Plus nous sommes nombreux, plus les remises sont importantes
                   </p>
                 </div>
 
