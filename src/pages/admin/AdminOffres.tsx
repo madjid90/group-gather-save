@@ -211,8 +211,8 @@ export default function AdminOffres() {
     switch (type) {
       case "electricite":
         return "Électricité";
-      case "gaz":
-        return "Gaz";
+      case "combo":
+        return "Électricité + Gaz";
       case "internet":
         return "Internet";
       default:
