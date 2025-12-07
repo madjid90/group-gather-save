@@ -3,7 +3,20 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { PublicLayout } from "@/components/layout/PublicLayout";
 import Index from "./pages/Index";
+import Inscription from "./pages/Inscription";
+import Connexion from "./pages/Connexion";
+import GroupementVille from "./pages/GroupementVille";
+import FAQ from "./pages/FAQ";
+import Contact from "./pages/Contact";
+import MentionsLegales from "./pages/MentionsLegales";
+import DashboardLayout from "./pages/dashboard/DashboardLayout";
+import Dashboard from "./pages/dashboard/Dashboard";
+import MesOffres from "./pages/dashboard/MesOffres";
+import MesSouscriptions from "./pages/dashboard/MesSouscriptions";
+import Profil from "./pages/dashboard/Profil";
+import Notifications from "./pages/dashboard/Notifications";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -15,8 +28,22 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route element={<PublicLayout />}>
+            <Route path="/" element={<Index />} />
+            <Route path="/inscription" element={<Inscription />} />
+            <Route path="/connexion" element={<Connexion />} />
+            <Route path="/groupement/:ville" element={<GroupementVille />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/mentions-legales" element={<MentionsLegales />} />
+          </Route>
+          <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="offres" element={<MesOffres />} />
+            <Route path="souscriptions" element={<MesSouscriptions />} />
+            <Route path="profil" element={<Profil />} />
+            <Route path="notifications" element={<Notifications />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
