@@ -4,13 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router-dom";
-import { Zap, ArrowRight, Loader2 } from "lucide-react";
+import { Zap, ArrowRight, Loader2, Phone } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { z } from "zod";
 
 const connexionSchema = z.object({
-  email: z.string().email("Email invalide"),
+  telephone: z.string().regex(/^(\+33|0)[1-9]\d{8}$/, "Numéro de téléphone invalide (ex: 0612345678)"),
   password: z.string().min(1, "Le mot de passe est requis"),
 });
 
@@ -18,7 +18,7 @@ export default function Connexion() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
-    email: "",
+    telephone: "",
     password: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -50,16 +50,19 @@ export default function Connexion() {
     setIsLoading(true);
 
     try {
+      // Convert phone to email format for Supabase auth
+      const email = `${formData.telephone.replace(/[^0-9]/g, "")}@switchly.temp`;
+
       const { error } = await supabase.auth.signInWithPassword({
-        email: formData.email,
+        email,
         password: formData.password,
       });
 
       if (error) {
         if (error.message.includes("Invalid login credentials")) {
-          toast.error("Email ou mot de passe incorrect");
+          toast.error("Numéro de téléphone ou mot de passe incorrect");
         } else if (error.message.includes("Email not confirmed")) {
-          toast.error("Veuillez confirmer votre email avant de vous connecter");
+          toast.error("Veuillez confirmer votre compte avant de vous connecter");
         } else {
           toast.error(error.message);
         }
@@ -103,18 +106,21 @@ export default function Connexion() {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="jean.dupont@email.com"
-                className={errors.email ? "border-destructive" : ""}
-              />
-              {errors.email && (
-                <p className="text-xs text-destructive">{errors.email}</p>
+              <Label htmlFor="telephone">Numéro de téléphone</Label>
+              <div className="relative">
+                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  id="telephone"
+                  name="telephone"
+                  type="tel"
+                  value={formData.telephone}
+                  onChange={handleChange}
+                  placeholder="0612345678"
+                  className={`pl-10 ${errors.telephone ? "border-destructive" : ""}`}
+                />
+              </div>
+              {errors.telephone && (
+                <p className="text-xs text-destructive">{errors.telephone}</p>
               )}
             </div>
 
@@ -157,12 +163,6 @@ export default function Connexion() {
 
           {/* Footer */}
           <div className="mt-6 text-center space-y-4">
-            <Link
-              to="/mot-de-passe-oublie"
-              className="text-sm text-primary hover:underline"
-            >
-              Mot de passe oublié ?
-            </Link>
             <p className="text-sm text-muted-foreground">
               Pas encore de compte ?{" "}
               <Link to="/inscription" className="text-primary hover:underline font-medium">
