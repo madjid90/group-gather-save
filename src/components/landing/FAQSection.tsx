@@ -11,22 +11,22 @@ const faqItems = [
   {
     question: "Est-ce vraiment gratuit ?",
     answer:
-      "Oui, l'inscription est 100% gratuite et sans engagement.",
+      "Oui, l'inscription est totalement gratuite et sans engagement.",
   },
   {
-    question: "Suis-je engagé si je m'inscris ?",
+    question: "Suis-je obligé d'accepter l'offre ?",
     answer:
-      "Non. Vous recevez une offre et vous êtes libre de l'accepter ou non.",
+      "Non. Vous décidez librement d'accepter ou non l'offre négociée.",
   },
   {
-    question: "Comment gagnez-vous de l'argent ?",
+    question: "Comment Switchly se rémunère ?",
     answer:
-      "Nous pouvons être rémunérés par certains partenaires lorsque vous acceptez une offre.",
+      "Certains fournisseurs peuvent nous rémunérer si vous acceptez une offre, sans impact sur votre tarif.",
   },
   {
     question: "Quelles économies puis-je espérer ?",
     answer:
-      "Cela dépend de votre contrat actuel, mais l'objectif est de réduire vos factures au maximum.",
+      "Cela dépend de votre contrat actuel, mais l'objectif est de réduire au maximum vos factures d'énergie et d'internet.",
   },
 ];
 

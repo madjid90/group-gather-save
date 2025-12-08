@@ -7,23 +7,23 @@ const steps = [
   {
     icon: UserPlus,
     number: "1",
-    title: "Inscription en 1 minute",
+    title: "Inscrivez-vous en 1 minute",
     description:
-      "Vous renseignez vos informations et votre code postal.",
+      "Indiquez simplement vos informations et votre code postal.",
   },
   {
     icon: Users,
     number: "2",
     title: "Nous négocions pour tout le groupe",
     description:
-      "Plus nous sommes nombreux, plus notre pouvoir de négociation est fort.",
+      "Plus nous sommes nombreux, plus nous obtenons de meilleurs tarifs auprès des fournisseurs.",
   },
   {
     icon: Gift,
     number: "3",
-    title: "Vous recevez une offre négociée",
+    title: "Recevez une offre négociée",
     description:
-      "Vous êtes libre de l'accepter ou de la refuser.",
+      "Vous êtes libre d'accepter ou de refuser. Aucun changement sans votre accord.",
   },
 ];
 

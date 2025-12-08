@@ -6,26 +6,26 @@ import { TrendingDown, Scale, Clock, Eye } from "lucide-react";
 const advantages = [
   {
     icon: TrendingDown,
-    title: "Réduire vos factures",
-    description: "Des tarifs négociés grâce au volume.",
+    title: "Économies importantes",
+    description: "Profitez de tarifs négociés grâce au volume.",
     color: "primary",
   },
   {
     icon: Scale,
-    title: "0 engagement",
-    description: "Votre participation est totalement libre.",
+    title: "Sans engagement",
+    description: "Vous participez librement et vous pouvez refuser l'offre.",
     color: "secondary",
   },
   {
     icon: Clock,
-    title: "Gain de temps",
+    title: "Simplicité totale",
     description: "Nous gérons la négociation à votre place.",
     color: "primary",
   },
   {
     icon: Eye,
     title: "Transparence",
-    description: "Vous voyez l'offre clairement avant de décider.",
+    description: "Vous voyez l'offre clairement avant toute décision.",
     color: "secondary",
   },
 ];

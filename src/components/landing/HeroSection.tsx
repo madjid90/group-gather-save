@@ -54,12 +54,12 @@ export function HeroSection() {
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
               Switchly : payez votre{" "}
               <span className="gradient-text">électricité & Internet</span>{" "}
-              moins cher, ensemble
+              moins cher grâce à l'achat groupé
             </h1>
 
             {/* Subtitle */}
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0">
-              Inscrivez-vous gratuitement, nous regroupons vos contrats pour négocier de meilleurs tarifs auprès des fournisseurs. Sans engagement, sans paperasse.
+              Inscrivez-vous gratuitement et profitez de tarifs négociés grâce à la force du groupe. Sans engagement, sans démarches compliquées.
             </p>
 
             {/* CTA Buttons */}
@@ -83,7 +83,7 @@ export function HeroSection() {
               </div>
               <div className="flex items-center justify-center lg:justify-start gap-2 text-sm md:text-base text-muted-foreground">
                 <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
-                <span>Vous décidez d'accepter ou non l'offre</span>
+                <span>Vous choisissez l'offre finale</span>
               </div>
             </div>
           </motion.div>
