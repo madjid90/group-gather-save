@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.export-campaign-anonymous]
 verify_jwt = false
+
+[functions.import-supplier-offers]
+verify_jwt = false

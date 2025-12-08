@@ -17,19 +17,27 @@ serve(async (req) => {
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Get campaign_id from request body (optional, for future use)
+    // Get campaign_id from request body (optional)
     let campaignId: string | null = null;
     try {
       const body = await req.json();
       campaignId = body.campaign_id || null;
     } catch {
-      // No body provided, export all participants
+      // No body provided
     }
 
     console.log("Starting anonymous export for campaign:", campaignId || "all participants");
 
+    // Fetch campaign settings to get the campaign ID
+    const { data: campaignSettings } = await supabase
+      .from("campaign_settings")
+      .select("id")
+      .limit(1)
+      .maybeSingle();
+
+    const actualCampaignId = campaignId || campaignSettings?.id;
+
     // Fetch all users included in campaign (inclusion_campagne = true)
-    // Join with housing_profiles to get housing data
     const { data: profiles, error: profilesError } = await supabase
       .from("profiles")
       .select(`
@@ -68,7 +76,24 @@ serve(async (req) => {
       housingMap.set(hp.user_id, hp);
     });
 
-    // Generate CSV content
+    // Create an export record to store the mapping
+    const { data: exportRecord, error: exportError } = await supabase
+      .from("campaign_exports")
+      .insert({
+        campaign_id: actualCampaignId,
+        total_profiles: profiles?.length || 0,
+      })
+      .select()
+      .single();
+
+    if (exportError) {
+      console.error("Error creating export record:", exportError);
+      throw new Error("Erreur lors de la création de l'export");
+    }
+
+    console.log("Created export record:", exportRecord.id);
+
+    // Generate CSV content and save mappings
     const headers = [
       "client_id",
       "type_logement",
@@ -95,8 +120,9 @@ serve(async (req) => {
       "commentaire_fournisseur",
     ];
 
-    // Generate rows
+    // Generate rows and collect mappings
     const rows: string[][] = [];
+    const mappings: { export_id: string; client_id: string; user_id: string }[] = [];
     let clientIndex = 1;
 
     profiles?.forEach((profile) => {
@@ -105,6 +131,13 @@ serve(async (req) => {
       // Generate anonymous client ID (e.g., CLIENT_001)
       const clientId = `CLIENT_${String(clientIndex).padStart(3, "0")}`;
       clientIndex++;
+
+      // Save mapping
+      mappings.push({
+        export_id: exportRecord.id,
+        client_id: clientId,
+        user_id: profile.id,
+      });
 
       // Extract department from postal code (first 2 digits)
       const department = profile.code_postal ? profile.code_postal.substring(0, 2) : "";
@@ -143,6 +176,20 @@ serve(async (req) => {
       rows.push(row);
     });
 
+    // Save all mappings
+    if (mappings.length > 0) {
+      const { error: mappingError } = await supabase
+        .from("export_client_mapping")
+        .insert(mappings);
+
+      if (mappingError) {
+        console.error("Error saving mappings:", mappingError);
+        // Don't throw, continue with export
+      } else {
+        console.log(`Saved ${mappings.length} client mappings`);
+      }
+    }
+
     // Create CSV content with BOM for Excel compatibility
     const BOM = "\uFEFF";
     const csvContent =
@@ -157,23 +204,23 @@ serve(async (req) => {
     const { error: updateError } = await supabase
       .from("campaign_settings")
       .update({ statut: "en_negociation" })
-      .not("id", "is", null); // Update all campaign settings
+      .not("id", "is", null);
 
     if (updateError) {
       console.error("Error updating campaign status:", updateError);
-      // Don't throw, export is more important
     } else {
       console.log("Campaign status updated to en_negociation");
     }
 
-    // Return CSV file
-    const filename = `export_anonymise_${new Date().toISOString().split("T")[0]}.csv`;
+    // Return CSV file with export_id in header for reference
+    const filename = `export_anonymise_${exportRecord.id.substring(0, 8)}_${new Date().toISOString().split("T")[0]}.csv`;
 
     return new Response(csvContent, {
       headers: {
         ...corsHeaders,
         "Content-Type": "text/csv; charset=utf-8",
         "Content-Disposition": `attachment; filename="${filename}"`,
+        "X-Export-Id": exportRecord.id,
       },
     });
   } catch (error: unknown) {

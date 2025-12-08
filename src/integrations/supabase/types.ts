@@ -110,6 +110,38 @@ export type Database = {
           },
         ]
       }
+      campaign_exports: {
+        Row: {
+          campaign_id: string | null
+          created_at: string | null
+          export_date: string | null
+          id: string
+          total_profiles: number | null
+        }
+        Insert: {
+          campaign_id?: string | null
+          created_at?: string | null
+          export_date?: string | null
+          id?: string
+          total_profiles?: number | null
+        }
+        Update: {
+          campaign_id?: string | null
+          created_at?: string | null
+          export_date?: string | null
+          id?: string
+          total_profiles?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaign_exports_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaign_settings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       campaign_settings: {
         Row: {
           created_at: string | null
@@ -181,6 +213,38 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      export_client_mapping: {
+        Row: {
+          client_id: string
+          created_at: string | null
+          export_id: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string | null
+          export_id?: string | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string | null
+          export_id?: string | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "export_client_mapping_export_id_fkey"
+            columns: ["export_id"]
+            isOneToOne: false
+            referencedRelation: "campaign_exports"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       groupements: {
         Row: {
@@ -530,6 +594,65 @@ export type Database = {
           ville?: string
         }
         Relationships: []
+      }
+      user_offers: {
+        Row: {
+          abonnement_mensuel: number | null
+          client_id: string | null
+          commentaire_fournisseur: string | null
+          created_at: string | null
+          economie_estimee_annuelle: number | null
+          economie_estimee_mensuelle: number | null
+          export_id: string | null
+          fournisseur_nom: string | null
+          id: string
+          offre_nom: string | null
+          prix_kwh: number | null
+          statut: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          abonnement_mensuel?: number | null
+          client_id?: string | null
+          commentaire_fournisseur?: string | null
+          created_at?: string | null
+          economie_estimee_annuelle?: number | null
+          economie_estimee_mensuelle?: number | null
+          export_id?: string | null
+          fournisseur_nom?: string | null
+          id?: string
+          offre_nom?: string | null
+          prix_kwh?: number | null
+          statut?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          abonnement_mensuel?: number | null
+          client_id?: string | null
+          commentaire_fournisseur?: string | null
+          created_at?: string | null
+          economie_estimee_annuelle?: number | null
+          economie_estimee_mensuelle?: number | null
+          export_id?: string | null
+          fournisseur_nom?: string | null
+          id?: string
+          offre_nom?: string | null
+          prix_kwh?: number | null
+          statut?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_offers_export_id_fkey"
+            columns: ["export_id"]
+            isOneToOne: false
+            referencedRelation: "campaign_exports"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {

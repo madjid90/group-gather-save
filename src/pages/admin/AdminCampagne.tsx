@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Calendar, Users, Target, Save, Check, Clock, Download } from "lucide-react";
+import { Calendar, Users, Target, Save, Check, Clock, Download, Upload } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { toast } from "sonner";
@@ -57,6 +57,8 @@ export default function AdminCampagne() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const [importing, setImporting] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetchData();
@@ -194,6 +196,72 @@ export default function AdminCampagne() {
     }
   };
 
+  const handleImportClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    const validTypes = [".csv", ".xlsx", ".xls"];
+    const fileExtension = file.name.substring(file.name.lastIndexOf(".")).toLowerCase();
+    if (!validTypes.includes(fileExtension)) {
+      toast.error("Format de fichier non supporté. Utilisez un fichier CSV ou Excel.");
+      return;
+    }
+
+    setImporting(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      
+      // Get the SUPABASE_URL from environment
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+      
+      const response = await fetch(`${supabaseUrl}/functions/v1/import-supplier-offers`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${supabaseKey}`,
+        },
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Erreur lors de l'import");
+      }
+
+      // Update local campaign status
+      if (campaign) {
+        setCampaign({ ...campaign, statut: "offre_prete" });
+      }
+
+      // Show detailed result
+      let message = `Import terminé : ${result.importedRows} offres importées.`;
+      if (result.errors > 0) {
+        message += ` ${result.errors} erreur(s).`;
+      }
+      if (result.notFoundClientIds && result.notFoundClientIds.length > 0) {
+        message += ` Client(s) non trouvé(s) : ${result.notFoundClientIds.join(", ")}`;
+      }
+      
+      toast.success(message);
+    } catch (error) {
+      console.error("Error importing offers:", error);
+      toast.error(error instanceof Error ? error.message : "Erreur lors de l'import des offres");
+    } finally {
+      setImporting(false);
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -211,15 +279,33 @@ export default function AdminCampagne() {
           <h1 className="text-2xl font-bold text-foreground">Gestion de la Campagne</h1>
           <p className="text-muted-foreground">Configurez les paramètres de la campagne en cours</p>
         </div>
-        <Button
-          onClick={exportAnonymousData}
-          disabled={exporting || participantsCount === 0}
-          variant="outline"
-          className="flex items-center gap-2"
-        >
-          <Download className="h-4 w-4" />
-          {exporting ? "Export en cours..." : "Exporter profils anonymisés"}
-        </Button>
+        <div className="flex items-center gap-3">
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            accept=".csv,.xlsx,.xls"
+            className="hidden"
+          />
+          <Button
+            onClick={handleImportClick}
+            disabled={importing}
+            variant="outline"
+            className="flex items-center gap-2"
+          >
+            <Upload className="h-4 w-4" />
+            {importing ? "Import en cours..." : "Importer offres fournisseur"}
+          </Button>
+          <Button
+            onClick={exportAnonymousData}
+            disabled={exporting || participantsCount === 0}
+            variant="outline"
+            className="flex items-center gap-2"
+          >
+            <Download className="h-4 w-4" />
+            {exporting ? "Export en cours..." : "Exporter profils anonymisés"}
+          </Button>
+        </div>
       </div>
 
       {/* Status Card */}
