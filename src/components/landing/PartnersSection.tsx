@@ -10,20 +10,17 @@ import eniLogo from "@/assets/logos/eni.svg";
 import bouyguesLogo from "@/assets/logos/bouygues.svg";
 import sfrLogo from "@/assets/logos/sfr.svg";
 import orangeLogo from "@/assets/logos/orange.svg";
-import freeLogo from "@/assets/logos/free.svg";
+import freeLogo from "@/assets/logos/free-new.png";
 
 interface Partner {
   name: string;
   type: "energy" | "internet";
-  logo?: string;
+  logo: string;
 }
 
 const partners: Partner[] = [
   { name: "TotalEnergies", type: "energy", logo: totalenergiesLogo },
   { name: "Engie", type: "energy", logo: engieLogo },
-  { name: "Sowee", type: "energy" },
-  { name: "Ohm Énergie", type: "energy" },
-  { name: "Mint Énergie", type: "energy" },
   { name: "Eni", type: "energy", logo: eniLogo },
   { name: "EDF", type: "energy", logo: edfLogo },
   { name: "Bouygues Telecom", type: "internet", logo: bouyguesLogo },
@@ -55,22 +52,12 @@ function PartnerLogo({ partner, index }: { partner: Partner; index: number }) {
           )}
         </div>
         
-        {/* Logo or placeholder */}
-        {partner.logo ? (
-          <img 
-            src={partner.logo} 
-            alt={`Logo ${partner.name}`}
-            className="h-8 md:h-10 w-auto max-w-[100px] object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
-          />
-        ) : (
-          <span className={`text-sm md:text-base font-bold tracking-tight text-center leading-tight ${
-            isEnergy 
-              ? "text-primary/60 group-hover:text-primary" 
-              : "text-secondary/60 group-hover:text-secondary"
-          } transition-colors`}>
-            {partner.name}
-          </span>
-        )}
+        {/* Logo */}
+        <img 
+          src={partner.logo} 
+          alt={`Logo ${partner.name}`}
+          className="h-8 md:h-10 w-auto max-w-[100px] object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+        />
       </div>
     </motion.div>
   );
@@ -96,13 +83,13 @@ export function PartnersSection() {
           </p>
         </motion.div>
 
-        {/* Partners Grid - 2 cols mobile, 3 cols tablet, 5 cols desktop */}
+        {/* Partners Grid - 2 cols mobile, 4 cols desktop */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 max-w-5xl mx-auto"
+          className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4 max-w-4xl mx-auto"
         >
           {partners.map((partner, index) => (
             <PartnerLogo key={partner.name} partner={partner} index={index} />
