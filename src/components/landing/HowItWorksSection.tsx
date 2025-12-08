@@ -7,46 +7,46 @@ const steps = [
   {
     icon: UserPlus,
     number: "1",
-    title: "Vous vous inscrivez en 1 minute",
+    title: "Inscription en 1 minute",
     description:
-      "Vous renseignez simplement vos coordonnées et votre code postal.",
+      "Vous renseignez vos informations et votre code postal.",
   },
   {
     icon: Users,
     number: "2",
     title: "Nous négocions pour tout le groupe",
     description:
-      "Nous regroupons les demandes et discutons avec les fournisseurs d'électricité & d'Internet pour obtenir de meilleurs tarifs.",
+      "Plus nous sommes nombreux, plus notre pouvoir de négociation est fort.",
   },
   {
     icon: Gift,
     number: "3",
     title: "Vous recevez une offre négociée",
     description:
-      "Vous décidez d'accepter ou de refuser. C'est vous qui gardez le contrôle.",
+      "Vous êtes libre de l'accepter ou de la refuser.",
   },
 ];
 
 export function HowItWorksSection() {
   return (
-    <section id="comment-ca-marche" className="py-12 md:py-20 bg-card">
+    <section id="comment-ca-marche" className="py-16 md:py-24 bg-card">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-10 md:mb-16"
+          className="text-center mb-12 md:mb-16"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-3 md:mb-4">
-            Comment ça marche ?
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 md:mb-6">
+            Comment fonctionne Switchly ?
           </h2>
-          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-2">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
             Un processus simple et transparent pour économiser sur vos factures
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-10 md:mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-8 mb-12 md:mb-16">
           {steps.map((step, index) => (
             <motion.div
               key={index}
@@ -63,15 +63,15 @@ export function HowItWorksSection() {
                 </div>
 
                 {/* Icon */}
-                <div className="w-12 md:w-14 h-12 md:h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 md:mb-6 mt-2">
-                  <step.icon className="w-6 md:w-7 h-6 md:h-7 text-primary" />
+                <div className="w-14 md:w-16 h-14 md:h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-5 md:mb-6 mt-2">
+                  <step.icon className="w-7 md:w-8 h-7 md:h-8 text-primary" />
                 </div>
 
                 {/* Content */}
-                <h3 className="text-lg md:text-xl font-semibold text-foreground mb-2 md:mb-3">
+                <h3 className="text-lg md:text-xl font-semibold text-foreground mb-3 md:mb-4">
                   {step.title}
                 </h3>
-                <p className="text-sm md:text-base text-muted-foreground">{step.description}</p>
+                <p className="text-base md:text-lg text-muted-foreground">{step.description}</p>
               </div>
 
               {/* Connector line */}
@@ -89,7 +89,7 @@ export function HowItWorksSection() {
           transition={{ duration: 0.5, delay: 0.5 }}
           className="text-center px-4"
         >
-          <Button variant="hero" size="lg" className="w-full sm:w-auto py-6 sm:py-4 text-base" asChild>
+          <Button variant="hero" size="lg" className="w-full sm:w-auto py-7 sm:py-5 text-base sm:text-lg" asChild>
             <Link to="/inscription">Je participe à l'achat groupé</Link>
           </Button>
         </motion.div>

@@ -5,14 +5,14 @@ import { ArrowRight } from "lucide-react";
 
 export function CTASection() {
   return (
-    <section className="py-12 md:py-16 bg-card">
+    <section className="py-16 md:py-20 bg-card">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="relative overflow-hidden rounded-2xl md:rounded-3xl bg-gradient-hero p-8 sm:p-10 md:p-12 lg:p-16 text-center"
+          className="relative overflow-hidden rounded-2xl md:rounded-3xl bg-gradient-hero p-8 sm:p-10 md:p-14 lg:p-20 text-center"
         >
           {/* Background pattern */}
           <div className="absolute inset-0 opacity-10">
@@ -21,17 +21,17 @@ export function CTASection() {
           </div>
 
           <div className="relative z-10">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4 md:mb-6">
-              Rejoignez l'achat groupé en quelques clics
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-5 md:mb-8">
+              Rejoignez l'achat groupé Switchly
             </h2>
-            <p className="text-base md:text-lg text-primary-foreground/80 mb-6 md:mb-8 max-w-2xl mx-auto">
-              L'inscription est gratuite et sans engagement. Plus nous sommes nombreux, plus la négociation est efficace.
+            <p className="text-base sm:text-lg md:text-xl text-primary-foreground/80 mb-8 md:mb-10 max-w-2xl mx-auto">
+              L'inscription est gratuite et sans engagement. Plus nous sommes nombreux, plus nous pouvons négocier des tarifs avantageux.
             </p>
             <div className="flex justify-center px-4">
               <Button
                 variant="secondary"
                 size="xl"
-                className="group w-full sm:w-auto py-6 sm:py-4 text-base"
+                className="group w-full sm:w-auto py-7 sm:py-5 text-base sm:text-lg"
                 asChild
               >
                 <Link to="/inscription">
@@ -40,8 +40,8 @@ export function CTASection() {
                 </Link>
               </Button>
             </div>
-            <p className="text-sm text-primary-foreground/70 mt-4 md:mt-6">
-              Vos informations ne sont utilisées que pour vous communiquer les offres négociées. Aucun spam.
+            <p className="text-sm sm:text-base text-primary-foreground/70 mt-6 md:mt-8">
+              Vos données sont utilisées uniquement pour vous transmettre les offres négociées. Aucun spam.
             </p>
           </div>
         </motion.div>
