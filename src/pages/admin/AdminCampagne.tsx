@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Calendar, Users, Target, Save, Check, Clock } from "lucide-react";
+import { Calendar, Users, Target, Save, Check, Clock, Download } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { toast } from "sonner";
@@ -56,6 +56,7 @@ export default function AdminCampagne() {
   const [participantsCount, setParticipantsCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -157,6 +158,42 @@ export default function AdminCampagne() {
     setTimeline(newTimeline);
   };
 
+  const exportAnonymousData = async () => {
+    setExporting(true);
+    try {
+      const response = await supabase.functions.invoke("export-campaign-anonymous", {
+        body: { campaign_id: campaign?.id },
+      });
+
+      if (response.error) {
+        throw new Error(response.error.message || "Erreur lors de l'export");
+      }
+
+      // The response.data is a Blob-like object, we need to handle it
+      const blob = new Blob([response.data], { type: "text/csv;charset=utf-8" });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `export_anonymise_${new Date().toISOString().split("T")[0]}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      // Update local campaign status
+      if (campaign) {
+        setCampaign({ ...campaign, statut: "en_negociation" });
+      }
+
+      toast.success("Export généré avec succès ! Le statut de la campagne a été mis à jour.");
+    } catch (error) {
+      console.error("Error exporting data:", error);
+      toast.error("Erreur lors de l'export des données");
+    } finally {
+      setExporting(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -169,9 +206,20 @@ export default function AdminCampagne() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-foreground">Gestion de la Campagne</h1>
-        <p className="text-muted-foreground">Configurez les paramètres de la campagne en cours</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-foreground">Gestion de la Campagne</h1>
+          <p className="text-muted-foreground">Configurez les paramètres de la campagne en cours</p>
+        </div>
+        <Button
+          onClick={exportAnonymousData}
+          disabled={exporting || participantsCount === 0}
+          variant="outline"
+          className="flex items-center gap-2"
+        >
+          <Download className="h-4 w-4" />
+          {exporting ? "Export en cours..." : "Exporter profils anonymisés"}
+        </Button>
       </div>
 
       {/* Status Card */}
