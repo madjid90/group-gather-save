@@ -25,7 +25,7 @@ export function CTASection() {
               Rejoignez l'achat groupé Switchly
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-primary-foreground/80 mb-8 md:mb-10 max-w-2xl mx-auto">
-              L'inscription est gratuite et sans engagement. Plus nous sommes nombreux, plus nous pouvons négocier des tarifs avantageux.
+              L'inscription est gratuite et sans engagement. Plus le groupe grandit, plus nous pouvons négocier des prix avantageux.
             </p>
             <div className="flex justify-center px-4">
               <Button
@@ -41,7 +41,7 @@ export function CTASection() {
               </Button>
             </div>
             <p className="text-sm sm:text-base text-primary-foreground/70 mt-6 md:mt-8">
-              Vos données sont utilisées uniquement pour vous transmettre les offres négociées. Aucun spam.
+              Aucune publicité, aucune vente de données. Nous vous contactons uniquement pour vous transmettre les offres négociées.
             </p>
           </div>
         </motion.div>
