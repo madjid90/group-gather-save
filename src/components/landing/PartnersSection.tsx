@@ -1,15 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight, Zap, Wifi } from "lucide-react";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
-import { useRef } from "react";
 
 // Import downloaded logos
 import totalenergiesLogo from "@/assets/logos/totalenergies.svg";
@@ -42,8 +33,8 @@ function PartnerLogo({ partner }: { partner: Partner }) {
   const isEnergy = partner.type === "energy";
   
   return (
-    <div className="group">
-      <div className="relative bg-card border border-border rounded-2xl p-4 md:p-6 h-24 md:h-28 flex flex-col items-center justify-center transition-all duration-300 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1">
+    <div className="group flex-shrink-0 w-36 md:w-44">
+      <div className="relative bg-card border border-border rounded-2xl p-4 md:p-6 h-24 md:h-28 flex flex-col items-center justify-center transition-all duration-300 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
         {/* Icon indicator */}
         <div className={`absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center ${
           isEnergy ? "bg-primary/10" : "bg-secondary/10"
@@ -59,7 +50,7 @@ function PartnerLogo({ partner }: { partner: Partner }) {
         <img 
           src={partner.logo} 
           alt={`Logo ${partner.name}`}
-          className="h-10 md:h-12 w-auto max-w-[120px] object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+          className="h-10 md:h-12 w-auto max-w-[100px] object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
         />
       </div>
     </div>
@@ -67,9 +58,8 @@ function PartnerLogo({ partner }: { partner: Partner }) {
 }
 
 export function PartnersSection() {
-  const plugin = useRef(
-    Autoplay({ delay: 2500, stopOnInteraction: true })
-  );
+  // Double the partners array for seamless infinite scroll
+  const duplicatedPartners = [...partners, ...partners];
 
   return (
     <section className="py-16 md:py-24 bg-muted/30 overflow-hidden">
@@ -90,34 +80,42 @@ export function PartnersSection() {
           </p>
         </motion.div>
 
-        {/* Carousel */}
+        {/* Infinite Scroll Carousel */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="max-w-5xl mx-auto"
+          className="relative"
         >
-          <Carousel
-            plugins={[plugin.current]}
-            opts={{
-              align: "start",
-              loop: true,
-            }}
-            className="w-full"
-            onMouseEnter={plugin.current.stop}
-            onMouseLeave={plugin.current.reset}
-          >
-            <CarouselContent className="-ml-2 md:-ml-4">
-              {partners.map((partner) => (
-                <CarouselItem key={partner.name} className="pl-2 md:pl-4 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5">
-                  <PartnerLogo partner={partner} />
-                </CarouselItem>
+          {/* Gradient overlays for fade effect */}
+          <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-muted/30 to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-muted/30 to-transparent z-10 pointer-events-none" />
+          
+          {/* Scrolling container */}
+          <div className="overflow-hidden">
+            <motion.div
+              className="flex gap-4"
+              animate={{
+                x: [0, -50 * partners.length * 3],
+              }}
+              transition={{
+                x: {
+                  repeat: Infinity,
+                  repeatType: "loop",
+                  duration: 25,
+                  ease: "linear",
+                },
+              }}
+            >
+              {duplicatedPartners.map((partner, index) => (
+                <PartnerLogo key={`${partner.name}-${index}`} partner={partner} />
               ))}
-            </CarouselContent>
-            <CarouselPrevious className="hidden sm:flex -left-4 md:-left-12" />
-            <CarouselNext className="hidden sm:flex -right-4 md:-right-12" />
-          </Carousel>
+              {duplicatedPartners.map((partner, index) => (
+                <PartnerLogo key={`${partner.name}-${index}-2`} partner={partner} />
+              ))}
+            </motion.div>
+          </div>
         </motion.div>
 
         {/* Legend */}
