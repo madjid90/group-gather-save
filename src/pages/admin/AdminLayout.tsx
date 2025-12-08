@@ -7,6 +7,7 @@ import {
   Megaphone,
   Gift,
   RefreshCw,
+  History,
   LogOut,
   Shield,
   Menu,
@@ -20,6 +21,7 @@ const adminLinks = [
   { href: "/admin", label: "Clients", icon: Users },
   { href: "/admin/campagne", label: "Campagnes", icon: Megaphone },
   { href: "/admin/offres-clients", label: "Offres Clients", icon: Gift },
+  { href: "/admin/historique", label: "Historique", icon: History },
   { href: "/admin/reactivation", label: "Réactivation", icon: RefreshCw },
 ];
 

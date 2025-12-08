@@ -20,6 +20,7 @@ import AdminLayout from "./pages/admin/AdminLayout";
 import AdminUtilisateurs from "./pages/admin/AdminUtilisateurs";
 import AdminCampagne from "./pages/admin/AdminCampagne";
 import AdminOffresClients from "./pages/admin/AdminOffresClients";
+import AdminHistorique from "./pages/admin/AdminHistorique";
 import AdminReactivation from "./pages/admin/AdminReactivation";
 import FormulaireLogement from "./pages/FormulaireLogement";
 import NotFound from "./pages/NotFound";
@@ -53,6 +54,7 @@ const App = () => (
             <Route index element={<AdminUtilisateurs />} />
             <Route path="campagne" element={<AdminCampagne />} />
             <Route path="offres-clients" element={<AdminOffresClients />} />
+            <Route path="historique" element={<AdminHistorique />} />
             <Route path="reactivation" element={<AdminReactivation />} />
           </Route>
           <Route path="*" element={<NotFound />} />
