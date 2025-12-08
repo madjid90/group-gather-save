@@ -3,29 +3,24 @@ import { Outlet, useNavigate, Link, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { User } from "@supabase/supabase-js";
 import {
-  LayoutDashboard,
   Users,
   Megaphone,
   Gift,
-  Download,
-  Settings,
+  RefreshCw,
   LogOut,
   Shield,
   Menu,
   X,
-  Home,
+  LayoutDashboard,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const adminLinks = [
-  { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/admin/utilisateurs", label: "Utilisateurs", icon: Users },
-  { href: "/admin/logements", label: "Logements", icon: Home },
-  { href: "/admin/campagne", label: "Campagne", icon: Megaphone },
-  { href: "/admin/offres", label: "Offres", icon: Gift },
-  { href: "/admin/export", label: "Export", icon: Download },
-  { href: "/admin/parametres", label: "Paramètres", icon: Settings },
+  { href: "/admin", label: "Clients", icon: Users },
+  { href: "/admin/campagne", label: "Campagnes", icon: Megaphone },
+  { href: "/admin/offres-clients", label: "Offres Clients", icon: Gift },
+  { href: "/admin/reactivation", label: "Réactivation", icon: RefreshCw },
 ];
 
 export default function AdminLayout() {

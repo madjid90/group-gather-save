@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Calendar, Users, Target, Save, Check, Clock, Download, Upload } from "lucide-react";
+import { Calendar, Users, Target, Save, Check, Clock, Download, Upload, Archive } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { toast } from "sonner";
@@ -58,6 +58,7 @@ export default function AdminCampagne() {
   const [saving, setSaving] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [importing, setImporting] = useState(false);
+  const [closing, setClosing] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -262,6 +263,40 @@ export default function AdminCampagne() {
     }
   };
 
+  const closeCampaign = async () => {
+    if (!confirm("Clôturer la campagne ? Les utilisateurs seront réinitialisés pour la prochaine campagne.")) {
+      return;
+    }
+
+    setClosing(true);
+    try {
+      // Update campaign status to closed
+      if (campaign) {
+        await supabase
+          .from("campaign_settings")
+          .update({ statut: "archivee" })
+          .eq("id", campaign.id);
+      }
+
+      // Reset all profile statuses to "inscrit" for next campaign
+      await supabase
+        .from("profiles")
+        .update({ statut: "inscrit" });
+
+      // Update local state
+      if (campaign) {
+        setCampaign({ ...campaign, statut: "archivee" });
+      }
+
+      toast.success("Campagne clôturée avec succès");
+    } catch (error) {
+      console.error("Error closing campaign:", error);
+      toast.error("Erreur lors de la clôture");
+    } finally {
+      setClosing(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -295,6 +330,15 @@ export default function AdminCampagne() {
           >
             <Upload className="h-4 w-4" />
             {importing ? "Import en cours..." : "Importer offres fournisseur"}
+          </Button>
+          <Button
+            onClick={closeCampaign}
+            disabled={closing || campaign?.statut === "archivee"}
+            variant="outline"
+            className="flex items-center gap-2 border-red-300 text-red-600 hover:bg-red-50"
+          >
+            <Archive className="h-4 w-4" />
+            {closing ? "Clôture..." : "Clôturer la campagne"}
           </Button>
           <Button
             onClick={exportAnonymousData}

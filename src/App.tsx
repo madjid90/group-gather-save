@@ -17,13 +17,10 @@ import MesSouscriptions from "./pages/dashboard/MesSouscriptions";
 import Profil from "./pages/dashboard/Profil";
 import Notifications from "./pages/dashboard/Notifications";
 import AdminLayout from "./pages/admin/AdminLayout";
-import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminUtilisateurs from "./pages/admin/AdminUtilisateurs";
 import AdminCampagne from "./pages/admin/AdminCampagne";
-import AdminOffres from "./pages/admin/AdminOffres";
-import AdminExport from "./pages/admin/AdminExport";
-import AdminParametres from "./pages/admin/AdminParametres";
-import AdminLogements from "./pages/admin/AdminLogements";
+import AdminOffresClients from "./pages/admin/AdminOffresClients";
+import AdminReactivation from "./pages/admin/AdminReactivation";
 import FormulaireLogement from "./pages/FormulaireLogement";
 import NotFound from "./pages/NotFound";
 
@@ -53,13 +50,10 @@ const App = () => (
             <Route path="notifications" element={<Notifications />} />
           </Route>
           <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<AdminDashboard />} />
-            <Route path="utilisateurs" element={<AdminUtilisateurs />} />
+            <Route index element={<AdminUtilisateurs />} />
             <Route path="campagne" element={<AdminCampagne />} />
-            <Route path="offres" element={<AdminOffres />} />
-            <Route path="logements" element={<AdminLogements />} />
-            <Route path="export" element={<AdminExport />} />
-            <Route path="parametres" element={<AdminParametres />} />
+            <Route path="offres-clients" element={<AdminOffresClients />} />
+            <Route path="reactivation" element={<AdminReactivation />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
