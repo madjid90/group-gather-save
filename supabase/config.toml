@@ -2,3 +2,9 @@ project_id = "kaebtbcufbpkhyrhuson"
 
 [functions.create-test-admin]
 verify_jwt = false
+
+[functions.send-welcome-sms]
+verify_jwt = false
+
+[functions.send-offer-sms]
+verify_jwt = false

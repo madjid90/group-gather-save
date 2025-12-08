@@ -23,6 +23,8 @@ import AdminCampagne from "./pages/admin/AdminCampagne";
 import AdminOffres from "./pages/admin/AdminOffres";
 import AdminExport from "./pages/admin/AdminExport";
 import AdminParametres from "./pages/admin/AdminParametres";
+import AdminLogements from "./pages/admin/AdminLogements";
+import FormulaireLogement from "./pages/FormulaireLogement";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -42,6 +44,7 @@ const App = () => (
             <Route path="/contact" element={<Contact />} />
             <Route path="/mentions-legales" element={<MentionsLegales />} />
           </Route>
+          <Route path="/formulaire-logement/:token" element={<FormulaireLogement />} />
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="offres" element={<MesOffres />} />
@@ -54,6 +57,7 @@ const App = () => (
             <Route path="utilisateurs" element={<AdminUtilisateurs />} />
             <Route path="campagne" element={<AdminCampagne />} />
             <Route path="offres" element={<AdminOffres />} />
+            <Route path="logements" element={<AdminLogements />} />
             <Route path="export" element={<AdminExport />} />
             <Route path="parametres" element={<AdminParametres />} />
           </Route>
