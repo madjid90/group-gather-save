@@ -2,23 +2,34 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight, Zap, Wifi } from "lucide-react";
 
+// Import downloaded logos
+import totalenergiesLogo from "@/assets/logos/totalenergies.svg";
+import engieLogo from "@/assets/logos/engie.svg";
+import edfLogo from "@/assets/logos/edf.svg";
+import eniLogo from "@/assets/logos/eni.svg";
+import bouyguesLogo from "@/assets/logos/bouygues.svg";
+import sfrLogo from "@/assets/logos/sfr.svg";
+import orangeLogo from "@/assets/logos/orange.svg";
+import freeLogo from "@/assets/logos/free.svg";
+
 interface Partner {
   name: string;
   type: "energy" | "internet";
+  logo?: string;
 }
 
 const partners: Partner[] = [
-  { name: "TotalEnergies", type: "energy" },
-  { name: "Engie", type: "energy" },
+  { name: "TotalEnergies", type: "energy", logo: totalenergiesLogo },
+  { name: "Engie", type: "energy", logo: engieLogo },
   { name: "Sowee", type: "energy" },
   { name: "Ohm Énergie", type: "energy" },
   { name: "Mint Énergie", type: "energy" },
-  { name: "Eni", type: "energy" },
-  { name: "EDF", type: "energy" },
-  { name: "Bouygues Telecom", type: "internet" },
-  { name: "SFR", type: "internet" },
-  { name: "Orange", type: "internet" },
-  { name: "Free", type: "internet" },
+  { name: "Eni", type: "energy", logo: eniLogo },
+  { name: "EDF", type: "energy", logo: edfLogo },
+  { name: "Bouygues Telecom", type: "internet", logo: bouyguesLogo },
+  { name: "SFR", type: "internet", logo: sfrLogo },
+  { name: "Orange", type: "internet", logo: orangeLogo },
+  { name: "Free", type: "internet", logo: freeLogo },
 ];
 
 function PartnerLogo({ partner, index }: { partner: Partner; index: number }) {
@@ -32,7 +43,7 @@ function PartnerLogo({ partner, index }: { partner: Partner; index: number }) {
       transition={{ duration: 0.3, delay: index * 0.05 }}
       className="group"
     >
-      <div className="relative bg-card border border-border rounded-2xl p-4 md:p-6 h-24 md:h-28 flex flex-col items-center justify-center transition-all duration-300 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1">
+      <div className="relative bg-card border border-border rounded-2xl p-4 md:p-5 h-20 md:h-24 flex flex-col items-center justify-center transition-all duration-300 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1">
         {/* Icon indicator */}
         <div className={`absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center ${
           isEnergy ? "bg-primary/10" : "bg-secondary/10"
@@ -44,16 +55,22 @@ function PartnerLogo({ partner, index }: { partner: Partner; index: number }) {
           )}
         </div>
         
-        {/* Logo placeholder - styled as brand name */}
-        <div className="flex items-center justify-center">
+        {/* Logo or placeholder */}
+        {partner.logo ? (
+          <img 
+            src={partner.logo} 
+            alt={`Logo ${partner.name}`}
+            className="h-8 md:h-10 w-auto max-w-[100px] object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+          />
+        ) : (
           <span className={`text-sm md:text-base font-bold tracking-tight text-center leading-tight ${
             isEnergy 
-              ? "text-primary/70 group-hover:text-primary" 
-              : "text-secondary/70 group-hover:text-secondary"
+              ? "text-primary/60 group-hover:text-primary" 
+              : "text-secondary/60 group-hover:text-secondary"
           } transition-colors`}>
             {partner.name}
           </span>
-        </div>
+        )}
       </div>
     </motion.div>
   );
