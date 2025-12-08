@@ -42,16 +42,23 @@ export function Navbar() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 glass">
       <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
-        {/* Left side: Logo + Hamburger */}
-        <div className="flex items-center gap-4">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center shadow-glow group-hover:scale-110 transition-transform">
-              <Zap className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <span className="text-xl font-bold text-foreground hidden sm:block">Switchly</span>
-          </Link>
+        {/* Left side: Logo */}
+        <Link to="/" className="flex items-center gap-2 group">
+          <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center shadow-glow group-hover:scale-110 transition-transform">
+            <Zap className="w-5 h-5 text-primary-foreground" />
+          </div>
+          <span className="text-xl font-bold text-foreground hidden sm:block">Switchly</span>
+        </Link>
 
+        {/* Right side: CTA Buttons + Hamburger */}
+        <div className="flex items-center gap-2 sm:gap-4">
+          <Button variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4" asChild>
+            <Link to="/connexion">Connexion</Link>
+          </Button>
+          <Button variant="hero" size="sm" className="text-xs sm:text-sm px-3 sm:px-4" asChild>
+            <Link to="/inscription">Rejoindre</Link>
+          </Button>
+          
           {/* Hamburger Menu Button */}
           <button
             ref={buttonRef}
@@ -66,16 +73,6 @@ export function Navbar() {
               <Menu className="w-5 h-5 text-foreground" />
             )}
           </button>
-        </div>
-
-        {/* Right side: CTA Buttons - Always visible */}
-        <div className="flex items-center gap-2 sm:gap-4">
-          <Button variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4" asChild>
-            <Link to="/connexion">Connexion</Link>
-          </Button>
-          <Button variant="hero" size="sm" className="text-xs sm:text-sm px-3 sm:px-4" asChild>
-            <Link to="/inscription">Rejoindre</Link>
-          </Button>
         </div>
       </nav>
 
