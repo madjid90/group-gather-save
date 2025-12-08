@@ -69,11 +69,6 @@ export function HeroSection() {
                   Rejoindre gratuitement l'achat groupé
                 </Link>
               </Button>
-              <Button variant="outline" size="xl" asChild>
-                <Link to="#comment-ca-marche">
-                  Voir comment ça marche
-                </Link>
-              </Button>
             </div>
 
             {/* Trust badges */}

@@ -27,7 +27,7 @@ export function CTASection() {
             <p className="text-lg text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
               Rejoignez gratuitement le groupe et recevez votre offre négociée, sans engagement.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex justify-center">
               <Button
                 variant="secondary"
                 size="xl"
@@ -37,16 +37,6 @@ export function CTASection() {
                 <Link to="/inscription">
                   Je m'inscris gratuitement
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </Button>
-              <Button
-                variant="outline"
-                size="xl"
-                className="bg-transparent border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
-                asChild
-              >
-                <Link to="#comment-ca-marche">
-                  Comment ça marche ?
                 </Link>
               </Button>
             </div>
