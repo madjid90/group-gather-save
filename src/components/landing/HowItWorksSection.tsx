@@ -1,96 +1,82 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { UserPlus, Home, Handshake, Mail, ThumbsUp } from "lucide-react";
+import { UserPlus, Users, Gift } from "lucide-react";
 
 const steps = [
   {
     icon: UserPlus,
     number: "1",
-    title: "Rejoignez gratuitement le groupe",
+    title: "Inscrivez-vous en 1 minute",
     description:
-      "Plus nous sommes nombreux, plus nous obtenons de meilleurs tarifs.",
+      "Indiquez simplement vos informations et votre code postal.",
   },
   {
-    icon: Home,
+    icon: Users,
     number: "2",
-    title: "Complétez votre profil logement",
+    title: "Nous négocions pour tout le groupe",
     description:
-      "Quelques informations suffisent pour recevoir une estimation personnalisée.",
+      "Plus nous sommes nombreux, plus nous obtenons de meilleurs tarifs auprès des fournisseurs.",
   },
   {
-    icon: Handshake,
+    icon: Gift,
     number: "3",
-    title: "Nous négocions pour vous",
+    title: "Recevez une offre négociée",
     description:
-      "Nous regroupons les profils similaires et négocions directement avec les fournisseurs.",
-  },
-  {
-    icon: Mail,
-    number: "4",
-    title: "Recevez votre offre personnalisée",
-    description:
-      "Une estimation claire, transparente et parfaitement adaptée à votre consommation.",
-  },
-  {
-    icon: ThumbsUp,
-    number: "5",
-    title: "Vous décidez",
-    description:
-      "Acceptez uniquement si l'offre vous convient. Sans engagement.",
+      "Vous êtes libre d'accepter ou de refuser. Aucun changement sans votre accord.",
   },
 ];
 
 export function HowItWorksSection() {
   return (
-    <section id="comment-ca-marche" className="py-12 md:py-20 bg-card">
+    <section id="comment-ca-marche" className="py-16 md:py-24 bg-card">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-10 md:mb-16"
+          className="text-center mb-12 md:mb-16"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 md:mb-6">
-            Comment Switchly vous fait économiser
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 md:mb-6">
+            Comment fonctionne Switchly ?
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
             Un processus simple et transparent pour économiser sur vos factures
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-6 mb-10 md:mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-8 mb-12 md:mb-16">
           {steps.map((step, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              transition={{ duration: 0.5, delay: index * 0.15 }}
               className="relative"
             >
-              <div className="bg-background rounded-2xl p-5 md:p-6 h-full border border-border card-hover">
+              <div className="bg-background rounded-2xl p-6 md:p-8 h-full border border-border card-hover">
                 {/* Number badge */}
-                <div className="absolute -top-3 left-5 bg-gradient-hero text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
+                <div className="absolute -top-3 md:-top-4 left-6 md:left-8 bg-gradient-hero text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
                   Étape {step.number}
                 </div>
 
                 {/* Icon */}
-                <div className="w-12 md:w-14 h-12 md:h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 md:mb-5 mt-2">
-                  <step.icon className="w-6 md:w-7 h-6 md:h-7 text-primary" />
+                <div className="w-14 md:w-16 h-14 md:h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-5 md:mb-6 mt-2">
+                  <step.icon className="w-7 md:w-8 h-7 md:h-8 text-primary" />
                 </div>
 
                 {/* Content */}
-                <h3 className="text-base md:text-lg font-semibold text-foreground mb-2 md:mb-3">
+                <h3 className="text-lg md:text-xl font-semibold text-foreground mb-3 md:mb-4">
                   {step.title}
                 </h3>
-                <p className="text-sm md:text-base text-muted-foreground">{step.description}</p>
+                <p className="text-base md:text-lg text-muted-foreground">{step.description}</p>
               </div>
 
               {/* Connector line */}
               {index < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-1/2 -right-3 w-6 border-t-2 border-dashed border-border" />
+                <div className="hidden md:block absolute top-1/2 -right-4 w-8 border-t-2 border-dashed border-border" />
               )}
             </motion.div>
           ))}
@@ -103,12 +89,9 @@ export function HowItWorksSection() {
           transition={{ duration: 0.5, delay: 0.5 }}
           className="text-center px-4"
         >
-          <Button variant="hero" size="lg" className="w-full sm:w-auto py-6 sm:py-5 text-base sm:text-lg" asChild>
-            <Link to="/inscription">Rejoindre gratuitement le groupe</Link>
+          <Button variant="hero" size="lg" className="w-full sm:w-auto py-7 sm:py-5 text-base sm:text-lg" asChild>
+            <Link to="/inscription">Je participe à l'achat groupé</Link>
           </Button>
-          <p className="text-sm text-muted-foreground mt-3">
-            Sans engagement — vous restez libre à 100 %.
-          </p>
         </motion.div>
       </div>
     </section>
