@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Shield, PhoneOff, TrendingDown, Zap, Wifi, CheckCircle2 } from "lucide-react";
+import { Shield, Lock, CheckCircle, Zap, Wifi, CheckCircle2 } from "lucide-react";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden py-8 md:py-0">
+    <section className="relative min-h-[90vh] flex items-center overflow-hidden py-12 md:py-0">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-subtle" />
       
@@ -31,13 +31,13 @@ export function HeroSection() {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-12 items-center">
           {/* Content */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="space-y-6 md:space-y-8"
+            className="space-y-6 md:space-y-8 text-center lg:text-left"
           >
             {/* Badge */}
             <motion.div
@@ -52,19 +52,19 @@ export function HeroSection() {
 
             {/* Title */}
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
-              Regroupons nos contrats pour payer{" "}
-              <span className="gradient-text">l'électricité & Internet</span>{" "}
-              moins cher
+              Switchly : payez votre{" "}
+              <span className="gradient-text">électricité & Internet</span>{" "}
+              moins cher, ensemble
             </h1>
 
             {/* Subtitle */}
-            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl">
-              Inscrivez-vous gratuitement, nous négocions pour vous des tarifs plus avantageux grâce à la force du groupe. Sans engagement, sans paperasse.
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0">
+              Inscrivez-vous gratuitement, nous regroupons vos contrats pour négocier de meilleurs tarifs auprès des fournisseurs. Sans engagement, sans paperasse.
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col gap-4">
-              <Button variant="hero" size="xl" className="w-full sm:w-auto text-base sm:text-lg py-6 sm:py-4" asChild>
+            <div className="flex flex-col gap-4 px-4 sm:px-0">
+              <Button variant="hero" size="xl" className="w-full sm:w-auto text-base sm:text-lg py-7 sm:py-5" asChild>
                 <Link to="/inscription">
                   Je rejoins gratuitement le groupe
                 </Link>
@@ -72,18 +72,18 @@ export function HeroSection() {
             </div>
 
             {/* Trust badges */}
-            <div className="flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-6 pt-2 md:pt-4">
-              <div className="flex items-center gap-2 text-sm md:text-base text-muted-foreground">
+            <div className="flex flex-col sm:flex-row flex-wrap justify-center lg:justify-start gap-4 sm:gap-6 pt-2 md:pt-4">
+              <div className="flex items-center justify-center lg:justify-start gap-2 text-sm md:text-base text-muted-foreground">
                 <Shield className="w-5 h-5 text-primary flex-shrink-0" />
                 <span>Aucun engagement</span>
               </div>
-              <div className="flex items-center gap-2 text-sm md:text-base text-muted-foreground">
-                <PhoneOff className="w-5 h-5 text-destructive flex-shrink-0" />
+              <div className="flex items-center justify-center lg:justify-start gap-2 text-sm md:text-base text-muted-foreground">
+                <Lock className="w-5 h-5 text-secondary flex-shrink-0" />
                 <span>Données protégées</span>
               </div>
-              <div className="flex items-center gap-2 text-sm md:text-base text-muted-foreground">
-                <TrendingDown className="w-5 h-5 text-secondary flex-shrink-0" />
-                <span>Vous choisissez librement l'offre finale</span>
+              <div className="flex items-center justify-center lg:justify-start gap-2 text-sm md:text-base text-muted-foreground">
+                <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
+                <span>Vous décidez d'accepter ou non l'offre</span>
               </div>
             </div>
           </motion.div>
