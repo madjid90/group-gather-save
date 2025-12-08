@@ -1,10 +1,16 @@
+import HousingInfoForm from "@/components/dashboard/HousingInfoForm";
+
 export default function Profil() {
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Mon Profil</h1>
-      <div className="bg-card rounded-2xl p-6 border">
-        <p className="text-muted-foreground">Vos informations seront affichées ici.</p>
+    <div className="space-y-6 pb-8">
+      <div>
+        <h1 className="text-2xl md:text-3xl font-bold text-foreground">Informations logement</h1>
+        <p className="text-muted-foreground mt-1">
+          Complétez vos informations pour recevoir des offres personnalisées.
+        </p>
       </div>
+      
+      <HousingInfoForm />
     </div>
   );
 }
