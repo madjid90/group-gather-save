@@ -175,20 +175,18 @@ export default function FormulaireLogement() {
       }
 
       try {
+        // Use the security definer function to validate token
         const { data, error } = await supabase
-          .from("profiles")
-          .select("id, housing_form_completed")
-          .eq("housing_token", token)
-          .maybeSingle();
+          .rpc("validate_housing_token", { p_token: token });
 
-        if (error || !data) {
+        if (error || !data || data.length === 0) {
           setIsValidToken(false);
-        } else if (data.housing_form_completed) {
+        } else if (data[0].form_completed) {
           setIsSuccess(true);
           setIsValidToken(true);
         } else {
           setIsValidToken(true);
-          setUserId(data.id);
+          setUserId(data[0].user_id);
         }
       } catch {
         setIsValidToken(false);
@@ -223,45 +221,36 @@ export default function FormulaireLogement() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!userId) return;
+    if (!token) return;
 
     setIsSubmitting(true);
 
     try {
-      // Insert into housing_profiles
-      const { error: housingError } = await supabase
-        .from("housing_profiles")
-        .upsert({
-          user_id: userId,
-          type_logement: formData.typeLogement,
-          surface: formData.surface ? parseInt(formData.surface) : null,
-          nombre_occupants: formData.nombreOccupants ? parseInt(formData.nombreOccupants) : null,
-          isolation: formData.isolation,
-          mode_chauffage: formData.modeChauffage,
-          chauffe_eau_electrique: formData.chauffeEauElectrique === "oui",
-          fournisseur_electricite: formData.fournisseurElectricite,
-          option_tarifaire: formData.optionTarifaire,
-          puissance_compteur: formData.puissanceCompteur,
-          montant_facture: formData.montantFacture ? parseFloat(formData.montantFacture) : null,
-          type_connexion: formData.typeConnexion,
-          fournisseur_internet: formData.fournisseurInternet,
-          prix_mensuel_internet: formData.prixMensuelInternet ? parseFloat(formData.prixMensuelInternet) : null,
-          satisfaction_internet: formData.satisfaction,
-          eligible_fibre: formData.eligibiliteFibre === "oui",
-          temps_domicile: formData.tempsDomicile,
-          equipements_energivores: formData.equipementsEnergivores,
-          recharge_vehicule_electrique: formData.rechargeVehicule === "oui",
-        });
+      // Use the security definer function to insert housing profile
+      const { data, error } = await supabase.rpc("insert_housing_profile_with_token", {
+        p_token: token,
+        p_type_logement: formData.typeLogement || null,
+        p_surface: formData.surface ? parseInt(formData.surface) : null,
+        p_nombre_occupants: formData.nombreOccupants ? parseInt(formData.nombreOccupants) : null,
+        p_isolation: formData.isolation || null,
+        p_mode_chauffage: formData.modeChauffage || null,
+        p_chauffe_eau_electrique: formData.chauffeEauElectrique === "oui",
+        p_fournisseur_electricite: formData.fournisseurElectricite || null,
+        p_option_tarifaire: formData.optionTarifaire || null,
+        p_puissance_compteur: formData.puissanceCompteur || null,
+        p_montant_facture: formData.montantFacture ? parseFloat(formData.montantFacture) : null,
+        p_type_connexion: formData.typeConnexion || null,
+        p_fournisseur_internet: formData.fournisseurInternet || null,
+        p_prix_mensuel_internet: formData.prixMensuelInternet ? parseFloat(formData.prixMensuelInternet) : null,
+        p_satisfaction_internet: formData.satisfaction,
+        p_eligible_fibre: formData.eligibiliteFibre === "oui",
+        p_temps_domicile: formData.tempsDomicile || null,
+        p_equipements_energivores: formData.equipementsEnergivores,
+        p_recharge_vehicule_electrique: formData.rechargeVehicule === "oui",
+      });
 
-      if (housingError) throw housingError;
-
-      // Mark form as completed
-      const { error: profileError } = await supabase
-        .from("profiles")
-        .update({ housing_form_completed: true })
-        .eq("id", userId);
-
-      if (profileError) throw profileError;
+      if (error) throw error;
+      if (!data) throw new Error("Token invalide");
 
       setIsSuccess(true);
       toast.success("Informations enregistrées avec succès !");

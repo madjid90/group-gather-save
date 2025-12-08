@@ -561,6 +561,37 @@ export type Database = {
         }
         Returns: boolean
       }
+      insert_housing_profile_with_token: {
+        Args: {
+          p_chauffe_eau_electrique: boolean
+          p_eligible_fibre: boolean
+          p_equipements_energivores: string[]
+          p_fournisseur_electricite: string
+          p_fournisseur_internet: string
+          p_isolation: string
+          p_mode_chauffage: string
+          p_montant_facture: number
+          p_nombre_occupants: number
+          p_option_tarifaire: string
+          p_prix_mensuel_internet: number
+          p_puissance_compteur: string
+          p_recharge_vehicule_electrique: boolean
+          p_satisfaction_internet: number
+          p_surface: number
+          p_temps_domicile: string
+          p_token: string
+          p_type_connexion: string
+          p_type_logement: string
+        }
+        Returns: boolean
+      }
+      validate_housing_token: {
+        Args: { p_token: string }
+        Returns: {
+          form_completed: boolean
+          user_id: string
+        }[]
+      }
     }
     Enums: {
       app_role: "admin" | "user"
