@@ -13,6 +13,7 @@ import freeLogo from "@/assets/logos/free-new.png";
 interface Partner {
   name: string;
   logo: string;
+  className?: string;
 }
 
 const partners: Partner[] = [
@@ -20,20 +21,23 @@ const partners: Partner[] = [
   { name: "Engie", logo: engieLogo },
   { name: "Eni", logo: eniLogo },
   { name: "EDF", logo: edfLogo },
-  { name: "Bouygues Telecom", logo: bouyguesLogo },
+  { name: "Bouygues Telecom", logo: bouyguesLogo, className: "h-16 md:h-20 max-w-[130px]" },
   { name: "SFR", logo: sfrLogo },
   { name: "Orange", logo: orangeLogo },
   { name: "Free", logo: freeLogo },
 ];
 
 function PartnerLogo({ partner }: { partner: Partner }) {
+  const defaultClass = "h-10 md:h-12 w-auto max-w-[100px] object-contain grayscale opacity-70";
+  const logoClass = partner.className || defaultClass;
+  
   return (
     <div className="flex-shrink-0 w-36 md:w-44">
       <div className="bg-card border border-border rounded-2xl p-4 md:p-6 h-24 md:h-28 flex items-center justify-center">
         <img 
           src={partner.logo} 
           alt={`Logo ${partner.name}`}
-          className="h-10 md:h-12 w-auto max-w-[100px] object-contain grayscale opacity-70"
+          className={`${logoClass} ${!partner.className ? '' : 'w-auto object-contain grayscale opacity-70'}`}
         />
       </div>
     </div>
