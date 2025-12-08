@@ -1,17 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
@@ -27,7 +20,6 @@ import {
   Clock,
   Gauge,
   Euro,
-  FileUp,
   Globe,
   Radio,
   Smile,
@@ -36,8 +28,8 @@ import {
   BrickWall,
   Loader2,
   Check,
-  ChevronRight,
   ChevronLeft,
+  Settings,
 } from "lucide-react";
 
 // Form data types
@@ -128,11 +120,72 @@ const TEMPS_DOMICILE = [
 ];
 
 const EQUIPEMENTS = [
-  { value: "climatisation", label: "Climatisation", icon: Flame },
-  { value: "piscine", label: "Piscine", icon: Droplets },
-  { value: "seche_linge", label: "Sèche-linge", icon: Flame },
-  { value: "congelateur", label: "Congélateur", icon: Zap },
-  { value: "lave_vaisselle", label: "Lave-vaisselle", icon: Droplets },
+  { value: "climatisation", label: "Climatisation" },
+  { value: "piscine", label: "Piscine" },
+  { value: "seche_linge", label: "Sèche-linge" },
+  { value: "congelateur", label: "Congélateur" },
+  { value: "lave_vaisselle", label: "Lave-vaisselle" },
+];
+
+const OCCUPANTS = [
+  { value: "1", label: "1 personne" },
+  { value: "2", label: "2 personnes" },
+  { value: "3", label: "3 personnes" },
+  { value: "4", label: "4 personnes" },
+  { value: "5", label: "5 personnes" },
+  { value: "6", label: "6+ personnes" },
+];
+
+// Step definitions
+const STEPS = [
+  { id: 1, title: "Votre logement", icon: Home },
+  { id: 2, title: "Contrat électricité", icon: Zap },
+  { id: 3, title: "Abonnement Internet", icon: Globe },
+  { id: 4, title: "Habitudes & équipements", icon: Settings },
+];
+
+// Question definitions
+interface Question {
+  id: string;
+  step: number;
+  field: keyof FormData;
+  label: string;
+  icon: React.ElementType;
+  type: "select" | "radio" | "input" | "slider" | "checkbox";
+  options?: { value: string; label: string }[];
+  placeholder?: string;
+  inputType?: string;
+  min?: number;
+  max?: number;
+  autoAdvance?: boolean;
+}
+
+const QUESTIONS: Question[] = [
+  // Step 1: Logement
+  { id: "q1", step: 1, field: "typeLogement", label: "Quel est le type de votre logement ?", icon: Home, type: "select", options: TYPES_LOGEMENT, autoAdvance: true },
+  { id: "q2", step: 1, field: "surface", label: "Quelle est la surface de votre logement ?", icon: Ruler, type: "input", placeholder: "Surface en m²", inputType: "number", autoAdvance: false },
+  { id: "q3", step: 1, field: "nombreOccupants", label: "Combien de personnes vivent dans votre logement ?", icon: Users, type: "select", options: OCCUPANTS, autoAdvance: true },
+  { id: "q4", step: 1, field: "isolation", label: "Comment est l'isolation de votre logement ?", icon: BrickWall, type: "select", options: ISOLATION_OPTIONS, autoAdvance: true },
+  { id: "q5", step: 1, field: "modeChauffage", label: "Quel est votre mode de chauffage principal ?", icon: Flame, type: "select", options: MODES_CHAUFFAGE, autoAdvance: true },
+  { id: "q6", step: 1, field: "chauffeEauElectrique", label: "Avez-vous un chauffe-eau électrique ?", icon: Droplets, type: "radio", options: [{ value: "oui", label: "Oui" }, { value: "non", label: "Non" }], autoAdvance: true },
+  
+  // Step 2: Électricité
+  { id: "q7", step: 2, field: "fournisseurElectricite", label: "Qui est votre fournisseur d'électricité actuel ?", icon: Zap, type: "select", options: FOURNISSEURS_ENERGIE, autoAdvance: true },
+  { id: "q8", step: 2, field: "optionTarifaire", label: "Quelle est votre option tarifaire ?", icon: Clock, type: "select", options: OPTIONS_TARIFAIRES, autoAdvance: true },
+  { id: "q9", step: 2, field: "puissanceCompteur", label: "Quelle est la puissance de votre compteur ?", icon: Gauge, type: "select", options: PUISSANCES_COMPTEUR, autoAdvance: true },
+  { id: "q10", step: 2, field: "montantFacture", label: "Quel est le montant de votre facture mensuelle ?", icon: Euro, type: "input", placeholder: "Montant en €", inputType: "number", autoAdvance: false },
+  
+  // Step 3: Internet
+  { id: "q11", step: 3, field: "typeConnexion", label: "Quel type de connexion Internet avez-vous ?", icon: Globe, type: "select", options: TYPES_CONNEXION, autoAdvance: true },
+  { id: "q12", step: 3, field: "fournisseurInternet", label: "Qui est votre fournisseur Internet ?", icon: Radio, type: "select", options: FOURNISSEURS_INTERNET, autoAdvance: true },
+  { id: "q13", step: 3, field: "prixMensuelInternet", label: "Combien payez-vous par mois ?", icon: Euro, type: "input", placeholder: "Prix en €", inputType: "number", autoAdvance: false },
+  { id: "q14", step: 3, field: "satisfaction", label: "Êtes-vous satisfait de votre connexion ?", icon: Smile, type: "slider", min: 1, max: 5, autoAdvance: false },
+  { id: "q15", step: 3, field: "eligibiliteFibre", label: "Êtes-vous éligible à la fibre ?", icon: Cable, type: "radio", options: [{ value: "oui", label: "Oui" }, { value: "non", label: "Non" }, { value: "ne_sais_pas", label: "Je ne sais pas" }], autoAdvance: true },
+  
+  // Step 4: Habitudes
+  { id: "q16", step: 4, field: "tempsDomicile", label: "Combien de temps passez-vous à domicile ?", icon: Clock, type: "select", options: TEMPS_DOMICILE, autoAdvance: true },
+  { id: "q17", step: 4, field: "equipementsEnergivores", label: "Quels équipements énergivores possédez-vous ?", icon: Settings, type: "checkbox", options: EQUIPEMENTS, autoAdvance: false },
+  { id: "q18", step: 4, field: "rechargeVehicule", label: "Rechargez-vous un véhicule électrique ?", icon: Car, type: "radio", options: [{ value: "oui", label: "Oui" }, { value: "non", label: "Non" }], autoAdvance: true },
 ];
 
 export default function FormulaireLogement() {
@@ -141,9 +194,8 @@ export default function FormulaireLogement() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isValidToken, setIsValidToken] = useState(false);
-  const [userId, setUserId] = useState<string | null>(null);
-  const [currentStep, setCurrentStep] = useState(1);
-  const totalSteps = 4;
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [direction, setDirection] = useState(1);
 
   const [formData, setFormData] = useState<FormData>({
     typeLogement: "",
@@ -166,6 +218,11 @@ export default function FormulaireLogement() {
     rechargeVehicule: "",
   });
 
+  const currentQuestion = QUESTIONS[currentQuestionIndex];
+  const currentStep = currentQuestion?.step || 1;
+  const totalQuestions = QUESTIONS.length;
+  const overallProgress = ((currentQuestionIndex + 1) / totalQuestions) * 100;
+
   // Verify token on mount
   useEffect(() => {
     const verifyToken = async () => {
@@ -175,7 +232,6 @@ export default function FormulaireLogement() {
       }
 
       try {
-        // Use the security definer function to validate token
         const { data, error } = await supabase
           .rpc("validate_housing_token", { p_token: token });
 
@@ -186,7 +242,6 @@ export default function FormulaireLogement() {
           setIsValidToken(true);
         } else {
           setIsValidToken(true);
-          setUserId(data[0].user_id);
         }
       } catch {
         setIsValidToken(false);
@@ -198,9 +253,26 @@ export default function FormulaireLogement() {
     verifyToken();
   }, [token]);
 
-  const handleChange = (field: keyof FormData, value: string | number | string[]) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+  const goToNext = useCallback(() => {
+    if (currentQuestionIndex < totalQuestions - 1) {
+      setDirection(1);
+      setCurrentQuestionIndex(prev => prev + 1);
+    }
+  }, [currentQuestionIndex, totalQuestions]);
+
+  const goToPrevious = () => {
+    if (currentQuestionIndex > 0) {
+      setDirection(-1);
+      setCurrentQuestionIndex(prev => prev - 1);
+    }
   };
+
+  const handleChange = useCallback((field: keyof FormData, value: string | number | string[], shouldAdvance: boolean = false) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    if (shouldAdvance) {
+      setTimeout(goToNext, 300);
+    }
+  }, [goToNext]);
 
   const handleEquipementToggle = (value: string) => {
     setFormData((prev) => ({
@@ -211,22 +283,12 @@ export default function FormulaireLogement() {
     }));
   };
 
-  const nextStep = () => {
-    if (currentStep < totalSteps) setCurrentStep(currentStep + 1);
-  };
-
-  const prevStep = () => {
-    if (currentStep > 1) setCurrentStep(currentStep - 1);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     if (!token) return;
 
     setIsSubmitting(true);
 
     try {
-      // Use the security definer function to insert housing profile
       const { data, error } = await supabase.rpc("insert_housing_profile_with_token", {
         p_token: token,
         p_type_logement: formData.typeLogement || null,
@@ -262,9 +324,19 @@ export default function FormulaireLogement() {
     }
   };
 
+  const isLastQuestion = currentQuestionIndex === totalQuestions - 1;
+
+  const handleNextOrSubmit = () => {
+    if (isLastQuestion) {
+      handleSubmit();
+    } else {
+      goToNext();
+    }
+  };
+
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
@@ -272,7 +344,7 @@ export default function FormulaireLogement() {
 
   if (!isValidToken) {
     return (
-      <div className="min-h-screen flex items-center justify-center py-12 px-4">
+      <div className="min-h-screen flex items-center justify-center py-12 px-4 bg-background">
         <div className="w-full max-w-md bg-card rounded-3xl p-8 shadow-switchly-xl border border-border text-center">
           <div className="w-16 h-16 rounded-full bg-destructive/10 flex items-center justify-center mx-auto mb-6">
             <Zap className="w-8 h-8 text-destructive" />
@@ -291,7 +363,7 @@ export default function FormulaireLogement() {
 
   if (isSuccess) {
     return (
-      <div className="min-h-screen flex items-center justify-center py-12 px-4">
+      <div className="min-h-screen flex items-center justify-center py-12 px-4 bg-background">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -302,7 +374,7 @@ export default function FormulaireLogement() {
           </div>
           <h1 className="text-2xl font-bold text-foreground mb-3">Merci !</h1>
           <p className="text-muted-foreground mb-6">
-            Vos informations ont bien été enregistrées. Nous vous préviendrons dès qu'une offre négociée sera disponible.
+            Vos informations logement ont bien été enregistrées. Nous vous préviendrons dès qu'une offre négociée sera disponible.
           </p>
           <Button variant="outline" asChild>
             <Link to="/">Retour à l'accueil</Link>
@@ -312,437 +384,294 @@ export default function FormulaireLogement() {
     );
   }
 
-  const progress = (currentStep / totalSteps) * 100;
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 100 : -100,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction: number) => ({
+      x: direction > 0 ? -100 : 100,
+      opacity: 0,
+    }),
+  };
+
+  const renderQuestion = (question: Question) => {
+    const Icon = question.icon;
+    const value = formData[question.field];
+
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[50vh] px-4">
+        {/* Question Label */}
+        <div className="text-center mb-8 max-w-md">
+          <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+            <Icon className="w-7 h-7 text-primary" />
+          </div>
+          <h2 className="text-xl md:text-2xl font-semibold text-foreground leading-tight">
+            {question.label}
+          </h2>
+        </div>
+
+        {/* Answer Input */}
+        <div className="w-full max-w-md">
+          {question.type === "select" && question.options && (
+            <div className="grid gap-3">
+              {question.options.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => handleChange(question.field, option.value, question.autoAdvance)}
+                  className={`w-full p-4 rounded-xl border-2 text-left transition-all duration-200 ${
+                    value === option.value
+                      ? "border-primary bg-primary/5 text-foreground"
+                      : "border-border bg-card hover:border-primary/50 text-foreground"
+                  }`}
+                >
+                  <span className="font-medium">{option.label}</span>
+                </button>
+              ))}
+            </div>
+          )}
+
+          {question.type === "radio" && question.options && (
+            <RadioGroup
+              value={value as string}
+              onValueChange={(v) => handleChange(question.field, v, question.autoAdvance)}
+              className="grid gap-3"
+            >
+              {question.options.map((option) => (
+                <label
+                  key={option.value}
+                  className={`flex items-center gap-3 w-full p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
+                    value === option.value
+                      ? "border-primary bg-primary/5"
+                      : "border-border bg-card hover:border-primary/50"
+                  }`}
+                >
+                  <RadioGroupItem value={option.value} id={option.value} />
+                  <Label htmlFor={option.value} className="cursor-pointer font-medium flex-1">
+                    {option.label}
+                  </Label>
+                </label>
+              ))}
+            </RadioGroup>
+          )}
+
+          {question.type === "input" && (
+            <div className="space-y-4">
+              <Input
+                type={question.inputType || "text"}
+                value={value as string}
+                onChange={(e) => handleChange(question.field, e.target.value)}
+                placeholder={question.placeholder}
+                className="text-lg h-14 text-center rounded-xl border-2"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && value) {
+                    e.preventDefault();
+                    goToNext();
+                  }
+                }}
+              />
+              <Button
+                type="button"
+                variant="hero"
+                className="w-full h-12"
+                onClick={goToNext}
+                disabled={!value}
+              >
+                Continuer
+              </Button>
+            </div>
+          )}
+
+          {question.type === "slider" && (
+            <div className="space-y-6">
+              <div className="flex justify-between items-center text-sm text-muted-foreground">
+                <span>Pas satisfait</span>
+                <span>Très satisfait</span>
+              </div>
+              <Slider
+                value={[value as number]}
+                onValueChange={(v) => handleChange(question.field, v[0])}
+                min={question.min || 1}
+                max={question.max || 5}
+                step={1}
+                className="py-4"
+              />
+              <div className="flex justify-center gap-2">
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <button
+                    key={n}
+                    type="button"
+                    onClick={() => handleChange(question.field, n)}
+                    className={`w-12 h-12 rounded-full text-lg font-semibold transition-all ${
+                      value === n
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted text-muted-foreground hover:bg-primary/20"
+                    }`}
+                  >
+                    {n}
+                  </button>
+                ))}
+              </div>
+              <Button
+                type="button"
+                variant="hero"
+                className="w-full h-12"
+                onClick={goToNext}
+              >
+                Continuer
+              </Button>
+            </div>
+          )}
+
+          {question.type === "checkbox" && question.options && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                {question.options.map((option) => {
+                  const isChecked = (value as string[]).includes(option.value);
+                  return (
+                    <label
+                      key={option.value}
+                      className={`flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
+                        isChecked
+                          ? "border-primary bg-primary/5"
+                          : "border-border bg-card hover:border-primary/50"
+                      }`}
+                    >
+                      <Checkbox
+                        checked={isChecked}
+                        onCheckedChange={() => handleEquipementToggle(option.value)}
+                      />
+                      <span className="text-sm font-medium">{option.label}</span>
+                    </label>
+                  );
+                })}
+              </div>
+              <p className="text-center text-sm text-muted-foreground">
+                Sélectionnez tous les équipements que vous avez
+              </p>
+              <Button
+                type="button"
+                variant="hero"
+                className="w-full h-12"
+                onClick={handleNextOrSubmit}
+              >
+                {isLastQuestion ? "Valider mes informations" : "Continuer"}
+              </Button>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
 
   return (
-    <div className="min-h-screen bg-background py-8 px-4">
-      <div className="max-w-lg mx-auto">
-        {/* Header */}
-        <div className="text-center mb-6">
-          <Link to="/" className="inline-flex items-center gap-2 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center">
-              <Zap className="w-5 h-5 text-primary-foreground" />
+    <div className="min-h-screen bg-background flex flex-col">
+      {/* Header */}
+      <div className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b border-border">
+        <div className="max-w-lg mx-auto px-4 py-4">
+          {/* Logo */}
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <div className="w-8 h-8 rounded-lg bg-gradient-hero flex items-center justify-center">
+              <Zap className="w-4 h-4 text-primary-foreground" />
             </div>
-            <span className="text-xl font-bold text-foreground">Switchly</span>
-          </Link>
-          <h1 className="text-xl font-bold text-foreground mb-2">
-            Complétez vos informations logement
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Ces informations nous permettent de négocier une offre adaptée. Temps estimé : 30 secondes.
-          </p>
-        </div>
-
-        {/* Progress bar */}
-        <div className="mb-6">
-          <div className="flex justify-between text-sm text-muted-foreground mb-2">
-            <span>Étape {currentStep}/{totalSteps}</span>
-            <span>{Math.round(progress)}%</span>
+            <span className="text-lg font-bold text-foreground">Switchly</span>
           </div>
-          <Progress value={progress} className="h-2" />
-        </div>
 
-        <form onSubmit={handleSubmit}>
-          {/* Step 1: Logement */}
-          {currentStep === 1 && (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="bg-card rounded-2xl p-6 border border-border space-y-5"
-            >
-              <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
-                <Home className="w-5 h-5 text-primary" />
-                Votre logement
-              </h2>
-
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label className="flex items-center gap-2 text-sm">
-                    <Home className="w-4 h-4 text-muted-foreground" />
-                    Type de logement
-                  </Label>
-                  <Select value={formData.typeLogement} onValueChange={(v) => handleChange("typeLogement", v)}>
-                    <SelectTrigger><SelectValue placeholder="Sélectionnez" /></SelectTrigger>
-                    <SelectContent>
-                      {TYPES_LOGEMENT.map((t) => (
-                        <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+          {/* Step indicators */}
+          <div className="flex items-center justify-center gap-2 mb-3">
+            {STEPS.map((step) => {
+              const StepIcon = step.icon;
+              const isActive = step.id === currentStep;
+              const isCompleted = step.id < currentStep;
+              return (
+                <div
+                  key={step.id}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                    isActive
+                      ? "bg-primary text-primary-foreground"
+                      : isCompleted
+                      ? "bg-secondary/20 text-secondary"
+                      : "bg-muted text-muted-foreground"
+                  }`}
+                >
+                  <StepIcon className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">{step.title}</span>
+                  <span className="sm:hidden">{step.id}</span>
                 </div>
-
-                <div className="space-y-2">
-                  <Label className="flex items-center gap-2 text-sm">
-                    <Ruler className="w-4 h-4 text-muted-foreground" />
-                    Surface (m²)
-                  </Label>
-                  <Input
-                    type="number"
-                    value={formData.surface}
-                    onChange={(e) => handleChange("surface", e.target.value)}
-                    placeholder="Ex: 75"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="flex items-center gap-2 text-sm">
-                    <Users className="w-4 h-4 text-muted-foreground" />
-                    Nombre d'occupants
-                  </Label>
-                  <Select value={formData.nombreOccupants} onValueChange={(v) => handleChange("nombreOccupants", v)}>
-                    <SelectTrigger><SelectValue placeholder="Sélectionnez" /></SelectTrigger>
-                    <SelectContent>
-                      {[1, 2, 3, 4, 5, 6].map((n) => (
-                        <SelectItem key={n} value={n.toString()}>{n} {n === 1 ? "personne" : "personnes"}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="flex items-center gap-2 text-sm">
-                    <BrickWall className="w-4 h-4 text-muted-foreground" />
-                    Isolation
-                  </Label>
-                  <Select value={formData.isolation} onValueChange={(v) => handleChange("isolation", v)}>
-                    <SelectTrigger><SelectValue placeholder="Sélectionnez" /></SelectTrigger>
-                    <SelectContent>
-                      {ISOLATION_OPTIONS.map((opt) => (
-                        <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="flex items-center gap-2 text-sm">
-                    <Flame className="w-4 h-4 text-muted-foreground" />
-                    Mode de chauffage
-                  </Label>
-                  <Select value={formData.modeChauffage} onValueChange={(v) => handleChange("modeChauffage", v)}>
-                    <SelectTrigger><SelectValue placeholder="Sélectionnez" /></SelectTrigger>
-                    <SelectContent>
-                      {MODES_CHAUFFAGE.map((m) => (
-                        <SelectItem key={m.value} value={m.value}>{m.label}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="flex items-center gap-2 text-sm">
-                    <Droplets className="w-4 h-4 text-muted-foreground" />
-                    Chauffe-eau électrique ?
-                  </Label>
-                  <RadioGroup
-                    value={formData.chauffeEauElectrique}
-                    onValueChange={(v) => handleChange("chauffeEauElectrique", v)}
-                    className="flex gap-4"
-                  >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="oui" id="chauffe-oui" />
-                      <Label htmlFor="chauffe-oui" className="cursor-pointer">Oui</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="non" id="chauffe-non" />
-                      <Label htmlFor="chauffe-non" className="cursor-pointer">Non</Label>
-                    </div>
-                  </RadioGroup>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Step 2: Électricité */}
-          {currentStep === 2 && (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="bg-card rounded-2xl p-6 border border-border space-y-5"
-            >
-              <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
-                <Zap className="w-5 h-5 text-primary" />
-                Contrat d'électricité
-              </h2>
-
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label className="flex items-center gap-2 text-sm">
-                    <Zap className="w-4 h-4 text-muted-foreground" />
-                    Fournisseur actuel
-                  </Label>
-                  <Select value={formData.fournisseurElectricite} onValueChange={(v) => handleChange("fournisseurElectricite", v)}>
-                    <SelectTrigger><SelectValue placeholder="Sélectionnez" /></SelectTrigger>
-                    <SelectContent>
-                      {FOURNISSEURS_ENERGIE.map((f) => (
-                        <SelectItem key={f.value} value={f.value}>{f.label}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="flex items-center gap-2 text-sm">
-                    <Clock className="w-4 h-4 text-muted-foreground" />
-                    Option tarifaire
-                  </Label>
-                  <Select value={formData.optionTarifaire} onValueChange={(v) => handleChange("optionTarifaire", v)}>
-                    <SelectTrigger><SelectValue placeholder="Sélectionnez" /></SelectTrigger>
-                    <SelectContent>
-                      {OPTIONS_TARIFAIRES.map((opt) => (
-                        <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="flex items-center gap-2 text-sm">
-                    <Gauge className="w-4 h-4 text-muted-foreground" />
-                    Puissance compteur
-                  </Label>
-                  <Select value={formData.puissanceCompteur} onValueChange={(v) => handleChange("puissanceCompteur", v)}>
-                    <SelectTrigger><SelectValue placeholder="Sélectionnez" /></SelectTrigger>
-                    <SelectContent>
-                      {PUISSANCES_COMPTEUR.map((p) => (
-                        <SelectItem key={p.value} value={p.value}>{p.label}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="flex items-center gap-2 text-sm">
-                    <Euro className="w-4 h-4 text-muted-foreground" />
-                    Montant facture mensuel (€)
-                  </Label>
-                  <Input
-                    type="number"
-                    value={formData.montantFacture}
-                    onChange={(e) => handleChange("montantFacture", e.target.value)}
-                    placeholder="Ex: 120"
-                  />
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Step 3: Internet */}
-          {currentStep === 3 && (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="bg-card rounded-2xl p-6 border border-border space-y-5"
-            >
-              <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
-                <Globe className="w-5 h-5 text-primary" />
-                Internet
-              </h2>
-
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label className="flex items-center gap-2 text-sm">
-                    <Globe className="w-4 h-4 text-muted-foreground" />
-                    Type de connexion
-                  </Label>
-                  <Select value={formData.typeConnexion} onValueChange={(v) => handleChange("typeConnexion", v)}>
-                    <SelectTrigger><SelectValue placeholder="Sélectionnez" /></SelectTrigger>
-                    <SelectContent>
-                      {TYPES_CONNEXION.map((t) => (
-                        <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="flex items-center gap-2 text-sm">
-                    <Radio className="w-4 h-4 text-muted-foreground" />
-                    Fournisseur Internet
-                  </Label>
-                  <Select value={formData.fournisseurInternet} onValueChange={(v) => handleChange("fournisseurInternet", v)}>
-                    <SelectTrigger><SelectValue placeholder="Sélectionnez" /></SelectTrigger>
-                    <SelectContent>
-                      {FOURNISSEURS_INTERNET.map((f) => (
-                        <SelectItem key={f.value} value={f.value}>{f.label}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="flex items-center gap-2 text-sm">
-                    <Euro className="w-4 h-4 text-muted-foreground" />
-                    Prix mensuel (€)
-                  </Label>
-                  <Input
-                    type="number"
-                    value={formData.prixMensuelInternet}
-                    onChange={(e) => handleChange("prixMensuelInternet", e.target.value)}
-                    placeholder="Ex: 35"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="flex items-center gap-2 text-sm">
-                    <Smile className="w-4 h-4 text-muted-foreground" />
-                    Satisfaction (1 à 5)
-                  </Label>
-                  <div className="flex items-center gap-4">
-                    <Slider
-                      value={[formData.satisfaction]}
-                      onValueChange={(v) => handleChange("satisfaction", v[0])}
-                      min={1}
-                      max={5}
-                      step={1}
-                      className="flex-1"
-                    />
-                    <span className="text-sm font-medium w-6 text-center">{formData.satisfaction}</span>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="flex items-center gap-2 text-sm">
-                    <Cable className="w-4 h-4 text-muted-foreground" />
-                    Éligible fibre ?
-                  </Label>
-                  <RadioGroup
-                    value={formData.eligibiliteFibre}
-                    onValueChange={(v) => handleChange("eligibiliteFibre", v)}
-                    className="flex gap-4"
-                  >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="oui" id="fibre-oui" />
-                      <Label htmlFor="fibre-oui" className="cursor-pointer">Oui</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="non" id="fibre-non" />
-                      <Label htmlFor="fibre-non" className="cursor-pointer">Non</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="ne_sais_pas" id="fibre-nsp" />
-                      <Label htmlFor="fibre-nsp" className="cursor-pointer">Je ne sais pas</Label>
-                    </div>
-                  </RadioGroup>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Step 4: Habitudes */}
-          {currentStep === 4 && (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="bg-card rounded-2xl p-6 border border-border space-y-5"
-            >
-              <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
-                <Clock className="w-5 h-5 text-primary" />
-                Habitudes
-              </h2>
-
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label className="flex items-center gap-2 text-sm">
-                    <Clock className="w-4 h-4 text-muted-foreground" />
-                    Temps passé à domicile
-                  </Label>
-                  <Select value={formData.tempsDomicile} onValueChange={(v) => handleChange("tempsDomicile", v)}>
-                    <SelectTrigger><SelectValue placeholder="Sélectionnez" /></SelectTrigger>
-                    <SelectContent>
-                      {TEMPS_DOMICILE.map((t) => (
-                        <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="flex items-center gap-2 text-sm">
-                    <Zap className="w-4 h-4 text-muted-foreground" />
-                    Équipements énergivores
-                  </Label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {EQUIPEMENTS.map((equip) => (
-                      <label
-                        key={equip.value}
-                        className={`flex items-center gap-2 p-3 rounded-lg border cursor-pointer transition-colors ${
-                          formData.equipementsEnergivores.includes(equip.value)
-                            ? "border-primary bg-primary/5"
-                            : "border-border hover:border-primary/50"
-                        }`}
-                      >
-                        <Checkbox
-                          checked={formData.equipementsEnergivores.includes(equip.value)}
-                          onCheckedChange={() => handleEquipementToggle(equip.value)}
-                        />
-                        <span className="text-sm">{equip.label}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="flex items-center gap-2 text-sm">
-                    <Car className="w-4 h-4 text-muted-foreground" />
-                    Recharge véhicule électrique ?
-                  </Label>
-                  <RadioGroup
-                    value={formData.rechargeVehicule}
-                    onValueChange={(v) => handleChange("rechargeVehicule", v)}
-                    className="flex gap-4"
-                  >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="oui" id="vehicule-oui" />
-                      <Label htmlFor="vehicule-oui" className="cursor-pointer">Oui</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="non" id="vehicule-non" />
-                      <Label htmlFor="vehicule-non" className="cursor-pointer">Non</Label>
-                    </div>
-                  </RadioGroup>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Navigation buttons */}
-          <div className="flex justify-between mt-6">
-            {currentStep > 1 ? (
-              <Button type="button" variant="outline" onClick={prevStep}>
-                <ChevronLeft className="w-4 h-4 mr-1" />
-                Précédent
-              </Button>
-            ) : (
-              <div />
-            )}
-
-            {currentStep < totalSteps ? (
-              <Button type="button" variant="hero" onClick={nextStep}>
-                Suivant
-                <ChevronRight className="w-4 h-4 ml-1" />
-              </Button>
-            ) : (
-              <Button type="submit" variant="hero" disabled={isSubmitting}>
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                    Enregistrement...
-                  </>
-                ) : (
-                  <>
-                    <Check className="w-4 h-4 mr-2" />
-                    Je valide mes informations
-                  </>
-                )}
-              </Button>
-            )}
+              );
+            })}
           </div>
-        </form>
+
+          {/* Progress bar */}
+          <div className="space-y-1">
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <span>Question {currentQuestionIndex + 1}/{totalQuestions}</span>
+              <span>{Math.round(overallProgress)}%</span>
+            </div>
+            <Progress value={overallProgress} className="h-1.5" />
+          </div>
+        </div>
+      </div>
+
+      {/* Question area */}
+      <div className="flex-1 flex flex-col">
+        <AnimatePresence mode="wait" custom={direction}>
+          <motion.div
+            key={currentQuestionIndex}
+            custom={direction}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="flex-1"
+          >
+            {renderQuestion(currentQuestion)}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* Bottom navigation */}
+      <div className="sticky bottom-0 bg-background/95 backdrop-blur border-t border-border">
+        <div className="max-w-lg mx-auto px-4 py-4 flex justify-between items-center">
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={goToPrevious}
+            disabled={currentQuestionIndex === 0}
+            className="text-muted-foreground"
+          >
+            <ChevronLeft className="w-4 h-4 mr-1" />
+            Retour
+          </Button>
+
+          {isLastQuestion && currentQuestion.type !== "checkbox" && (
+            <Button
+              type="button"
+              variant="hero"
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                  Enregistrement...
+                </>
+              ) : (
+                <>
+                  <Check className="w-4 h-4 mr-2" />
+                  Valider
+                </>
+              )}
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );
