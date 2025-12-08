@@ -42,31 +42,44 @@ export function Navbar() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 glass">
       <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 group">
-          <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center shadow-glow group-hover:scale-110 transition-transform">
-            <Zap className="w-5 h-5 text-primary-foreground" />
-          </div>
-          <span className="text-xl font-bold text-foreground">Switchly</span>
-        </Link>
+        {/* Left side: Logo + Hamburger */}
+        <div className="flex items-center gap-4">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-2 group">
+            <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center shadow-glow group-hover:scale-110 transition-transform">
+              <Zap className="w-5 h-5 text-primary-foreground" />
+            </div>
+            <span className="text-xl font-bold text-foreground hidden sm:block">Switchly</span>
+          </Link>
 
-        {/* Hamburger Menu Button - Now visible on all screens */}
-        <button
-          ref={buttonRef}
-          className="p-2 rounded-lg hover:bg-muted transition-colors"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle menu"
-          aria-expanded={isOpen}
-        >
-          {isOpen ? (
-            <X className="w-6 h-6 text-foreground" />
-          ) : (
-            <Menu className="w-6 h-6 text-foreground" />
-          )}
-        </button>
+          {/* Hamburger Menu Button */}
+          <button
+            ref={buttonRef}
+            className="p-2 rounded-lg hover:bg-muted transition-colors"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
+            aria-expanded={isOpen}
+          >
+            {isOpen ? (
+              <X className="w-5 h-5 text-foreground" />
+            ) : (
+              <Menu className="w-5 h-5 text-foreground" />
+            )}
+          </button>
+        </div>
+
+        {/* Right side: CTA Buttons - Always visible */}
+        <div className="flex items-center gap-2 sm:gap-4">
+          <Button variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4" asChild>
+            <Link to="/connexion">Connexion</Link>
+          </Button>
+          <Button variant="hero" size="sm" className="text-xs sm:text-sm px-3 sm:px-4" asChild>
+            <Link to="/inscription">Rejoindre</Link>
+          </Button>
+        </div>
       </nav>
 
-      {/* Dropdown Menu - Slides from top */}
+      {/* Dropdown Menu - Contains only navigation links */}
       <AnimatePresence>
         {isOpen && (
           <>
@@ -88,9 +101,9 @@ export function Navbar() {
               transition={{ duration: 0.2, ease: "easeOut" }}
               className="absolute top-16 left-0 right-0 z-50 bg-card border-b border-border shadow-lg"
             >
-              <div className="container mx-auto px-4 py-6">
-                {/* Navigation Links */}
-                <div className="flex flex-col gap-2 mb-6">
+              <div className="container mx-auto px-4 py-4">
+                {/* Navigation Links only */}
+                <div className="flex flex-col gap-1">
                   {navLinks.map((link) => (
                     <Link
                       key={link.href}
@@ -105,20 +118,6 @@ export function Navbar() {
                       {link.label}
                     </Link>
                   ))}
-                </div>
-
-                {/* CTA Buttons */}
-                <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-border">
-                  <Button variant="outline" className="flex-1" asChild>
-                    <Link to="/connexion" onClick={() => setIsOpen(false)}>
-                      Connexion
-                    </Link>
-                  </Button>
-                  <Button variant="hero" className="flex-1" asChild>
-                    <Link to="/inscription" onClick={() => setIsOpen(false)}>
-                      Rejoindre
-                    </Link>
-                  </Button>
                 </div>
               </div>
             </motion.div>
