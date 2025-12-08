@@ -3,62 +3,23 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Link, useNavigate } from "react-router-dom";
-import { Zap, Wifi, Check, ArrowRight, Loader2, MapPin } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Zap, Check, ArrowRight, Loader2, Phone, User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { z } from "zod";
 
-const VILLES = [
-  { value: "paris", label: "Paris", codePostal: "75000" },
-  { value: "lyon", label: "Lyon", codePostal: "69000" },
-  { value: "marseille", label: "Marseille", codePostal: "13000" },
-  { value: "toulouse", label: "Toulouse", codePostal: "31000" },
-  { value: "nice", label: "Nice", codePostal: "06000" },
-  { value: "nantes", label: "Nantes", codePostal: "44000" },
-  { value: "strasbourg", label: "Strasbourg", codePostal: "67000" },
-  { value: "montpellier", label: "Montpellier", codePostal: "34000" },
-  { value: "bordeaux", label: "Bordeaux", codePostal: "33000" },
-  { value: "lille", label: "Lille", codePostal: "59000" },
-  { value: "rennes", label: "Rennes", codePostal: "35000" },
-  { value: "reims", label: "Reims", codePostal: "51100" },
-  { value: "saint-etienne", label: "Saint-Étienne", codePostal: "42000" },
-  { value: "toulon", label: "Toulon", codePostal: "83000" },
-  { value: "le-havre", label: "Le Havre", codePostal: "76600" },
-  { value: "grenoble", label: "Grenoble", codePostal: "38000" },
-  { value: "dijon", label: "Dijon", codePostal: "21000" },
-  { value: "angers", label: "Angers", codePostal: "49000" },
-  { value: "nimes", label: "Nîmes", codePostal: "30000" },
-  { value: "clermont-ferrand", label: "Clermont-Ferrand", codePostal: "63000" },
-];
-
 const inscriptionSchema = z.object({
-  prenom: z.string().min(2, "Le prénom doit contenir au moins 2 caractères"),
   nom: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
   telephone: z.string().regex(/^(\+33|0)[1-9]\d{8}$/, "Numéro de téléphone invalide (ex: 0612345678)"),
-  ville: z.string().min(1, "Veuillez sélectionner une ville"),
-  password: z.string().min(8, "Le mot de passe doit contenir au moins 8 caractères"),
-  contrats: z.enum(["electricite", "internet", "les_deux"]),
 });
 
 export default function Inscription() {
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [formData, setFormData] = useState({
-    prenom: "",
     nom: "",
     telephone: "",
-    ville: "",
-    password: "",
-    contrats: "les_deux" as "electricite" | "internet" | "les_deux",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -67,13 +28,6 @@ export default function Inscription() {
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
-    }
-  };
-
-  const handleVilleChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, ville: value }));
-    if (errors.ville) {
-      setErrors((prev) => ({ ...prev, ville: "" }));
     }
   };
 
@@ -96,40 +50,53 @@ export default function Inscription() {
     setIsLoading(true);
 
     try {
-      const selectedVille = VILLES.find((v) => v.value === formData.ville);
-      const villeLabel = selectedVille?.label || formData.ville;
-      const codePostal = selectedVille?.codePostal || "00000";
-
       // Create email from phone number for Supabase auth
-      const email = `${formData.telephone.replace(/[^0-9]/g, "")}@switchly.temp`;
+      const cleanPhone = formData.telephone.replace(/[^0-9]/g, "");
+      const email = `${cleanPhone}@switchly.temp`;
+      // Generate a secure random password (user won't need it - SMS flow)
+      const password = crypto.randomUUID();
 
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
-        password: formData.password,
+        password,
         options: {
           emailRedirectTo: `${window.location.origin}/`,
           data: {
-            prenom: formData.prenom,
+            prenom: formData.nom.split(" ")[0] || formData.nom,
             nom: formData.nom,
             telephone: formData.telephone,
-            code_postal: codePostal,
-            ville: villeLabel,
-            contrats: formData.contrats,
+            code_postal: "",
+            ville: "",
+            contrats: "les_deux",
           },
         },
       });
 
       if (error) {
         if (error.message.includes("already registered")) {
-          toast.error("Ce numéro de téléphone est déjà utilisé. Connectez-vous ou utilisez un autre numéro.");
+          toast.error("Ce numéro de téléphone est déjà inscrit.");
         } else {
           toast.error(error.message);
         }
         return;
       }
 
-      toast.success("Inscription réussie ! Vous pouvez maintenant vous connecter.");
-      navigate("/connexion");
+      // Try to send welcome SMS (will fail gracefully if Twilio not configured)
+      if (data.user) {
+        try {
+          await supabase.functions.invoke("send-welcome-sms", {
+            body: { 
+              userId: data.user.id,
+              telephone: formData.telephone 
+            },
+          });
+        } catch (smsError) {
+          // SMS sending is optional, don't block registration
+          console.log("SMS not sent (Twilio may not be configured)");
+        }
+      }
+
+      setIsSuccess(true);
     } catch (error) {
       toast.error("Une erreur est survenue. Veuillez réessayer.");
     } finally {
@@ -137,9 +104,35 @@ export default function Inscription() {
     }
   };
 
+  if (isSuccess) {
+    return (
+      <div className="min-h-screen flex items-center justify-center py-12 px-4">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="w-full max-w-md bg-card rounded-3xl p-8 md:p-10 shadow-switchly-xl border border-border text-center"
+        >
+          <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center mx-auto mb-6">
+            <Check className="w-8 h-8 text-secondary" />
+          </div>
+          <h1 className="text-2xl font-bold text-foreground mb-3">
+            Merci pour votre inscription !
+          </h1>
+          <p className="text-muted-foreground mb-6">
+            Votre inscription à l'achat groupé Switchly est bien prise en compte.
+            Vous allez recevoir un SMS avec un lien pour compléter vos informations logement.
+          </p>
+          <Button variant="outline" asChild>
+            <Link to="/">Retour à l'accueil</Link>
+          </Button>
+        </motion.div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4">
-      <div className="w-full max-w-lg">
+      <div className="w-full max-w-md">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -155,48 +148,38 @@ export default function Inscription() {
               <span className="text-xl font-bold text-foreground">Switchly</span>
             </Link>
             <h1 className="text-2xl font-bold text-foreground mb-2">
-              Créer mon compte
+              Rejoindre l'achat groupé
             </h1>
             <p className="text-muted-foreground">
-              Rejoignez Switchly en 20 secondes
+              Inscription gratuite en 10 secondes
             </p>
           </div>
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="prenom">Prénom</Label>
-                <Input
-                  id="prenom"
-                  name="prenom"
-                  value={formData.prenom}
-                  onChange={handleChange}
-                  placeholder="Jean"
-                  className={errors.prenom ? "border-destructive" : ""}
-                />
-                {errors.prenom && (
-                  <p className="text-xs text-destructive">{errors.prenom}</p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="nom">Nom</Label>
-                <Input
-                  id="nom"
-                  name="nom"
-                  value={formData.nom}
-                  onChange={handleChange}
-                  placeholder="Dupont"
-                  className={errors.nom ? "border-destructive" : ""}
-                />
-                {errors.nom && (
-                  <p className="text-xs text-destructive">{errors.nom}</p>
-                )}
-              </div>
+            <div className="space-y-2">
+              <Label htmlFor="nom" className="flex items-center gap-2">
+                <User className="w-4 h-4 text-muted-foreground" />
+                Nom complet
+              </Label>
+              <Input
+                id="nom"
+                name="nom"
+                value={formData.nom}
+                onChange={handleChange}
+                placeholder="Jean Dupont"
+                className={errors.nom ? "border-destructive" : ""}
+              />
+              {errors.nom && (
+                <p className="text-xs text-destructive">{errors.nom}</p>
+              )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="telephone">Numéro de téléphone</Label>
+              <Label htmlFor="telephone" className="flex items-center gap-2">
+                <Phone className="w-4 h-4 text-muted-foreground" />
+                Numéro de téléphone
+              </Label>
               <Input
                 id="telephone"
                 name="telephone"
@@ -211,113 +194,6 @@ export default function Inscription() {
               )}
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="ville">Ville</Label>
-              <Select value={formData.ville} onValueChange={handleVilleChange}>
-                <SelectTrigger 
-                  id="ville"
-                  className={errors.ville ? "border-destructive" : ""}
-                >
-                  <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-muted-foreground" />
-                    <SelectValue placeholder="Sélectionnez votre ville" />
-                  </div>
-                </SelectTrigger>
-                <SelectContent className="bg-card border border-border z-50">
-                  {VILLES.map((ville) => (
-                    <SelectItem key={ville.value} value={ville.value}>
-                      {ville.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {errors.ville && (
-                <p className="text-xs text-destructive">{errors.ville}</p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="password">Mot de passe</Label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="••••••••"
-                className={errors.password ? "border-destructive" : ""}
-              />
-              {errors.password && (
-                <p className="text-xs text-destructive">{errors.password}</p>
-              )}
-            </div>
-
-            <div className="space-y-3">
-              <Label>Type de contrat souhaité</Label>
-              <RadioGroup
-                value={formData.contrats}
-                onValueChange={(value) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    contrats: value as "electricite" | "internet" | "les_deux",
-                  }))
-                }
-                className="grid grid-cols-3 gap-3"
-              >
-                <Label
-                  htmlFor="electricite"
-                  className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 cursor-pointer transition-all ${
-                    formData.contrats === "electricite"
-                      ? "border-primary bg-primary/5"
-                      : "border-border hover:border-primary/50"
-                  }`}
-                >
-                  <RadioGroupItem
-                    value="electricite"
-                    id="electricite"
-                    className="sr-only"
-                  />
-                  <Zap className="w-6 h-6 text-primary" />
-                  <span className="text-sm font-medium">Électricité</span>
-                </Label>
-                <Label
-                  htmlFor="internet"
-                  className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 cursor-pointer transition-all ${
-                    formData.contrats === "internet"
-                      ? "border-primary bg-primary/5"
-                      : "border-border hover:border-primary/50"
-                  }`}
-                >
-                  <RadioGroupItem
-                    value="internet"
-                    id="internet"
-                    className="sr-only"
-                  />
-                  <Wifi className="w-6 h-6 text-primary" />
-                  <span className="text-sm font-medium">Internet</span>
-                </Label>
-                <Label
-                  htmlFor="les_deux"
-                  className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 cursor-pointer transition-all ${
-                    formData.contrats === "les_deux"
-                      ? "border-primary bg-primary/5"
-                      : "border-border hover:border-primary/50"
-                  }`}
-                >
-                  <RadioGroupItem
-                    value="les_deux"
-                    id="les_deux"
-                    className="sr-only"
-                  />
-                  <div className="flex">
-                    <Zap className="w-5 h-5 text-primary" />
-                    <Wifi className="w-5 h-5 text-primary -ml-1" />
-                  </div>
-                  <span className="text-sm font-medium">Les deux</span>
-                </Label>
-              </RadioGroup>
-            </div>
-
             <Button
               type="submit"
               variant="hero"
@@ -328,11 +204,11 @@ export default function Inscription() {
               {isLoading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Création en cours...
+                  Inscription en cours...
                 </>
               ) : (
                 <>
-                  Créer mon compte
+                  Je rejoins gratuitement le groupe
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </>
               )}

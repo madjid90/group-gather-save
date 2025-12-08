@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 const adminLinks = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/utilisateurs", label: "Utilisateurs", icon: Users },
+  { href: "/admin/logements", label: "Logements", icon: Home },
   { href: "/admin/campagne", label: "Campagne", icon: Megaphone },
   { href: "/admin/offres", label: "Offres", icon: Gift },
   { href: "/admin/export", label: "Export", icon: Download },

@@ -229,6 +229,84 @@ export type Database = {
           },
         ]
       }
+      housing_profiles: {
+        Row: {
+          chauffe_eau_electrique: boolean | null
+          created_at: string
+          eligible_fibre: boolean | null
+          equipements_energivores: string[] | null
+          facture_url: string | null
+          fournisseur_electricite: string | null
+          fournisseur_internet: string | null
+          id: string
+          isolation: string | null
+          mode_chauffage: string | null
+          montant_facture: number | null
+          nombre_occupants: number | null
+          option_tarifaire: string | null
+          prix_mensuel_internet: number | null
+          puissance_compteur: string | null
+          recharge_vehicule_electrique: boolean | null
+          satisfaction_internet: number | null
+          surface: number | null
+          temps_domicile: string | null
+          type_connexion: string | null
+          type_logement: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          chauffe_eau_electrique?: boolean | null
+          created_at?: string
+          eligible_fibre?: boolean | null
+          equipements_energivores?: string[] | null
+          facture_url?: string | null
+          fournisseur_electricite?: string | null
+          fournisseur_internet?: string | null
+          id?: string
+          isolation?: string | null
+          mode_chauffage?: string | null
+          montant_facture?: number | null
+          nombre_occupants?: number | null
+          option_tarifaire?: string | null
+          prix_mensuel_internet?: number | null
+          puissance_compteur?: string | null
+          recharge_vehicule_electrique?: boolean | null
+          satisfaction_internet?: number | null
+          surface?: number | null
+          temps_domicile?: string | null
+          type_connexion?: string | null
+          type_logement?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          chauffe_eau_electrique?: boolean | null
+          created_at?: string
+          eligible_fibre?: boolean | null
+          equipements_energivores?: string[] | null
+          facture_url?: string | null
+          fournisseur_electricite?: string | null
+          fournisseur_internet?: string | null
+          id?: string
+          isolation?: string | null
+          mode_chauffage?: string | null
+          montant_facture?: number | null
+          nombre_occupants?: number | null
+          option_tarifaire?: string | null
+          prix_mensuel_internet?: number | null
+          puissance_compteur?: string | null
+          recharge_vehicule_electrique?: boolean | null
+          satisfaction_internet?: number | null
+          surface?: number | null
+          temps_domicile?: string | null
+          type_connexion?: string | null
+          type_logement?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       offres: {
         Row: {
           actif: boolean | null
@@ -297,6 +375,8 @@ export type Database = {
           email: string
           fournisseur_energie_actuel: string | null
           fournisseur_internet_actuel: string | null
+          housing_form_completed: boolean | null
+          housing_token: string | null
           id: string
           inclusion_campagne: boolean | null
           nom: string
@@ -320,6 +400,8 @@ export type Database = {
           email: string
           fournisseur_energie_actuel?: string | null
           fournisseur_internet_actuel?: string | null
+          housing_form_completed?: boolean | null
+          housing_token?: string | null
           id: string
           inclusion_campagne?: boolean | null
           nom: string
@@ -343,6 +425,8 @@ export type Database = {
           email?: string
           fournisseur_energie_actuel?: string | null
           fournisseur_internet_actuel?: string | null
+          housing_form_completed?: boolean | null
+          housing_token?: string | null
           id?: string
           inclusion_campagne?: boolean | null
           nom?: string
