@@ -5,7 +5,7 @@ import totalenergiesLogo from "@/assets/logos/totalenergies.svg";
 import engieLogo from "@/assets/logos/engie.svg";
 import edfLogo from "@/assets/logos/edf.svg";
 import eniLogo from "@/assets/logos/eni.svg";
-import bouyguesLogo from "@/assets/logos/bouygues.svg";
+import bouyguesLogo from "@/assets/logos/bouygues-new.svg";
 import sfrLogo from "@/assets/logos/sfr.svg";
 import orangeLogo from "@/assets/logos/orange.svg";
 import freeLogo from "@/assets/logos/free-new.png";
