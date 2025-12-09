@@ -95,15 +95,16 @@ export function Navbar() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 glass">
       <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
-        {/* Left side: Logo + Desktop Hamburger */}
-        <div className="flex items-center gap-4">
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center shadow-glow group-hover:scale-110 transition-transform">
-              <Zap className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <span className="text-xl font-bold text-foreground hidden sm:block">Switchly</span>
-          </Link>
+        {/* Left side: Logo */}
+        <Link to="/" className="flex items-center gap-2 group">
+          <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center shadow-glow group-hover:scale-110 transition-transform">
+            <Zap className="w-5 h-5 text-primary-foreground" />
+          </div>
+          <span className="text-xl font-bold text-foreground hidden sm:block">Switchly</span>
+        </Link>
 
+        {/* Right side: Desktop Hamburger + CTA Buttons + Mobile Hamburger */}
+        <div className="flex items-center gap-3 sm:gap-4">
           {/* Desktop Hamburger Menu Button - Hidden on mobile */}
           <button
             ref={desktopButtonRef}
@@ -119,10 +120,7 @@ export function Navbar() {
             )}
             <span className="text-sm font-medium text-foreground">Menu</span>
           </button>
-        </div>
 
-        {/* Right side: CTA Buttons + Mobile Hamburger */}
-        <div className="flex items-center gap-3 sm:gap-4">
           {user ? (
             <>
               <Button variant="ghost" size="sm" className="text-xs sm:text-[16px] px-2 sm:px-4 h-9" asChild>
@@ -177,7 +175,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="absolute top-16 left-4 z-50 bg-card border border-border rounded-xl shadow-xl hidden lg:block w-64"
+            className="absolute top-16 right-4 z-50 bg-card border border-border rounded-xl shadow-xl hidden lg:block w-64"
           >
             <div className="py-3">
               {allDesktopLinks.map((link, index) => (
