@@ -89,7 +89,7 @@ export function HowItWorksSection() {
           transition={{ duration: 0.5, delay: 0.5 }}
           className="flex justify-center"
         >
-          <Button variant="hero" size="xl" className="w-full max-w-md sm:w-auto py-7 sm:py-5 text-base sm:text-lg mx-4 sm:mx-0" asChild>
+          <Button variant="hero" size="xl" className="w-[calc(100%-2rem)] max-w-md sm:w-auto py-7 sm:py-5 text-base sm:text-lg" asChild>
             <Link to="/inscription">Je participe à l'achat groupé</Link>
           </Button>
         </motion.div>
