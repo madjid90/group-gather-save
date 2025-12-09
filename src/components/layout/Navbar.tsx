@@ -103,23 +103,8 @@ export function Navbar() {
           <span className="text-xl font-bold text-foreground hidden sm:block">Switchly</span>
         </Link>
 
-        {/* Right side: Desktop Hamburger + CTA Buttons + Mobile Hamburger */}
+        {/* Right side: CTA Buttons + Desktop Hamburger + Mobile Hamburger */}
         <div className="flex items-center gap-3 sm:gap-4">
-          {/* Desktop Hamburger Menu Button - Hidden on mobile */}
-          <button
-            ref={desktopButtonRef}
-            className="hidden lg:flex items-center p-2 rounded-lg hover:bg-muted transition-colors border border-border/50"
-            onClick={() => setIsDesktopOpen(!isDesktopOpen)}
-            aria-label="Toggle menu"
-            aria-expanded={isDesktopOpen}
-          >
-            {isDesktopOpen ? (
-              <X className="w-5 h-5 text-foreground" />
-            ) : (
-              <Menu className="w-5 h-5 text-foreground" />
-            )}
-          </button>
-
           {user ? (
             <>
               <Button variant="ghost" size="sm" className="text-xs sm:text-[16px] px-2 sm:px-4 h-9" asChild>
@@ -147,6 +132,21 @@ export function Navbar() {
               </Button>
             </>
           )}
+
+          {/* Desktop Hamburger Menu Button - Hidden on mobile */}
+          <button
+            ref={desktopButtonRef}
+            className="hidden lg:flex items-center p-2 rounded-lg hover:bg-muted transition-colors border border-border/50"
+            onClick={() => setIsDesktopOpen(!isDesktopOpen)}
+            aria-label="Toggle menu"
+            aria-expanded={isDesktopOpen}
+          >
+            {isDesktopOpen ? (
+              <X className="w-5 h-5 text-foreground" />
+            ) : (
+              <Menu className="w-5 h-5 text-foreground" />
+            )}
+          </button>
           
           {/* Hamburger Menu Button - Mobile only (< lg) */}
           <button
