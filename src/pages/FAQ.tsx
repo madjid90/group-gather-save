@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Accordion,
@@ -53,24 +54,29 @@ const faqItems = [
 ];
 
 export default function FAQ() {
+  // Scroll to top on mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
-    <div className="min-h-screen py-12">
+    <div className="min-h-screen py-8 sm:py-12 bg-gradient-subtle">
       <div className="container mx-auto px-4">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-12"
+          className="text-center mb-8 sm:mb-12"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-4 sm:mb-6">
             <HelpCircle className="w-4 h-4" />
             <span className="text-sm font-medium">Questions fréquentes</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+          <h1 className="text-[26px] sm:text-[30px] md:text-[36px] font-bold text-foreground mb-3 sm:mb-4">
             FAQ
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base sm:text-[18px] text-muted-foreground max-w-2xl mx-auto">
             Tout ce que vous devez savoir sur Switchly et l'achat groupé
           </p>
         </motion.div>
@@ -82,18 +88,18 @@ export default function FAQ() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="max-w-3xl mx-auto"
         >
-          <div className="bg-card rounded-3xl p-6 md:p-8 border border-border shadow-switchly-lg">
-            <Accordion type="single" collapsible className="space-y-4">
+          <div className="bg-card rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 border border-border shadow-switchly-lg">
+            <Accordion type="single" collapsible className="space-y-3 sm:space-y-4">
               {faqItems.map((item, index) => (
                 <AccordionItem
                   key={index}
                   value={`item-${index}`}
-                  className="border border-border rounded-xl px-6 data-[state=open]:bg-muted/50"
+                  className="border border-border rounded-xl px-4 sm:px-6 data-[state=open]:bg-muted/50 transition-colors"
                 >
-                  <AccordionTrigger className="text-left font-medium hover:no-underline py-4">
+                  <AccordionTrigger className="text-left text-[15px] sm:text-base font-medium hover:no-underline py-4 text-foreground">
                     {item.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground pb-4">
+                  <AccordionContent className="text-[15px] sm:text-base text-muted-foreground pb-4 leading-relaxed">
                     {item.answer}
                   </AccordionContent>
                 </AccordionItem>
@@ -106,19 +112,27 @@ export default function FAQ() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="mt-12 text-center"
+            className="mt-8 sm:mt-12 text-center"
           >
-            <p className="text-muted-foreground mb-4">
+            <p className="text-base text-muted-foreground mb-4 sm:mb-6">
               Vous avez d'autres questions ?
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="outline" asChild>
+              <Button 
+                variant="outline" 
+                className="h-[52px] sm:h-[56px] px-6 sm:px-8 text-[17px] sm:text-[18px] font-semibold rounded-xl" 
+                asChild
+              >
                 <Link to="/contact">Nous contacter</Link>
               </Button>
-              <Button variant="hero" asChild>
+              <Button 
+                variant="hero" 
+                className="h-[52px] sm:h-[56px] px-6 sm:px-8 text-[17px] sm:text-[18px] font-semibold rounded-xl" 
+                asChild
+              >
                 <Link to="/inscription">
                   Je rejoins l'achat groupé gratuitement
-                  <ArrowRight className="w-4 h-4 ml-2" />
+                  <ArrowRight className="w-5 h-5 ml-2" />
                 </Link>
               </Button>
             </div>

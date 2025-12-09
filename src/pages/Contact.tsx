@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, Phone, MapPin, Send, Loader2, CheckCircle } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Loader2, CheckCircle, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -25,6 +25,11 @@ export default function Contact() {
     message: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Scroll to top on mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -63,7 +68,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen py-8 sm:py-12">
+    <div className="min-h-screen py-8 sm:py-12 bg-gradient-subtle">
       <div className="container mx-auto px-4">
         {/* Header */}
         <motion.div
@@ -76,10 +81,10 @@ export default function Contact() {
             <Mail className="w-4 h-4" />
             <span className="text-sm font-medium">Contact</span>
           </div>
-          <h1 className="text-[28px] sm:text-[30px] md:text-4xl font-bold text-foreground mb-3 sm:mb-4">
+          <h1 className="text-[26px] sm:text-[30px] md:text-[36px] font-bold text-foreground mb-3 sm:mb-4">
             Contactez notre équipe
           </h1>
-          <p className="text-[16px] sm:text-[18px] text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base sm:text-[18px] text-muted-foreground max-w-2xl mx-auto">
             Une question ? Un conseil ? Notre équipe est là pour vous aider.
           </p>
         </motion.div>
@@ -97,8 +102,8 @@ export default function Contact() {
                 <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
               </div>
               <h3 className="text-[18px] font-semibold text-foreground mb-1">Email</h3>
-              <p className="text-[16px] text-muted-foreground">contact@switchly.fr</p>
-              <p className="text-[14px] text-muted-foreground/80 mt-1">
+              <p className="text-base text-muted-foreground">contact@switchly.fr</p>
+              <p className="text-sm text-muted-foreground/80 mt-1">
                 Réponse sous 24h.
               </p>
             </div>
@@ -108,8 +113,8 @@ export default function Contact() {
                 <Phone className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
               </div>
               <h3 className="text-[18px] font-semibold text-foreground mb-1">Téléphone</h3>
-              <p className="text-[16px] text-muted-foreground">01 23 45 67 89</p>
-              <p className="text-[14px] text-muted-foreground/80 mt-1">
+              <p className="text-base text-muted-foreground">01 23 45 67 89</p>
+              <p className="text-sm text-muted-foreground/80 mt-1">
                 Lun–Ven, 9h–18h
               </p>
             </div>
@@ -119,7 +124,7 @@ export default function Contact() {
                 <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
               </div>
               <h3 className="text-[18px] font-semibold text-foreground mb-1">Adresse</h3>
-              <p className="text-[16px] text-muted-foreground">
+              <p className="text-base text-muted-foreground">
                 123 Avenue de la République
                 <br />
                 75011 Paris, France
@@ -140,14 +145,15 @@ export default function Contact() {
                   <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-secondary/10 flex items-center justify-center mx-auto mb-4 sm:mb-6">
                     <CheckCircle className="w-7 h-7 sm:w-8 sm:h-8 text-secondary" />
                   </div>
-                  <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-2">
+                  <h3 className="text-[22px] sm:text-[26px] font-bold text-foreground mb-2">
                     Message envoyé !
                   </h3>
-                  <p className="text-muted-foreground mb-6">
+                  <p className="text-base text-muted-foreground mb-6">
                     Nous vous répondrons dans les plus brefs délais.
                   </p>
                   <Button
                     variant="outline"
+                    className="h-[48px] px-6 text-base rounded-xl"
                     onClick={() => {
                       setIsSubmitted(false);
                       setFormData({ nom: "", email: "", sujet: "", message: "" });
@@ -157,24 +163,28 @@ export default function Contact() {
                   </Button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
-                  <div className="grid sm:grid-cols-2 gap-4">
+                <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
+                  <div className="grid sm:grid-cols-2 gap-5">
                     <div className="space-y-2">
-                      <Label htmlFor="nom" className="text-[15px]">Nom complet</Label>
+                      <Label htmlFor="nom" className="text-[15px] sm:text-base font-medium text-foreground">
+                        Nom complet
+                      </Label>
                       <Input
                         id="nom"
                         name="nom"
                         value={formData.nom}
                         onChange={handleChange}
                         placeholder="Jean Dupont"
-                        className={`h-[50px] text-[16px] ${errors.nom ? "border-destructive" : ""}`}
+                        className={errors.nom ? "border-destructive focus-visible:ring-destructive/30" : ""}
                       />
                       {errors.nom && (
-                        <p className="text-xs text-destructive">{errors.nom}</p>
+                        <p className="text-sm text-destructive">{errors.nom}</p>
                       )}
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="email" className="text-[15px]">Email</Label>
+                      <Label htmlFor="email" className="text-[15px] sm:text-base font-medium text-foreground">
+                        Email
+                      </Label>
                       <Input
                         id="email"
                         name="email"
@@ -182,31 +192,35 @@ export default function Contact() {
                         value={formData.email}
                         onChange={handleChange}
                         placeholder="jean.dupont@email.com"
-                        className={`h-[50px] text-[16px] ${errors.email ? "border-destructive" : ""}`}
+                        className={errors.email ? "border-destructive focus-visible:ring-destructive/30" : ""}
                       />
                       {errors.email && (
-                        <p className="text-xs text-destructive">{errors.email}</p>
+                        <p className="text-sm text-destructive">{errors.email}</p>
                       )}
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="sujet" className="text-[15px]">Sujet</Label>
+                    <Label htmlFor="sujet" className="text-[15px] sm:text-base font-medium text-foreground">
+                      Sujet
+                    </Label>
                     <Input
                       id="sujet"
                       name="sujet"
                       value={formData.sujet}
                       onChange={handleChange}
                       placeholder="Question sur l'achat groupé"
-                      className={`h-[50px] text-[16px] ${errors.sujet ? "border-destructive" : ""}`}
+                      className={errors.sujet ? "border-destructive focus-visible:ring-destructive/30" : ""}
                     />
                     {errors.sujet && (
-                      <p className="text-xs text-destructive">{errors.sujet}</p>
+                      <p className="text-sm text-destructive">{errors.sujet}</p>
                     )}
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="message" className="text-[15px]">Message</Label>
+                    <Label htmlFor="message" className="text-[15px] sm:text-base font-medium text-foreground">
+                      Message
+                    </Label>
                     <Textarea
                       id="message"
                       name="message"
@@ -214,28 +228,28 @@ export default function Contact() {
                       onChange={handleChange}
                       placeholder="Décrivez votre question ou suggestion..."
                       rows={5}
-                      className={`min-h-[130px] text-[16px] ${errors.message ? "border-destructive" : ""}`}
+                      className={errors.message ? "border-destructive focus-visible:ring-destructive/30" : ""}
                     />
                     {errors.message && (
-                      <p className="text-xs text-destructive">{errors.message}</p>
+                      <p className="text-sm text-destructive">{errors.message}</p>
                     )}
                   </div>
 
                   <Button
                     type="submit"
                     variant="hero"
-                    className="w-full h-[54px] text-[17px] font-semibold"
+                    className="w-full h-[52px] sm:h-[56px] text-[17px] sm:text-[18px] font-semibold rounded-xl"
                     disabled={isLoading}
                   >
                     {isLoading ? (
                       <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <Loader2 className="w-5 h-5 animate-spin" />
                         Envoi en cours...
                       </>
                     ) : (
                       <>
                         Envoyer ma demande
-                        <Send className="w-4 h-4 ml-2" />
+                        <ArrowRight className="w-5 h-5 ml-2" />
                       </>
                     )}
                   </Button>
