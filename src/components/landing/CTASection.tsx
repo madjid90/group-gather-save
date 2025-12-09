@@ -5,14 +5,14 @@ import { ArrowRight } from "lucide-react";
 
 export function CTASection() {
   return (
-    <section className="py-16 md:py-20 bg-card">
+    <section className="py-10 md:py-20 bg-card">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="relative overflow-hidden rounded-2xl md:rounded-3xl bg-gradient-hero p-8 sm:p-10 md:p-14 lg:p-20 text-center"
+          className="relative overflow-hidden rounded-2xl md:rounded-3xl bg-gradient-hero p-6 sm:p-10 md:p-14 lg:p-20 text-center"
         >
           {/* Background pattern */}
           <div className="absolute inset-0 opacity-10">
@@ -21,13 +21,15 @@ export function CTASection() {
           </div>
 
           <div className="relative z-10">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-5 md:mb-8">
+            <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-3 md:mb-8">
               Rejoignez l'achat groupé Switchly
             </h2>
-            <p className="text-base sm:text-lg md:text-xl text-primary-foreground/80 mb-8 md:mb-10 max-w-2xl mx-auto">
-              L'inscription est gratuite et sans engagement. Plus le groupe grandit, plus nous pouvons négocier des prix avantageux.
+            <p className="text-sm sm:text-base md:text-xl text-primary-foreground/80 mb-6 md:mb-10 max-w-2xl mx-auto">
+              <span className="hidden md:inline">L'inscription est gratuite et sans engagement. Plus le groupe grandit, plus nous pouvons négocier des prix avantageux.</span>
+              <span className="md:hidden">Gratuit et sans engagement.</span>
             </p>
-            <div className="flex justify-center">
+            {/* CTA - hidden on mobile */}
+            <div className="hidden md:flex justify-center">
               <Button
                 variant="secondary"
                 size="xl"
@@ -40,8 +42,9 @@ export function CTASection() {
                 </Link>
               </Button>
             </div>
-            <p className="text-sm sm:text-base text-primary-foreground/70 mt-6 md:mt-8">
-              Aucune publicité, aucune vente de données. Nous vous contactons uniquement pour vous transmettre les offres négociées.
+            <p className="text-xs sm:text-sm md:text-base text-primary-foreground/70 mt-4 md:mt-8">
+              <span className="hidden md:inline">Aucune publicité, aucune vente de données. Nous vous contactons uniquement pour vous transmettre les offres négociées.</span>
+              <span className="md:hidden">Zéro publicité, zéro vente de données.</span>
             </p>
           </div>
         </motion.div>
