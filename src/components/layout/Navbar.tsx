@@ -182,11 +182,7 @@ export function Navbar() {
                   key={link.href}
                   to={link.href}
                   onClick={() => setIsDesktopOpen(false)}
-                  className={`block text-[15px] font-medium py-3 px-5 transition-colors hover:bg-muted ${
-                    location.pathname === link.href
-                      ? "text-primary bg-primary/5"
-                      : "text-foreground"
-                  } ${index === 2 ? "border-b border-border mb-1 pb-4" : ""}`}
+                  className={`block text-[15px] font-medium py-3 px-5 transition-colors hover:bg-muted text-foreground ${index === 2 ? "border-b border-border mb-1 pb-4" : ""}`}
                 >
                   {link.label}
                 </Link>
@@ -226,11 +222,7 @@ export function Navbar() {
                       key={link.href}
                       to={link.href}
                       onClick={() => setIsMobileOpen(false)}
-                      className={`text-[17px] font-medium py-[14px] px-4 rounded-xl transition-colors hover:bg-muted active:bg-muted leading-relaxed ${
-                        location.pathname === link.href
-                          ? "text-primary bg-primary/5"
-                          : "text-foreground"
-                      }`}
+                      className="text-[17px] font-medium py-[14px] px-4 rounded-xl transition-colors hover:bg-muted active:bg-muted leading-relaxed text-foreground"
                     >
                       {link.label}
                     </Link>

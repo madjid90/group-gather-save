@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,6 +26,11 @@ export default function Inscription() {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [showPassword, setShowPassword] = useState(false);
+
+  // Scroll to top on mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -120,13 +125,17 @@ export default function Inscription() {
           <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center mx-auto mb-6">
             <Check className="w-8 h-8 text-secondary" />
           </div>
-          <h1 className="text-2xl font-bold text-foreground mb-3">
+          <h1 className="text-[22px] sm:text-[26px] md:text-[30px] font-bold text-foreground mb-3">
             Bienvenue sur Switchly !
           </h1>
-          <p className="text-muted-foreground mb-6">
+          <p className="text-base sm:text-[17px] text-muted-foreground mb-8">
             Votre inscription est confirmée. Complétez votre profil logement pour recevoir une offre personnalisée.
           </p>
-          <Button variant="hero" asChild>
+          <Button 
+            variant="hero" 
+            className="w-full h-[52px] sm:h-[56px] text-[16px] sm:text-[17px] font-semibold rounded-xl"
+            asChild
+          >
             <Link to="/dashboard-client">Accéder à mon espace</Link>
           </Button>
         </motion.div>
@@ -135,34 +144,34 @@ export default function Inscription() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4">
+    <div className="min-h-screen flex items-center justify-center py-8 sm:py-12 px-4">
       <div className="w-full max-w-md">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="bg-card rounded-3xl p-8 md:p-10 shadow-switchly-xl border border-border"
+          className="bg-card rounded-3xl p-6 sm:p-8 md:p-10 shadow-switchly-xl border border-border"
         >
           {/* Header */}
-          <div className="text-center mb-8">
-            <Link to="/" className="inline-flex items-center gap-2 mb-6">
+          <div className="text-center mb-6 sm:mb-8">
+            <Link to="/" className="inline-flex items-center gap-2 mb-5 sm:mb-6">
               <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center">
                 <Zap className="w-5 h-5 text-primary-foreground" />
               </div>
               <span className="text-xl font-bold text-foreground">Switchly</span>
             </Link>
-            <h1 className="text-2xl font-bold text-foreground mb-2">
-              Rejoindre l'achat groupé
+            <h1 className="text-[22px] sm:text-[26px] md:text-[30px] font-bold text-foreground mb-2 leading-tight">
+              Créer mon compte Switchly
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-base sm:text-[17px] text-muted-foreground">
               Inscription gratuite en 10 secondes
             </p>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="nom" className="flex items-center gap-2">
+              <Label htmlFor="nom" className="flex items-center gap-2 text-[15px] sm:text-base font-medium">
                 <User className="w-4 h-4 text-muted-foreground" />
                 Nom complet
               </Label>
@@ -172,7 +181,7 @@ export default function Inscription() {
                 value={formData.nom}
                 onChange={handleChange}
                 placeholder="Jean Dupont"
-                className={errors.nom ? "border-destructive" : ""}
+                className={`h-[48px] sm:h-[52px] text-base rounded-xl ${errors.nom ? "border-destructive" : ""}`}
               />
               {errors.nom && (
                 <p className="text-xs text-destructive">{errors.nom}</p>
@@ -180,7 +189,7 @@ export default function Inscription() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="telephone" className="flex items-center gap-2">
+              <Label htmlFor="telephone" className="flex items-center gap-2 text-[15px] sm:text-base font-medium">
                 <Phone className="w-4 h-4 text-muted-foreground" />
                 Numéro de téléphone
               </Label>
@@ -191,7 +200,7 @@ export default function Inscription() {
                 value={formData.telephone}
                 onChange={handleChange}
                 placeholder="0612345678"
-                className={errors.telephone ? "border-destructive" : ""}
+                className={`h-[48px] sm:h-[52px] text-base rounded-xl ${errors.telephone ? "border-destructive" : ""}`}
               />
               {errors.telephone && (
                 <p className="text-xs text-destructive">{errors.telephone}</p>
@@ -199,7 +208,7 @@ export default function Inscription() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="flex items-center gap-2">
+              <Label htmlFor="password" className="flex items-center gap-2 text-[15px] sm:text-base font-medium">
                 <Lock className="w-4 h-4 text-muted-foreground" />
                 Mot de passe
               </Label>
@@ -211,14 +220,14 @@ export default function Inscription() {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="••••••••"
-                  className={`pr-10 ${errors.password ? "border-destructive" : ""}`}
+                  className={`h-[48px] sm:h-[52px] text-base rounded-xl pr-12 ${errors.password ? "border-destructive" : ""}`}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
               </div>
               {errors.password && (
@@ -226,30 +235,31 @@ export default function Inscription() {
               )}
             </div>
 
-            <Button
-              type="submit"
-              variant="hero"
-              size="lg"
-              className="w-full text-sm sm:text-base py-5"
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Inscription en cours...
-                </>
-              ) : (
-                <>
-                  M'inscrire gratuitement
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </>
-              )}
-            </Button>
+            <div className="pt-2">
+              <Button
+                type="submit"
+                variant="hero"
+                className="w-full h-[52px] sm:h-[56px] text-[16px] sm:text-[17px] font-semibold rounded-xl"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Inscription en cours...
+                  </>
+                ) : (
+                  <>
+                    M'inscrire gratuitement
+                    <ArrowRight className="w-5 h-5 ml-2" />
+                  </>
+                )}
+              </Button>
+            </div>
           </form>
 
           {/* Footer */}
-          <div className="mt-6 text-center">
-            <p className="text-sm text-muted-foreground">
+          <div className="mt-6 sm:mt-8 text-center">
+            <p className="text-[15px] sm:text-base text-muted-foreground">
               Déjà inscrit ?{" "}
               <Link to="/connexion" className="text-primary hover:underline font-medium">
                 Connectez-vous
@@ -259,12 +269,12 @@ export default function Inscription() {
 
           {/* Trust badges */}
           <div className="mt-6 pt-6 border-t border-border">
-            <div className="flex items-center justify-center gap-6 text-xs text-muted-foreground">
-              <div className="flex items-center gap-1">
+            <div className="flex items-center justify-center gap-4 sm:gap-6 text-xs sm:text-sm text-muted-foreground">
+              <div className="flex items-center gap-1.5">
                 <Check className="w-4 h-4 text-secondary" />
                 <span>Données sécurisées</span>
               </div>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1.5">
                 <Check className="w-4 h-4 text-secondary" />
                 <span>Sans engagement</span>
               </div>
