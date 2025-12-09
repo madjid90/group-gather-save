@@ -234,7 +234,7 @@ export function Navbar() {
                   <div className="mt-5">
                     <Button 
                       variant="hero" 
-                      className="w-full h-[52px] sm:h-[56px] text-[17px] sm:text-[18px] font-semibold rounded-xl" 
+                      className="w-full h-[52px] text-[17px] font-semibold rounded-xl" 
                       asChild
                     >
                       <Link to="/inscription" onClick={() => setIsMobileOpen(false)}>
