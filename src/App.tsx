@@ -17,12 +17,14 @@ import MesSouscriptions from "./pages/dashboard/MesSouscriptions";
 import Profil from "./pages/dashboard/Profil";
 import Notifications from "./pages/dashboard/Notifications";
 import AdminLayout from "./pages/admin/AdminLayout";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminUtilisateurs from "./pages/admin/AdminUtilisateurs";
-import AdminCampagne from "./pages/admin/AdminCampagne";
+import AdminCampagnesList from "./pages/admin/AdminCampagnesList";
+import AdminCampagneDetail from "./pages/admin/AdminCampagneDetail";
 import AdminOffresClients from "./pages/admin/AdminOffresClients";
-import AdminHistorique from "./pages/admin/AdminHistorique";
 import AdminReactivation from "./pages/admin/AdminReactivation";
 import FormulaireLogement from "./pages/FormulaireLogement";
+import MonOffre from "./pages/MonOffre";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -43,6 +45,7 @@ const App = () => (
             <Route path="/mentions-legales" element={<MentionsLegales />} />
           </Route>
           <Route path="/formulaire-logement/:token" element={<FormulaireLogement />} />
+          <Route path="/mon-offre" element={<MonOffre />} />
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="offres" element={<MesOffres />} />
@@ -51,10 +54,11 @@ const App = () => (
             <Route path="notifications" element={<Notifications />} />
           </Route>
           <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<AdminUtilisateurs />} />
-            <Route path="campagne" element={<AdminCampagne />} />
-            <Route path="offres-clients" element={<AdminOffresClients />} />
-            <Route path="historique" element={<AdminHistorique />} />
+            <Route index element={<AdminDashboard />} />
+            <Route path="clients" element={<AdminUtilisateurs />} />
+            <Route path="campagnes" element={<AdminCampagnesList />} />
+            <Route path="campagnes/:id" element={<AdminCampagneDetail />} />
+            <Route path="offres" element={<AdminOffresClients />} />
             <Route path="reactivation" element={<AdminReactivation />} />
           </Route>
           <Route path="*" element={<NotFound />} />

@@ -214,6 +214,93 @@ export type Database = {
         }
         Relationships: []
       }
+      campaign_users: {
+        Row: {
+          campaign_id: string
+          created_at: string | null
+          id: string
+          statut_dans_campagne: string | null
+          user_id: string
+        }
+        Insert: {
+          campaign_id: string
+          created_at?: string | null
+          id?: string
+          statut_dans_campagne?: string | null
+          user_id: string
+        }
+        Update: {
+          campaign_id?: string
+          created_at?: string | null
+          id?: string
+          statut_dans_campagne?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaign_users_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaign_users_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      campaigns: {
+        Row: {
+          created_at: string | null
+          date_debut: string | null
+          date_fin: string | null
+          id: string
+          nom: string
+          progression_acceptations_exportees: boolean | null
+          progression_export_genere: boolean | null
+          progression_inscriptions_cloturees: boolean | null
+          progression_inscriptions_ouvertes: boolean | null
+          progression_offres_envoyees: boolean | null
+          progression_offres_importees: boolean | null
+          statut: Database["public"]["Enums"]["new_campaign_status"] | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          date_debut?: string | null
+          date_fin?: string | null
+          id?: string
+          nom: string
+          progression_acceptations_exportees?: boolean | null
+          progression_export_genere?: boolean | null
+          progression_inscriptions_cloturees?: boolean | null
+          progression_inscriptions_ouvertes?: boolean | null
+          progression_offres_envoyees?: boolean | null
+          progression_offres_importees?: boolean | null
+          statut?: Database["public"]["Enums"]["new_campaign_status"] | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          date_debut?: string | null
+          date_fin?: string | null
+          id?: string
+          nom?: string
+          progression_acceptations_exportees?: boolean | null
+          progression_export_genere?: boolean | null
+          progression_inscriptions_cloturees?: boolean | null
+          progression_inscriptions_ouvertes?: boolean | null
+          progression_offres_envoyees?: boolean | null
+          progression_offres_importees?: boolean | null
+          statut?: Database["public"]["Enums"]["new_campaign_status"] | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       export_client_mapping: {
         Row: {
           client_id: string
@@ -433,9 +520,11 @@ export type Database = {
       }
       profiles: {
         Row: {
+          a_reactiver: boolean | null
           code_postal: string | null
           contrats: Database["public"]["Enums"]["contract_type"] | null
           created_at: string | null
+          date_derniere_activite: string | null
           email: string
           fournisseur_energie_actuel: string | null
           fournisseur_internet_actuel: string | null
@@ -458,9 +547,11 @@ export type Database = {
           ville: string | null
         }
         Insert: {
+          a_reactiver?: boolean | null
           code_postal?: string | null
           contrats?: Database["public"]["Enums"]["contract_type"] | null
           created_at?: string | null
+          date_derniere_activite?: string | null
           email: string
           fournisseur_energie_actuel?: string | null
           fournisseur_internet_actuel?: string | null
@@ -483,9 +574,11 @@ export type Database = {
           ville?: string | null
         }
         Update: {
+          a_reactiver?: boolean | null
           code_postal?: string | null
           contrats?: Database["public"]["Enums"]["contract_type"] | null
           created_at?: string | null
+          date_derniere_activite?: string | null
           email?: string
           fournisseur_energie_actuel?: string | null
           fournisseur_internet_actuel?: string | null
@@ -515,6 +608,8 @@ export type Database = {
           id: string
           message: string
           statut: Database["public"]["Enums"]["sms_status"] | null
+          telephone: string | null
+          type: string | null
           user_id: string | null
         }
         Insert: {
@@ -522,6 +617,8 @@ export type Database = {
           id?: string
           message: string
           statut?: Database["public"]["Enums"]["sms_status"] | null
+          telephone?: string | null
+          type?: string | null
           user_id?: string | null
         }
         Update: {
@@ -529,6 +626,8 @@ export type Database = {
           id?: string
           message?: string
           statut?: Database["public"]["Enums"]["sms_status"] | null
+          telephone?: string | null
+          type?: string | null
           user_id?: string | null
         }
         Relationships: []
@@ -598,6 +697,7 @@ export type Database = {
       user_offers: {
         Row: {
           abonnement_mensuel: number | null
+          campaign_id: string | null
           client_id: string | null
           commentaire_fournisseur: string | null
           created_at: string | null
@@ -606,6 +706,7 @@ export type Database = {
           export_id: string | null
           fournisseur_nom: string | null
           id: string
+          offer_token: string | null
           offre_nom: string | null
           prix_kwh: number | null
           statut: string | null
@@ -614,6 +715,7 @@ export type Database = {
         }
         Insert: {
           abonnement_mensuel?: number | null
+          campaign_id?: string | null
           client_id?: string | null
           commentaire_fournisseur?: string | null
           created_at?: string | null
@@ -622,6 +724,7 @@ export type Database = {
           export_id?: string | null
           fournisseur_nom?: string | null
           id?: string
+          offer_token?: string | null
           offre_nom?: string | null
           prix_kwh?: number | null
           statut?: string | null
@@ -630,6 +733,7 @@ export type Database = {
         }
         Update: {
           abonnement_mensuel?: number | null
+          campaign_id?: string | null
           client_id?: string | null
           commentaire_fournisseur?: string | null
           created_at?: string | null
@@ -638,6 +742,7 @@ export type Database = {
           export_id?: string | null
           fournisseur_nom?: string | null
           id?: string
+          offer_token?: string | null
           offre_nom?: string | null
           prix_kwh?: number | null
           statut?: string | null
@@ -645,6 +750,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "user_offers_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "user_offers_export_id_fkey"
             columns: ["export_id"]
@@ -732,6 +844,13 @@ export type Database = {
         | "negociation"
         | "offre_disponible"
         | "termine"
+      new_campaign_status:
+        | "inscriptions_ouvertes"
+        | "inscriptions_cloturees"
+        | "export_genere"
+        | "offres_importees"
+        | "offres_envoyees"
+        | "terminee"
       offer_target: "energie" | "internet" | "tous"
       offer_type: "electricite" | "internet" | "combo"
       sms_status: "envoye" | "delivre" | "echec"
@@ -880,6 +999,14 @@ export const Constants = {
         "negociation",
         "offre_disponible",
         "termine",
+      ],
+      new_campaign_status: [
+        "inscriptions_ouvertes",
+        "inscriptions_cloturees",
+        "export_genere",
+        "offres_importees",
+        "offres_envoyees",
+        "terminee",
       ],
       offer_target: ["energie", "internet", "tous"],
       offer_type: ["electricite", "internet", "combo"],

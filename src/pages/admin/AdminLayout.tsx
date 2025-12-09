@@ -3,25 +3,24 @@ import { Outlet, useNavigate, Link, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { User } from "@supabase/supabase-js";
 import {
+  LayoutDashboard,
   Users,
-  Megaphone,
+  Calendar,
   Gift,
   RefreshCw,
-  History,
   LogOut,
   Shield,
   Menu,
   X,
-  LayoutDashboard,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const adminLinks = [
-  { href: "/admin", label: "Clients", icon: Users },
-  { href: "/admin/campagne", label: "Campagnes", icon: Megaphone },
-  { href: "/admin/offres-clients", label: "Offres Clients", icon: Gift },
-  { href: "/admin/historique", label: "Historique", icon: History },
+  { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/admin/clients", label: "Clients", icon: Users },
+  { href: "/admin/campagnes", label: "Campagnes", icon: Calendar },
+  { href: "/admin/offres", label: "Offres Clients", icon: Gift },
   { href: "/admin/reactivation", label: "Réactivation", icon: RefreshCw },
 ];
 
@@ -90,6 +89,13 @@ export default function AdminLayout() {
     return null;
   }
 
+  const isActiveLink = (href: string) => {
+    if (href === "/admin") {
+      return location.pathname === "/admin";
+    }
+    return location.pathname.startsWith(href);
+  };
+
   return (
     <div className="min-h-screen flex bg-muted/30">
       {/* Mobile menu button */}
@@ -132,7 +138,7 @@ export default function AdminLayout() {
           {/* Navigation */}
           <nav className="flex-1 p-4 space-y-1">
             {adminLinks.map((link) => {
-              const isActive = location.pathname === link.href;
+              const isActive = isActiveLink(link.href);
               return (
                 <Link
                   key={link.href}
