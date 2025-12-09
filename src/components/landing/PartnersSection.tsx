@@ -59,11 +59,11 @@ export function PartnersSection() {
           transition={{ duration: 0.5 }}
           className="text-center mb-8 md:mb-12"
         >
-          <h2 className="text-xl sm:text-2xl md:text-4xl font-bold text-foreground mb-2 md:mb-4">
+          <h2 className="text-[20px] sm:text-2xl md:text-4xl font-bold text-foreground mb-2 md:mb-4">
             Nos fournisseurs partenaires
           </h2>
-          <p className="text-sm md:text-lg text-muted-foreground max-w-2xl mx-auto">
-            <span className="hidden md:inline">Nous collaborons uniquement avec des fournisseurs fiables et reconnus pour vous garantir des offres transparentes et avantageuses.</span>
+          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
+            <span className="hidden md:inline">Nous collaborons uniquement avec des fournisseurs reconnus pour vous garantir des tarifs transparents et avantageux.</span>
             <span className="md:hidden">Fournisseurs fiables et reconnus</span>
           </p>
         </motion.div>

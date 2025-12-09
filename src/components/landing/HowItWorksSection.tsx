@@ -7,28 +7,25 @@ const steps = [
   {
     icon: UserPlus,
     number: "1",
-    title: "Inscrivez-vous en 1 minute",
+    title: "Inscription en 1 minute",
     titleMobile: "Inscription en 1 minute",
-    description:
-      "Indiquez simplement vos informations et votre code postal.",
+    description: "Indiquez vos informations pour rejoindre l'achat groupé.",
     descriptionMobile: "Indiquez vos informations.",
   },
   {
     icon: Users,
     number: "2",
-    title: "Nous négocions pour tout le groupe",
+    title: "Nous négocions pour vous",
     titleMobile: "Nous négocions pour vous",
-    description:
-      "Plus nous sommes nombreux, plus nous obtenons de meilleurs tarifs auprès des fournisseurs.",
+    description: "Plus nous sommes nombreux, plus les fournisseurs baissent les tarifs.",
     descriptionMobile: "Plus on est nombreux, plus les prix baissent.",
   },
   {
     icon: Gift,
     number: "3",
-    title: "Recevez une offre négociée",
+    title: "Recevez votre offre personnalisée",
     titleMobile: "Recevez votre offre",
-    description:
-      "Vous êtes libre d'accepter ou de refuser. Aucun changement sans votre accord.",
+    description: "Vous êtes libre d'accepter ou de refuser. Aucune démarche obligatoire.",
     descriptionMobile: "Libre à vous d'accepter ou refuser.",
   },
 ];
@@ -44,10 +41,10 @@ export function HowItWorksSection() {
           transition={{ duration: 0.5 }}
           className="text-center mb-8 md:mb-16"
         >
-          <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold text-foreground mb-2 md:mb-6">
+          <h2 className="text-[20px] sm:text-2xl md:text-4xl lg:text-5xl font-bold text-foreground mb-2 md:mb-6">
             Comment ça marche ?
           </h2>
-          <p className="text-sm md:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
+          <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
             <span className="hidden md:inline">Un processus simple et transparent pour économiser sur vos factures</span>
             <span className="md:hidden">Simple, rapide et transparent</span>
           </p>
