@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router-dom";
-import { Zap, ArrowRight, Loader2, Phone, Eye, EyeOff, Lock } from "lucide-react";
+import { Zap, ArrowRight, Loader2, Phone, Eye, EyeOff, Lock, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -85,32 +85,41 @@ export default function Connexion() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-8 bg-gradient-subtle">
+    <div className="h-screen overflow-hidden flex items-center justify-center px-4 bg-gradient-subtle">
       <div className="w-full max-w-md">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="bg-card rounded-xl md:rounded-2xl p-4 md:p-8 shadow-switchly-xl border border-border"
+          className="bg-card rounded-xl md:rounded-2xl p-4 md:p-6 shadow-switchly-xl border border-border"
         >
+          {/* Back button */}
+          <Link 
+            to="/" 
+            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Retour
+          </Link>
+
           {/* Header */}
-          <div className="text-center mb-4 md:mb-8">
-            <Link to="/" className="inline-flex items-center gap-2 mb-4 md:mb-6">
+          <div className="text-center mb-4">
+            <Link to="/" className="inline-flex items-center gap-2 mb-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center">
                 <Zap className="w-5 h-5 text-primary-foreground" />
               </div>
               <span className="text-xl font-bold text-foreground">Switchly</span>
             </Link>
-            <h1 className="text-[20px] sm:text-2xl md:text-4xl font-bold text-foreground mb-2 md:mb-4 leading-tight">
+            <h1 className="text-[20px] sm:text-2xl font-bold text-foreground mb-1 leading-tight">
               Me connecter
             </h1>
-            <p className="text-base md:text-xl text-muted-foreground">
+            <p className="text-sm text-muted-foreground">
               Accédez à votre espace membre
             </p>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-3">
             <div className="space-y-2">
               <Label htmlFor="telephone" className="flex items-center gap-2 text-sm font-medium text-foreground">
                 <Phone className="w-4 h-4 text-muted-foreground" />
@@ -158,12 +167,12 @@ export default function Connexion() {
               )}
             </div>
 
-            <div className="pt-2">
+            <div className="pt-1">
               <Button
                 type="submit"
                 variant="hero"
                 size="lg"
-                className="w-full py-4 text-sm"
+                className="w-full py-3 text-sm"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -182,8 +191,8 @@ export default function Connexion() {
           </form>
 
           {/* Footer */}
-          <div className="mt-4 md:mt-8 text-center">
-            <p className="text-sm md:text-base text-muted-foreground">
+          <div className="mt-4 text-center">
+            <p className="text-sm text-muted-foreground">
               Pas encore de compte ?{" "}
               <Link to="/inscription" className="text-primary hover:underline font-medium">
                 Inscrivez-vous

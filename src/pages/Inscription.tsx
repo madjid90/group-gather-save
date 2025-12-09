@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router-dom";
-import { Zap, Check, ArrowRight, Loader2, Phone, User, Lock, Eye, EyeOff } from "lucide-react";
+import { Zap, Check, ArrowRight, Loader2, Phone, User, Lock, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -116,25 +116,25 @@ export default function Inscription() {
 
   if (isSuccess) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4 py-8 bg-gradient-subtle">
+      <div className="h-screen overflow-hidden flex items-center justify-center px-4 bg-gradient-subtle">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="w-full max-w-md bg-card rounded-xl md:rounded-2xl p-4 md:p-8 shadow-switchly-xl border border-border text-center"
+          className="w-full max-w-md bg-card rounded-xl md:rounded-2xl p-4 md:p-6 shadow-switchly-xl border border-border text-center"
         >
-          <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-secondary/10 flex items-center justify-center mx-auto mb-4 md:mb-6">
-            <Check className="w-6 h-6 md:w-8 md:h-8 text-secondary" />
+          <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mx-auto mb-4">
+            <Check className="w-6 h-6 text-secondary" />
           </div>
-          <h1 className="text-[20px] sm:text-2xl md:text-4xl font-bold text-foreground mb-2 md:mb-4">
+          <h1 className="text-[20px] sm:text-2xl font-bold text-foreground mb-2">
             Bienvenue sur Switchly !
           </h1>
-          <p className="text-base md:text-xl text-muted-foreground mb-6 md:mb-8">
+          <p className="text-sm text-muted-foreground mb-4">
             Votre inscription est confirmée. Complétez votre profil logement pour recevoir une offre personnalisée.
           </p>
           <Button 
             variant="hero" 
             size="lg"
-            className="w-full py-4 text-sm"
+            className="w-full py-3 text-sm"
             asChild
           >
             <Link to="/dashboard-client">Accéder à mon espace</Link>
@@ -145,32 +145,41 @@ export default function Inscription() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-8 bg-gradient-subtle">
+    <div className="h-screen overflow-hidden flex items-center justify-center px-4 bg-gradient-subtle">
       <div className="w-full max-w-md">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="bg-card rounded-xl md:rounded-2xl p-4 md:p-8 shadow-switchly-xl border border-border"
+          className="bg-card rounded-xl md:rounded-2xl p-4 md:p-6 shadow-switchly-xl border border-border"
         >
+          {/* Back button */}
+          <Link 
+            to="/" 
+            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Retour
+          </Link>
+
           {/* Header */}
-          <div className="text-center mb-4 md:mb-8">
-            <Link to="/" className="inline-flex items-center gap-2 mb-4 md:mb-6">
+          <div className="text-center mb-4">
+            <Link to="/" className="inline-flex items-center gap-2 mb-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center">
                 <Zap className="w-5 h-5 text-primary-foreground" />
               </div>
               <span className="text-xl font-bold text-foreground">Switchly</span>
             </Link>
-            <h1 className="text-[20px] sm:text-2xl md:text-4xl font-bold text-foreground mb-2 md:mb-4 leading-tight">
+            <h1 className="text-[20px] sm:text-2xl font-bold text-foreground mb-1 leading-tight">
               Créer mon compte
             </h1>
-            <p className="text-base md:text-xl text-muted-foreground">
+            <p className="text-sm text-muted-foreground">
               Inscription gratuite en 10 secondes
             </p>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-3">
             <div className="space-y-2">
               <Label htmlFor="nom" className="flex items-center gap-2 text-sm font-medium text-foreground">
                 <User className="w-4 h-4 text-muted-foreground" />
@@ -236,12 +245,12 @@ export default function Inscription() {
               )}
             </div>
 
-            <div className="pt-2">
+            <div className="pt-1">
               <Button
                 type="submit"
                 variant="hero"
                 size="lg"
-                className="w-full py-4 text-sm"
+                className="w-full py-3 text-sm"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -260,8 +269,8 @@ export default function Inscription() {
           </form>
 
           {/* Footer */}
-          <div className="mt-4 md:mt-8 text-center">
-            <p className="text-sm md:text-base text-muted-foreground">
+          <div className="mt-3 text-center">
+            <p className="text-sm text-muted-foreground">
               Déjà inscrit ?{" "}
               <Link to="/connexion" className="text-primary hover:underline font-medium">
                 Connectez-vous
@@ -270,8 +279,8 @@ export default function Inscription() {
           </div>
 
           {/* Trust badges */}
-          <div className="mt-4 md:mt-6 pt-4 md:pt-6 border-t border-border">
-            <div className="flex items-center justify-center gap-4 md:gap-6 text-xs md:text-sm text-muted-foreground">
+          <div className="mt-3 pt-3 border-t border-border">
+            <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
               <div className="flex items-center gap-1.5">
                 <Check className="w-4 h-4 text-secondary" />
                 <span>Données sécurisées</span>
