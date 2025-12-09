@@ -229,19 +229,19 @@ export default function Inscription() {
             <Button
               type="submit"
               variant="hero"
-              size="lg"
-              className="w-full py-6"
+              size="xl"
+              className="w-full text-base sm:text-lg"
               disabled={isLoading}
             >
               {isLoading ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="w-5 h-5 animate-spin" />
                   Inscription en cours...
                 </>
               ) : (
                 <>
                   Je rejoins gratuitement le groupe
-                  <ArrowRight className="w-4 h-4 ml-2" />
+                  <ArrowRight className="w-5 h-5 ml-2" />
                 </>
               )}
             </Button>
