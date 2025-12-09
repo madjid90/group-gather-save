@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Link } from "react-router-dom";
-import { Zap, Check, ArrowRight, Loader2, Phone, User } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Zap, Check, ArrowRight, Loader2, Phone, User, Lock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -12,14 +12,17 @@ import { z } from "zod";
 const inscriptionSchema = z.object({
   nom: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
   telephone: z.string().regex(/^(\+33|0)[1-9]\d{8}$/, "Numéro de téléphone invalide (ex: 0612345678)"),
+  password: z.string().min(6, "Le mot de passe doit contenir au moins 6 caractères"),
 });
 
 export default function Inscription() {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [formData, setFormData] = useState({
     nom: "",
     telephone: "",
+    password: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -53,14 +56,12 @@ export default function Inscription() {
       // Create email from phone number for Supabase auth
       const cleanPhone = formData.telephone.replace(/[^0-9]/g, "");
       const email = `${cleanPhone}@switchly.temp`;
-      // Generate a secure random password (user won't need it - SMS flow)
-      const password = crypto.randomUUID();
 
       const { data, error } = await supabase.auth.signUp({
         email,
-        password,
+        password: formData.password,
         options: {
-          emailRedirectTo: `${window.location.origin}/`,
+          emailRedirectTo: `${window.location.origin}/dashboard-client`,
           data: {
             prenom: formData.nom.split(" ")[0] || formData.nom,
             nom: formData.nom,
@@ -97,6 +98,9 @@ export default function Inscription() {
       }
 
       setIsSuccess(true);
+      toast.success("Inscription réussie !");
+      // Redirect to dashboard after a short delay
+      setTimeout(() => navigate("/dashboard-client"), 2000);
     } catch (error) {
       toast.error("Une erreur est survenue. Veuillez réessayer.");
     } finally {
@@ -116,14 +120,13 @@ export default function Inscription() {
             <Check className="w-8 h-8 text-secondary" />
           </div>
           <h1 className="text-2xl font-bold text-foreground mb-3">
-            Merci pour votre inscription !
+            Bienvenue sur Switchly !
           </h1>
           <p className="text-muted-foreground mb-6">
-            Votre inscription à l'achat groupé Switchly est bien prise en compte.
-            Vous allez recevoir un SMS avec un lien pour compléter vos informations logement.
+            Votre inscription est confirmée. Complétez votre profil logement pour recevoir une offre personnalisée.
           </p>
-          <Button variant="outline" asChild>
-            <Link to="/">Retour à l'accueil</Link>
+          <Button variant="hero" asChild>
+            <Link to="/dashboard-client">Accéder à mon espace</Link>
           </Button>
         </motion.div>
       </div>
@@ -191,6 +194,25 @@ export default function Inscription() {
               />
               {errors.telephone && (
                 <p className="text-xs text-destructive">{errors.telephone}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="password" className="flex items-center gap-2">
+                <Lock className="w-4 h-4 text-muted-foreground" />
+                Mot de passe
+              </Label>
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="••••••••"
+                className={errors.password ? "border-destructive" : ""}
+              />
+              {errors.password && (
+                <p className="text-xs text-destructive">{errors.password}</p>
               )}
             </div>
 

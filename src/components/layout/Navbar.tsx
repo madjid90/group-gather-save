@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Zap } from "lucide-react";
+import { Menu, X, Zap, User, LogOut } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { supabase } from "@/integrations/supabase/client";
 
 const navLinks = [
   { href: "/", label: "Accueil" },
@@ -12,9 +13,24 @@ const navLinks = [
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
   const location = useLocation();
+  const navigate = useNavigate();
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  // Check auth state
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user || null);
+    });
+
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -39,6 +55,12 @@ export function Navbar() {
     setIsOpen(false);
   }, [location.pathname]);
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+    navigate("/");
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 glass">
       <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -52,12 +74,33 @@ export function Navbar() {
 
         {/* Right side: CTA Buttons + Hamburger */}
         <div className="flex items-center gap-2 sm:gap-4">
-          <Button variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4" asChild>
-            <Link to="/connexion">Connexion</Link>
-          </Button>
-          <Button variant="hero" size="sm" className="text-xs sm:text-sm px-3 sm:px-4" asChild>
-            <Link to="/inscription">Rejoindre</Link>
-          </Button>
+          {user ? (
+            <>
+              <Button variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4" asChild>
+                <Link to="/dashboard-client">
+                  <User className="w-4 h-4 mr-1 sm:mr-2" />
+                  Mon espace
+                </Link>
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="text-xs sm:text-sm px-2 sm:px-4"
+                onClick={handleLogout}
+              >
+                <LogOut className="w-4 h-4" />
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4" asChild>
+                <Link to="/connexion">Connexion</Link>
+              </Button>
+              <Button variant="hero" size="sm" className="text-xs sm:text-sm px-3 sm:px-4" asChild>
+                <Link to="/inscription">Rejoindre</Link>
+              </Button>
+            </>
+          )}
           
           {/* Hamburger Menu Button */}
           <button
