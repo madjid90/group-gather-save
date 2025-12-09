@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -29,6 +29,7 @@ interface Profile {
 
 export default function MonOffre() {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const token = searchParams.get("token");
 
   const [offer, setOffer] = useState<UserOffer | null>(null);
@@ -101,8 +102,8 @@ export default function MonOffre() {
         .update({ statut_dans_campagne: "offre_acceptee" })
         .eq("user_id", offer.user_id);
 
-      setOffer({ ...offer, statut: "acceptee" });
       toast.success("Merci ! Votre acceptation a été enregistrée.");
+      navigate("/offre-confirmation?status=acceptee");
     } catch (err) {
       console.error("Error accepting offer:", err);
       toast.error("Erreur lors de l'enregistrement de votre réponse.");
@@ -123,8 +124,8 @@ export default function MonOffre() {
 
       if (error) throw error;
 
-      setOffer({ ...offer, statut: "refusee" });
       toast.success("Votre réponse a été enregistrée.");
+      navigate("/offre-confirmation?status=refusee");
     } catch (err) {
       console.error("Error refusing offer:", err);
       toast.error("Erreur lors de l'enregistrement de votre réponse.");
