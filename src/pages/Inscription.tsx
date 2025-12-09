@@ -133,8 +133,8 @@ export default function Inscription() {
           </p>
           <Button 
             variant="hero" 
-            size="xl"
-            className="w-full py-7 sm:py-5 text-base sm:text-lg"
+            size="lg"
+            className="w-full py-4 text-sm"
             asChild
           >
             <Link to="/dashboard-client">Accéder à mon espace</Link>
@@ -240,8 +240,8 @@ export default function Inscription() {
               <Button
                 type="submit"
                 variant="hero"
-                size="xl"
-                className="w-full py-7 sm:py-5 text-base sm:text-lg"
+                size="lg"
+                className="w-full py-4 text-sm"
                 disabled={isLoading}
               >
                 {isLoading ? (

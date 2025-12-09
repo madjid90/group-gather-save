@@ -162,8 +162,8 @@ export default function Connexion() {
               <Button
                 type="submit"
                 variant="hero"
-                size="xl"
-                className="w-full py-7 sm:py-5 text-base sm:text-lg"
+                size="lg"
+                className="w-full py-4 text-sm"
                 disabled={isLoading}
               >
                 {isLoading ? (
