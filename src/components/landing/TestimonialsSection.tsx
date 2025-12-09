@@ -5,19 +5,6 @@ import { Star } from "lucide-react";
 
 const testimonials = [
   {
-    name: "Nadia",
-    rating: 5,
-    text: "Inscription simple, offre plus avantageuse que mon ancien contrat.",
-    avatar: "N",
-  },
-  {
-    name: "Karim",
-    rating: 5,
-    text: "J'ai économisé sans rien faire. Le concept est vraiment malin.",
-    textMobile: "J'ai économisé sans rien faire.",
-    avatar: "K",
-  },
-  {
     name: "Julie",
     rating: 5,
     text: "Service clair, gratuit et utile. J'ai recommandé Switchly à ma famille.",
@@ -37,6 +24,19 @@ const testimonials = [
     text: "Processus rapide, transparent et sans engagement : exactement ce qu'il me fallait.",
     textMobile: "Rapide, transparent, sans engagement.",
     avatar: "C",
+  },
+  {
+    name: "Nadia",
+    rating: 5,
+    text: "Inscription simple, offre plus avantageuse que mon ancien contrat.",
+    avatar: "N",
+  },
+  {
+    name: "Karim",
+    rating: 5,
+    text: "J'ai économisé sans rien faire. Le concept est vraiment malin.",
+    textMobile: "J'ai économisé sans rien faire.",
+    avatar: "K",
   },
 ];
 
