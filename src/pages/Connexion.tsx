@@ -112,7 +112,7 @@ export default function Connexion() {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="telephone" className="flex items-center gap-2 text-sm md:text-base font-medium text-foreground">
+              <Label htmlFor="telephone" className="flex items-center gap-2 text-sm font-medium text-foreground">
                 <Phone className="w-4 h-4 text-muted-foreground" />
                 Numéro de téléphone
               </Label>
@@ -123,15 +123,15 @@ export default function Connexion() {
                 value={formData.telephone}
                 onChange={handleChange}
                 placeholder="0612345678"
-                className={errors.telephone ? "border-destructive focus-visible:ring-destructive/30" : ""}
+                className={`text-sm ${errors.telephone ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
               />
               {errors.telephone && (
-                <p className="text-xs md:text-sm text-destructive">{errors.telephone}</p>
+                <p className="text-xs text-destructive">{errors.telephone}</p>
               )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="flex items-center gap-2 text-sm md:text-base font-medium text-foreground">
+              <Label htmlFor="password" className="flex items-center gap-2 text-sm font-medium text-foreground">
                 <Lock className="w-4 h-4 text-muted-foreground" />
                 Mot de passe
               </Label>
@@ -143,7 +143,7 @@ export default function Connexion() {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="••••••••"
-                  className={`pr-12 ${errors.password ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
+                  className={`pr-12 text-sm ${errors.password ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
                 />
                 <button
                   type="button"
@@ -154,7 +154,7 @@ export default function Connexion() {
                 </button>
               </div>
               {errors.password && (
-                <p className="text-xs md:text-sm text-destructive">{errors.password}</p>
+                <p className="text-xs text-destructive">{errors.password}</p>
               )}
             </div>
 
