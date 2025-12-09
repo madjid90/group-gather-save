@@ -63,8 +63,8 @@ export function HeroSection() {
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex w-full">
-              <Button variant="hero" size="xl" className="text-base sm:text-lg py-7 sm:py-5 px-8 mx-auto lg:ml-0 lg:mr-auto" asChild>
+            <div className="flex justify-center lg:justify-start w-full">
+              <Button variant="hero" size="xl" className="text-base sm:text-lg py-7 sm:py-5 px-8" asChild>
                 <Link to="/inscription">
                   Je rejoins l'achat groupé gratuitement
                 </Link>
