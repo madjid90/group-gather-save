@@ -20,11 +20,11 @@ export default function OffreConfirmation() {
               </div>
               <div className="space-y-2">
                 <h1 className="text-2xl font-bold text-foreground">
-                  Merci pour votre confiance !
+                  Votre réduction groupée est validée ✔
                 </h1>
                 <p className="text-muted-foreground">
-                  Votre acceptation a bien été enregistrée. Notre équipe vous recontactera 
-                  très prochainement pour finaliser votre souscription.
+                  Merci ! Votre fournisseur finalise votre offre négociée. 
+                  Vous faites désormais partie des membres ayant obtenu jusqu'à -30 % de réduction.
                 </p>
               </div>
             </>
@@ -45,10 +45,10 @@ export default function OffreConfirmation() {
             </>
           )}
 
-          <Button asChild variant="outline" className="mt-4">
-            <Link to="/">
+          <Button asChild variant="hero" className="mt-4">
+            <Link to="/dashboard-client">
               <Home className="h-4 w-4 mr-2" />
-              Retour à l'accueil
+              Retourner à mon espace
             </Link>
           </Button>
 

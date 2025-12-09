@@ -74,10 +74,10 @@ interface CampaignHistory {
 
 // Map status to display info (based on user_status enum: inscrit, offre_envoyee, clic, souscription)
 const STATUS_MAP: Record<string, { label: string; color: string }> = {
-  inscrit: { label: "Inscrit", color: "bg-blue-100 text-blue-800" },
-  offre_envoyee: { label: "Offre disponible", color: "bg-yellow-100 text-yellow-800" },
-  clic: { label: "En attente", color: "bg-orange-100 text-orange-800" },
-  souscription: { label: "Souscrit", color: "bg-emerald-100 text-emerald-800" },
+  inscrit: { label: "Membre du groupe — En attente d'offre négociée", color: "bg-blue-100 text-blue-800" },
+  offre_envoyee: { label: "Offre groupée disponible", color: "bg-yellow-100 text-yellow-800" },
+  clic: { label: "En attente de décision", color: "bg-orange-100 text-orange-800" },
+  souscription: { label: "Offre groupée acceptée", color: "bg-emerald-100 text-emerald-800" },
 };
 
 export default function DashboardClient() {
@@ -238,9 +238,9 @@ export default function DashboardClient() {
 
     return [
       { label: "Inscription", completed: true, icon: User },
-      { label: "Profil logement", completed: hasProfile, icon: Home },
-      { label: "Offre disponible", completed: hasOffer, icon: Gift },
-      { label: "Réponse offre", completed: offerResponded, icon: offerResponded && currentOffer?.statut === "acceptee" ? CheckCircle : FileCheck },
+      { label: "Profil logement complété", completed: hasProfile, icon: Home },
+      { label: "Offre groupée disponible", completed: hasOffer, icon: Gift },
+      { label: "Décision de l'offre", completed: offerResponded, icon: offerResponded && currentOffer?.statut === "acceptee" ? CheckCircle : FileCheck },
     ];
   };
 
@@ -257,7 +257,7 @@ export default function DashboardClient() {
         icon: AlertCircle,
         color: "text-yellow-600",
         bgColor: "bg-yellow-50",
-        message: "Merci de compléter votre profil logement pour recevoir une offre personnalisée.",
+        message: "Merci de compléter votre profil logement pour recevoir votre réduction personnalisée.",
       };
     }
 
@@ -266,7 +266,7 @@ export default function DashboardClient() {
         icon: Clock,
         color: "text-blue-600",
         bgColor: "bg-blue-50",
-        message: "Votre profil est complet. Nous vous enverrons une offre personnalisée dès qu'elle sera disponible.",
+        message: "Votre profil est validé. Nous négocions actuellement les meilleures réductions pour votre groupe — jusqu'à -30 %.",
       };
     }
 
@@ -275,7 +275,7 @@ export default function DashboardClient() {
         icon: Gift,
         color: "text-primary",
         bgColor: "bg-primary/5",
-        message: "Une offre personnalisée est disponible ! Consultez-la ci-dessous et faites votre choix.",
+        message: "Votre offre est prête ! Profitez d'une réduction négociée exclusivement pour votre groupe.",
       };
     }
 
@@ -284,7 +284,7 @@ export default function DashboardClient() {
         icon: CheckCircle,
         color: "text-green-600",
         bgColor: "bg-green-50",
-        message: "Votre offre a été acceptée. Votre nouveau contrat est en cours de préparation. Nous vous recontacterons très prochainement.",
+        message: "Merci ! Votre offre groupée est acceptée. Votre nouveau contrat est en cours de préparation.",
       };
     }
 
@@ -359,7 +359,7 @@ export default function DashboardClient() {
         {/* Section 2: Progress Tracker */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Votre parcours</CardTitle>
+            <CardTitle className="text-lg">Avancement vers votre réduction groupée</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -408,7 +408,7 @@ export default function DashboardClient() {
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-lg flex items-center gap-2">
               <Home className="w-5 h-5 text-primary" />
-              Votre profil logement
+              Votre profil logement (base de votre réduction négociée)
             </CardTitle>
             <Button variant="outline" size="sm" asChild>
               <Link to={`/formulaire-logement/${profile.housing_token}`}>
@@ -467,7 +467,7 @@ export default function DashboardClient() {
               <div className="text-center py-8">
                 <Home className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
                 <p className="text-muted-foreground mb-4">
-                  Complétez votre profil logement pour recevoir une offre personnalisée.
+                  Vous faites partie de notre achat groupé. Nous négocions pour votre groupe une réduction pouvant aller jusqu'à -30 %. Vous serez averti dès qu'une offre personnalisée est disponible.
                 </p>
                 <Button asChild>
                   <Link to={`/formulaire-logement/${profile.housing_token}`}>
@@ -485,22 +485,26 @@ export default function DashboardClient() {
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <Gift className="w-5 h-5 text-primary" />
-                Votre offre personnalisée
+                Votre offre négociée grâce au groupe
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
+              <p className="text-sm text-muted-foreground">
+                Grâce à l'achat groupé, vous pouvez économiser jusqu'à -30 % sur votre contrat.
+              </p>
+              
               {/* Savings highlight */}
               <div className="bg-primary/5 rounded-xl p-6 text-center">
-                <p className="text-sm text-muted-foreground mb-1">Économie estimée</p>
+                <p className="text-sm text-muted-foreground mb-1">💸 Économies estimées</p>
                 <div className="flex items-center justify-center gap-2">
                   <TrendingDown className="w-8 h-8 text-primary" />
                   <span className="text-4xl font-bold text-primary">
-                    {currentOffer.economie_estimee_mensuelle?.toFixed(0) || "0"} €
+                    {currentOffer.economie_estimee_annuelle?.toFixed(0) || "0"} €
                   </span>
-                  <span className="text-lg text-muted-foreground">/mois</span>
+                  <span className="text-lg text-muted-foreground">/ an</span>
                 </div>
                 <p className="text-muted-foreground mt-1">
-                  Soit <strong>{currentOffer.economie_estimee_annuelle?.toFixed(0) || "0"} €</strong> par an
+                  Soit <strong>{currentOffer.economie_estimee_mensuelle?.toFixed(0) || "0"} €</strong> par mois
                 </p>
               </div>
 
@@ -530,7 +534,7 @@ export default function DashboardClient() {
                     ) : (
                       <CheckCircle className="h-4 w-4 mr-2" />
                     )}
-                    J'accepte cette offre
+                    J'accepte l'offre groupée
                   </Button>
                   <Button
                     variant="outline"
@@ -570,7 +574,7 @@ export default function DashboardClient() {
         {campaignHistory.length > 0 && (
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Historique des campagnes</CardTitle>
+              <CardTitle className="text-lg">Historique de vos offres groupées</CardTitle>
             </CardHeader>
             <CardContent>
               <Table>
