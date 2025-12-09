@@ -12,7 +12,8 @@ export function MobileFixedCTA() {
     >
       <Button 
         variant="hero" 
-        className="w-full h-[52px] text-sm font-semibold"
+        size="lg" 
+        className="w-full py-4 text-sm font-semibold"
         asChild
       >
         <Link to="/inscription">

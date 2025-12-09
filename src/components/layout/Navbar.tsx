@@ -107,7 +107,7 @@ export function Navbar() {
         <div className="flex items-center gap-3 sm:gap-4">
           {user ? (
             <>
-              <Button variant="ghost" size="sm" className="text-sm sm:text-base px-3 sm:px-4 h-10" asChild>
+              <Button variant="ghost" size="sm" className="text-sm px-3 sm:px-4 h-10" asChild>
                 <Link to="/dashboard-client">
                   <User className="w-4 h-4 mr-1.5 sm:mr-2" />
                   Mon espace
@@ -116,7 +116,7 @@ export function Navbar() {
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="text-sm sm:text-base px-3 sm:px-4 h-10"
+                className="text-sm px-3 sm:px-4 h-10"
                 onClick={handleLogout}
               >
                 <LogOut className="w-4 h-4" />
@@ -124,10 +124,10 @@ export function Navbar() {
             </>
           ) : (
             <>
-              <Button variant="ghost" size="sm" className="text-sm sm:text-base px-3 sm:px-4 h-10" asChild>
+              <Button variant="ghost" size="sm" className="text-sm px-3 sm:px-4 h-10" asChild>
                 <Link to="/connexion">Connexion</Link>
               </Button>
-              <Button variant="hero" size="sm" className="hidden sm:inline-flex text-sm sm:text-base px-4 sm:px-5 h-10" asChild>
+              <Button variant="hero" size="sm" className="hidden sm:inline-flex text-sm px-4 sm:px-5 h-10" asChild>
                 <Link to="/inscription">Rejoindre</Link>
               </Button>
             </>
@@ -174,7 +174,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="absolute top-16 right-4 z-50 bg-card border border-border rounded-2xl shadow-switchly-xl hidden lg:block w-64"
+            className="absolute top-16 right-4 z-50 bg-card border border-border rounded-xl md:rounded-2xl shadow-switchly-xl hidden lg:block w-64"
           >
             <div className="py-3">
               {allDesktopLinks.map((link, index) => (
@@ -182,7 +182,7 @@ export function Navbar() {
                   key={link.href}
                   to={link.href}
                   onClick={() => setIsDesktopOpen(false)}
-                  className={`block text-base font-medium py-3 px-5 transition-colors hover:bg-muted text-foreground ${index === 2 ? "border-b border-border mb-1 pb-4" : ""}`}
+                  className={`block text-sm md:text-base font-medium py-3 px-5 transition-colors hover:bg-muted text-foreground ${index === 2 ? "border-b border-border mb-1 pb-4" : ""}`}
                 >
                   {link.label}
                 </Link>
@@ -215,31 +215,32 @@ export function Navbar() {
               className="absolute top-16 left-0 right-0 z-50 bg-card border-b border-border shadow-switchly-lg lg:hidden"
             >
               <div className="container mx-auto px-4 py-5">
-                {/* Navigation Links - Larger tap targets, reduced spacing */}
-              <div className="flex flex-col gap-1">
+                {/* Navigation Links */}
+                <div className="flex flex-col gap-1">
                   {navLinks.map((link) => (
                     <Link
                       key={link.href}
                       to={link.href}
                       onClick={() => setIsMobileOpen(false)}
-                      className="text-sm font-semibold py-4 px-4 rounded-xl transition-colors hover:bg-muted active:bg-muted leading-relaxed text-foreground"
+                      className="text-sm font-medium py-4 px-4 rounded-xl transition-colors hover:bg-muted active:bg-muted leading-relaxed text-foreground"
                     >
                       {link.label}
                     </Link>
                   ))}
                 </div>
                 
-                {/* CTA Button - Full width */}
+                {/* CTA Button - Full width, same as landing page CTA */}
                 {!user && (
                   <div className="mt-5">
                     <Button 
                       variant="hero" 
-                      className="w-full h-[52px] text-sm font-semibold rounded-xl" 
+                      size="lg"
+                      className="w-full py-4 text-sm font-semibold" 
                       asChild
                     >
                       <Link to="/inscription" onClick={() => setIsMobileOpen(false)}>
                         Rejoindre l'achat groupé
-                        <ArrowRight className="w-5 h-5 ml-2" />
+                        <ArrowRight className="w-4 h-4 ml-2" />
                       </Link>
                     </Button>
                   </div>
@@ -253,7 +254,7 @@ export function Navbar() {
                         key={link.href}
                         to={link.href}
                         onClick={() => setIsMobileOpen(false)}
-                        className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                        className="text-xs text-muted-foreground hover:text-foreground transition-colors"
                       >
                         {link.label}
                       </Link>
