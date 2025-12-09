@@ -130,7 +130,6 @@
   
   /* Gradient text with shimmer animation */
   .gradient-text {
-    @apply bg-clip-text text-transparent;
     background: linear-gradient(
       135deg,
       hsl(217 91% 55%) 0%,
@@ -140,6 +139,10 @@
       hsl(217 91% 55%) 100%
     );
     background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
     animation: gradient-shift 4s ease-in-out infinite;
   }
   
