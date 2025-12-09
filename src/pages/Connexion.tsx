@@ -85,7 +85,7 @@ export default function Connexion() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-8 sm:py-12 px-4">
+    <div className="h-screen flex items-center justify-center px-4 overflow-hidden">
       <div className="w-full max-w-md">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
