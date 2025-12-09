@@ -146,13 +146,6 @@ export function HeroSection() {
                     <p className="text-xs text-secondary font-medium">économisés/an</p>
                   </div>
                 </div>
-
-                {/* CTA */}
-                <Button variant="hero" className="w-full" asChild>
-                  <Link to="/inscription">
-                    Je rejoins l'achat groupé gratuitement
-                  </Link>
-                </Button>
               </div>
             </div>
 
