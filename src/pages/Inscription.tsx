@@ -230,7 +230,7 @@ export default function Inscription() {
               type="submit"
               variant="hero"
               size="lg"
-              className="w-full"
+              className="w-full py-6"
               disabled={isLoading}
             >
               {isLoading ? (
