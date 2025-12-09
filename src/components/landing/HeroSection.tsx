@@ -52,21 +52,21 @@ export function HeroSection() {
 
             {/* Title */}
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
-              Switchly : payez votre{" "}
-              <span className="gradient-text">électricité & Internet</span>{" "}
-              moins cher grâce à l'achat groupé
+              Rejoignez notre achat groupé et économisez{" "}
+              <span className="gradient-text">jusqu'à 30 %</span>{" "}
+              sur vos factures d'énergie et d'internet.
             </h1>
 
             {/* Subtitle */}
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0">
-              Inscrivez-vous gratuitement et profitez de tarifs négociés grâce à la force du groupe. Sans engagement, sans démarches compliquées.
+              Plus nous sommes nombreux, plus les fournisseurs baissent les prix — vous profitez gratuitement des tarifs négociés.
             </p>
 
             {/* CTA Buttons */}
             <div className="flex flex-col gap-4 px-4 sm:px-0">
               <Button variant="hero" size="xl" className="w-full sm:w-auto text-base sm:text-lg py-7 sm:py-5" asChild>
                 <Link to="/inscription">
-                  Je rejoins gratuitement le groupe
+                  Je rejoins l'achat groupé gratuitement
                 </Link>
               </Button>
             </div>
@@ -75,15 +75,15 @@ export function HeroSection() {
             <div className="flex flex-col sm:flex-row flex-wrap justify-center lg:justify-start gap-4 sm:gap-6 pt-2 md:pt-4">
               <div className="flex items-center justify-center lg:justify-start gap-2 text-sm md:text-base text-muted-foreground">
                 <Shield className="w-5 h-5 text-primary flex-shrink-0" />
-                <span>Aucun engagement</span>
+                <span>Jusqu'à -30 % grâce au groupe</span>
               </div>
               <div className="flex items-center justify-center lg:justify-start gap-2 text-sm md:text-base text-muted-foreground">
                 <Lock className="w-5 h-5 text-secondary flex-shrink-0" />
-                <span>Données protégées</span>
+                <span>Offre 100 % personnalisée</span>
               </div>
               <div className="flex items-center justify-center lg:justify-start gap-2 text-sm md:text-base text-muted-foreground">
                 <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
-                <span>Vous choisissez l'offre finale</span>
+                <span>Zéro démarche, zéro engagement</span>
               </div>
             </div>
           </motion.div>
@@ -150,7 +150,7 @@ export function HeroSection() {
                 {/* CTA */}
                 <Button variant="hero" className="w-full" asChild>
                   <Link to="/inscription">
-                    Rejoindre le groupe dès maintenant
+                    Je rejoins l'achat groupé gratuitement
                   </Link>
                 </Button>
               </div>

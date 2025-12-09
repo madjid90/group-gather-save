@@ -162,10 +162,10 @@ interface Question {
 
 const QUESTIONS: Question[] = [
   // Step 1: Logement
-  { id: "q1", step: 1, field: "typeLogement", label: "Quel est le type de votre logement ?", icon: Home, type: "select", options: TYPES_LOGEMENT, autoAdvance: true },
-  { id: "q2", step: 1, field: "surface", label: "Quelle est la surface de votre logement ?", icon: Ruler, type: "input", placeholder: "Surface en m²", inputType: "number", autoAdvance: false },
+  { id: "q1", step: 1, field: "typeLogement", label: "Pour optimiser la négociation de votre groupe, indiquez votre type de logement.", icon: Home, type: "select", options: TYPES_LOGEMENT, autoAdvance: true },
+  { id: "q2", step: 1, field: "surface", label: "Pour personnaliser votre réduction groupée, indiquez la surface en m².", icon: Ruler, type: "input", placeholder: "Ex : 65", inputType: "number", autoAdvance: false },
   { id: "q3", step: 1, field: "nombreOccupants", label: "Combien de personnes vivent dans votre logement ?", icon: Users, type: "select", options: OCCUPANTS, autoAdvance: true },
-  { id: "q4", step: 1, field: "isolation", label: "Comment est l'isolation de votre logement ?", icon: BrickWall, type: "select", options: ISOLATION_OPTIONS, autoAdvance: true },
+  { id: "q4", step: 1, field: "isolation", label: "Comment est isolé votre logement ? Cela influence votre réduction.", icon: BrickWall, type: "select", options: ISOLATION_OPTIONS, autoAdvance: true },
   { id: "q5", step: 1, field: "modeChauffage", label: "Quel est votre mode de chauffage principal ?", icon: Flame, type: "select", options: MODES_CHAUFFAGE, autoAdvance: true },
   { id: "q6", step: 1, field: "chauffeEauElectrique", label: "Avez-vous un chauffe-eau électrique ?", icon: Droplets, type: "radio", options: [{ value: "oui", label: "Oui" }, { value: "non", label: "Non" }], autoAdvance: true },
   
@@ -173,12 +173,12 @@ const QUESTIONS: Question[] = [
   { id: "q7", step: 2, field: "fournisseurElectricite", label: "Qui est votre fournisseur d'électricité actuel ?", icon: Zap, type: "select", options: FOURNISSEURS_ENERGIE, autoAdvance: true },
   { id: "q8", step: 2, field: "optionTarifaire", label: "Quelle est votre option tarifaire ?", icon: Clock, type: "select", options: OPTIONS_TARIFAIRES, autoAdvance: true },
   { id: "q9", step: 2, field: "puissanceCompteur", label: "Quelle est la puissance de votre compteur ?", icon: Gauge, type: "select", options: PUISSANCES_COMPTEUR, autoAdvance: true },
-  { id: "q10", step: 2, field: "montantFacture", label: "Quel est le montant de votre facture mensuelle ?", icon: Euro, type: "input", placeholder: "Montant en €", inputType: "number", autoAdvance: false },
+  { id: "q10", step: 2, field: "montantFacture", label: "Combien payez-vous en moyenne par mois ? Cela nous aide à calculer votre économie dans le groupe.", icon: Euro, type: "input", placeholder: "Ex : 90 € / mois", inputType: "number", autoAdvance: false },
   
   // Step 3: Internet
-  { id: "q11", step: 3, field: "typeConnexion", label: "Quel type de connexion Internet avez-vous ?", icon: Globe, type: "select", options: TYPES_CONNEXION, autoAdvance: true },
+  { id: "q11", step: 3, field: "typeConnexion", label: "Quel type de connexion Internet utilisez-vous ?", icon: Globe, type: "select", options: TYPES_CONNEXION, autoAdvance: true },
   { id: "q12", step: 3, field: "fournisseurInternet", label: "Qui est votre fournisseur Internet ?", icon: Radio, type: "select", options: FOURNISSEURS_INTERNET, autoAdvance: true },
-  { id: "q13", step: 3, field: "prixMensuelInternet", label: "Combien payez-vous par mois ?", icon: Euro, type: "input", placeholder: "Prix en €", inputType: "number", autoAdvance: false },
+  { id: "q13", step: 3, field: "prixMensuelInternet", label: "Quel est le prix de votre abonnement Internet ?", icon: Euro, type: "input", placeholder: "Ex : 29,99 € / mois", inputType: "number", autoAdvance: false },
   { id: "q14", step: 3, field: "satisfaction", label: "Êtes-vous satisfait de votre connexion ?", icon: Smile, type: "slider", min: 1, max: 5, autoAdvance: false },
   { id: "q15", step: 3, field: "eligibiliteFibre", label: "Êtes-vous éligible à la fibre ?", icon: Cable, type: "radio", options: [{ value: "oui", label: "Oui" }, { value: "non", label: "Non" }, { value: "ne_sais_pas", label: "Je ne sais pas" }], autoAdvance: true },
   
@@ -372,12 +372,12 @@ export default function FormulaireLogement() {
           <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center mx-auto mb-6">
             <Check className="w-8 h-8 text-secondary" />
           </div>
-          <h1 className="text-2xl font-bold text-foreground mb-3">Merci !</h1>
+          <h1 className="text-2xl font-bold text-foreground mb-3">Merci ! 🚀</h1>
           <p className="text-muted-foreground mb-6">
-            Vos informations logement ont bien été enregistrées. Nous vous préviendrons dès qu'une offre négociée sera disponible.
+            Vous faites officiellement partie de l'achat groupé. Nous négocions une réduction pouvant atteindre -30 % selon votre profil.
           </p>
-          <Button variant="outline" asChild>
-            <Link to="/">Retour à l'accueil</Link>
+          <Button variant="hero" asChild>
+            <Link to="/dashboard-client">Accéder à mon espace</Link>
           </Button>
         </motion.div>
       </div>

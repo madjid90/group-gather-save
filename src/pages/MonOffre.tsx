@@ -183,30 +183,33 @@ export default function MonOffre() {
         {/* Header */}
         <div className="text-center">
           <h1 className="text-3xl font-bold text-foreground mb-2">
-            Votre offre personnalisée Switchly
+            Votre réduction groupée est prête 🎉
           </h1>
           {profile && (
             <p className="text-muted-foreground">
               Bonjour {profile.prenom} {profile.nom}
             </p>
           )}
+          <p className="text-muted-foreground mt-2">
+            Grâce à l'achat groupé, vous pouvez économiser jusqu'à -30 % sur votre contrat.
+          </p>
         </div>
 
         {/* Main Offer Card */}
         <Card className="overflow-hidden">
           <div className="bg-primary text-primary-foreground p-6 text-center">
-            <p className="text-sm opacity-90 mb-2">Économie estimée</p>
+            <p className="text-sm opacity-90 mb-2">💸 Économies estimées</p>
             <div className="flex items-center justify-center gap-2">
               <TrendingDown className="h-8 w-8" />
               <span className="text-4xl font-bold">
-                {offer.economie_estimee_mensuelle?.toFixed(0) || "0"} €
+                {offer.economie_estimee_annuelle?.toFixed(0) || "0"} €
               </span>
-              <span className="text-lg opacity-90">/mois</span>
+              <span className="text-lg opacity-90">/ an</span>
             </div>
             <p className="mt-2 text-lg">
               Soit{" "}
               <span className="font-bold">
-                {offer.economie_estimee_annuelle?.toFixed(0) || "0"} € par an
+                {offer.economie_estimee_mensuelle?.toFixed(0) || "0"} € / mois
               </span>
             </p>
           </div>
@@ -280,12 +283,6 @@ export default function MonOffre() {
               </div>
             ) : (
               <div className="space-y-4">
-                <p className="text-center text-sm text-muted-foreground">
-                  Cette offre a été calculée à partir de votre profil logement.
-                  <br />
-                  Vous pouvez économiser jusqu'à{" "}
-                  <strong>{offer.economie_estimee_annuelle?.toFixed(0) || "0"} € par an</strong>.
-                </p>
                 <div className="flex gap-4">
                   <Button
                     className="flex-1"
@@ -298,7 +295,7 @@ export default function MonOffre() {
                     ) : (
                       <CheckCircle className="h-4 w-4 mr-2" />
                     )}
-                    J'accepte cette offre
+                    Je profite de cette réduction
                   </Button>
                   <Button
                     variant="outline"
