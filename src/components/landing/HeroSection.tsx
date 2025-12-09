@@ -62,10 +62,6 @@ export function HeroSection() {
               <span className="gradient-text">sur vos factures.</span>
             </h1>
 
-            {/* Mobile social proof - only visible on mobile */}
-            <p className="text-sm text-muted-foreground md:hidden">
-              Déjà plus de 1 200 membres inscrits.
-            </p>
 
             {/* Subtitle - slightly larger on mobile for readability */}
             <p className="text-sm sm:text-base md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0">
