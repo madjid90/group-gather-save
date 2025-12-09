@@ -38,10 +38,13 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          {/* Auth pages without footer */}
+          <Route path="/inscription" element={<Inscription />} />
+          <Route path="/connexion" element={<Connexion />} />
+          
+          {/* Public pages with full layout */}
           <Route element={<PublicLayout />}>
             <Route path="/" element={<Index />} />
-            <Route path="/inscription" element={<Inscription />} />
-            <Route path="/connexion" element={<Connexion />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/mentions-legales" element={<MentionsLegales />} />
