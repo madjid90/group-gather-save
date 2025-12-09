@@ -96,7 +96,9 @@ const handler = async (req: Request): Promise<Response> => {
     // Log the SMS
     await supabase.from("sms_logs").insert({
       user_id: userId,
+      telephone: formattedPhone,
       message: smsBody,
+      type: "welcome",
       statut: "envoye",
     });
 

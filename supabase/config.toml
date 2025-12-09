@@ -9,6 +9,9 @@ verify_jwt = false
 [functions.send-offer-sms]
 verify_jwt = false
 
+[functions.send-relance-sms]
+verify_jwt = false
+
 [functions.export-campaign-anonymous]
 verify_jwt = false
 

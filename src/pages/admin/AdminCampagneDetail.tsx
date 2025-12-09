@@ -580,6 +580,104 @@ export default function AdminCampagneDetail() {
           </div>
         </CardContent>
       </Card>
+
+      {/* SMS Relance Block */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">SMS de relance (manuels)</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Button
+              variant="secondary"
+              className="h-auto py-3"
+              onClick={async () => {
+                setActionLoading("relance-nego");
+                try {
+                  const response = await supabase.functions.invoke("send-relance-sms", {
+                    body: { type: "debut_negociation", campaign_id: campaign.id },
+                  });
+                  if (response.error) throw response.error;
+                  toast.success(`${response.data.sent} SMS envoyés`);
+                } catch (error) {
+                  toast.error("Erreur lors de l'envoi");
+                } finally {
+                  setActionLoading(null);
+                }
+              }}
+              disabled={!campaign.progression_inscriptions_cloturees || actionLoading === "relance-nego"}
+            >
+              {actionLoading === "relance-nego" ? "Envoi..." : "SMS début négociation"}
+            </Button>
+
+            <Button
+              variant="secondary"
+              className="h-auto py-3"
+              onClick={async () => {
+                setActionLoading("relance-offre");
+                try {
+                  const response = await supabase.functions.invoke("send-relance-sms", {
+                    body: { type: "relance_offre_48h", campaign_id: campaign.id },
+                  });
+                  if (response.error) throw response.error;
+                  toast.success(`${response.data.sent} SMS de relance envoyés`);
+                } catch (error) {
+                  toast.error("Erreur lors de l'envoi");
+                } finally {
+                  setActionLoading(null);
+                }
+              }}
+              disabled={!campaign.progression_offres_envoyees || actionLoading === "relance-offre"}
+            >
+              {actionLoading === "relance-offre" ? "Envoi..." : "Relance offre 48h"}
+            </Button>
+
+            <Button
+              variant="secondary"
+              className="h-auto py-3"
+              onClick={async () => {
+                setActionLoading("relance-form");
+                try {
+                  const response = await supabase.functions.invoke("send-relance-sms", {
+                    body: { type: "relance_formulaire_24h" },
+                  });
+                  if (response.error) throw response.error;
+                  toast.success(`${response.data.sent} SMS de relance envoyés`);
+                } catch (error) {
+                  toast.error("Erreur lors de l'envoi");
+                } finally {
+                  setActionLoading(null);
+                }
+              }}
+              disabled={actionLoading === "relance-form"}
+            >
+              {actionLoading === "relance-form" ? "Envoi..." : "Relance formulaire 24h"}
+            </Button>
+
+            <Button
+              variant="secondary"
+              className="h-auto py-3"
+              onClick={async () => {
+                setActionLoading("fin-campagne");
+                try {
+                  const response = await supabase.functions.invoke("send-relance-sms", {
+                    body: { type: "fin_campagne", campaign_id: campaign.id },
+                  });
+                  if (response.error) throw response.error;
+                  toast.success(`${response.data.sent} SMS envoyés`);
+                } catch (error) {
+                  toast.error("Erreur lors de l'envoi");
+                } finally {
+                  setActionLoading(null);
+                }
+              }}
+              disabled={!isTerminee || actionLoading === "fin-campagne"}
+            >
+              {actionLoading === "fin-campagne" ? "Envoi..." : "SMS fin campagne"}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
