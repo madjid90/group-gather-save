@@ -108,7 +108,7 @@ export function Navbar() {
           {/* Desktop Hamburger Menu Button - Hidden on mobile */}
           <button
             ref={desktopButtonRef}
-            className="hidden lg:flex items-center gap-2 p-2 px-3 rounded-lg hover:bg-muted transition-colors border border-border/50"
+            className="hidden lg:flex items-center p-2 rounded-lg hover:bg-muted transition-colors border border-border/50"
             onClick={() => setIsDesktopOpen(!isDesktopOpen)}
             aria-label="Toggle menu"
             aria-expanded={isDesktopOpen}
@@ -118,7 +118,6 @@ export function Navbar() {
             ) : (
               <Menu className="w-5 h-5 text-foreground" />
             )}
-            <span className="text-sm font-medium text-foreground">Menu</span>
           </button>
 
           {user ? (
