@@ -27,11 +27,11 @@ export function CTASection() {
             <p className="text-base sm:text-lg md:text-xl text-primary-foreground/80 mb-8 md:mb-10 max-w-2xl mx-auto">
               L'inscription est gratuite et sans engagement. Plus le groupe grandit, plus nous pouvons négocier des prix avantageux.
             </p>
-            <div className="flex justify-center px-4">
+            <div className="flex justify-center">
               <Button
                 variant="secondary"
                 size="xl"
-                className="group w-full sm:w-auto py-7 sm:py-5 text-base sm:text-lg"
+                className="group w-full max-w-md sm:w-auto py-7 sm:py-5 text-base sm:text-lg mx-4 sm:mx-0"
                 asChild
               >
                 <Link to="/inscription">
