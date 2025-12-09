@@ -6,7 +6,7 @@ import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden py-12 md:py-0">
+    <section className="relative min-h-[70vh] md:min-h-[90vh] flex items-center overflow-hidden py-6 md:py-0">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-subtle" />
       
@@ -31,13 +31,13 @@ export function HeroSection() {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-6 md:gap-10 lg:gap-12 items-center">
           {/* Content */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="space-y-6 md:space-y-8 text-center lg:text-left"
+            className="space-y-4 md:space-y-8 text-center lg:text-left"
           >
             {/* Badge */}
             <motion.div
@@ -45,30 +45,35 @@ export function HeroSection() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
               whileHover={{ scale: 1.05 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/10 text-secondary border border-secondary/20 cursor-default"
+              className="inline-flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-secondary/10 text-secondary border border-secondary/20 cursor-default"
             >
               <motion.span 
-                className="w-2 h-2 rounded-full bg-secondary"
+                className="w-1.5 md:w-2 h-1.5 md:h-2 rounded-full bg-secondary"
                 animate={{ scale: [1, 1.3, 1], opacity: [1, 0.7, 1] }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
               />
-              <span className="text-sm font-medium">Plus de 12 000 membres actifs</span>
+              <span className="text-xs md:text-sm font-medium">Plus de 12 000 membres actifs</span>
             </motion.div>
 
-            {/* Title */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
+            {/* Title - smaller on mobile */}
+            <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
               Rejoignez notre achat groupé et économisez{" "}
               <span className="gradient-text">jusqu'à 30 %</span>{" "}
-              <span className="gradient-text">sur vos factures d'énergie et d'internet.</span>
+              <span className="gradient-text">sur vos factures.</span>
             </h1>
 
-            {/* Subtitle */}
-            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0">
-              Plus nous sommes nombreux, plus les fournisseurs baissent les prix — vous profitez gratuitement des tarifs négociés.
+            {/* Mobile social proof - only visible on mobile */}
+            <p className="text-sm text-muted-foreground md:hidden">
+              Déjà plus de 1 200 membres inscrits.
             </p>
 
-            {/* CTA Buttons */}
-            <div className="flex justify-center lg:justify-start w-full">
+            {/* Subtitle - slightly larger on mobile for readability */}
+            <p className="text-sm sm:text-base md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0">
+              Plus nous sommes nombreux, plus les fournisseurs baissent les prix.
+            </p>
+
+            {/* CTA Button - hidden on mobile (using fixed CTA instead) */}
+            <div className="hidden md:flex justify-center lg:justify-start w-full">
               <Button variant="hero" size="xl" className="w-[calc(100%-2rem)] max-w-md sm:w-auto text-base sm:text-lg py-7 sm:py-5 px-8" asChild>
                 <Link to="/inscription">
                   Je rejoins l'achat groupé gratuitement
@@ -76,24 +81,24 @@ export function HeroSection() {
               </Button>
             </div>
 
-            {/* Trust badges */}
-            <div className="flex flex-col sm:flex-row flex-wrap justify-center lg:justify-start gap-4 sm:gap-6 pt-2 md:pt-4">
-              <div className="flex items-center justify-center lg:justify-start gap-2 text-sm md:text-base text-muted-foreground">
-                <Shield className="w-5 h-5 text-primary flex-shrink-0" />
+            {/* Trust badges - smaller on mobile */}
+            <div className="flex flex-col sm:flex-row flex-wrap justify-center lg:justify-start gap-2 md:gap-6 pt-1 md:pt-4">
+              <div className="flex items-center justify-center lg:justify-start gap-1.5 md:gap-2 text-xs md:text-base text-muted-foreground">
+                <Shield className="w-4 h-4 md:w-5 md:h-5 text-primary flex-shrink-0" />
                 <span>Jusqu'à -30 % grâce au groupe</span>
               </div>
-              <div className="flex items-center justify-center lg:justify-start gap-2 text-sm md:text-base text-muted-foreground">
-                <Lock className="w-5 h-5 text-secondary flex-shrink-0" />
-                <span>Offre 100 % personnalisée</span>
+              <div className="flex items-center justify-center lg:justify-start gap-1.5 md:gap-2 text-xs md:text-base text-muted-foreground">
+                <Lock className="w-4 h-4 md:w-5 md:h-5 text-secondary flex-shrink-0" />
+                <span>Offre personnalisée</span>
               </div>
-              <div className="flex items-center justify-center lg:justify-start gap-2 text-sm md:text-base text-muted-foreground">
-                <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
-                <span>Zéro démarche, zéro engagement</span>
+              <div className="flex items-center justify-center lg:justify-start gap-1.5 md:gap-2 text-xs md:text-base text-muted-foreground">
+                <CheckCircle className="w-4 h-4 md:w-5 md:h-5 text-primary flex-shrink-0" />
+                <span>Zéro engagement</span>
               </div>
             </div>
           </motion.div>
 
-          {/* Visual */}
+          {/* Visual - desktop only */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}

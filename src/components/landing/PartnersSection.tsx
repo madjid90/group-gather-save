@@ -21,19 +21,19 @@ const partners: Partner[] = [
   { name: "Engie", logo: engieLogo },
   { name: "Eni", logo: eniLogo },
   { name: "EDF", logo: edfLogo },
-  { name: "Bouygues Telecom", logo: bouyguesLogo, className: "h-16 md:h-20 max-w-[130px]" },
+  { name: "Bouygues Telecom", logo: bouyguesLogo, className: "h-12 md:h-20 max-w-[100px] md:max-w-[130px]" },
   { name: "SFR", logo: sfrLogo },
   { name: "Orange", logo: orangeLogo },
   { name: "Free", logo: freeLogo },
 ];
 
 function PartnerLogo({ partner }: { partner: Partner }) {
-  const defaultClass = "h-10 md:h-12 w-auto max-w-[100px] object-contain grayscale opacity-70";
+  const defaultClass = "h-8 md:h-12 w-auto max-w-[80px] md:max-w-[100px] object-contain grayscale opacity-70";
   const logoClass = partner.className || defaultClass;
   
   return (
-    <div className="flex-shrink-0 w-36 md:w-44">
-      <div className="bg-card border border-border rounded-2xl p-4 md:p-6 h-24 md:h-28 flex items-center justify-center">
+    <div className="flex-shrink-0 w-28 md:w-44">
+      <div className="bg-card border border-border rounded-xl md:rounded-2xl p-3 md:p-6 h-20 md:h-28 flex items-center justify-center">
         <img 
           src={partner.logo} 
           alt={`Logo ${partner.name}`}
@@ -49,7 +49,7 @@ export function PartnersSection() {
   const duplicatedPartners = [...partners, ...partners];
 
   return (
-    <section className="py-16 md:py-24 bg-muted/30 overflow-hidden">
+    <section className="py-10 md:py-24 bg-muted/30 overflow-hidden">
       <div className="container mx-auto px-4">
         {/* Header */}
         <motion.div
@@ -57,13 +57,14 @@ export function PartnersSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-12"
+          className="text-center mb-8 md:mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+          <h2 className="text-xl sm:text-2xl md:text-4xl font-bold text-foreground mb-2 md:mb-4">
             Nos fournisseurs partenaires
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Nous collaborons uniquement avec des fournisseurs fiables et reconnus pour vous garantir des offres transparentes et avantageuses.
+          <p className="text-sm md:text-lg text-muted-foreground max-w-2xl mx-auto">
+            <span className="hidden md:inline">Nous collaborons uniquement avec des fournisseurs fiables et reconnus pour vous garantir des offres transparentes et avantageuses.</span>
+            <span className="md:hidden">Fournisseurs fiables et reconnus</span>
           </p>
         </motion.div>
 
@@ -76,13 +77,13 @@ export function PartnersSection() {
           className="relative"
         >
           {/* Gradient overlays for fade effect */}
-          <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-muted/30 to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-muted/30 to-transparent z-10 pointer-events-none" />
+          <div className="absolute left-0 top-0 bottom-0 w-8 md:w-32 bg-gradient-to-r from-muted/30 to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-8 md:w-32 bg-gradient-to-l from-muted/30 to-transparent z-10 pointer-events-none" />
           
           {/* Scrolling container */}
           <div className="overflow-hidden">
             <motion.div
-              className="flex gap-4"
+              className="flex gap-3 md:gap-4"
               animate={{
                 x: [0, -50 * partners.length * 3],
               }}
