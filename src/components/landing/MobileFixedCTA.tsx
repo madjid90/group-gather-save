@@ -12,7 +12,7 @@ export function MobileFixedCTA() {
     >
       <Button 
         variant="hero" 
-        className="w-full h-[52px] text-[17px] font-semibold"
+        className="w-full h-[52px] text-sm font-semibold"
         asChild
       >
         <Link to="/inscription">
