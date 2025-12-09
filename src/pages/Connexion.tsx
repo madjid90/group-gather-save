@@ -70,7 +70,7 @@ export default function Connexion() {
       }
 
       toast.success("Connexion réussie !");
-      navigate("/dashboard");
+      navigate("/dashboard-client");
     } catch (error) {
       toast.error("Une erreur est survenue. Veuillez réessayer.");
     } finally {

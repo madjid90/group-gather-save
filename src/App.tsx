@@ -26,6 +26,7 @@ import AdminReactivation from "./pages/admin/AdminReactivation";
 import FormulaireLogement from "./pages/FormulaireLogement";
 import MonOffre from "./pages/MonOffre";
 import OffreConfirmation from "./pages/OffreConfirmation";
+import DashboardClient from "./pages/DashboardClient";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -48,6 +49,7 @@ const App = () => (
           <Route path="/formulaire-logement/:token" element={<FormulaireLogement />} />
           <Route path="/mon-offre" element={<MonOffre />} />
           <Route path="/offre-confirmation" element={<OffreConfirmation />} />
+          <Route path="/dashboard-client" element={<DashboardClient />} />
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="offres" element={<MesOffres />} />

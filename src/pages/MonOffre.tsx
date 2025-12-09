@@ -96,6 +96,12 @@ export default function MonOffre() {
 
       if (error) throw error;
 
+      // Update user profile status
+      await supabase
+        .from("profiles")
+        .update({ statut: "souscription" })
+        .eq("id", offer.user_id);
+
       // Update campaign_users status
       await supabase
         .from("campaign_users")
@@ -123,6 +129,12 @@ export default function MonOffre() {
         .eq("id", offer.id);
 
       if (error) throw error;
+
+      // Update profile status back to inscrit
+      await supabase
+        .from("profiles")
+        .update({ statut: "inscrit" })
+        .eq("id", offer.user_id);
 
       toast.success("Votre réponse a été enregistrée.");
       navigate("/offre-confirmation?status=refusee");
