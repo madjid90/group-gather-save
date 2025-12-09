@@ -79,12 +79,12 @@ export function Navbar() {
         </Link>
 
         {/* Desktop Navigation Links */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-10">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               to={link.href}
-              className={`text-sm font-medium transition-colors hover:text-primary ${
+              className={`text-[16px] font-medium transition-colors hover:text-primary ${
                 location.pathname === link.href
                   ? "text-primary"
                   : "text-foreground/80"
@@ -99,7 +99,7 @@ export function Navbar() {
         <div className="flex items-center gap-3 sm:gap-4">
           {user ? (
             <>
-              <Button variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4 h-9" asChild>
+              <Button variant="ghost" size="sm" className="text-xs sm:text-[16px] px-2 sm:px-4 h-9" asChild>
                 <Link to="/dashboard-client">
                   <User className="w-4 h-4 mr-1 sm:mr-2" />
                   Mon espace
@@ -108,7 +108,7 @@ export function Navbar() {
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="text-xs sm:text-sm px-2 sm:px-4 h-9"
+                className="text-xs sm:text-[16px] px-2 sm:px-4 h-9"
                 onClick={handleLogout}
               >
                 <LogOut className="w-4 h-4" />
@@ -116,10 +116,10 @@ export function Navbar() {
             </>
           ) : (
             <>
-              <Button variant="ghost" size="sm" className="text-xs sm:text-sm px-3 sm:px-4 h-9" asChild>
+              <Button variant="ghost" size="sm" className="text-xs sm:text-[16px] px-3 sm:px-4 h-9" asChild>
                 <Link to="/connexion">Connexion</Link>
               </Button>
-              <Button variant="hero" size="sm" className="hidden sm:inline-flex text-xs sm:text-sm px-4 h-9" asChild>
+              <Button variant="hero" size="sm" className="hidden sm:inline-flex text-xs sm:text-[16px] px-4 h-9" asChild>
                 <Link to="/inscription">Rejoindre</Link>
               </Button>
             </>
@@ -172,7 +172,7 @@ export function Navbar() {
                       key={link.href}
                       to={link.href}
                       onClick={() => setIsOpen(false)}
-                      className={`text-lg font-medium py-3.5 px-4 rounded-xl transition-colors hover:bg-muted active:bg-muted ${
+                      className={`text-[17px] font-medium py-[14px] px-4 rounded-xl transition-colors hover:bg-muted active:bg-muted leading-relaxed ${
                         location.pathname === link.href
                           ? "text-primary bg-primary/5"
                           : "text-foreground"
@@ -186,7 +186,7 @@ export function Navbar() {
                 {/* CTA Button - Full width */}
                 {!user && (
                   <div className="mt-5">
-                    <Button variant="hero" size="lg" className="w-full text-base" asChild>
+                    <Button variant="hero" className="w-full h-[54px] text-[17px] font-semibold" asChild>
                       <Link to="/inscription" onClick={() => setIsOpen(false)}>
                         Rejoindre l'achat groupé
                       </Link>
@@ -202,7 +202,7 @@ export function Navbar() {
                         key={link.href}
                         to={link.href}
                         onClick={() => setIsOpen(false)}
-                        className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                        className="text-[13px] text-muted-foreground hover:text-foreground transition-colors"
                       >
                         {link.label}
                       </Link>

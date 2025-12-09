@@ -76,10 +76,10 @@ export default function Contact() {
             <Mail className="w-4 h-4" />
             <span className="text-sm font-medium">Contact</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-3 sm:mb-4">
+          <h1 className="text-[28px] sm:text-[30px] md:text-4xl font-bold text-foreground mb-3 sm:mb-4">
             Contactez notre équipe
           </h1>
-          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-[16px] sm:text-[18px] text-muted-foreground max-w-2xl mx-auto">
             Une question ? Un conseil ? Notre équipe est là pour vous aider.
           </p>
         </motion.div>
@@ -96,9 +96,9 @@ export default function Contact() {
               <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-3 sm:mb-4">
                 <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
               </div>
-              <h3 className="font-semibold text-foreground mb-1">Email</h3>
-              <p className="text-muted-foreground">contact@switchly.fr</p>
-              <p className="text-sm text-muted-foreground mt-1">
+              <h3 className="text-[18px] font-semibold text-foreground mb-1">Email</h3>
+              <p className="text-[16px] text-muted-foreground">contact@switchly.fr</p>
+              <p className="text-[14px] text-muted-foreground/80 mt-1">
                 Réponse sous 24h.
               </p>
             </div>
@@ -107,9 +107,9 @@ export default function Contact() {
               <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-3 sm:mb-4">
                 <Phone className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
               </div>
-              <h3 className="font-semibold text-foreground mb-1">Téléphone</h3>
-              <p className="text-muted-foreground">01 23 45 67 89</p>
-              <p className="text-sm text-muted-foreground mt-1">
+              <h3 className="text-[18px] font-semibold text-foreground mb-1">Téléphone</h3>
+              <p className="text-[16px] text-muted-foreground">01 23 45 67 89</p>
+              <p className="text-[14px] text-muted-foreground/80 mt-1">
                 Lun–Ven, 9h–18h
               </p>
             </div>
@@ -118,8 +118,8 @@ export default function Contact() {
               <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-3 sm:mb-4">
                 <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
               </div>
-              <h3 className="font-semibold text-foreground mb-1">Adresse</h3>
-              <p className="text-muted-foreground">
+              <h3 className="text-[18px] font-semibold text-foreground mb-1">Adresse</h3>
+              <p className="text-[16px] text-muted-foreground">
                 123 Avenue de la République
                 <br />
                 75011 Paris, France
@@ -160,21 +160,21 @@ export default function Contact() {
                 <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="nom">Nom complet</Label>
+                      <Label htmlFor="nom" className="text-[15px]">Nom complet</Label>
                       <Input
                         id="nom"
                         name="nom"
                         value={formData.nom}
                         onChange={handleChange}
                         placeholder="Jean Dupont"
-                        className={errors.nom ? "border-destructive" : ""}
+                        className={`h-[50px] text-[16px] ${errors.nom ? "border-destructive" : ""}`}
                       />
                       {errors.nom && (
                         <p className="text-xs text-destructive">{errors.nom}</p>
                       )}
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
+                      <Label htmlFor="email" className="text-[15px]">Email</Label>
                       <Input
                         id="email"
                         name="email"
@@ -182,7 +182,7 @@ export default function Contact() {
                         value={formData.email}
                         onChange={handleChange}
                         placeholder="jean.dupont@email.com"
-                        className={errors.email ? "border-destructive" : ""}
+                        className={`h-[50px] text-[16px] ${errors.email ? "border-destructive" : ""}`}
                       />
                       {errors.email && (
                         <p className="text-xs text-destructive">{errors.email}</p>
@@ -191,14 +191,14 @@ export default function Contact() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="sujet">Sujet</Label>
+                    <Label htmlFor="sujet" className="text-[15px]">Sujet</Label>
                     <Input
                       id="sujet"
                       name="sujet"
                       value={formData.sujet}
                       onChange={handleChange}
                       placeholder="Question sur l'achat groupé"
-                      className={errors.sujet ? "border-destructive" : ""}
+                      className={`h-[50px] text-[16px] ${errors.sujet ? "border-destructive" : ""}`}
                     />
                     {errors.sujet && (
                       <p className="text-xs text-destructive">{errors.sujet}</p>
@@ -206,7 +206,7 @@ export default function Contact() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="message">Message</Label>
+                    <Label htmlFor="message" className="text-[15px]">Message</Label>
                     <Textarea
                       id="message"
                       name="message"
@@ -214,7 +214,7 @@ export default function Contact() {
                       onChange={handleChange}
                       placeholder="Décrivez votre question ou suggestion..."
                       rows={5}
-                      className={errors.message ? "border-destructive" : ""}
+                      className={`min-h-[130px] text-[16px] ${errors.message ? "border-destructive" : ""}`}
                     />
                     {errors.message && (
                       <p className="text-xs text-destructive">{errors.message}</p>
@@ -224,8 +224,7 @@ export default function Contact() {
                   <Button
                     type="submit"
                     variant="hero"
-                    size="lg"
-                    className="w-full"
+                    className="w-full h-[54px] text-[17px] font-semibold"
                     disabled={isLoading}
                   >
                     {isLoading ? (
