@@ -54,7 +54,7 @@ export function HeroSection() {
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
               Rejoignez notre achat groupé et économisez{" "}
               <span className="gradient-text">jusqu'à 30 %</span>{" "}
-              sur vos factures d'énergie et d'internet.
+              <span className="gradient-text">sur vos factures d'énergie et d'internet.</span>
             </h1>
 
             {/* Subtitle */}
