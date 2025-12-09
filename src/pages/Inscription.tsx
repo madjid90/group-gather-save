@@ -116,7 +116,7 @@ export default function Inscription() {
 
   if (isSuccess) {
     return (
-      <div className="min-h-screen flex items-center justify-center py-12 px-4">
+      <div className="h-screen flex items-center justify-center px-4 overflow-hidden">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -144,7 +144,7 @@ export default function Inscription() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-8 sm:py-12 px-4">
+    <div className="h-screen flex items-center justify-center px-4 overflow-hidden">
       <div className="w-full max-w-md">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
