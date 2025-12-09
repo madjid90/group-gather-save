@@ -37,7 +37,7 @@ export function CTASection() {
                 asChild
               >
                 <Link to="/inscription">
-                  Je participe à l'achat groupé
+                  Je rejoins l'achat groupé gratuitement
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Button>

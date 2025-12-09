@@ -240,7 +240,7 @@ export default function Inscription() {
                 </>
               ) : (
                 <>
-                  Je rejoins gratuitement le groupe
+                  M'inscrire gratuitement
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </>
               )}
