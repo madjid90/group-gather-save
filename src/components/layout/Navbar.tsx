@@ -216,13 +216,13 @@ export function Navbar() {
             >
               <div className="container mx-auto px-4 py-5">
                 {/* Navigation Links - Larger tap targets, reduced spacing */}
-                <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-1">
                   {navLinks.map((link) => (
                     <Link
                       key={link.href}
                       to={link.href}
                       onClick={() => setIsMobileOpen(false)}
-                      className="text-[18px] font-medium py-4 px-4 rounded-xl transition-colors hover:bg-muted active:bg-muted leading-relaxed text-foreground"
+                      className="text-[17px] font-medium py-4 px-4 rounded-xl transition-colors hover:bg-muted active:bg-muted leading-relaxed text-foreground"
                     >
                       {link.label}
                     </Link>
