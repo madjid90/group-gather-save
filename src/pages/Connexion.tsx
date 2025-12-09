@@ -85,7 +85,7 @@ export default function Connexion() {
   };
 
   return (
-    <div className="h-screen flex items-center justify-center px-4 overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center px-4 py-8 bg-gradient-subtle">
       <div className="w-full max-w-md">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -101,10 +101,10 @@ export default function Connexion() {
               </div>
               <span className="text-xl font-bold text-foreground">Switchly</span>
             </Link>
-            <h1 className="text-[22px] sm:text-[26px] md:text-[30px] font-bold text-foreground mb-2 leading-tight">
-              Me connecter à mon espace
+            <h1 className="text-[26px] sm:text-[30px] md:text-[36px] font-bold text-foreground mb-2 leading-tight">
+              Me connecter
             </h1>
-            <p className="text-base sm:text-[17px] text-muted-foreground">
+            <p className="text-base sm:text-[18px] text-muted-foreground">
               Accédez à votre espace membre
             </p>
           </div>
@@ -112,7 +112,7 @@ export default function Connexion() {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="telephone" className="flex items-center gap-2 text-[15px] sm:text-base font-medium">
+              <Label htmlFor="telephone" className="flex items-center gap-2 text-[15px] sm:text-base font-medium text-foreground">
                 <Phone className="w-4 h-4 text-muted-foreground" />
                 Numéro de téléphone
               </Label>
@@ -123,15 +123,15 @@ export default function Connexion() {
                 value={formData.telephone}
                 onChange={handleChange}
                 placeholder="0612345678"
-                className={`h-[48px] sm:h-[52px] text-base rounded-xl ${errors.telephone ? "border-destructive" : ""}`}
+                className={errors.telephone ? "border-destructive focus-visible:ring-destructive/30" : ""}
               />
               {errors.telephone && (
-                <p className="text-xs text-destructive">{errors.telephone}</p>
+                <p className="text-sm text-destructive">{errors.telephone}</p>
               )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="flex items-center gap-2 text-[15px] sm:text-base font-medium">
+              <Label htmlFor="password" className="flex items-center gap-2 text-[15px] sm:text-base font-medium text-foreground">
                 <Lock className="w-4 h-4 text-muted-foreground" />
                 Mot de passe
               </Label>
@@ -143,7 +143,7 @@ export default function Connexion() {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="••••••••"
-                  className={`h-[48px] sm:h-[52px] text-base rounded-xl pr-12 ${errors.password ? "border-destructive" : ""}`}
+                  className={`pr-12 ${errors.password ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
                 />
                 <button
                   type="button"
@@ -154,7 +154,7 @@ export default function Connexion() {
                 </button>
               </div>
               {errors.password && (
-                <p className="text-xs text-destructive">{errors.password}</p>
+                <p className="text-sm text-destructive">{errors.password}</p>
               )}
             </div>
 
@@ -162,7 +162,7 @@ export default function Connexion() {
               <Button
                 type="submit"
                 variant="hero"
-                className="w-full h-[52px] sm:h-[56px] text-base sm:text-lg font-semibold rounded-xl"
+                className="w-full h-[52px] sm:h-[56px] text-[17px] sm:text-[18px] font-semibold rounded-xl"
                 disabled={isLoading}
               >
                 {isLoading ? (

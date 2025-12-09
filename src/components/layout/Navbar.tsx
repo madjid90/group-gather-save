@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Zap, User, LogOut } from "lucide-react";
+import { Menu, X, Zap, User, LogOut, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -107,16 +107,16 @@ export function Navbar() {
         <div className="flex items-center gap-3 sm:gap-4">
           {user ? (
             <>
-              <Button variant="ghost" size="sm" className="text-xs sm:text-[16px] px-2 sm:px-4 h-9" asChild>
+              <Button variant="ghost" size="sm" className="text-sm sm:text-base px-3 sm:px-4 h-10" asChild>
                 <Link to="/dashboard-client">
-                  <User className="w-4 h-4 mr-1 sm:mr-2" />
+                  <User className="w-4 h-4 mr-1.5 sm:mr-2" />
                   Mon espace
                 </Link>
               </Button>
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="text-xs sm:text-[16px] px-2 sm:px-4 h-9"
+                className="text-sm sm:text-base px-3 sm:px-4 h-10"
                 onClick={handleLogout}
               >
                 <LogOut className="w-4 h-4" />
@@ -124,10 +124,10 @@ export function Navbar() {
             </>
           ) : (
             <>
-              <Button variant="ghost" size="sm" className="text-xs sm:text-[16px] px-3 sm:px-4 h-9" asChild>
+              <Button variant="ghost" size="sm" className="text-sm sm:text-base px-3 sm:px-4 h-10" asChild>
                 <Link to="/connexion">Connexion</Link>
               </Button>
-              <Button variant="hero" size="sm" className="hidden sm:inline-flex text-xs sm:text-[16px] px-4 h-9" asChild>
+              <Button variant="hero" size="sm" className="hidden sm:inline-flex text-sm sm:text-base px-4 sm:px-5 h-10" asChild>
                 <Link to="/inscription">Rejoindre</Link>
               </Button>
             </>
@@ -136,7 +136,7 @@ export function Navbar() {
           {/* Desktop Hamburger Menu Button - Hidden on mobile */}
           <button
             ref={desktopButtonRef}
-            className="hidden lg:flex items-center p-2 rounded-lg hover:bg-muted transition-colors border border-border/50"
+            className="hidden lg:flex items-center p-2.5 rounded-xl hover:bg-muted transition-colors border border-border/50"
             onClick={() => setIsDesktopOpen(!isDesktopOpen)}
             aria-label="Toggle menu"
             aria-expanded={isDesktopOpen}
@@ -151,7 +151,7 @@ export function Navbar() {
           {/* Hamburger Menu Button - Mobile only (< lg) */}
           <button
             ref={mobileButtonRef}
-            className="p-2 rounded-lg hover:bg-muted transition-colors lg:hidden"
+            className="p-2.5 rounded-xl hover:bg-muted transition-colors lg:hidden"
             onClick={() => setIsMobileOpen(!isMobileOpen)}
             aria-label="Toggle menu"
             aria-expanded={isMobileOpen}
@@ -174,7 +174,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="absolute top-16 right-4 z-50 bg-card border border-border rounded-xl shadow-xl hidden lg:block w-64"
+            className="absolute top-16 right-4 z-50 bg-card border border-border rounded-2xl shadow-switchly-xl hidden lg:block w-64"
           >
             <div className="py-3">
               {allDesktopLinks.map((link, index) => (
@@ -182,7 +182,7 @@ export function Navbar() {
                   key={link.href}
                   to={link.href}
                   onClick={() => setIsDesktopOpen(false)}
-                  className={`block text-[15px] font-medium py-3 px-5 transition-colors hover:bg-muted text-foreground ${index === 2 ? "border-b border-border mb-1 pb-4" : ""}`}
+                  className={`block text-base font-medium py-3 px-5 transition-colors hover:bg-muted text-foreground ${index === 2 ? "border-b border-border mb-1 pb-4" : ""}`}
                 >
                   {link.label}
                 </Link>
@@ -212,7 +212,7 @@ export function Navbar() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="absolute top-16 left-0 right-0 z-50 bg-card border-b border-border shadow-lg lg:hidden"
+              className="absolute top-16 left-0 right-0 z-50 bg-card border-b border-border shadow-switchly-lg lg:hidden"
             >
               <div className="container mx-auto px-4 py-5">
                 {/* Navigation Links - Larger tap targets, reduced spacing */}
@@ -222,7 +222,7 @@ export function Navbar() {
                       key={link.href}
                       to={link.href}
                       onClick={() => setIsMobileOpen(false)}
-                      className="text-[17px] font-medium py-[14px] px-4 rounded-xl transition-colors hover:bg-muted active:bg-muted leading-relaxed text-foreground"
+                      className="text-[18px] font-medium py-4 px-4 rounded-xl transition-colors hover:bg-muted active:bg-muted leading-relaxed text-foreground"
                     >
                       {link.label}
                     </Link>
@@ -232,9 +232,14 @@ export function Navbar() {
                 {/* CTA Button - Full width */}
                 {!user && (
                   <div className="mt-5">
-                    <Button variant="hero" className="w-full h-[54px] text-[17px] font-semibold" asChild>
+                    <Button 
+                      variant="hero" 
+                      className="w-full h-[52px] sm:h-[56px] text-[17px] sm:text-[18px] font-semibold rounded-xl" 
+                      asChild
+                    >
                       <Link to="/inscription" onClick={() => setIsMobileOpen(false)}>
                         Rejoindre l'achat groupé
+                        <ArrowRight className="w-5 h-5 ml-2" />
                       </Link>
                     </Button>
                   </div>
@@ -242,13 +247,13 @@ export function Navbar() {
 
                 {/* Legal Links */}
                 <div className="mt-6 pt-4 border-t border-border">
-                  <div className="flex flex-wrap gap-x-4 gap-y-2">
+                  <div className="flex flex-wrap gap-x-5 gap-y-3">
                     {legalLinks.map((link) => (
                       <Link
                         key={link.href}
                         to={link.href}
                         onClick={() => setIsMobileOpen(false)}
-                        className="text-[13px] text-muted-foreground hover:text-foreground transition-colors"
+                        className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                       >
                         {link.label}
                       </Link>
