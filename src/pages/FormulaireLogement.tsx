@@ -560,7 +560,7 @@ export default function FormulaireLogement() {
                 className="w-full h-12"
                 onClick={handleNextOrSubmit}
               >
-                {isLastQuestion ? "Valider mes informations" : "Continuer"}
+                {isLastQuestion ? "Je valide mes informations" : "Continuer"}
               </Button>
             </div>
           )}
@@ -666,7 +666,7 @@ export default function FormulaireLogement() {
               ) : (
                 <>
                   <Check className="w-4 h-4 mr-2" />
-                  Valider
+                  Je valide mes informations
                 </>
               )}
             </Button>

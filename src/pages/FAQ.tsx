@@ -117,7 +117,7 @@ export default function FAQ() {
               </Button>
               <Button variant="hero" asChild>
                 <Link to="/inscription">
-                  Rejoindre le groupement
+                  Je rejoins l'achat groupé gratuitement
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
               </Button>

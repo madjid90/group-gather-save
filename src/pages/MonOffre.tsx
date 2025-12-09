@@ -295,7 +295,7 @@ export default function MonOffre() {
                     ) : (
                       <CheckCircle className="h-4 w-4 mr-2" />
                     )}
-                    Je profite de cette réduction
+                    J'accepte cette offre
                   </Button>
                   <Button
                     variant="outline"
@@ -305,7 +305,7 @@ export default function MonOffre() {
                     disabled={submitting}
                   >
                     <XCircle className="h-4 w-4 mr-2" />
-                    Je refuse
+                    Je refuse cette offre
                   </Button>
                 </div>
               </div>
