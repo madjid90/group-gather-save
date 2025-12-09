@@ -162,7 +162,7 @@ export default function Connexion() {
               <Button
                 type="submit"
                 variant="hero"
-                className="w-full h-[52px] sm:h-[56px] text-[16px] sm:text-[17px] font-semibold rounded-xl"
+                className="w-full h-[52px] sm:h-[56px] text-base sm:text-lg font-semibold rounded-xl"
                 disabled={isLoading}
               >
                 {isLoading ? (
