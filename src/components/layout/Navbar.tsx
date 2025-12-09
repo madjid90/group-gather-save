@@ -96,7 +96,7 @@ export function Navbar() {
               <Button variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4" asChild>
                 <Link to="/connexion">Connexion</Link>
               </Button>
-              <Button variant="hero" size="sm" className="text-xs sm:text-sm px-3 sm:px-4" asChild>
+              <Button variant="hero" size="sm" className="hidden sm:inline-flex text-xs sm:text-sm px-3 sm:px-4" asChild>
                 <Link to="/inscription">Rejoindre</Link>
               </Button>
             </>
@@ -142,7 +142,7 @@ export function Navbar() {
               className="absolute top-16 left-0 right-0 z-50 bg-card border-b border-border shadow-lg"
             >
               <div className="container mx-auto px-4 py-4">
-                {/* Navigation Links only */}
+                {/* Navigation Links */}
                 <div className="flex flex-col gap-1">
                   {navLinks.map((link) => (
                     <Link
@@ -159,6 +159,17 @@ export function Navbar() {
                     </Link>
                   ))}
                 </div>
+                
+                {/* CTA Button - Mobile only */}
+                {!user && (
+                  <div className="mt-4 pt-4 border-t border-border sm:hidden">
+                    <Button variant="hero" size="lg" className="w-full" asChild>
+                      <Link to="/inscription" onClick={() => setIsOpen(false)}>
+                        Rejoindre l'achat groupé
+                      </Link>
+                    </Button>
+                  </div>
+                )}
               </div>
             </motion.div>
           </>
