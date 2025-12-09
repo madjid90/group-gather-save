@@ -156,9 +156,19 @@ export function HeroSection() {
 
             {/* Floating elements */}
             <motion.div
-              className="absolute -top-4 -right-4 bg-secondary text-secondary-foreground px-4 py-2 rounded-full shadow-glow-success text-sm font-medium"
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 3, repeat: Infinity }}
+              className="absolute -top-4 -right-4 bg-secondary text-secondary-foreground px-4 py-2 rounded-full shadow-glow-success text-sm font-medium cursor-default"
+              initial={{ opacity: 0, scale: 0.8, y: -20 }}
+              animate={{ 
+                opacity: 1, 
+                scale: 1, 
+                y: [0, -8, 0] 
+              }}
+              transition={{ 
+                opacity: { duration: 0.5, delay: 0.5 },
+                scale: { duration: 0.5, delay: 0.5, type: "spring", stiffness: 200 },
+                y: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+              }}
+              whileHover={{ scale: 1.1 }}
             >
               🎉 +23 inscrits aujourd'hui
             </motion.div>
