@@ -7,27 +7,29 @@ const advantages = [
   {
     icon: TrendingDown,
     title: "Économies importantes",
-    description: "Profitez de tarifs négociés grâce au volume.",
+    description: "Profitez d'offres négociées permettant jusqu'à 400€/an d'économies sur l'électricité et l'internet.",
+    descriptionMobile: "Jusqu'à 400€/an d'économies.",
     color: "primary",
   },
   {
     icon: Scale,
     title: "Sans engagement",
-    description: "Vous participez librement et vous pouvez refuser l'offre.",
-    descriptionMobile: "Participez librement.",
+    description: "Participez librement, refusez l'offre si elle ne vous convient pas.",
+    descriptionMobile: "Refusez si ça ne convient pas.",
     color: "secondary",
   },
   {
     icon: Clock,
     title: "Simplicité totale",
-    description: "Nous gérons la négociation à votre place.",
+    description: "Nous négocions pour vous auprès des fournisseurs, sans aucune démarche de votre part.",
+    descriptionMobile: "Aucune démarche de votre part.",
     color: "primary",
   },
   {
     icon: Eye,
     title: "Transparence",
-    description: "Vous voyez l'offre clairement avant toute décision.",
-    descriptionMobile: "Offre claire avant décision.",
+    description: "Vous recevez une offre claire, détaillée et sans frais cachés.",
+    descriptionMobile: "Offre claire, sans frais cachés.",
     color: "secondary",
   },
 ];
@@ -43,12 +45,12 @@ export function AdvantagesSection() {
           transition={{ duration: 0.5 }}
           className="text-center mb-8 md:mb-16"
         >
-          <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold text-foreground mb-2 md:mb-6">
+          <h2 className="text-[20px] sm:text-2xl md:text-4xl lg:text-5xl font-bold text-foreground mb-2 md:mb-6">
             Pourquoi rejoindre Switchly ?
           </h2>
-          <p className="text-sm md:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
-            <span className="hidden md:inline">Des avantages concrets pour votre portefeuille et votre tranquillité</span>
-            <span className="md:hidden">Des avantages concrets pour vous</span>
+          <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
+            <span className="hidden md:inline">Des avantages concrets pour réduire vos factures durablement</span>
+            <span className="md:hidden">Réduisez vos factures durablement</span>
           </p>
         </motion.div>
 
@@ -86,7 +88,7 @@ export function AdvantagesSection() {
                 </h3>
                 <p className="text-xs md:text-lg text-muted-foreground">
                   <span className="hidden md:inline">{advantage.description}</span>
-                  <span className="md:hidden">{advantage.descriptionMobile || advantage.description}</span>
+                  <span className="md:hidden">{advantage.descriptionMobile}</span>
                 </p>
               </div>
             </motion.div>

@@ -3,7 +3,7 @@ import { Zap, Mail, Phone, MapPin } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="bg-card border-t border-border">
+    <footer className="bg-card border-t border-border pb-20 md:pb-0">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
@@ -15,8 +15,8 @@ export function Footer() {
               <span className="text-xl font-bold text-foreground">Switchly</span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              L'achat groupé d'électricité et d'internet pour votre ville.
-              Économisez ensemble.
+              Achat groupé d'électricité et d'internet pour votre ville.
+              Économisez ensemble grâce à la force du groupe.
             </p>
           </div>
 

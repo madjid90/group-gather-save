@@ -56,17 +56,33 @@ export function HeroSection() {
             </motion.div>
 
             {/* Title - smaller on mobile */}
-            <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
+            <h1 className="text-[26px] leading-tight sm:text-3xl md:text-5xl lg:text-6xl font-bold text-foreground md:leading-tight">
               Rejoignez notre achat groupé et économisez{" "}
               <span className="gradient-text">jusqu'à 30 %</span>{" "}
-              <span className="gradient-text">sur vos factures.</span>
+              sur vos factures d'électricité et d'internet.
             </h1>
 
-
             {/* Subtitle - slightly larger on mobile for readability */}
-            <p className="text-sm sm:text-base md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0">
-              Plus nous sommes nombreux, plus les fournisseurs baissent les prix.
+            <p className="text-base sm:text-base md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0">
+              <span className="hidden md:inline">En moyenne, nos membres économisent jusqu'à 400€/an — gratuitement et sans engagement.</span>
+              <span className="md:hidden">Jusqu'à 400€/an d'économies — gratuit et sans engagement.</span>
             </p>
+
+            {/* Trust badges - smaller on mobile */}
+            <div className="flex flex-col sm:flex-row flex-wrap justify-center lg:justify-start gap-2 md:gap-6 pt-1 md:pt-4">
+              <div className="flex items-center justify-center lg:justify-start gap-1.5 md:gap-2 text-sm md:text-base text-muted-foreground">
+                <CheckCircle className="w-4 h-4 md:w-5 md:h-5 text-secondary flex-shrink-0" />
+                <span>Jusqu'à –30 % grâce au groupe</span>
+              </div>
+              <div className="flex items-center justify-center lg:justify-start gap-1.5 md:gap-2 text-sm md:text-base text-muted-foreground">
+                <Lock className="w-4 h-4 md:w-5 md:h-5 text-primary flex-shrink-0" />
+                <span>Offre 100 % personnalisée</span>
+              </div>
+              <div className="flex items-center justify-center lg:justify-start gap-1.5 md:gap-2 text-sm md:text-base text-muted-foreground">
+                <Shield className="w-4 h-4 md:w-5 md:h-5 text-secondary flex-shrink-0" />
+                <span>Zéro démarche, zéro engagement</span>
+              </div>
+            </div>
 
             {/* CTA Button - hidden on mobile (using fixed CTA instead) */}
             <div className="hidden md:flex justify-center lg:justify-start w-full">
@@ -75,22 +91,6 @@ export function HeroSection() {
                   Je rejoins l'achat groupé gratuitement
                 </Link>
               </Button>
-            </div>
-
-            {/* Trust badges - smaller on mobile */}
-            <div className="flex flex-col sm:flex-row flex-wrap justify-center lg:justify-start gap-2 md:gap-6 pt-1 md:pt-4">
-              <div className="flex items-center justify-center lg:justify-start gap-1.5 md:gap-2 text-xs md:text-base text-muted-foreground">
-                <Shield className="w-4 h-4 md:w-5 md:h-5 text-primary flex-shrink-0" />
-                <span>Jusqu'à -30 % grâce au groupe</span>
-              </div>
-              <div className="flex items-center justify-center lg:justify-start gap-1.5 md:gap-2 text-xs md:text-base text-muted-foreground">
-                <Lock className="w-4 h-4 md:w-5 md:h-5 text-secondary flex-shrink-0" />
-                <span>Offre personnalisée</span>
-              </div>
-              <div className="flex items-center justify-center lg:justify-start gap-1.5 md:gap-2 text-xs md:text-base text-muted-foreground">
-                <CheckCircle className="w-4 h-4 md:w-5 md:h-5 text-primary flex-shrink-0" />
-                <span>Zéro engagement</span>
-              </div>
             </div>
           </motion.div>
 
