@@ -17,13 +17,26 @@ const legalLinks = [
   { href: "/cgu", label: "CGU" },
 ];
 
+// All links for desktop hamburger menu
+const allDesktopLinks = [
+  { href: "/", label: "Accueil" },
+  { href: "/faq", label: "FAQ" },
+  { href: "/contact", label: "Contact" },
+  { href: "/mentions-legales", label: "Mentions légales" },
+  { href: "/politique-rgpd", label: "Politique RGPD" },
+  { href: "/cgu", label: "CGU" },
+];
+
 export function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isDesktopOpen, setIsDesktopOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
   const location = useLocation();
   const navigate = useNavigate();
-  const menuRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const mobileButtonRef = useRef<HTMLButtonElement>(null);
+  const desktopMenuRef = useRef<HTMLDivElement>(null);
+  const desktopButtonRef = useRef<HTMLButtonElement>(null);
 
   // Check auth state
   useEffect(() => {
@@ -38,27 +51,39 @@ export function Navbar() {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Close menu when clicking outside
+  // Close menus when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      // Mobile menu
       if (
-        isOpen &&
-        menuRef.current &&
-        buttonRef.current &&
-        !menuRef.current.contains(event.target as Node) &&
-        !buttonRef.current.contains(event.target as Node)
+        isMobileOpen &&
+        mobileMenuRef.current &&
+        mobileButtonRef.current &&
+        !mobileMenuRef.current.contains(event.target as Node) &&
+        !mobileButtonRef.current.contains(event.target as Node)
       ) {
-        setIsOpen(false);
+        setIsMobileOpen(false);
+      }
+      // Desktop menu
+      if (
+        isDesktopOpen &&
+        desktopMenuRef.current &&
+        desktopButtonRef.current &&
+        !desktopMenuRef.current.contains(event.target as Node) &&
+        !desktopButtonRef.current.contains(event.target as Node)
+      ) {
+        setIsDesktopOpen(false);
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isOpen]);
+  }, [isMobileOpen, isDesktopOpen]);
 
-  // Close menu on route change
+  // Close menus on route change
   useEffect(() => {
-    setIsOpen(false);
+    setIsMobileOpen(false);
+    setIsDesktopOpen(false);
   }, [location.pathname]);
 
   const handleLogout = async () => {
@@ -70,32 +95,33 @@ export function Navbar() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 glass">
       <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
-        {/* Left side: Logo */}
-        <Link to="/" className="flex items-center gap-2 group">
-          <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center shadow-glow group-hover:scale-110 transition-transform">
-            <Zap className="w-5 h-5 text-primary-foreground" />
-          </div>
-          <span className="text-xl font-bold text-foreground hidden sm:block">Switchly</span>
-        </Link>
+        {/* Left side: Logo + Desktop Hamburger */}
+        <div className="flex items-center gap-4">
+          <Link to="/" className="flex items-center gap-2 group">
+            <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center shadow-glow group-hover:scale-110 transition-transform">
+              <Zap className="w-5 h-5 text-primary-foreground" />
+            </div>
+            <span className="text-xl font-bold text-foreground hidden sm:block">Switchly</span>
+          </Link>
 
-        {/* Desktop Navigation Links */}
-        <div className="hidden md:flex items-center gap-10">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              to={link.href}
-              className={`text-[16px] font-medium transition-colors hover:text-primary ${
-                location.pathname === link.href
-                  ? "text-primary"
-                  : "text-foreground/80"
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {/* Desktop Hamburger Menu Button - Hidden on mobile */}
+          <button
+            ref={desktopButtonRef}
+            className="hidden lg:flex items-center gap-2 p-2 px-3 rounded-lg hover:bg-muted transition-colors border border-border/50"
+            onClick={() => setIsDesktopOpen(!isDesktopOpen)}
+            aria-label="Toggle menu"
+            aria-expanded={isDesktopOpen}
+          >
+            {isDesktopOpen ? (
+              <X className="w-5 h-5 text-foreground" />
+            ) : (
+              <Menu className="w-5 h-5 text-foreground" />
+            )}
+            <span className="text-sm font-medium text-foreground">Menu</span>
+          </button>
         </div>
 
-        {/* Right side: CTA Buttons + Hamburger */}
+        {/* Right side: CTA Buttons + Mobile Hamburger */}
         <div className="flex items-center gap-3 sm:gap-4">
           {user ? (
             <>
@@ -125,15 +151,15 @@ export function Navbar() {
             </>
           )}
           
-          {/* Hamburger Menu Button - Mobile only */}
+          {/* Hamburger Menu Button - Mobile only (< lg) */}
           <button
-            ref={buttonRef}
-            className="p-2 rounded-lg hover:bg-muted transition-colors md:hidden"
-            onClick={() => setIsOpen(!isOpen)}
+            ref={mobileButtonRef}
+            className="p-2 rounded-lg hover:bg-muted transition-colors lg:hidden"
+            onClick={() => setIsMobileOpen(!isMobileOpen)}
             aria-label="Toggle menu"
-            aria-expanded={isOpen}
+            aria-expanded={isMobileOpen}
           >
-            {isOpen ? (
+            {isMobileOpen ? (
               <X className="w-5 h-5 text-foreground" />
             ) : (
               <Menu className="w-5 h-5 text-foreground" />
@@ -142,27 +168,58 @@ export function Navbar() {
         </div>
       </nav>
 
+      {/* Desktop Dropdown Menu */}
+      <AnimatePresence>
+        {isDesktopOpen && (
+          <motion.div
+            ref={desktopMenuRef}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="absolute top-16 left-4 z-50 bg-card border border-border rounded-xl shadow-xl hidden lg:block w-64"
+          >
+            <div className="py-3">
+              {allDesktopLinks.map((link, index) => (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  onClick={() => setIsDesktopOpen(false)}
+                  className={`block text-[15px] font-medium py-3 px-5 transition-colors hover:bg-muted ${
+                    location.pathname === link.href
+                      ? "text-primary bg-primary/5"
+                      : "text-foreground"
+                  } ${index === 2 ? "border-b border-border mb-1 pb-4" : ""}`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Mobile Dropdown Menu */}
       <AnimatePresence>
-        {isOpen && (
+        {isMobileOpen && (
           <>
             {/* Backdrop overlay with darker background */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 top-16 bg-background/80 backdrop-blur-sm z-40 md:hidden"
-              onClick={() => setIsOpen(false)}
+              className="fixed inset-0 top-16 bg-background/80 backdrop-blur-sm z-40 lg:hidden"
+              onClick={() => setIsMobileOpen(false)}
             />
             
             {/* Menu panel */}
             <motion.div
-              ref={menuRef}
+              ref={mobileMenuRef}
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="absolute top-16 left-0 right-0 z-50 bg-card border-b border-border shadow-lg md:hidden"
+              className="absolute top-16 left-0 right-0 z-50 bg-card border-b border-border shadow-lg lg:hidden"
             >
               <div className="container mx-auto px-4 py-5">
                 {/* Navigation Links - Larger tap targets, reduced spacing */}
@@ -171,7 +228,7 @@ export function Navbar() {
                     <Link
                       key={link.href}
                       to={link.href}
-                      onClick={() => setIsOpen(false)}
+                      onClick={() => setIsMobileOpen(false)}
                       className={`text-[17px] font-medium py-[14px] px-4 rounded-xl transition-colors hover:bg-muted active:bg-muted leading-relaxed ${
                         location.pathname === link.href
                           ? "text-primary bg-primary/5"
@@ -187,7 +244,7 @@ export function Navbar() {
                 {!user && (
                   <div className="mt-5">
                     <Button variant="hero" className="w-full h-[54px] text-[17px] font-semibold" asChild>
-                      <Link to="/inscription" onClick={() => setIsOpen(false)}>
+                      <Link to="/inscription" onClick={() => setIsMobileOpen(false)}>
                         Rejoindre l'achat groupé
                       </Link>
                     </Button>
@@ -201,7 +258,7 @@ export function Navbar() {
                       <Link
                         key={link.href}
                         to={link.href}
-                        onClick={() => setIsOpen(false)}
+                        onClick={() => setIsMobileOpen(false)}
                         className="text-[13px] text-muted-foreground hover:text-foreground transition-colors"
                       >
                         {link.label}
