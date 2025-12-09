@@ -11,6 +11,12 @@ const navLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
+const legalLinks = [
+  { href: "/mentions-legales", label: "Mentions légales" },
+  { href: "/politique-rgpd", label: "Politique RGPD" },
+  { href: "/cgu", label: "CGU" },
+];
+
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
@@ -72,11 +78,28 @@ export function Navbar() {
           <span className="text-xl font-bold text-foreground hidden sm:block">Switchly</span>
         </Link>
 
+        {/* Desktop Navigation Links */}
+        <div className="hidden md:flex items-center gap-8">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              to={link.href}
+              className={`text-sm font-medium transition-colors hover:text-primary ${
+                location.pathname === link.href
+                  ? "text-primary"
+                  : "text-foreground/80"
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </div>
+
         {/* Right side: CTA Buttons + Hamburger */}
-        <div className="flex items-center gap-2 sm:gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           {user ? (
             <>
-              <Button variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4" asChild>
+              <Button variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4 h-9" asChild>
                 <Link to="/dashboard-client">
                   <User className="w-4 h-4 mr-1 sm:mr-2" />
                   Mon espace
@@ -85,7 +108,7 @@ export function Navbar() {
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="text-xs sm:text-sm px-2 sm:px-4"
+                className="text-xs sm:text-sm px-2 sm:px-4 h-9"
                 onClick={handleLogout}
               >
                 <LogOut className="w-4 h-4" />
@@ -93,19 +116,19 @@ export function Navbar() {
             </>
           ) : (
             <>
-              <Button variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4" asChild>
+              <Button variant="ghost" size="sm" className="text-xs sm:text-sm px-3 sm:px-4 h-9" asChild>
                 <Link to="/connexion">Connexion</Link>
               </Button>
-              <Button variant="hero" size="sm" className="hidden sm:inline-flex text-xs sm:text-sm px-3 sm:px-4" asChild>
+              <Button variant="hero" size="sm" className="hidden sm:inline-flex text-xs sm:text-sm px-4 h-9" asChild>
                 <Link to="/inscription">Rejoindre</Link>
               </Button>
             </>
           )}
           
-          {/* Hamburger Menu Button */}
+          {/* Hamburger Menu Button - Mobile only */}
           <button
             ref={buttonRef}
-            className="p-2 rounded-lg hover:bg-muted transition-colors"
+            className="p-2 rounded-lg hover:bg-muted transition-colors md:hidden"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
             aria-expanded={isOpen}
@@ -119,16 +142,16 @@ export function Navbar() {
         </div>
       </nav>
 
-      {/* Dropdown Menu - Contains only navigation links */}
+      {/* Mobile Dropdown Menu */}
       <AnimatePresence>
         {isOpen && (
           <>
-            {/* Backdrop overlay */}
+            {/* Backdrop overlay with darker background */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 top-16 bg-background/60 backdrop-blur-sm z-40"
+              className="fixed inset-0 top-16 bg-background/80 backdrop-blur-sm z-40 md:hidden"
               onClick={() => setIsOpen(false)}
             />
             
@@ -139,17 +162,17 @@ export function Navbar() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="absolute top-16 left-0 right-0 z-50 bg-card border-b border-border shadow-lg"
+              className="absolute top-16 left-0 right-0 z-50 bg-card border-b border-border shadow-lg md:hidden"
             >
-              <div className="container mx-auto px-4 py-4">
-                {/* Navigation Links */}
+              <div className="container mx-auto px-4 py-5">
+                {/* Navigation Links - Larger tap targets, reduced spacing */}
                 <div className="flex flex-col gap-1">
                   {navLinks.map((link) => (
                     <Link
                       key={link.href}
                       to={link.href}
                       onClick={() => setIsOpen(false)}
-                      className={`text-base font-medium py-3 px-4 rounded-lg transition-colors hover:bg-muted ${
+                      className={`text-lg font-medium py-3.5 px-4 rounded-xl transition-colors hover:bg-muted active:bg-muted ${
                         location.pathname === link.href
                           ? "text-primary bg-primary/5"
                           : "text-foreground"
@@ -160,16 +183,32 @@ export function Navbar() {
                   ))}
                 </div>
                 
-                {/* CTA Button - Mobile only */}
+                {/* CTA Button - Full width */}
                 {!user && (
-                  <div className="mt-4 pt-4 border-t border-border sm:hidden">
-                    <Button variant="hero" size="lg" className="w-full" asChild>
+                  <div className="mt-5">
+                    <Button variant="hero" size="lg" className="w-full text-base" asChild>
                       <Link to="/inscription" onClick={() => setIsOpen(false)}>
                         Rejoindre l'achat groupé
                       </Link>
                     </Button>
                   </div>
                 )}
+
+                {/* Legal Links */}
+                <div className="mt-6 pt-4 border-t border-border">
+                  <div className="flex flex-wrap gap-x-4 gap-y-2">
+                    {legalLinks.map((link) => (
+                      <Link
+                        key={link.href}
+                        to={link.href}
+                        onClick={() => setIsOpen(false)}
+                        className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
               </div>
             </motion.div>
           </>
