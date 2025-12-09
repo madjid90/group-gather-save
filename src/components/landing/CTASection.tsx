@@ -31,7 +31,7 @@ export function CTASection() {
               <Button
                 variant="secondary"
                 size="xl"
-                className="group w-full max-w-md sm:w-auto py-7 sm:py-5 text-base sm:text-lg mx-4 sm:mx-0"
+                className="group w-[calc(100%-2rem)] max-w-md sm:w-auto py-7 sm:py-5 text-base sm:text-lg"
                 asChild
               >
                 <Link to="/inscription">
