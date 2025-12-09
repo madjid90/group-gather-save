@@ -91,28 +91,28 @@ export default function Connexion() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="bg-card rounded-3xl p-6 sm:p-8 md:p-10 shadow-switchly-xl border border-border"
+          className="bg-card rounded-xl md:rounded-2xl p-4 md:p-8 shadow-switchly-xl border border-border"
         >
           {/* Header */}
-          <div className="text-center mb-6 sm:mb-8">
-            <Link to="/" className="inline-flex items-center gap-2 mb-5 sm:mb-6">
+          <div className="text-center mb-4 md:mb-8">
+            <Link to="/" className="inline-flex items-center gap-2 mb-4 md:mb-6">
               <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center">
                 <Zap className="w-5 h-5 text-primary-foreground" />
               </div>
               <span className="text-xl font-bold text-foreground">Switchly</span>
             </Link>
-            <h1 className="text-[26px] sm:text-[30px] md:text-[36px] font-bold text-foreground mb-2 leading-tight">
+            <h1 className="text-[20px] sm:text-2xl md:text-4xl font-bold text-foreground mb-2 md:mb-4 leading-tight">
               Me connecter
             </h1>
-            <p className="text-base sm:text-[18px] text-muted-foreground">
+            <p className="text-base md:text-xl text-muted-foreground">
               Accédez à votre espace membre
             </p>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="telephone" className="flex items-center gap-2 text-[15px] sm:text-base font-medium text-foreground">
+              <Label htmlFor="telephone" className="flex items-center gap-2 text-sm md:text-base font-medium text-foreground">
                 <Phone className="w-4 h-4 text-muted-foreground" />
                 Numéro de téléphone
               </Label>
@@ -126,12 +126,12 @@ export default function Connexion() {
                 className={errors.telephone ? "border-destructive focus-visible:ring-destructive/30" : ""}
               />
               {errors.telephone && (
-                <p className="text-sm text-destructive">{errors.telephone}</p>
+                <p className="text-xs md:text-sm text-destructive">{errors.telephone}</p>
               )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="flex items-center gap-2 text-[15px] sm:text-base font-medium text-foreground">
+              <Label htmlFor="password" className="flex items-center gap-2 text-sm md:text-base font-medium text-foreground">
                 <Lock className="w-4 h-4 text-muted-foreground" />
                 Mot de passe
               </Label>
@@ -154,7 +154,7 @@ export default function Connexion() {
                 </button>
               </div>
               {errors.password && (
-                <p className="text-sm text-destructive">{errors.password}</p>
+                <p className="text-xs md:text-sm text-destructive">{errors.password}</p>
               )}
             </div>
 
@@ -162,7 +162,8 @@ export default function Connexion() {
               <Button
                 type="submit"
                 variant="hero"
-                className="w-full h-[52px] sm:h-[56px] text-[17px] sm:text-[18px] font-semibold rounded-xl"
+                size="xl"
+                className="w-full py-7 sm:py-5 text-base sm:text-lg"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -181,8 +182,8 @@ export default function Connexion() {
           </form>
 
           {/* Footer */}
-          <div className="mt-6 sm:mt-8 text-center">
-            <p className="text-[15px] sm:text-base text-muted-foreground">
+          <div className="mt-4 md:mt-8 text-center">
+            <p className="text-sm md:text-base text-muted-foreground">
               Pas encore de compte ?{" "}
               <Link to="/inscription" className="text-primary hover:underline font-medium">
                 Inscrivez-vous

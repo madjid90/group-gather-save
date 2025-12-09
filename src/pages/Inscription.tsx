@@ -120,20 +120,21 @@ export default function Inscription() {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="w-full max-w-md bg-card rounded-3xl p-8 md:p-10 shadow-switchly-xl border border-border text-center"
+          className="w-full max-w-md bg-card rounded-xl md:rounded-2xl p-4 md:p-8 shadow-switchly-xl border border-border text-center"
         >
-          <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center mx-auto mb-6">
-            <Check className="w-8 h-8 text-secondary" />
+          <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-secondary/10 flex items-center justify-center mx-auto mb-4 md:mb-6">
+            <Check className="w-6 h-6 md:w-8 md:h-8 text-secondary" />
           </div>
-          <h1 className="text-[26px] sm:text-[30px] md:text-[36px] font-bold text-foreground mb-3">
+          <h1 className="text-[20px] sm:text-2xl md:text-4xl font-bold text-foreground mb-2 md:mb-4">
             Bienvenue sur Switchly !
           </h1>
-          <p className="text-base sm:text-[18px] text-muted-foreground mb-8">
+          <p className="text-base md:text-xl text-muted-foreground mb-6 md:mb-8">
             Votre inscription est confirmée. Complétez votre profil logement pour recevoir une offre personnalisée.
           </p>
           <Button 
             variant="hero" 
-            className="w-full h-[52px] sm:h-[56px] text-[17px] sm:text-[18px] font-semibold rounded-xl"
+            size="xl"
+            className="w-full py-7 sm:py-5 text-base sm:text-lg"
             asChild
           >
             <Link to="/dashboard-client">Accéder à mon espace</Link>
@@ -150,28 +151,28 @@ export default function Inscription() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="bg-card rounded-3xl p-6 sm:p-8 md:p-10 shadow-switchly-xl border border-border"
+          className="bg-card rounded-xl md:rounded-2xl p-4 md:p-8 shadow-switchly-xl border border-border"
         >
           {/* Header */}
-          <div className="text-center mb-6 sm:mb-8">
-            <Link to="/" className="inline-flex items-center gap-2 mb-5 sm:mb-6">
+          <div className="text-center mb-4 md:mb-8">
+            <Link to="/" className="inline-flex items-center gap-2 mb-4 md:mb-6">
               <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center">
                 <Zap className="w-5 h-5 text-primary-foreground" />
               </div>
               <span className="text-xl font-bold text-foreground">Switchly</span>
             </Link>
-            <h1 className="text-[26px] sm:text-[30px] md:text-[36px] font-bold text-foreground mb-2 leading-tight">
+            <h1 className="text-[20px] sm:text-2xl md:text-4xl font-bold text-foreground mb-2 md:mb-4 leading-tight">
               Créer mon compte
             </h1>
-            <p className="text-base sm:text-[18px] text-muted-foreground">
+            <p className="text-base md:text-xl text-muted-foreground">
               Inscription gratuite en 10 secondes
             </p>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="nom" className="flex items-center gap-2 text-[15px] sm:text-base font-medium text-foreground">
+              <Label htmlFor="nom" className="flex items-center gap-2 text-sm md:text-base font-medium text-foreground">
                 <User className="w-4 h-4 text-muted-foreground" />
                 Nom complet
               </Label>
@@ -184,12 +185,12 @@ export default function Inscription() {
                 className={errors.nom ? "border-destructive focus-visible:ring-destructive/30" : ""}
               />
               {errors.nom && (
-                <p className="text-sm text-destructive">{errors.nom}</p>
+                <p className="text-xs md:text-sm text-destructive">{errors.nom}</p>
               )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="telephone" className="flex items-center gap-2 text-[15px] sm:text-base font-medium text-foreground">
+              <Label htmlFor="telephone" className="flex items-center gap-2 text-sm md:text-base font-medium text-foreground">
                 <Phone className="w-4 h-4 text-muted-foreground" />
                 Numéro de téléphone
               </Label>
@@ -203,12 +204,12 @@ export default function Inscription() {
                 className={errors.telephone ? "border-destructive focus-visible:ring-destructive/30" : ""}
               />
               {errors.telephone && (
-                <p className="text-sm text-destructive">{errors.telephone}</p>
+                <p className="text-xs md:text-sm text-destructive">{errors.telephone}</p>
               )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="flex items-center gap-2 text-[15px] sm:text-base font-medium text-foreground">
+              <Label htmlFor="password" className="flex items-center gap-2 text-sm md:text-base font-medium text-foreground">
                 <Lock className="w-4 h-4 text-muted-foreground" />
                 Mot de passe
               </Label>
@@ -231,7 +232,7 @@ export default function Inscription() {
                 </button>
               </div>
               {errors.password && (
-                <p className="text-sm text-destructive">{errors.password}</p>
+                <p className="text-xs md:text-sm text-destructive">{errors.password}</p>
               )}
             </div>
 
@@ -239,7 +240,8 @@ export default function Inscription() {
               <Button
                 type="submit"
                 variant="hero"
-                className="w-full h-[52px] sm:h-[56px] text-[17px] sm:text-[18px] font-semibold rounded-xl"
+                size="xl"
+                className="w-full py-7 sm:py-5 text-base sm:text-lg"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -258,8 +260,8 @@ export default function Inscription() {
           </form>
 
           {/* Footer */}
-          <div className="mt-6 sm:mt-8 text-center">
-            <p className="text-[15px] sm:text-base text-muted-foreground">
+          <div className="mt-4 md:mt-8 text-center">
+            <p className="text-sm md:text-base text-muted-foreground">
               Déjà inscrit ?{" "}
               <Link to="/connexion" className="text-primary hover:underline font-medium">
                 Connectez-vous
@@ -268,8 +270,8 @@ export default function Inscription() {
           </div>
 
           {/* Trust badges */}
-          <div className="mt-6 pt-6 border-t border-border">
-            <div className="flex items-center justify-center gap-4 sm:gap-6 text-sm text-muted-foreground">
+          <div className="mt-4 md:mt-6 pt-4 md:pt-6 border-t border-border">
+            <div className="flex items-center justify-center gap-4 md:gap-6 text-xs md:text-sm text-muted-foreground">
               <div className="flex items-center gap-1.5">
                 <Check className="w-4 h-4 text-secondary" />
                 <span>Données sécurisées</span>
