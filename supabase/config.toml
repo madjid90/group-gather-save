@@ -14,3 +14,9 @@ verify_jwt = false
 
 [functions.import-supplier-offers]
 verify_jwt = false
+
+[functions.send-campaign-offers-sms]
+verify_jwt = false
+
+[functions.export-accepted-offers]
+verify_jwt = false
