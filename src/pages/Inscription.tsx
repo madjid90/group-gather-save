@@ -133,7 +133,7 @@ export default function Inscription() {
           </p>
           <Button 
             variant="hero" 
-            className="w-full h-[52px] sm:h-[56px] text-[16px] sm:text-[17px] font-semibold rounded-xl"
+            className="w-full h-[52px] sm:h-[56px] text-base sm:text-lg font-semibold rounded-xl"
             asChild
           >
             <Link to="/dashboard-client">Accéder à mon espace</Link>
@@ -239,7 +239,7 @@ export default function Inscription() {
               <Button
                 type="submit"
                 variant="hero"
-                className="w-full h-[52px] sm:h-[56px] text-[16px] sm:text-[17px] font-semibold rounded-xl"
+                className="w-full h-[52px] sm:h-[56px] text-base sm:text-lg font-semibold rounded-xl"
                 disabled={isLoading}
               >
                 {isLoading ? (
