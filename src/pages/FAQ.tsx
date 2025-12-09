@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { HelpCircle, ArrowRight } from "lucide-react";
+import { HelpCircle, ArrowRight, ArrowLeft } from "lucide-react";
 
 const faqItems = [
   {
@@ -60,25 +60,33 @@ export default function FAQ() {
   }, []);
 
   return (
-    <div className="min-h-screen py-10 md:py-24 bg-gradient-subtle">
+    <div className="min-h-screen py-6 md:py-16 bg-gradient-subtle">
       <div className="container mx-auto px-4">
+        {/* Back button */}
+        <Link 
+          to="/" 
+          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Retour
+        </Link>
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-8 md:mb-16"
+          className="text-center mb-6 md:mb-12"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-4 md:mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary mb-3">
             <HelpCircle className="w-4 h-4" />
             <span className="text-sm font-medium">Questions fréquentes</span>
           </div>
-          <h1 className="text-[20px] sm:text-2xl md:text-4xl lg:text-5xl font-bold text-foreground mb-2 md:mb-6">
+          <h1 className="text-[20px] sm:text-2xl font-bold text-foreground mb-1">
             FAQ
           </h1>
-          <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
-            <span className="hidden md:inline">Tout ce que vous devez savoir sur Switchly et l'achat groupé</span>
-            <span className="md:hidden">Tout savoir sur Switchly</span>
+          <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
+            Tout savoir sur Switchly et l'achat groupé
           </p>
         </motion.div>
 
@@ -89,18 +97,18 @@ export default function FAQ() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="max-w-3xl mx-auto"
         >
-          <div className="bg-card rounded-xl md:rounded-2xl p-4 md:p-8 border border-border shadow-switchly-lg">
-            <Accordion type="single" collapsible className="space-y-3 md:space-y-4">
+          <div className="bg-card rounded-xl p-4 border border-border shadow-switchly-lg">
+            <Accordion type="single" collapsible className="space-y-2">
               {faqItems.map((item, index) => (
                 <AccordionItem
                   key={index}
                   value={`item-${index}`}
-                  className="border border-border rounded-xl px-4 md:px-6 data-[state=open]:bg-muted/50 transition-colors"
+                  className="border border-border rounded-xl px-4 data-[state=open]:bg-muted/50 transition-colors"
                 >
-                  <AccordionTrigger className="text-left text-sm md:text-base font-medium hover:no-underline py-4 text-foreground">
+                  <AccordionTrigger className="text-left text-sm font-medium hover:no-underline py-3 text-foreground">
                     {item.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-xs md:text-lg text-muted-foreground pb-4 leading-relaxed">
+                  <AccordionContent className="text-xs text-muted-foreground pb-3 leading-relaxed">
                     {item.answer}
                   </AccordionContent>
                 </AccordionItem>
@@ -113,24 +121,24 @@ export default function FAQ() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="mt-8 md:mt-16 text-center"
+            className="mt-6 md:mt-12 text-center"
           >
-            <p className="text-base md:text-xl text-muted-foreground mb-4 md:mb-8">
+            <p className="text-sm text-muted-foreground mb-4">
               Vous avez d'autres questions ?
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button 
                 variant="outline" 
-                size="xl"
-                className="py-7 sm:py-5 text-base sm:text-lg" 
+                size="lg"
+                className="py-3 text-sm" 
                 asChild
               >
                 <Link to="/contact">Nous contacter</Link>
               </Button>
               <Button 
                 variant="hero" 
-                size="xl"
-                className="py-7 sm:py-5 text-base sm:text-lg" 
+                size="lg"
+                className="py-3 text-sm" 
                 asChild
               >
                 <Link to="/inscription">

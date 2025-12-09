@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, Phone, MapPin, ArrowRight, Loader2, CheckCircle } from "lucide-react";
+import { Mail, Phone, MapPin, ArrowRight, Loader2, CheckCircle, ArrowLeft } from "lucide-react";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -68,67 +69,67 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen py-10 md:py-24 bg-gradient-subtle">
+    <div className="min-h-screen py-6 md:py-16 bg-gradient-subtle">
       <div className="container mx-auto px-4">
+        {/* Back button */}
+        <Link 
+          to="/" 
+          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Retour
+        </Link>
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-8 md:mb-16"
+          className="text-center mb-6 md:mb-12"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-4 md:mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary mb-3">
             <Mail className="w-4 h-4" />
             <span className="text-sm font-medium">Contact</span>
           </div>
-          <h1 className="text-[20px] sm:text-2xl md:text-4xl lg:text-5xl font-bold text-foreground mb-2 md:mb-6">
+          <h1 className="text-[20px] sm:text-2xl font-bold text-foreground mb-1">
             Contactez notre équipe
           </h1>
-          <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
-            <span className="hidden md:inline">Une question ? Un conseil ? Notre équipe est là pour vous aider.</span>
-            <span className="md:hidden">Notre équipe est là pour vous aider.</span>
+          <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
+            Une question ? Notre équipe est là pour vous aider.
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-3 gap-4 md:gap-8 max-w-5xl mx-auto">
+        <div className="grid lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
           {/* Contact Info */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="space-y-3 md:space-y-6"
+            className="space-y-3"
           >
-            <div className="bg-card rounded-xl md:rounded-2xl p-4 md:p-8 border border-border shadow-switchly card-hover">
-              <div className="w-10 h-10 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-primary/10 flex items-center justify-center mb-3 md:mb-6">
-                <Mail className="w-5 h-5 md:w-8 md:h-8 text-primary" />
+            <div className="bg-card rounded-xl p-4 border border-border shadow-switchly card-hover">
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-2">
+                <Mail className="w-5 h-5 text-primary" />
               </div>
-              <h3 className="text-base md:text-xl font-semibold text-foreground mb-1 md:mb-2">Email</h3>
-              <p className="text-sm md:text-lg text-muted-foreground">contact@switchly.fr</p>
-              <p className="text-xs md:text-base text-muted-foreground/80 mt-1">
-                Réponse sous 24h.
-              </p>
+              <h3 className="text-sm font-semibold text-foreground mb-1">Email</h3>
+              <p className="text-sm text-muted-foreground">contact@switchly.fr</p>
             </div>
 
-            <div className="bg-card rounded-xl md:rounded-2xl p-4 md:p-8 border border-border shadow-switchly card-hover">
-              <div className="w-10 h-10 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-primary/10 flex items-center justify-center mb-3 md:mb-6">
-                <Phone className="w-5 h-5 md:w-8 md:h-8 text-primary" />
+            <div className="bg-card rounded-xl p-4 border border-border shadow-switchly card-hover">
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-2">
+                <Phone className="w-5 h-5 text-primary" />
               </div>
-              <h3 className="text-base md:text-xl font-semibold text-foreground mb-1 md:mb-2">Téléphone</h3>
-              <p className="text-sm md:text-lg text-muted-foreground">01 23 45 67 89</p>
-              <p className="text-xs md:text-base text-muted-foreground/80 mt-1">
-                Lun–Ven, 9h–18h
-              </p>
+              <h3 className="text-sm font-semibold text-foreground mb-1">Téléphone</h3>
+              <p className="text-sm text-muted-foreground">01 23 45 67 89</p>
             </div>
 
-            <div className="bg-card rounded-xl md:rounded-2xl p-4 md:p-8 border border-border shadow-switchly card-hover">
-              <div className="w-10 h-10 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-primary/10 flex items-center justify-center mb-3 md:mb-6">
-                <MapPin className="w-5 h-5 md:w-8 md:h-8 text-primary" />
+            <div className="bg-card rounded-xl p-4 border border-border shadow-switchly card-hover">
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-2">
+                <MapPin className="w-5 h-5 text-primary" />
               </div>
-              <h3 className="text-base md:text-xl font-semibold text-foreground mb-1 md:mb-2">Adresse</h3>
-              <p className="text-sm md:text-lg text-muted-foreground">
-                123 Avenue de la République
-                <br />
-                75011 Paris, France
+              <h3 className="text-sm font-semibold text-foreground mb-1">Adresse</h3>
+              <p className="text-sm text-muted-foreground">
+                123 Avenue de la République, 75011 Paris
               </p>
             </div>
           </motion.div>
@@ -140,22 +141,22 @@ export default function Contact() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="lg:col-span-2"
           >
-            <div className="bg-card rounded-xl md:rounded-2xl p-4 md:p-8 border border-border shadow-switchly-lg">
+            <div className="bg-card rounded-xl p-4 border border-border shadow-switchly-lg">
               {isSubmitted ? (
-                <div className="text-center py-8 md:py-12">
-                  <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-secondary/10 flex items-center justify-center mx-auto mb-4 md:mb-6">
-                    <CheckCircle className="w-6 h-6 md:w-8 md:h-8 text-secondary" />
+                <div className="text-center py-6">
+                  <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mx-auto mb-3">
+                    <CheckCircle className="w-6 h-6 text-secondary" />
                   </div>
-                  <h3 className="text-[20px] sm:text-2xl md:text-4xl font-bold text-foreground mb-2 md:mb-4">
+                  <h3 className="text-[20px] sm:text-2xl font-bold text-foreground mb-2">
                     Message envoyé !
                   </h3>
-                  <p className="text-base md:text-xl text-muted-foreground mb-6 md:mb-8">
+                  <p className="text-sm text-muted-foreground mb-4">
                     Nous vous répondrons dans les plus brefs délais.
                   </p>
                   <Button
                     variant="outline"
-                    size="xl"
-                    className="py-7 sm:py-5 text-base sm:text-lg"
+                    size="lg"
+                    className="py-3 text-sm"
                     onClick={() => {
                       setIsSubmitted(false);
                       setFormData({ nom: "", email: "", sujet: "", message: "" });
@@ -165,10 +166,10 @@ export default function Contact() {
                   </Button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
-                  <div className="grid sm:grid-cols-2 gap-4 md:gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="nom" className="text-sm md:text-base font-medium text-foreground">
+                <form onSubmit={handleSubmit} className="space-y-3">
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    <div className="space-y-1.5">
+                      <Label htmlFor="nom" className="text-sm font-medium text-foreground">
                         Nom complet
                       </Label>
                       <Input
@@ -177,14 +178,14 @@ export default function Contact() {
                         value={formData.nom}
                         onChange={handleChange}
                         placeholder="Jean Dupont"
-                        className={errors.nom ? "border-destructive focus-visible:ring-destructive/30" : ""}
+                        className={`text-sm ${errors.nom ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
                       />
                       {errors.nom && (
-                        <p className="text-xs md:text-sm text-destructive">{errors.nom}</p>
+                        <p className="text-xs text-destructive">{errors.nom}</p>
                       )}
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email" className="text-sm md:text-base font-medium text-foreground">
+                    <div className="space-y-1.5">
+                      <Label htmlFor="email" className="text-sm font-medium text-foreground">
                         Email
                       </Label>
                       <Input
@@ -194,16 +195,16 @@ export default function Contact() {
                         value={formData.email}
                         onChange={handleChange}
                         placeholder="jean.dupont@email.com"
-                        className={errors.email ? "border-destructive focus-visible:ring-destructive/30" : ""}
+                        className={`text-sm ${errors.email ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
                       />
                       {errors.email && (
-                        <p className="text-xs md:text-sm text-destructive">{errors.email}</p>
+                        <p className="text-xs text-destructive">{errors.email}</p>
                       )}
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="sujet" className="text-sm md:text-base font-medium text-foreground">
+                  <div className="space-y-1.5">
+                    <Label htmlFor="sujet" className="text-sm font-medium text-foreground">
                       Sujet
                     </Label>
                     <Input
@@ -212,15 +213,15 @@ export default function Contact() {
                       value={formData.sujet}
                       onChange={handleChange}
                       placeholder="Question sur l'achat groupé"
-                      className={errors.sujet ? "border-destructive focus-visible:ring-destructive/30" : ""}
+                      className={`text-sm ${errors.sujet ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
                     />
                     {errors.sujet && (
-                      <p className="text-xs md:text-sm text-destructive">{errors.sujet}</p>
+                      <p className="text-xs text-destructive">{errors.sujet}</p>
                     )}
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="message" className="text-sm md:text-base font-medium text-foreground">
+                  <div className="space-y-1.5">
+                    <Label htmlFor="message" className="text-sm font-medium text-foreground">
                       Message
                     </Label>
                     <Textarea
@@ -228,20 +229,20 @@ export default function Contact() {
                       name="message"
                       value={formData.message}
                       onChange={handleChange}
-                      placeholder="Décrivez votre question ou suggestion..."
-                      rows={5}
-                      className={errors.message ? "border-destructive focus-visible:ring-destructive/30" : ""}
+                      placeholder="Décrivez votre question..."
+                      rows={3}
+                      className={`text-sm ${errors.message ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
                     />
                     {errors.message && (
-                      <p className="text-xs md:text-sm text-destructive">{errors.message}</p>
+                      <p className="text-xs text-destructive">{errors.message}</p>
                     )}
                   </div>
 
                   <Button
                     type="submit"
                     variant="hero"
-                    size="xl"
-                    className="w-full py-7 sm:py-5 text-base sm:text-lg"
+                    size="lg"
+                    className="w-full py-3 text-sm"
                     disabled={isLoading}
                   >
                     {isLoading ? (
