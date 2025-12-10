@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,7 +21,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Plus, Eye, Calendar } from "lucide-react";
+import { Plus, Eye, Calendar, Loader2 } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { toast } from "sonner";
@@ -45,11 +45,11 @@ interface Campaign {
 }
 
 const statusLabels: Record<CampaignStatus, { label: string; color: string }> = {
-  inscriptions_ouvertes: { label: "Inscriptions ouvertes", color: "bg-green-500" },
-  inscriptions_cloturees: { label: "Inscriptions clôturées", color: "bg-yellow-500" },
-  export_genere: { label: "Export généré", color: "bg-blue-500" },
-  offres_importees: { label: "Offres importées", color: "bg-purple-500" },
-  offres_envoyees: { label: "Offres envoyées", color: "bg-indigo-500" },
+  inscriptions_ouvertes: { label: "Ouvertes", color: "bg-green-500" },
+  inscriptions_cloturees: { label: "Clôturées", color: "bg-yellow-500" },
+  export_genere: { label: "Export OK", color: "bg-blue-500" },
+  offres_importees: { label: "Importées", color: "bg-purple-500" },
+  offres_envoyees: { label: "Envoyées", color: "bg-indigo-500" },
   terminee: { label: "Terminée", color: "bg-gray-500" },
 };
 
@@ -75,7 +75,6 @@ export default function AdminCampagnesList() {
 
       if (error) throw error;
 
-      // Get client counts for each campaign
       const campaignsWithCounts = await Promise.all(
         (campaignsData || []).map(async (campaign) => {
           const { count } = await supabase
@@ -136,7 +135,6 @@ export default function AdminCampagnesList() {
       setIsCreateDialogOpen(false);
       fetchCampaigns();
       
-      // Navigate to the new campaign
       if (data) {
         navigate(`/admin/campagnes/${data.id}`);
       }
@@ -151,115 +149,118 @@ export default function AdminCampagnesList() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <Loader2 className="h-6 w-6 animate-spin text-primary" />
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Campagnes</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-xl sm:text-2xl font-bold text-foreground">Campagnes</h1>
+          <p className="text-sm text-muted-foreground">
             Gérez vos campagnes d'achat groupé
           </p>
         </div>
-        <Button onClick={openCreateDialog}>
-          <Plus className="h-4 w-4 mr-2" />
-          Nouvelle campagne
+        <Button size="sm" onClick={openCreateDialog}>
+          <Plus className="h-4 w-4 mr-1.5" />
+          <span className="hidden sm:inline">Nouvelle</span>
         </Button>
       </div>
 
-      <Card>
+      <Card className="rounded-xl border border-border">
         <CardContent className="p-0">
           {campaigns.length === 0 ? (
-            <div className="text-center py-12">
-              <Calendar className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-              <h3 className="text-lg font-medium mb-2">Aucune campagne</h3>
-              <p className="text-muted-foreground mb-4">
-                Créez votre première campagne pour commencer
+            <div className="text-center py-10">
+              <Calendar className="h-10 w-10 mx-auto text-muted-foreground mb-3" />
+              <h3 className="text-base font-medium mb-2 text-foreground">Aucune campagne</h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                Créez votre première campagne
               </p>
-              <Button onClick={openCreateDialog}>
-                <Plus className="h-4 w-4 mr-2" />
+              <Button size="sm" onClick={openCreateDialog}>
+                <Plus className="h-4 w-4 mr-1.5" />
                 Créer une campagne
               </Button>
             </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Nom</TableHead>
-                  <TableHead>Statut</TableHead>
-                  <TableHead>Date de début</TableHead>
-                  <TableHead className="text-right">Clients</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {campaigns.map((campaign) => (
-                  <TableRow key={campaign.id}>
-                    <TableCell className="font-medium">{campaign.nom}</TableCell>
-                    <TableCell>
-                      <Badge className={`${statusLabels[campaign.statut]?.color || "bg-gray-500"} text-white`}>
-                        {statusLabels[campaign.statut]?.label || campaign.statut}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      {campaign.date_debut
-                        ? format(new Date(campaign.date_debut), "dd MMM yyyy", { locale: fr })
-                        : "-"}
-                    </TableCell>
-                    <TableCell className="text-right">{campaign.clients_count}</TableCell>
-                    <TableCell className="text-right">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => navigate(`/admin/campagnes/${campaign.id}`)}
-                      >
-                        <Eye className="h-4 w-4 mr-1" />
-                        Voir
-                      </Button>
-                    </TableCell>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="text-xs">Nom</TableHead>
+                    <TableHead className="text-xs">Statut</TableHead>
+                    <TableHead className="text-xs hidden sm:table-cell">Date</TableHead>
+                    <TableHead className="text-xs text-right">Clients</TableHead>
+                    <TableHead className="text-xs text-right">Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {campaigns.map((campaign) => (
+                    <TableRow key={campaign.id}>
+                      <TableCell className="font-medium text-sm text-foreground">{campaign.nom}</TableCell>
+                      <TableCell>
+                        <Badge className={`${statusLabels[campaign.statut]?.color || "bg-gray-500"} text-white text-xs`}>
+                          {statusLabels[campaign.statut]?.label || campaign.statut}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-sm hidden sm:table-cell">
+                        {campaign.date_debut
+                          ? format(new Date(campaign.date_debut), "dd MMM yy", { locale: fr })
+                          : "-"}
+                      </TableCell>
+                      <TableCell className="text-sm text-right">{campaign.clients_count}</TableCell>
+                      <TableCell className="text-right">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => navigate(`/admin/campagnes/${campaign.id}`)}
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           )}
         </CardContent>
       </Card>
 
       {/* Create Campaign Dialog */}
       <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-        <DialogContent>
+        <DialogContent className="max-w-sm rounded-xl">
           <DialogHeader>
-            <DialogTitle>Nouvelle campagne</DialogTitle>
+            <DialogTitle className="text-lg">Nouvelle campagne</DialogTitle>
           </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="campaign-name">Nom de la campagne</Label>
+          <div className="space-y-3 py-2">
+            <div className="space-y-1.5">
+              <Label htmlFor="campaign-name" className="text-sm">Nom</Label>
               <Input
                 id="campaign-name"
                 value={newCampaignName}
                 onChange={(e) => setNewCampaignName(e.target.value)}
                 placeholder="Ex: T2 2025"
+                className="text-sm"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="campaign-date">Date de début</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="campaign-date" className="text-sm">Date de début</Label>
               <Input
                 id="campaign-date"
                 type="datetime-local"
                 value={newCampaignDate}
                 onChange={(e) => setNewCampaignDate(e.target.value)}
+                className="text-sm"
               />
             </div>
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
+          <DialogFooter className="gap-2">
+            <Button variant="outline" size="sm" onClick={() => setIsCreateDialogOpen(false)}>
               Annuler
             </Button>
-            <Button onClick={createCampaign} disabled={creating}>
+            <Button size="sm" onClick={createCampaign} disabled={creating}>
               {creating ? "Création..." : "Créer"}
             </Button>
           </DialogFooter>
