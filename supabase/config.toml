@@ -29,3 +29,15 @@ verify_jwt = false
 
 [functions.create-test-client]
 verify_jwt = false
+
+[functions.send-form-completed-sms]
+verify_jwt = false
+
+[functions.send-negotiation-start-sms]
+verify_jwt = false
+
+[functions.send-acceptance-sms]
+verify_jwt = false
+
+[functions.send-refusal-sms]
+verify_jwt = false

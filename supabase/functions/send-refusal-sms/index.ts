@@ -6,23 +6,21 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-interface WelcomeSmsRequest {
+interface RefusalSmsRequest {
   userId: string;
-  telephone: string;
+  telephone?: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
-  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { userId, telephone }: WelcomeSmsRequest = await req.json();
+    const { userId, telephone }: RefusalSmsRequest = await req.json();
 
-    console.log(`Sending welcome SMS to ${telephone} for user ${userId}`);
+    console.log(`Sending refusal SMS for user ${userId}`);
 
-    // Get Twilio credentials from environment
     const accountSid = Deno.env.get("TWILIO_ACCOUNT_SID");
     const authToken = Deno.env.get("TWILIO_AUTH_TOKEN");
     const twilioPhoneNumber = Deno.env.get("TWILIO_PHONE_NUMBER");
@@ -35,40 +33,39 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Get user's housing token from Supabase
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    const { data: profile, error: profileError } = await supabase
-      .from("profiles")
-      .select("housing_token")
-      .eq("id", userId)
-      .single();
+    let userPhone = telephone;
+    if (!userPhone) {
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("telephone")
+        .eq("id", userId)
+        .single();
+      
+      userPhone = profile?.telephone;
+    }
 
-    if (profileError || !profile?.housing_token) {
-      console.error("Could not fetch housing token:", profileError);
+    if (!userPhone) {
       return new Response(
-        JSON.stringify({ success: false, message: "Could not fetch user profile" }),
+        JSON.stringify({ success: false, message: "No phone number found" }),
         { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
       );
     }
 
-    // Build the form URL
-    const baseUrl = Deno.env.get("SITE_URL") || "https://kaebtbcufbpkhyrhuson.lovable.app";
-    const formUrl = `${baseUrl}/formulaire-logement/${profile.housing_token}`;
-
-    // Format phone number for Twilio (add +33 if needed)
-    let formattedPhone = telephone.replace(/\s/g, "");
+    let formattedPhone = userPhone.replace(/\s/g, "");
     if (formattedPhone.startsWith("0")) {
       formattedPhone = "+33" + formattedPhone.substring(1);
     } else if (!formattedPhone.startsWith("+")) {
       formattedPhone = "+" + formattedPhone;
     }
 
-    // Send SMS via Twilio - new text as specified
+    // SMS text as specified
+    const smsBody = `Nous avons bien enregistré votre refus. Vous serez invité pour la prochaine campagne.`;
+
     const twilioUrl = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`;
-    const smsBody = `Bienvenue ! Merci pour votre inscription. Complétez votre profil ici : ${formUrl} Cela ne prend que 2 minutes.`;
 
     const twilioResponse = await fetch(twilioUrl, {
       method: "POST",
@@ -93,16 +90,15 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Log the SMS
     await supabase.from("sms_logs").insert({
       user_id: userId,
       telephone: formattedPhone,
       message: smsBody,
-      type: "welcome",
+      type: "refusal",
       statut: "envoye",
     });
 
-    console.log("SMS sent successfully:", twilioResult.sid);
+    console.log("Refusal SMS sent successfully:", twilioResult.sid);
 
     return new Response(
       JSON.stringify({ success: true, messageSid: twilioResult.sid }),
@@ -110,7 +106,7 @@ const handler = async (req: Request): Promise<Response> => {
     );
 
   } catch (error: any) {
-    console.error("Error in send-welcome-sms function:", error);
+    console.error("Error in send-refusal-sms function:", error);
     return new Response(
       JSON.stringify({ success: false, error: error.message }),
       { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }

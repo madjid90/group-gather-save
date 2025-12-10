@@ -92,9 +92,8 @@ serve(async (req: Request) => {
         // Build offer URL with token
         const offerUrl = `${baseUrl}/mon-offre?token=${offer.offer_token}`;
 
-        // Build SMS message
-        const economie = offer.economie_estimee_mensuelle?.toFixed(0) || "X";
-        const message = `Switchly : votre offre personnalisée est disponible 🎉 Économisez jusqu'à ${economie}€/mois ! Consultez-la ici : ${offerUrl}`;
+        // SMS text as specified
+        const message = `Bonne nouvelle ! Votre offre personnalisée est prête. Consultez-la ici : ${offerUrl}`;
 
         // Send SMS via Twilio
         const twilioUrl = `https://api.twilio.com/2010-04-01/Accounts/${twilioAccountSid}/Messages.json`;

@@ -122,7 +122,7 @@ export default function AdminCampagneDetail() {
     }
   };
 
-  // ACTION 1: Clôturer les inscriptions
+  // ACTION 1: Clôturer les inscriptions et envoyer SMS négociation
   const handleClotureInscriptions = async () => {
     if (!campaign) return;
     setActionLoading("cloture");
@@ -157,7 +157,21 @@ export default function AdminCampagneDetail() {
       });
 
       setClientsCount(users?.length || 0);
-      toast.success(`Inscriptions clôturées. ${users?.length || 0} clients ajoutés à la campagne.`);
+
+      // Automatically send negotiation start SMS to all users in campaign
+      try {
+        const response = await supabase.functions.invoke("send-negotiation-start-sms", {
+          body: { campaignId: campaign.id },
+        });
+        if (response.data?.sent) {
+          toast.success(`Inscriptions clôturées. ${users?.length || 0} clients ajoutés. ${response.data.sent} SMS négociation envoyés.`);
+        } else {
+          toast.success(`Inscriptions clôturées. ${users?.length || 0} clients ajoutés à la campagne.`);
+        }
+      } catch (smsError) {
+        console.log("Negotiation SMS not sent:", smsError);
+        toast.success(`Inscriptions clôturées. ${users?.length || 0} clients ajoutés à la campagne.`);
+      }
     } catch (error) {
       console.error("Error closing inscriptions:", error);
       toast.error("Erreur lors de la clôture des inscriptions");
