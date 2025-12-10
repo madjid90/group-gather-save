@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Shield, Lock, CheckCircle, Zap, Wifi, CheckCircle2 } from "lucide-react";
-import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 
 export function HeroSection() {
   return (
@@ -113,7 +112,7 @@ export function HeroSection() {
                 {/* Social proof text */}
                 <div className="text-center">
                   <p className="text-muted-foreground">
-                    Déjà <span className="font-bold text-foreground"><AnimatedCounter value={12847} /></span> foyers ont rejoint la prochaine négociation.
+                    Déjà <span className="font-bold text-foreground">12 847</span> foyers ont rejoint la prochaine négociation.
                   </p>
                   <p className="text-sm text-primary font-medium mt-1">
                     Plus nous sommes nombreux, plus les prix baissent.
@@ -142,9 +141,7 @@ export function HeroSection() {
                       <Zap className="w-5 h-5 text-primary" />
                       <span className="text-xs font-medium text-muted-foreground">Électricité</span>
                     </div>
-                    <div className="text-2xl font-bold text-foreground">
-                      <AnimatedCounter value={247} suffix="€" />
-                    </div>
+                    <div className="text-2xl font-bold text-foreground">247€</div>
                     <p className="text-xs text-secondary font-medium">économisés/an</p>
                   </div>
                   <div className="bg-gradient-subtle rounded-2xl p-4 text-center">
@@ -152,9 +149,7 @@ export function HeroSection() {
                       <Wifi className="w-5 h-5 text-primary" />
                       <span className="text-xs font-medium text-muted-foreground">Internet</span>
                     </div>
-                    <div className="text-2xl font-bold text-foreground">
-                      <AnimatedCounter value={156} suffix="€" />
-                    </div>
+                    <div className="text-2xl font-bold text-foreground">156€</div>
                     <p className="text-xs text-secondary font-medium">économisés/an</p>
                   </div>
                 </div>

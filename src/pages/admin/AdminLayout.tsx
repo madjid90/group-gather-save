@@ -44,7 +44,7 @@ export default function AdminLayout() {
       if (data) {
         setIsAdmin(true);
       } else {
-        navigate("/dashboard");
+        navigate("/dashboard-client");
       }
       setLoading(false);
     };
@@ -161,7 +161,7 @@ export default function AdminLayout() {
           {/* Footer */}
           <div className="p-4 border-t border-border space-y-2">
             <Link
-              to="/dashboard"
+              to="/dashboard-client"
               className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
             >
               <LayoutDashboard className="h-5 w-5" />
