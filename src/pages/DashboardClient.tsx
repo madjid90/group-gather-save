@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
-  User,
   Home,
   FileCheck,
   Gift,
@@ -39,7 +38,6 @@ interface UserOffer {
   offer_token: string | null;
 }
 
-// Status display mapping
 const STATUS_MAP: Record<string, { label: string; icon: React.ElementType; color: string }> = {
   inscrit: { 
     label: "Dossier en attente", 
@@ -83,7 +81,6 @@ export default function DashboardClient() {
         return;
       }
 
-      // Fetch profile
       const { data: profileData, error: profileError } = await supabase
         .from("profiles")
         .select("id, prenom, nom, telephone, statut, housing_token, housing_form_completed")
@@ -94,7 +91,6 @@ export default function DashboardClient() {
       setProfile(profileData);
       setHasHousingProfile(profileData.housing_form_completed === true);
 
-      // Fetch current/latest offer (only if status is sent)
       const { data: offerData } = await supabase
         .from("user_offers")
         .select("id, offre_nom, fournisseur_nom, economie_estimee_mensuelle, economie_estimee_annuelle, statut, offer_token")
@@ -119,7 +115,6 @@ export default function DashboardClient() {
     navigate("/");
   };
 
-  // Get display status based on profile state
   const getDisplayStatus = () => {
     if (currentOffer?.statut === "acceptee") {
       return STATUS_MAP.souscription;
@@ -135,10 +130,10 @@ export default function DashboardClient() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-subtle">
         <div className="flex items-center gap-2">
-          <Loader2 className="h-6 w-6 animate-spin text-primary" />
-          <span>Chargement...</span>
+          <Loader2 className="h-5 w-5 animate-spin text-primary" />
+          <span className="text-sm text-muted-foreground">Chargement...</span>
         </div>
       </div>
     );
@@ -146,13 +141,13 @@ export default function DashboardClient() {
 
   if (!profile) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background px-4">
-        <Card className="max-w-md w-full">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-subtle px-4">
+        <Card className="max-w-md w-full rounded-xl border border-border shadow-switchly">
           <CardContent className="pt-6 text-center">
-            <XCircle className="h-12 w-12 mx-auto text-destructive mb-4" />
-            <h2 className="text-xl font-semibold mb-2">Accès non autorisé</h2>
-            <p className="text-muted-foreground mb-4">Veuillez vous connecter pour accéder à votre espace.</p>
-            <Button asChild>
+            <XCircle className="h-10 w-10 mx-auto text-destructive mb-3" />
+            <h2 className="text-lg font-semibold mb-2 text-foreground">Accès non autorisé</h2>
+            <p className="text-sm text-muted-foreground mb-4">Veuillez vous connecter pour accéder à votre espace.</p>
+            <Button variant="hero" size="lg" className="w-full py-3 text-sm" asChild>
               <Link to="/connexion">Se connecter</Link>
             </Button>
           </CardContent>
@@ -166,70 +161,66 @@ export default function DashboardClient() {
   const showOfferButton = currentOffer && currentOffer.statut !== "refusee";
 
   return (
-    <div className="min-h-screen bg-background py-8 px-4">
-      <div className="max-w-2xl mx-auto space-y-6">
+    <div className="min-h-screen bg-gradient-subtle py-6 px-4">
+      <div className="max-w-lg mx-auto space-y-4">
         
-        {/* Header with Logo */}
+        {/* Header */}
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center">
-              <Zap className="w-5 h-5 text-primary-foreground" />
+            <div className="w-9 h-9 rounded-xl bg-gradient-hero flex items-center justify-center">
+              <Zap className="w-4 h-4 text-primary-foreground" />
             </div>
-            <span className="text-xl font-bold text-foreground">Switchly</span>
+            <span className="text-lg font-bold text-foreground">Switchly</span>
           </Link>
-          <Button variant="ghost" size="sm" onClick={handleLogout}>
-            <LogOut className="h-4 w-4 mr-2" />
+          <Button variant="ghost" size="sm" onClick={handleLogout} className="text-sm text-muted-foreground">
+            <LogOut className="h-4 w-4 mr-1.5" />
             Déconnexion
           </Button>
         </div>
 
-        {/* Welcome Card */}
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-center">
-              <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
-                Bienvenue, {profile.prenom} 👋
-              </h1>
-              <p className="text-muted-foreground">
-                Membre de l'achat groupé
-              </p>
-            </div>
+        {/* Welcome */}
+        <Card className="rounded-xl border border-border shadow-switchly">
+          <CardContent className="p-4 text-center">
+            <h1 className="text-[20px] sm:text-2xl font-bold text-foreground mb-1">
+              Bienvenue, {profile.prenom} 👋
+            </h1>
+            <p className="text-sm text-muted-foreground">
+              Membre de l'achat groupé
+            </p>
           </CardContent>
         </Card>
 
-        {/* Status Card */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">État de votre dossier</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center gap-4 p-4 bg-muted rounded-xl">
-              <div className={`w-12 h-12 rounded-full flex items-center justify-center ${displayStatus.color}`}>
-                <StatusIcon className="w-6 h-6" />
+        {/* Status */}
+        <Card className="rounded-xl border border-border shadow-switchly">
+          <CardContent className="p-4">
+            <h2 className="text-sm font-semibold text-foreground mb-3">État de votre dossier</h2>
+            <div className="flex items-center gap-3 p-3 bg-muted rounded-xl">
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${displayStatus.color}`}>
+                <StatusIcon className="w-5 h-5" />
               </div>
-              <div className="flex-1">
-                <p className="font-semibold text-lg">{displayStatus.label}</p>
-                <p className="text-sm text-muted-foreground">
-                  {!hasHousingProfile && "Complétez votre profil pour recevoir une offre personnalisée"}
-                  {hasHousingProfile && !currentOffer && "Nous négocions actuellement les meilleures réductions"}
+              <div className="flex-1 min-w-0">
+                <p className="font-medium text-sm text-foreground">{displayStatus.label}</p>
+                <p className="text-xs text-muted-foreground truncate">
+                  {!hasHousingProfile && "Complétez votre profil pour recevoir une offre"}
+                  {hasHousingProfile && !currentOffer && "Négociation en cours"}
                   {currentOffer?.statut === "envoyee" && "Consultez votre offre personnalisée"}
-                  {currentOffer?.statut === "acceptee" && "Merci ! Votre offre est validée"}
-                  {currentOffer?.statut === "refusee" && "Vous serez recontacté pour la prochaine campagne"}
+                  {currentOffer?.statut === "acceptee" && "Votre offre est validée"}
+                  {currentOffer?.statut === "refusee" && "Prochaine campagne à venir"}
                 </p>
               </div>
             </div>
 
-            {/* Dynamic Message */}
+            {/* Action needed */}
             {!hasHousingProfile && (
-              <div className="mt-4 p-4 bg-yellow-50 rounded-xl flex items-start gap-3">
-                <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
-                <div>
-                  <p className="text-sm text-foreground">
-                    Pour recevoir votre offre personnalisée, merci de compléter votre profil logement.
+              <div className="mt-3 p-3 bg-yellow-50 rounded-xl flex items-start gap-2.5">
+                <AlertCircle className="w-4 h-4 text-yellow-600 flex-shrink-0 mt-0.5" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-foreground mb-2">
+                    Complétez votre profil logement pour recevoir votre offre personnalisée.
                   </p>
-                  <Button className="mt-3" asChild>
+                  <Button variant="hero" size="sm" className="text-xs py-2" asChild>
                     <Link to={`/formulaire-logement/${profile.housing_token}`}>
-                      <Home className="w-4 h-4 mr-2" />
+                      <Home className="w-3.5 h-3.5 mr-1.5" />
                       Compléter mon profil
                     </Link>
                   </Button>
@@ -238,10 +229,10 @@ export default function DashboardClient() {
             )}
 
             {hasHousingProfile && !currentOffer && (
-              <div className="mt-4 p-4 bg-blue-50 rounded-xl flex items-start gap-3">
-                <Clock className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                <p className="text-sm text-foreground">
-                  Votre profil est complet ! Nous négocions actuellement les meilleures réductions pour votre groupe — jusqu'à -30 %.
+              <div className="mt-3 p-3 bg-blue-50 rounded-xl flex items-start gap-2.5">
+                <Clock className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
+                <p className="text-xs text-foreground">
+                  Votre profil est complet ! Nous négocions les meilleures réductions — jusqu'à -30 %.
                   Vous recevrez un SMS dès que votre offre sera disponible.
                 </p>
               </div>
@@ -249,23 +240,23 @@ export default function DashboardClient() {
           </CardContent>
         </Card>
 
-        {/* Offer Button - Only visible when offer is available */}
+        {/* Offer available */}
         {showOfferButton && (
-          <Card className="border-primary/20 bg-primary/5">
-            <CardContent className="pt-6 text-center">
-              <Gift className="w-12 h-12 text-primary mx-auto mb-4" />
-              <h2 className="text-xl font-semibold mb-2">Votre offre est prête !</h2>
-              <p className="text-muted-foreground mb-4">
+          <Card className="rounded-xl border-primary/20 bg-primary/5 shadow-switchly">
+            <CardContent className="p-4 text-center">
+              <Gift className="w-10 h-10 text-primary mx-auto mb-3" />
+              <h2 className="text-base font-semibold mb-1 text-foreground">Votre offre est prête !</h2>
+              <p className="text-xs text-muted-foreground mb-3">
                 Consultez votre offre personnalisée négociée grâce au groupe.
               </p>
               
               {currentOffer.statut === "acceptee" ? (
-                <Badge className="bg-green-100 text-green-800 px-4 py-2 text-base">
-                  <CheckCircle className="w-4 h-4 mr-2" />
+                <Badge className="bg-green-100 text-green-800 px-3 py-1.5 text-xs">
+                  <CheckCircle className="w-3.5 h-3.5 mr-1.5" />
                   Offre acceptée
                 </Badge>
               ) : (
-                <Button size="lg" asChild>
+                <Button variant="hero" size="lg" className="w-full py-3 text-sm" asChild>
                   <Link to={`/mon-offre?token=${currentOffer.offer_token}`}>
                     Voir mon offre
                   </Link>
@@ -276,7 +267,7 @@ export default function DashboardClient() {
         )}
 
         {/* Footer */}
-        <p className="text-center text-xs text-muted-foreground pt-4">
+        <p className="text-center text-xs text-muted-foreground pt-2">
           Switchly - Achat groupé d'énergie et internet
         </p>
       </div>

@@ -12,6 +12,7 @@ import {
   Shield,
   Menu,
   X,
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -79,8 +80,8 @@ export default function AdminLayout() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-subtle">
+        <Loader2 className="h-6 w-6 animate-spin text-primary" />
       </div>
     );
   }
@@ -97,12 +98,12 @@ export default function AdminLayout() {
   };
 
   return (
-    <div className="min-h-screen flex bg-muted/30">
+    <div className="min-h-screen flex bg-gradient-subtle">
       {/* Mobile menu button */}
       <Button
         variant="ghost"
         size="icon"
-        className="fixed top-4 left-4 z-50 lg:hidden"
+        className="fixed top-3 left-3 z-50 lg:hidden h-9 w-9"
         onClick={() => setSidebarOpen(!sidebarOpen)}
       >
         {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -119,24 +120,24 @@ export default function AdminLayout() {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed lg:static inset-y-0 left-0 z-40 w-64 bg-card border-r border-border transform transition-transform duration-200 ease-in-out",
+          "fixed lg:static inset-y-0 left-0 z-40 w-60 bg-card border-r border-border transform transition-transform duration-200 ease-in-out",
           sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         )}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="p-6 border-b border-border">
+          <div className="p-4 border-b border-border">
             <Link to="/admin" className="flex items-center gap-2">
-              <Shield className="h-8 w-8 text-primary" />
+              <Shield className="h-7 w-7 text-primary" />
               <div>
-                <span className="font-bold text-xl text-foreground">Switchly</span>
+                <span className="font-bold text-lg text-foreground">Switchly</span>
                 <span className="block text-xs text-muted-foreground">Administration</span>
               </div>
             </Link>
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 p-4 space-y-1">
+          <nav className="flex-1 p-3 space-y-1">
             {adminLinks.map((link) => {
               const isActive = isActiveLink(link.href);
               return (
@@ -145,13 +146,13 @@ export default function AdminLayout() {
                   to={link.href}
                   onClick={() => setSidebarOpen(false)}
                   className={cn(
-                    "flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors",
+                    "flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
                     isActive
                       ? "bg-primary text-primary-foreground"
                       : "text-muted-foreground hover:bg-muted hover:text-foreground"
                   )}
                 >
-                  <link.icon className="h-5 w-5" />
+                  <link.icon className="h-4 w-4" />
                   {link.label}
                 </Link>
               );
@@ -159,19 +160,19 @@ export default function AdminLayout() {
           </nav>
 
           {/* Footer */}
-          <div className="p-4 border-t border-border space-y-2">
+          <div className="p-3 border-t border-border space-y-1">
             <Link
               to="/dashboard-client"
-              className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+              className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
             >
-              <LayoutDashboard className="h-5 w-5" />
+              <LayoutDashboard className="h-4 w-4" />
               Espace Client
             </Link>
             <button
               onClick={handleLogout}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors"
+              className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors"
             >
-              <LogOut className="h-5 w-5" />
+              <LogOut className="h-4 w-4" />
               Déconnexion
             </button>
           </div>
@@ -180,7 +181,7 @@ export default function AdminLayout() {
 
       {/* Main content */}
       <main className="flex-1 min-h-screen lg:ml-0">
-        <div className="p-4 lg:p-8">
+        <div className="p-4 pt-14 lg:pt-4 lg:p-6">
           <Outlet />
         </div>
       </main>

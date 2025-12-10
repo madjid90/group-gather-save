@@ -9,9 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Users, FileText, Send, CheckCircle, TrendingUp, Euro } from "lucide-react";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
+import { Users, FileText, Send, CheckCircle, TrendingUp, Euro, Loader2 } from "lucide-react";
 
 interface CampaignStats {
   id: string;
@@ -39,36 +37,30 @@ export default function AdminDashboard() {
 
   const fetchStats = async () => {
     try {
-      // Total users
       const { count: totalUsers } = await supabase
         .from("profiles")
         .select("*", { count: "exact", head: true });
 
-      // Formulaires complétés
       const { count: formulairesCompletes } = await supabase
         .from("profiles")
         .select("*", { count: "exact", head: true })
         .eq("housing_form_completed", true);
 
-      // Campagnes en cours
       const { count: campagnesEnCours } = await supabase
         .from("campaigns")
         .select("*", { count: "exact", head: true })
         .neq("statut", "terminee");
 
-      // Offres envoyées
       const { count: offresEnvoyees } = await supabase
         .from("user_offers")
         .select("*", { count: "exact", head: true })
         .eq("statut", "envoyee");
 
-      // Offres acceptées
       const { count: offresAcceptees } = await supabase
         .from("user_offers")
         .select("*", { count: "exact", head: true })
         .eq("statut", "acceptee");
 
-      // Économie totale (somme des économies annuelles des offres acceptées)
       const { data: acceptedOffers } = await supabase
         .from("user_offers")
         .select("economie_estimee_annuelle")
@@ -88,7 +80,6 @@ export default function AdminDashboard() {
         economieTotale,
       });
 
-      // Fetch last 3 campaigns with stats
       const { data: campaigns } = await supabase
         .from("campaigns")
         .select("id, nom")
@@ -139,135 +130,137 @@ export default function AdminDashboard() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <Loader2 className="h-6 w-6 animate-spin text-primary" />
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div>
-        <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
-        <p className="text-muted-foreground">Vue d'ensemble de votre activité</p>
+        <h1 className="text-xl sm:text-2xl font-bold text-foreground">Dashboard</h1>
+        <p className="text-sm text-muted-foreground">Vue d'ensemble de votre activité</p>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+        <Card className="rounded-xl border border-border">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 p-3">
+            <CardTitle className="text-xs font-medium text-muted-foreground">
               Total utilisateurs
             </CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.totalUsers}</div>
+          <CardContent className="p-3 pt-0">
+            <div className="text-xl sm:text-2xl font-bold text-foreground">{stats.totalUsers}</div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Formulaires complétés
+        <Card className="rounded-xl border border-border">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 p-3">
+            <CardTitle className="text-xs font-medium text-muted-foreground">
+              Formulaires OK
             </CardTitle>
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.formulairesCompletes}</div>
+          <CardContent className="p-3 pt-0">
+            <div className="text-xl sm:text-2xl font-bold text-foreground">{stats.formulairesCompletes}</div>
             <p className="text-xs text-muted-foreground">
               {stats.totalUsers > 0 
-                ? `${Math.round((stats.formulairesCompletes / stats.totalUsers) * 100)}% des inscrits`
+                ? `${Math.round((stats.formulairesCompletes / stats.totalUsers) * 100)}%`
                 : "0%"}
             </p>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Campagnes en cours
+        <Card className="rounded-xl border border-border">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 p-3">
+            <CardTitle className="text-xs font-medium text-muted-foreground">
+              Campagnes actives
             </CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.campagnesEnCours}</div>
+          <CardContent className="p-3 pt-0">
+            <div className="text-xl sm:text-2xl font-bold text-foreground">{stats.campagnesEnCours}</div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+        <Card className="rounded-xl border border-border">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 p-3">
+            <CardTitle className="text-xs font-medium text-muted-foreground">
               Offres envoyées
             </CardTitle>
             <Send className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.offresEnvoyees}</div>
+          <CardContent className="p-3 pt-0">
+            <div className="text-xl sm:text-2xl font-bold text-foreground">{stats.offresEnvoyees}</div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+        <Card className="rounded-xl border border-border">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 p-3">
+            <CardTitle className="text-xs font-medium text-muted-foreground">
               Offres acceptées
             </CardTitle>
             <CheckCircle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.offresAcceptees}</div>
+          <CardContent className="p-3 pt-0">
+            <div className="text-xl sm:text-2xl font-bold text-foreground">{stats.offresAcceptees}</div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+        <Card className="rounded-xl border border-border">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 p-3">
+            <CardTitle className="text-xs font-medium text-muted-foreground">
               Économie totale
             </CardTitle>
             <Euro className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {stats.economieTotale.toLocaleString("fr-FR")} €/an
+          <CardContent className="p-3 pt-0">
+            <div className="text-xl sm:text-2xl font-bold text-foreground">
+              {stats.economieTotale.toLocaleString("fr-FR")} €
             </div>
           </CardContent>
         </Card>
       </div>
 
       {/* Recent Campaigns */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Dernières campagnes</CardTitle>
+      <Card className="rounded-xl border border-border">
+        <CardHeader className="p-4">
+          <CardTitle className="text-base font-semibold text-foreground">Dernières campagnes</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-4 pt-0">
           {recentCampaigns.length === 0 ? (
-            <p className="text-muted-foreground text-center py-8">
+            <p className="text-sm text-muted-foreground text-center py-6">
               Aucune campagne créée
             </p>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Nom</TableHead>
-                  <TableHead className="text-right">Clients</TableHead>
-                  <TableHead className="text-right">Taux d'acceptation</TableHead>
-                  <TableHead className="text-right">Économie moyenne</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {recentCampaigns.map((campaign) => (
-                  <TableRow key={campaign.id}>
-                    <TableCell className="font-medium">{campaign.nom}</TableCell>
-                    <TableCell className="text-right">{campaign.total_clients}</TableCell>
-                    <TableCell className="text-right">
-                      {campaign.taux_acceptation.toFixed(1)}%
-                    </TableCell>
-                    <TableCell className="text-right">
-                      {campaign.economie_moyenne.toLocaleString("fr-FR", { maximumFractionDigits: 0 })} €/an
-                    </TableCell>
+            <div className="overflow-x-auto -mx-4 px-4">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="text-xs">Nom</TableHead>
+                    <TableHead className="text-xs text-right">Clients</TableHead>
+                    <TableHead className="text-xs text-right hidden sm:table-cell">Taux</TableHead>
+                    <TableHead className="text-xs text-right hidden sm:table-cell">Économie moy.</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {recentCampaigns.map((campaign) => (
+                    <TableRow key={campaign.id}>
+                      <TableCell className="font-medium text-sm text-foreground">{campaign.nom}</TableCell>
+                      <TableCell className="text-sm text-right">{campaign.total_clients}</TableCell>
+                      <TableCell className="text-sm text-right hidden sm:table-cell">
+                        {campaign.taux_acceptation.toFixed(0)}%
+                      </TableCell>
+                      <TableCell className="text-sm text-right hidden sm:table-cell">
+                        {campaign.economie_moyenne.toLocaleString("fr-FR", { maximumFractionDigits: 0 })} €
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           )}
         </CardContent>
       </Card>

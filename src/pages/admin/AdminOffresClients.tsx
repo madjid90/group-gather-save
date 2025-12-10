@@ -26,7 +26,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Search, Eye, Send, ChevronLeft, ChevronRight, MessageSquare } from "lucide-react";
+import { Search, Eye, Send, ChevronLeft, ChevronRight, MessageSquare, Loader2 } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { toast } from "sonner";
@@ -81,7 +81,6 @@ export default function AdminOffresClients() {
 
       if (error) throw error;
 
-      // Fetch profiles for each offer
       const offersWithProfiles: UserOffer[] = [];
       for (const offer of data || []) {
         const { data: profileData } = await supabase
@@ -131,21 +130,21 @@ export default function AdminOffresClients() {
   const getStatusBadge = (status: string | null) => {
     switch (status) {
       case "draft":
-        return <Badge variant="secondary">Brouillon</Badge>;
+        return <Badge variant="secondary" className="text-xs">Brouillon</Badge>;
       case "envoyee":
-        return <Badge className="bg-blue-500 text-white">Envoyée</Badge>;
+        return <Badge className="bg-blue-500 text-white text-xs">Envoyée</Badge>;
       case "acceptee":
-        return <Badge className="bg-green-500 text-white">Acceptée</Badge>;
+        return <Badge className="bg-green-500 text-white text-xs">Acceptée</Badge>;
       case "refusee":
-        return <Badge className="bg-red-500 text-white">Refusée</Badge>;
+        return <Badge className="bg-red-500 text-white text-xs">Refusée</Badge>;
       default:
-        return <Badge variant="outline">En attente</Badge>;
+        return <Badge variant="outline" className="text-xs">En attente</Badge>;
     }
   };
 
   const sendOfferSMS = async (offer: UserOffer) => {
     if (!offer.profile?.telephone) {
-      toast.error("Pas de numéro de téléphone pour cet utilisateur");
+      toast.error("Pas de numéro de téléphone");
       return;
     }
 
@@ -162,23 +161,21 @@ export default function AdminOffresClients() {
 
       if (error) throw error;
 
-      // Update offer status
       await supabase
         .from("user_offers")
         .update({ statut: "envoyee" })
         .eq("id", offer.id);
 
-      // Update profile status
       await supabase
         .from("profiles")
         .update({ statut: "offre_envoyee" })
         .eq("id", offer.user_id);
 
-      toast.success("SMS envoyé avec succès");
+      toast.success("SMS envoyé");
       fetchOffers();
     } catch (error) {
       console.error("Error sending SMS:", error);
-      toast.error("Erreur lors de l'envoi du SMS");
+      toast.error("Erreur lors de l'envoi");
     } finally {
       setSending(false);
     }
@@ -190,7 +187,7 @@ export default function AdminOffresClients() {
     );
 
     if (draftOffers.length === 0) {
-      toast.error("Aucune offre en brouillon avec numéro de téléphone");
+      toast.error("Aucune offre en brouillon");
       return;
     }
 
@@ -243,53 +240,50 @@ export default function AdminOffresClients() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <Loader2 className="h-6 w-6 animate-spin text-primary" />
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4">
+      <div className="flex items-center justify-between gap-2">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Offres Clients</h1>
-          <p className="text-muted-foreground">
-            {offers.length} offres importées • {draftCount} en attente d'envoi
+          <h1 className="text-xl sm:text-2xl font-bold text-foreground">Offres Clients</h1>
+          <p className="text-sm text-muted-foreground">
+            {offers.length} offres • {draftCount} en attente
           </p>
         </div>
         <Button
+          size="sm"
           onClick={sendAllOffersSMS}
           disabled={sending || draftCount === 0}
-          className="flex items-center gap-2"
         >
-          <MessageSquare className="h-4 w-4" />
-          {sending ? "Envoi en cours..." : `Envoyer ${draftCount} offres par SMS`}
+          <MessageSquare className="h-4 w-4 mr-1.5" />
+          <span className="hidden sm:inline">Envoyer</span> {draftCount}
         </Button>
       </div>
 
       {/* Filters */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Filtres</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="relative md:col-span-2">
+      <Card className="rounded-xl border border-border">
+        <CardContent className="p-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <div className="relative sm:col-span-2">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Rechercher par client, offre, fournisseur..."
+                placeholder="Rechercher..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-10"
+                className="pl-9 text-sm"
               />
             </div>
 
             <Select value={filterStatus} onValueChange={setFilterStatus}>
-              <SelectTrigger>
+              <SelectTrigger className="text-sm">
                 <SelectValue placeholder="Statut" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Tous les statuts</SelectItem>
+                <SelectItem value="all">Tous</SelectItem>
                 <SelectItem value="draft">Brouillon</SelectItem>
                 <SelectItem value="envoyee">Envoyée</SelectItem>
                 <SelectItem value="acceptee">Acceptée</SelectItem>
@@ -301,51 +295,47 @@ export default function AdminOffresClients() {
       </Card>
 
       {/* Table */}
-      <Card>
+      <Card className="rounded-xl border border-border">
         <CardContent className="p-0">
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Client ID</TableHead>
-                  <TableHead>Nom</TableHead>
-                  <TableHead>Offre</TableHead>
-                  <TableHead>Fournisseur</TableHead>
-                  <TableHead>Économie/mois</TableHead>
-                  <TableHead>Économie/an</TableHead>
-                  <TableHead>Statut</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead className="text-xs">Client</TableHead>
+                  <TableHead className="text-xs hidden sm:table-cell">Offre</TableHead>
+                  <TableHead className="text-xs">€/mois</TableHead>
+                  <TableHead className="text-xs">Statut</TableHead>
+                  <TableHead className="text-xs text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {paginatedOffers.map((offer) => (
                   <TableRow key={offer.id}>
-                    <TableCell className="font-mono text-sm">
-                      {offer.client_id || "-"}
+                    <TableCell className="text-sm">
+                      <div className="font-medium text-foreground">
+                        {offer.profile
+                          ? `${offer.profile.prenom} ${offer.profile.nom}`
+                          : "-"}
+                      </div>
+                      <div className="text-xs text-muted-foreground font-mono">
+                        {offer.client_id || "-"}
+                      </div>
                     </TableCell>
-                    <TableCell className="font-medium">
-                      {offer.profile
-                        ? `${offer.profile.prenom} ${offer.profile.nom}`
-                        : "-"}
+                    <TableCell className="text-sm hidden sm:table-cell text-muted-foreground">
+                      {offer.offre_nom || "-"}
                     </TableCell>
-                    <TableCell>{offer.offre_nom || "-"}</TableCell>
-                    <TableCell>{offer.fournisseur_nom || "-"}</TableCell>
-                    <TableCell>
+                    <TableCell className="text-sm font-medium text-green-600">
                       {offer.economie_estimee_mensuelle
                         ? `${offer.economie_estimee_mensuelle}€`
                         : "-"}
                     </TableCell>
-                    <TableCell>
-                      {offer.economie_estimee_annuelle
-                        ? `${offer.economie_estimee_annuelle}€`
-                        : "-"}
-                    </TableCell>
                     <TableCell>{getStatusBadge(offer.statut)}</TableCell>
                     <TableCell className="text-right">
-                      <div className="flex justify-end gap-2">
+                      <div className="flex justify-end gap-1">
                         <Button
                           variant="ghost"
                           size="icon"
+                          className="h-8 w-8"
                           onClick={() => {
                             setSelectedOffer(offer);
                             setIsDialogOpen(true);
@@ -357,6 +347,7 @@ export default function AdminOffresClients() {
                           <Button
                             variant="ghost"
                             size="icon"
+                            className="h-8 w-8"
                             onClick={() => sendOfferSMS(offer)}
                             disabled={sending}
                           >
@@ -372,14 +363,15 @@ export default function AdminOffresClients() {
           </div>
 
           {totalPages > 1 && (
-            <div className="flex items-center justify-between p-4 border-t">
-              <p className="text-sm text-muted-foreground">
-                Page {currentPage} sur {totalPages}
+            <div className="flex items-center justify-between p-3 border-t">
+              <p className="text-xs text-muted-foreground">
+                Page {currentPage}/{totalPages}
               </p>
-              <div className="flex gap-2">
+              <div className="flex gap-1">
                 <Button
                   variant="outline"
-                  size="sm"
+                  size="icon"
+                  className="h-8 w-8"
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                   disabled={currentPage === 1}
                 >
@@ -387,7 +379,8 @@ export default function AdminOffresClients() {
                 </Button>
                 <Button
                   variant="outline"
-                  size="sm"
+                  size="icon"
+                  className="h-8 w-8"
                   onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                   disabled={currentPage === totalPages}
                 >
@@ -401,59 +394,45 @@ export default function AdminOffresClients() {
 
       {/* Detail Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-sm rounded-xl">
           <DialogHeader>
-            <DialogTitle>Détail de l'offre</DialogTitle>
+            <DialogTitle className="text-lg">Détail de l'offre</DialogTitle>
           </DialogHeader>
 
           {selectedOffer && (
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <Label className="text-muted-foreground">Client ID</Label>
-                  <p className="font-mono">{selectedOffer.client_id}</p>
-                </div>
-                <div>
-                  <Label className="text-muted-foreground">Client</Label>
-                  <p className="font-medium">
+                  <Label className="text-xs text-muted-foreground">Client</Label>
+                  <p className="text-sm font-medium text-foreground">
                     {selectedOffer.profile
                       ? `${selectedOffer.profile.prenom} ${selectedOffer.profile.nom}`
                       : "-"}
                   </p>
                 </div>
                 <div>
-                  <Label className="text-muted-foreground">Offre</Label>
-                  <p className="font-medium">{selectedOffer.offre_nom || "-"}</p>
+                  <Label className="text-xs text-muted-foreground">ID</Label>
+                  <p className="text-sm font-mono text-foreground">{selectedOffer.client_id}</p>
                 </div>
                 <div>
-                  <Label className="text-muted-foreground">Fournisseur</Label>
-                  <p className="font-medium">{selectedOffer.fournisseur_nom || "-"}</p>
+                  <Label className="text-xs text-muted-foreground">Offre</Label>
+                  <p className="text-sm font-medium text-foreground">{selectedOffer.offre_nom || "-"}</p>
                 </div>
                 <div>
-                  <Label className="text-muted-foreground">Prix kWh</Label>
-                  <p className="font-medium">
-                    {selectedOffer.prix_kwh ? `${selectedOffer.prix_kwh}€` : "-"}
-                  </p>
+                  <Label className="text-xs text-muted-foreground">Fournisseur</Label>
+                  <p className="text-sm font-medium text-foreground">{selectedOffer.fournisseur_nom || "-"}</p>
                 </div>
                 <div>
-                  <Label className="text-muted-foreground">Abonnement</Label>
-                  <p className="font-medium">
-                    {selectedOffer.abonnement_mensuel
-                      ? `${selectedOffer.abonnement_mensuel}€/mois`
-                      : "-"}
-                  </p>
-                </div>
-                <div>
-                  <Label className="text-muted-foreground">Économie mensuelle</Label>
-                  <p className="font-medium text-green-600">
+                  <Label className="text-xs text-muted-foreground">€/mois</Label>
+                  <p className="text-sm font-medium text-green-600">
                     {selectedOffer.economie_estimee_mensuelle
                       ? `${selectedOffer.economie_estimee_mensuelle}€`
                       : "-"}
                   </p>
                 </div>
                 <div>
-                  <Label className="text-muted-foreground">Économie annuelle</Label>
-                  <p className="font-medium text-green-600">
+                  <Label className="text-xs text-muted-foreground">€/an</Label>
+                  <p className="text-sm font-medium text-green-600">
                     {selectedOffer.economie_estimee_annuelle
                       ? `${selectedOffer.economie_estimee_annuelle}€`
                       : "-"}
@@ -463,25 +442,26 @@ export default function AdminOffresClients() {
 
               {selectedOffer.commentaire_fournisseur && (
                 <div>
-                  <Label className="text-muted-foreground">Commentaire fournisseur</Label>
-                  <p className="mt-1 p-3 bg-muted rounded-lg text-sm">
+                  <Label className="text-xs text-muted-foreground">Commentaire</Label>
+                  <p className="mt-1 p-2.5 bg-muted rounded-lg text-xs text-foreground">
                     {selectedOffer.commentaire_fournisseur}
                   </p>
                 </div>
               )}
 
-              <div className="flex items-center justify-between pt-4 border-t">
+              <div className="flex items-center justify-between pt-3 border-t">
                 <div>{getStatusBadge(selectedOffer.statut)}</div>
                 {selectedOffer.statut === "draft" && (
                   <Button
+                    size="sm"
                     onClick={() => {
                       sendOfferSMS(selectedOffer);
                       setIsDialogOpen(false);
                     }}
                     disabled={sending}
                   >
-                    <Send className="h-4 w-4 mr-2" />
-                    Envoyer par SMS
+                    <Send className="h-4 w-4 mr-1.5" />
+                    Envoyer SMS
                   </Button>
                 )}
               </div>

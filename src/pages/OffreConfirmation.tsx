@@ -1,62 +1,62 @@
+import { useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
-import { Card, CardContent } from "@/components/ui/card";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, XCircle, Home } from "lucide-react";
+import { CheckCircle, XCircle, Zap } from "lucide-react";
 
 export default function OffreConfirmation() {
   const [searchParams] = useSearchParams();
   const status = searchParams.get("status");
-  
   const isAccepted = status === "acceptee";
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-primary/5 to-background px-4 py-8">
-      <Card className="max-w-md w-full">
-        <CardContent className="pt-8 pb-6 text-center space-y-6">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-subtle py-6 px-4">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="w-full max-w-md bg-card rounded-xl p-5 shadow-switchly border border-border text-center"
+      >
+        {/* Logo */}
+        <Link to="/" className="inline-flex items-center gap-2 mb-4">
+          <div className="w-9 h-9 rounded-xl bg-gradient-hero flex items-center justify-center">
+            <Zap className="w-4 h-4 text-primary-foreground" />
+          </div>
+          <span className="text-lg font-bold text-foreground">Switchly</span>
+        </Link>
+
+        {/* Icon */}
+        <div className={`w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 ${isAccepted ? "bg-secondary/10" : "bg-muted"}`}>
           {isAccepted ? (
-            <>
-              <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto">
-                <CheckCircle className="h-10 w-10 text-green-600" />
-              </div>
-              <div className="space-y-2">
-                <h1 className="text-2xl font-bold text-foreground">
-                  Votre réduction groupée est validée ✔
-                </h1>
-                <p className="text-muted-foreground">
-                  Merci ! Votre fournisseur finalise votre offre négociée. 
-                  Vous faites désormais partie des membres ayant obtenu jusqu'à -30 % de réduction.
-                </p>
-              </div>
-            </>
+            <CheckCircle className="w-7 h-7 text-secondary" />
           ) : (
-            <>
-              <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto">
-                <XCircle className="h-10 w-10 text-muted-foreground" />
-              </div>
-              <div className="space-y-2">
-                <h1 className="text-2xl font-bold text-foreground">
-                  Votre choix a été enregistré
-                </h1>
-                <p className="text-muted-foreground">
-                  Nous avons bien pris en compte votre décision. 
-                  Vous recevrez de nouvelles offres lors des prochaines campagnes.
-                </p>
-              </div>
-            </>
+            <XCircle className="w-7 h-7 text-muted-foreground" />
           )}
+        </div>
 
-          <Button asChild variant="hero" className="mt-4">
-            <Link to="/dashboard-client">
-              <Home className="h-4 w-4 mr-2" />
-              Retourner à mon espace
-            </Link>
-          </Button>
+        {/* Message */}
+        <h1 className="text-[20px] sm:text-2xl font-bold text-foreground mb-2">
+          {isAccepted ? "Merci pour votre confiance !" : "Votre choix a été enregistré"}
+        </h1>
+        <p className="text-sm text-muted-foreground mb-5">
+          {isAccepted 
+            ? "Votre acceptation a bien été enregistrée. Nous vous recontacterons très prochainement pour finaliser votre souscription." 
+            : "Vous avez refusé cette offre. Vous serez recontacté lors de la prochaine campagne de négociation."}
+        </p>
 
-          <p className="text-xs text-muted-foreground pt-4">
-            Switchly - Achat groupé d'énergie et internet
-          </p>
-        </CardContent>
-      </Card>
+        {/* CTA */}
+        <Button variant="hero" size="lg" className="w-full py-3 text-sm" asChild>
+          <Link to="/dashboard-client">Accéder à mon espace</Link>
+        </Button>
+
+        {/* Footer */}
+        <p className="text-xs text-muted-foreground pt-4">
+          Switchly - Achat groupé d'énergie et internet
+        </p>
+      </motion.div>
     </div>
   );
 }
