@@ -8,6 +8,7 @@ import { Mail, Phone, MapPin, ArrowRight, Loader2, CheckCircle, ArrowLeft } from
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
+import { supabase } from "@/integrations/supabase/client";
 
 const contactSchema = z.object({
   nom: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
@@ -60,12 +61,26 @@ export default function Contact() {
 
     setIsLoading(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      const { error } = await supabase.functions.invoke("send-contact-email", {
+        body: {
+          name: formData.nom,
+          email: formData.email,
+          subject: formData.sujet,
+          message: formData.message,
+        },
+      });
 
-    setIsLoading(false);
-    setIsSubmitted(true);
-    toast.success("Message envoyé avec succès !");
+      if (error) throw error;
+
+      setIsSubmitted(true);
+      toast.success("Message envoyé avec succès !");
+    } catch (error: any) {
+      console.error("Error sending contact email:", error);
+      toast.error("Erreur lors de l'envoi du message. Veuillez réessayer.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
