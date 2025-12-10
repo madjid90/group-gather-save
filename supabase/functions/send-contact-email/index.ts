@@ -31,7 +31,7 @@ const handler = async (req: Request): Promise<Response> => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "Switchly Contact <onboarding@resend.dev>",
+        from: "Switchly <noreply@switchly.fr>",
         to: ["contact@switchly.fr"],
         subject: `[Contact] ${subject}`,
         html: `
