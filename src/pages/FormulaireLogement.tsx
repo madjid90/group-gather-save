@@ -314,6 +314,19 @@ export default function FormulaireLogement() {
       if (error) throw error;
       if (!data) throw new Error("Token invalide");
 
+      // Send form completed SMS automatically
+      try {
+        // Get user ID from token to send SMS
+        const { data: tokenData } = await supabase.rpc("validate_housing_token", { p_token: token });
+        if (tokenData && tokenData[0]?.user_id) {
+          await supabase.functions.invoke("send-form-completed-sms", {
+            body: { userId: tokenData[0].user_id },
+          });
+        }
+      } catch (smsError) {
+        console.log("Form completed SMS not sent:", smsError);
+      }
+
       setIsSuccess(true);
       toast.success("Informations enregistrées avec succès !");
     } catch (error) {

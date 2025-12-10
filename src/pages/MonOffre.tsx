@@ -108,6 +108,15 @@ export default function MonOffre() {
         .update({ statut_dans_campagne: "offre_acceptee" })
         .eq("user_id", offer.user_id);
 
+      // Send acceptance SMS automatically
+      try {
+        await supabase.functions.invoke("send-acceptance-sms", {
+          body: { userId: offer.user_id },
+        });
+      } catch (smsError) {
+        console.log("Acceptance SMS not sent:", smsError);
+      }
+
       toast.success("Merci ! Votre acceptation a été enregistrée.");
       navigate("/offre-confirmation?status=acceptee");
     } catch (err) {
@@ -135,6 +144,15 @@ export default function MonOffre() {
         .from("profiles")
         .update({ statut: "inscrit" })
         .eq("id", offer.user_id);
+
+      // Send refusal SMS automatically
+      try {
+        await supabase.functions.invoke("send-refusal-sms", {
+          body: { userId: offer.user_id },
+        });
+      } catch (smsError) {
+        console.log("Refusal SMS not sent:", smsError);
+      }
 
       toast.success("Votre réponse a été enregistrée.");
       navigate("/offre-confirmation?status=refusee");
