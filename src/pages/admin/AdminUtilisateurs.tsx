@@ -276,104 +276,154 @@ export default function AdminUtilisateurs() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Gestion des Clients</h1>
-          <p className="text-muted-foreground">{profiles.length} utilisateurs inscrits</p>
+          <h1 className="text-[18px] sm:text-[20px] font-bold text-foreground">Gestion des Clients</h1>
+          <p className="text-xs sm:text-sm text-muted-foreground">{profiles.length} utilisateurs inscrits</p>
         </div>
         {duplicates.length > 0 && (
           <Button
             variant="outline"
-            className="border-orange-300 text-orange-600 hover:bg-orange-50"
+            size="sm"
+            className="border-orange-300 text-orange-600 hover:bg-orange-50 text-xs py-2"
             onClick={() => setIsDuplicateDialogOpen(true)}
           >
-            <AlertTriangle className="h-4 w-4 mr-2" />
-            {duplicates.length} doublon(s) détecté(s)
+            <AlertTriangle className="h-3 w-3 mr-1" />
+            {duplicates.length} doublon(s)
           </Button>
         )}
       </div>
 
       {/* Filters */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Filtres et recherche</CardTitle>
+      <Card className="rounded-xl">
+        <CardHeader className="p-3 sm:p-4">
+          <CardTitle className="text-sm font-semibold">Filtres</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="relative md:col-span-2">
+        <CardContent className="p-3 pt-0 sm:p-4 sm:pt-0">
+          <div className="space-y-3">
+            <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Rechercher par nom, email, téléphone, ville..."
+                placeholder="Nom, téléphone, ville..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-10"
+                className="pl-9 text-sm h-10"
               />
             </div>
 
-            <Select value={filterStatus} onValueChange={setFilterStatus}>
-              <SelectTrigger>
-                <SelectValue placeholder="Statut" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Tous les statuts</SelectItem>
-                <SelectItem value="inscrit">Inscrit</SelectItem>
-                <SelectItem value="offre_envoyee">Offre envoyée</SelectItem>
-                <SelectItem value="clic">Clic</SelectItem>
-                <SelectItem value="souscription">Souscription</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="grid grid-cols-2 gap-2">
+              <Select value={filterStatus} onValueChange={setFilterStatus}>
+                <SelectTrigger className="text-xs h-9">
+                  <SelectValue placeholder="Statut" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Tous les statuts</SelectItem>
+                  <SelectItem value="inscrit">Inscrit</SelectItem>
+                  <SelectItem value="offre_envoyee">Offre envoyée</SelectItem>
+                  <SelectItem value="clic">Clic</SelectItem>
+                  <SelectItem value="souscription">Souscription</SelectItem>
+                </SelectContent>
+              </Select>
 
-            <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger>
-                <SelectValue placeholder="Trier par" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="date">Date d'inscription</SelectItem>
-                <SelectItem value="nom">Nom</SelectItem>
-                <SelectItem value="ville">Ville</SelectItem>
-              </SelectContent>
-            </Select>
+              <Select value={sortBy} onValueChange={setSortBy}>
+                <SelectTrigger className="text-xs h-9">
+                  <SelectValue placeholder="Trier par" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="date">Date</SelectItem>
+                  <SelectItem value="nom">Nom</SelectItem>
+                  <SelectItem value="ville">Ville</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Table */}
-      <Card>
+      {/* Mobile Card View */}
+      <div className="space-y-3 md:hidden">
+        {paginatedProfiles.map((profile) => (
+          <Card key={profile.id} className="rounded-xl">
+            <CardContent className="p-3">
+              <div className="flex items-start justify-between">
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-foreground truncate">
+                    {profile.prenom} {profile.nom}
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    {profile.telephone || "-"}
+                  </p>
+                  {profile.ville && (
+                    <p className="text-xs text-muted-foreground">
+                      {profile.ville}{profile.code_postal && ` (${profile.code_postal})`}
+                    </p>
+                  )}
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 w-8 p-0 shrink-0"
+                  onClick={() => openProfileDialog(profile)}
+                >
+                  <Eye className="h-4 w-4" />
+                </Button>
+              </div>
+              <div className="flex items-center gap-2 mt-2 flex-wrap">
+                {getStatusBadge(profile.statut)}
+                {profile.housing_form_completed ? (
+                  <Badge className="bg-green-500/10 text-green-600 text-[10px] px-1.5 py-0">Formulaire ✓</Badge>
+                ) : (
+                  <Badge variant="outline" className="text-[10px] px-1.5 py-0">Formulaire ⏳</Badge>
+                )}
+                <span className="text-[10px] text-muted-foreground ml-auto">
+                  {profile.created_at
+                    ? format(new Date(profile.created_at), "dd/MM/yy", { locale: fr })
+                    : "-"}
+                </span>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Desktop Table View */}
+      <Card className="hidden md:block rounded-xl">
         <CardContent className="p-0">
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Nom</TableHead>
-                  <TableHead>Téléphone</TableHead>
-                  <TableHead>Ville</TableHead>
-                  <TableHead>Statut</TableHead>
-                  <TableHead>Formulaire</TableHead>
-                  <TableHead>Date inscription</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead className="text-xs">Nom</TableHead>
+                  <TableHead className="text-xs">Téléphone</TableHead>
+                  <TableHead className="text-xs">Ville</TableHead>
+                  <TableHead className="text-xs">Statut</TableHead>
+                  <TableHead className="text-xs">Formulaire</TableHead>
+                  <TableHead className="text-xs">Date</TableHead>
+                  <TableHead className="text-xs text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {paginatedProfiles.map((profile) => (
                   <TableRow key={profile.id}>
-                    <TableCell className="font-medium">
+                    <TableCell className="font-medium text-sm">
                       {profile.prenom} {profile.nom}
                     </TableCell>
-                    <TableCell>{profile.telephone || "-"}</TableCell>
-                    <TableCell>
+                    <TableCell className="text-sm">{profile.telephone || "-"}</TableCell>
+                    <TableCell className="text-sm">
                       {profile.ville || "-"}
                       {profile.code_postal && ` (${profile.code_postal})`}
                     </TableCell>
                     <TableCell>{getStatusBadge(profile.statut)}</TableCell>
                     <TableCell>
                       {profile.housing_form_completed ? (
-                        <Badge className="bg-green-500 text-white">Complété</Badge>
+                        <Badge className="bg-green-500 text-white text-xs">Complété</Badge>
                       ) : (
-                        <Badge variant="secondary">En attente</Badge>
+                        <Badge variant="secondary" className="text-xs">En attente</Badge>
                       )}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-sm">
                       {profile.created_at
                         ? format(new Date(profile.created_at), "dd MMM yyyy", { locale: fr })
                         : "-"}
@@ -392,93 +442,88 @@ export default function AdminUtilisateurs() {
               </TableBody>
             </Table>
           </div>
-
-          {totalPages > 1 && (
-            <div className="flex items-center justify-between p-4 border-t">
-              <p className="text-sm text-muted-foreground">
-                Page {currentPage} sur {totalPages} ({filteredProfiles.length} résultats)
-              </p>
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                  disabled={currentPage === 1}
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                  disabled={currentPage === totalPages}
-                >
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          )}
         </CardContent>
       </Card>
 
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between p-3 bg-card rounded-xl">
+          <p className="text-xs text-muted-foreground">
+            {currentPage}/{totalPages} ({filteredProfiles.length})
+          </p>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-8 w-8 p-0"
+              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-8 w-8 p-0"
+              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      )}
+
       {/* Profile Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="w-[95vw] max-w-lg max-h-[85vh] overflow-y-auto p-4 sm:p-6">
           <DialogHeader>
-            <DialogTitle>
-              Fiche Client - {selectedProfile?.prenom} {selectedProfile?.nom}
+            <DialogTitle className="text-base sm:text-lg">
+              {selectedProfile?.prenom} {selectedProfile?.nom}
             </DialogTitle>
           </DialogHeader>
 
           {selectedProfile && (
-            <div className="space-y-6">
-              <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <Label className="text-muted-foreground">Prénom</Label>
-                  <p className="font-medium">{selectedProfile.prenom}</p>
+                  <Label className="text-xs text-muted-foreground">Téléphone</Label>
+                  <p className="text-sm font-medium">{selectedProfile.telephone || "-"}</p>
                 </div>
                 <div>
-                  <Label className="text-muted-foreground">Nom</Label>
-                  <p className="font-medium">{selectedProfile.nom}</p>
+                  <Label className="text-xs text-muted-foreground">Email</Label>
+                  <p className="text-sm font-medium truncate">{selectedProfile.email}</p>
                 </div>
                 <div>
-                  <Label className="text-muted-foreground">Email</Label>
-                  <p className="font-medium">{selectedProfile.email}</p>
+                  <Label className="text-xs text-muted-foreground">Ville</Label>
+                  <p className="text-sm font-medium">{selectedProfile.ville || "-"}</p>
                 </div>
                 <div>
-                  <Label className="text-muted-foreground">Téléphone</Label>
-                  <p className="font-medium">{selectedProfile.telephone || "-"}</p>
+                  <Label className="text-xs text-muted-foreground">Code postal</Label>
+                  <p className="text-sm font-medium">{selectedProfile.code_postal || "-"}</p>
                 </div>
                 <div>
-                  <Label className="text-muted-foreground">Ville</Label>
-                  <p className="font-medium">{selectedProfile.ville || "-"}</p>
+                  <Label className="text-xs text-muted-foreground">Statut</Label>
+                  <div className="mt-0.5">{getStatusBadge(selectedProfile.statut)}</div>
                 </div>
                 <div>
-                  <Label className="text-muted-foreground">Code postal</Label>
-                  <p className="font-medium">{selectedProfile.code_postal || "-"}</p>
-                </div>
-                <div>
-                  <Label className="text-muted-foreground">Statut</Label>
-                  <div className="mt-1">{getStatusBadge(selectedProfile.statut)}</div>
-                </div>
-                <div>
-                  <Label className="text-muted-foreground">Formulaire logement</Label>
-                  <div className="mt-1">
+                  <Label className="text-xs text-muted-foreground">Formulaire</Label>
+                  <div className="mt-0.5">
                     {selectedProfile.housing_form_completed ? (
-                      <Badge className="bg-green-500 text-white">Complété</Badge>
+                      <Badge className="bg-green-500 text-white text-xs">Complété</Badge>
                     ) : (
-                      <Badge variant="secondary">En attente</Badge>
+                      <Badge variant="secondary" className="text-xs">En attente</Badge>
                     )}
                   </div>
                 </div>
               </div>
 
-              <div className="border-t pt-4">
-                <h3 className="font-semibold mb-3">Contrat souhaité</h3>
-                <div className="grid grid-cols-2 gap-4">
+              <div className="border-t pt-3">
+                <h3 className="text-sm font-semibold mb-2">Contrat</h3>
+                <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <Label className="text-muted-foreground">Type</Label>
-                    <p className="font-medium">
+                    <Label className="text-xs text-muted-foreground">Type</Label>
+                    <p className="text-sm font-medium">
                       {selectedProfile.contrats === "electricite"
                         ? "Énergie"
                         : selectedProfile.contrats === "internet"
@@ -487,29 +532,29 @@ export default function AdminUtilisateurs() {
                     </p>
                   </div>
                   <div>
-                    <Label className="text-muted-foreground">Fournisseur énergie actuel</Label>
-                    <p className="font-medium">{selectedProfile.fournisseur_energie_actuel || "-"}</p>
+                    <Label className="text-xs text-muted-foreground">Énergie actuel</Label>
+                    <p className="text-sm font-medium">{selectedProfile.fournisseur_energie_actuel || "-"}</p>
                   </div>
                   <div>
-                    <Label className="text-muted-foreground">Fournisseur internet actuel</Label>
-                    <p className="font-medium">{selectedProfile.fournisseur_internet_actuel || "-"}</p>
+                    <Label className="text-xs text-muted-foreground">Internet actuel</Label>
+                    <p className="text-sm font-medium">{selectedProfile.fournisseur_internet_actuel || "-"}</p>
                   </div>
                   <div>
-                    <Label className="text-muted-foreground">Date d'inscription</Label>
-                    <p className="font-medium">
+                    <Label className="text-xs text-muted-foreground">Inscription</Label>
+                    <p className="text-sm font-medium">
                       {selectedProfile.created_at
-                        ? format(new Date(selectedProfile.created_at), "dd MMMM yyyy", { locale: fr })
+                        ? format(new Date(selectedProfile.created_at), "dd/MM/yy", { locale: fr })
                         : "-"}
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="border-t pt-4">
-                <h3 className="font-semibold mb-3">Section Admin</h3>
-                <div className="space-y-4">
+              <div className="border-t pt-3">
+                <h3 className="text-sm font-semibold mb-2">Admin</h3>
+                <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <Label htmlFor="inclusion">Inclusion campagne</Label>
+                    <Label htmlFor="inclusion" className="text-sm">Inclusion campagne</Label>
                     <Switch
                       id="inclusion"
                       checked={editedInclusion}
@@ -517,17 +562,18 @@ export default function AdminUtilisateurs() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="notes">Notes admin</Label>
+                    <Label htmlFor="notes" className="text-sm">Notes</Label>
                     <Textarea
                       id="notes"
                       value={editedNotes}
                       onChange={(e) => setEditedNotes(e.target.value)}
                       placeholder="Notes internes..."
-                      rows={3}
+                      rows={2}
+                      className="text-sm mt-1"
                     />
                   </div>
-                  <Button onClick={saveProfileChanges}>
-                    <Save className="h-4 w-4 mr-2" />
+                  <Button onClick={saveProfileChanges} size="sm" className="w-full">
+                    <Save className="h-3 w-3 mr-1" />
                     Enregistrer
                   </Button>
                 </div>
@@ -539,60 +585,63 @@ export default function AdminUtilisateurs() {
 
       {/* Duplicates Dialog */}
       <Dialog open={isDuplicateDialogOpen} onOpenChange={setIsDuplicateDialogOpen}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="w-[95vw] max-w-lg max-h-[85vh] overflow-y-auto p-4 sm:p-6">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5 text-orange-500" />
-              Doublons détectés ({duplicates.length})
+            <DialogTitle className="flex items-center gap-2 text-base">
+              <AlertTriangle className="h-4 w-4 text-orange-500" />
+              Doublons ({duplicates.length})
             </DialogTitle>
           </DialogHeader>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             {duplicates.map((group, index) => (
-              <Card key={index}>
-                <CardHeader className="py-3">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-base flex items-center gap-2">
-                      <Users className="h-4 w-4" />
-                      Téléphone : {group.telephone}
+              <Card key={index} className="rounded-xl">
+                <CardHeader className="p-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:justify-between">
+                    <CardTitle className="text-sm flex items-center gap-2">
+                      <Users className="h-3 w-3" />
+                      {group.telephone}
                     </CardTitle>
                     <Button
                       size="sm"
+                      className="text-xs h-7"
                       onClick={() => mergeDuplicates(group)}
                       disabled={merging}
                     >
-                      <Merge className="h-4 w-4 mr-2" />
+                      <Merge className="h-3 w-3 mr-1" />
                       Fusionner
                     </Button>
                   </div>
                 </CardHeader>
-                <CardContent className="pt-0">
+                <CardContent className="p-3 pt-0">
                   <div className="space-y-2">
                     {group.profiles.map((profile, pIndex) => (
                       <div
                         key={profile.id}
-                        className={`flex items-center justify-between p-2 rounded ${
+                        className={`p-2 rounded-lg ${
                           pIndex === 0 ? "bg-green-50 border border-green-200" : "bg-muted"
                         }`}
                       >
-                        <div>
-                          <span className="font-medium">
-                            {profile.prenom} {profile.nom}
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="min-w-0 flex-1">
+                            <p className="text-sm font-medium truncate">
+                              {profile.prenom} {profile.nom}
+                            </p>
+                            <p className="text-xs text-muted-foreground truncate">
+                              {profile.email}
+                            </p>
+                          </div>
+                          <span className="text-[10px] text-muted-foreground shrink-0">
+                            {profile.created_at
+                              ? format(new Date(profile.created_at), "dd/MM/yy", { locale: fr })
+                              : "-"}
                           </span>
-                          <span className="text-muted-foreground ml-2">
-                            {profile.email}
-                          </span>
-                          {pIndex === 0 && (
-                            <Badge className="ml-2 bg-green-500 text-white">
-                              À conserver (plus ancien)
-                            </Badge>
-                          )}
                         </div>
-                        <div className="text-sm text-muted-foreground">
-                          {profile.created_at
-                            ? format(new Date(profile.created_at), "dd/MM/yyyy", { locale: fr })
-                            : "-"}
-                        </div>
+                        {pIndex === 0 && (
+                          <Badge className="mt-1 bg-green-500 text-white text-[10px] px-1.5 py-0">
+                            À conserver
+                          </Badge>
+                        )}
                       </div>
                     ))}
                   </div>
