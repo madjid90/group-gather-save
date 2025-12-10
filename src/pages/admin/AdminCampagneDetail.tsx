@@ -413,83 +413,83 @@ export default function AdminCampagneDetail() {
   const isTerminee = campaign.statut === "terminee";
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Header */}
-      <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" onClick={() => navigate("/admin/campagnes")}>
-          <ArrowLeft className="h-5 w-5" />
+      <div className="flex items-start gap-3">
+        <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0" onClick={() => navigate("/admin/campagnes")}>
+          <ArrowLeft className="h-4 w-4" />
         </Button>
-        <div className="flex-1">
-          <h1 className="text-2xl font-bold text-foreground">{campaign.nom}</h1>
-          <p className="text-muted-foreground">Détail de la campagne</p>
+        <div className="flex-1 min-w-0">
+          <h1 className="text-[18px] sm:text-[20px] font-bold text-foreground truncate">{campaign.nom}</h1>
+          <p className="text-xs text-muted-foreground">Détail campagne</p>
         </div>
         {isTerminee && (
-          <Button onClick={handleCreateNextCampaign}>
-            <Plus className="h-4 w-4 mr-2" />
-            Créer la campagne suivante
+          <Button size="sm" className="text-xs h-8 shrink-0" onClick={handleCreateNextCampaign}>
+            <Plus className="h-3 w-3 mr-1" />
+            <span className="hidden sm:inline">Suivante</span>
           </Button>
         )}
       </div>
 
       {/* Info Block */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Informations</CardTitle>
+      <Card className="rounded-xl">
+        <CardHeader className="p-3 pb-2">
+          <CardTitle className="text-sm font-semibold">Informations</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <CardContent className="p-3 pt-0">
+          <div className="grid grid-cols-2 gap-3">
             <div>
-              <p className="text-sm text-muted-foreground">Statut</p>
-              <Badge className={`${statusLabels[campaign.statut]?.color || "bg-gray-500"} text-white mt-1`}>
+              <p className="text-[10px] text-muted-foreground uppercase">Statut</p>
+              <Badge className={`${statusLabels[campaign.statut]?.color || "bg-gray-500"} text-white text-[10px] mt-0.5`}>
                 {statusLabels[campaign.statut]?.label || campaign.statut}
               </Badge>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Date de début</p>
-              <p className="font-medium">
-                {campaign.date_debut
-                  ? format(new Date(campaign.date_debut), "dd MMM yyyy", { locale: fr })
-                  : "-"}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Date de fin</p>
-              <p className="font-medium">
-                {campaign.date_fin
-                  ? format(new Date(campaign.date_fin), "dd MMM yyyy", { locale: fr })
-                  : "-"}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Clients</p>
-              <div className="flex items-center gap-2">
-                <Users className="h-4 w-4 text-muted-foreground" />
-                <span className="font-medium">{clientsCount}</span>
+              <p className="text-[10px] text-muted-foreground uppercase">Clients</p>
+              <div className="flex items-center gap-1 mt-0.5">
+                <Users className="h-3 w-3 text-muted-foreground" />
+                <span className="text-sm font-medium">{clientsCount}</span>
               </div>
+            </div>
+            <div>
+              <p className="text-[10px] text-muted-foreground uppercase">Début</p>
+              <p className="text-sm font-medium">
+                {campaign.date_debut
+                  ? format(new Date(campaign.date_debut), "dd/MM/yy", { locale: fr })
+                  : "-"}
+              </p>
+            </div>
+            <div>
+              <p className="text-[10px] text-muted-foreground uppercase">Fin</p>
+              <p className="text-sm font-medium">
+                {campaign.date_fin
+                  ? format(new Date(campaign.date_fin), "dd/MM/yy", { locale: fr })
+                  : "-"}
+              </p>
             </div>
           </div>
         </CardContent>
       </Card>
 
       {/* Progression Block */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Progression de la campagne</CardTitle>
+      <Card className="rounded-xl">
+        <CardHeader className="p-3 pb-2">
+          <CardTitle className="text-sm font-semibold">Progression</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
+        <CardContent className="p-3 pt-0">
+          <div className="space-y-2">
             {progressionSteps.map((step, index) => {
               const isComplete = campaign[step.key as keyof Campaign] as boolean;
               return (
-                <div key={step.key} className="flex items-center gap-3">
+                <div key={step.key} className="flex items-center gap-2">
                   <div
-                    className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                    className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${
                       isComplete ? "bg-green-500 text-white" : "bg-muted text-muted-foreground"
                     }`}
                   >
-                    {isComplete ? <Check className="h-4 w-4" /> : <span className="text-xs">{index + 1}</span>}
+                    {isComplete ? <Check className="h-3 w-3" /> : <span className="text-[10px]">{index + 1}</span>}
                   </div>
-                  <span className={isComplete ? "font-medium" : "text-muted-foreground"}>
+                  <span className={`text-xs ${isComplete ? "font-medium text-foreground" : "text-muted-foreground"}`}>
                     {step.label}
                   </span>
                 </div>
@@ -500,11 +500,11 @@ export default function AdminCampagneDetail() {
       </Card>
 
       {/* Actions Block */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Actions principales</CardTitle>
+      <Card className="rounded-xl">
+        <CardHeader className="p-3 pb-2">
+          <CardTitle className="text-sm font-semibold">Actions</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-3 pt-0">
           <input
             type="file"
             ref={fileInputRef}
@@ -513,82 +513,88 @@ export default function AdminCampagneDetail() {
             className="hidden"
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 gap-2">
             {/* 1. Clôturer inscriptions */}
             <Button
               variant="outline"
-              className="h-auto py-4 flex flex-col items-center gap-2"
+              size="sm"
+              className="h-auto py-3 flex flex-col items-center gap-1.5 text-xs"
               onClick={handleClotureInscriptions}
               disabled={isTerminee || campaign.progression_inscriptions_cloturees || actionLoading === "cloture"}
             >
-              <Lock className="h-5 w-5" />
-              <span className="text-sm">
-                {actionLoading === "cloture" ? "En cours..." : "Clôturer les inscriptions"}
+              <Lock className="h-4 w-4" />
+              <span className="text-center leading-tight">
+                {actionLoading === "cloture" ? "..." : "Clôturer inscriptions"}
               </span>
             </Button>
 
             {/* 2. Exporter anonymisé */}
             <Button
               variant="outline"
-              className="h-auto py-4 flex flex-col items-center gap-2"
+              size="sm"
+              className="h-auto py-3 flex flex-col items-center gap-1.5 text-xs"
               onClick={handleExport}
               disabled={isTerminee || !campaign.progression_inscriptions_cloturees || actionLoading === "export"}
             >
-              <Download className="h-5 w-5" />
-              <span className="text-sm">
-                {actionLoading === "export" ? "Export en cours..." : "Exporter clients anonymisés"}
+              <Download className="h-4 w-4" />
+              <span className="text-center leading-tight">
+                {actionLoading === "export" ? "..." : "Exporter anonymisé"}
               </span>
             </Button>
 
             {/* 3. Importer offres */}
             <Button
               variant="outline"
-              className="h-auto py-4 flex flex-col items-center gap-2"
+              size="sm"
+              className="h-auto py-3 flex flex-col items-center gap-1.5 text-xs"
               onClick={handleImportClick}
               disabled={isTerminee || !campaign.progression_export_genere || actionLoading === "import"}
             >
-              <Upload className="h-5 w-5" />
-              <span className="text-sm">
-                {actionLoading === "import" ? "Import en cours..." : "Importer les offres"}
+              <Upload className="h-4 w-4" />
+              <span className="text-center leading-tight">
+                {actionLoading === "import" ? "..." : "Importer offres"}
               </span>
             </Button>
 
             {/* 4. Envoyer par SMS */}
             <Button
               variant="outline"
-              className="h-auto py-4 flex flex-col items-center gap-2"
+              size="sm"
+              className="h-auto py-3 flex flex-col items-center gap-1.5 text-xs"
               onClick={handleSendOffers}
               disabled={isTerminee || !campaign.progression_offres_importees || actionLoading === "send"}
             >
-              <Send className="h-5 w-5" />
-              <span className="text-sm">
-                {actionLoading === "send" ? "Envoi en cours..." : "Envoyer les offres par SMS"}
+              <Send className="h-4 w-4" />
+              <span className="text-center leading-tight">
+                {actionLoading === "send" ? "..." : "Envoyer SMS"}
               </span>
             </Button>
 
             {/* 5. Exporter acceptations */}
             <Button
               variant="outline"
-              className="h-auto py-4 flex flex-col items-center gap-2"
+              size="sm"
+              className="h-auto py-3 flex flex-col items-center gap-1.5 text-xs"
               onClick={handleExportAcceptations}
               disabled={isTerminee || !campaign.progression_offres_envoyees || actionLoading === "export-accept"}
             >
-              <FileDown className="h-5 w-5" />
-              <span className="text-sm">
-                {actionLoading === "export-accept" ? "Export en cours..." : "Exporter les acceptations"}
+              <FileDown className="h-4 w-4" />
+              <span className="text-center leading-tight">
+                {actionLoading === "export-accept" ? "..." : "Export acceptations"}
               </span>
             </Button>
 
             {/* 6. Terminer */}
             <Button
               variant="outline"
-              className="h-auto py-4 flex flex-col items-center gap-2 border-red-300 text-red-600 hover:bg-red-50"
+              size="sm"
+              className="h-auto py-3 flex flex-col items-center gap-1.5 text-xs border-red-300 text-red-600 hover:bg-red-50"
               onClick={handleTerminer}
               disabled={isTerminee || actionLoading === "terminer"}
             >
-              <Flag className="h-5 w-5" />
-              <span className="text-sm">
-                {actionLoading === "terminer" ? "En cours..." : "Terminer la campagne"}
+              <Flag className="h-4 w-4" />
+              <span className="text-center leading-tight">
+                {actionLoading === "terminer" ? "..." : "Terminer"}
               </span>
             </Button>
           </div>
