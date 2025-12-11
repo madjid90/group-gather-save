@@ -15,6 +15,7 @@ import {
   AlertCircle,
   LogOut,
   Zap,
+  ArrowLeft,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -161,8 +162,17 @@ export default function DashboardClient() {
   const showOfferButton = currentOffer && currentOffer.statut !== "refusee";
 
   return (
-    <div className="min-h-screen bg-gradient-subtle py-6 px-4">
-      <div className="max-w-lg mx-auto space-y-4">
+    <div className="min-h-screen bg-gradient-subtle py-6 px-4 relative">
+      {/* Fixed Back to Home */}
+      <Link 
+        to="/" 
+        className="fixed top-4 left-4 z-50 inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-card/80 backdrop-blur border border-border text-sm text-muted-foreground hover:text-foreground hover:bg-card transition-all shadow-sm"
+      >
+        <Home className="h-4 w-4" />
+        <span className="hidden sm:inline">Accueil</span>
+      </Link>
+
+      <div className="max-w-lg mx-auto space-y-4 pt-10 sm:pt-0">
         
         {/* Header */}
         <div className="flex items-center justify-between">
