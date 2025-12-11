@@ -651,35 +651,44 @@ export default function FormulaireLogement() {
 
       {/* Bottom navigation */}
       <div className="sticky bottom-0 bg-background/95 backdrop-blur border-t border-border">
-        <div className="max-w-lg mx-auto px-4 py-4 flex justify-between items-center">
+        <div className="max-w-lg mx-auto px-4 py-3 sm:py-4 flex justify-between items-center gap-2">
           <Button
             type="button"
-            variant="ghost"
+            variant="outline"
             size="sm"
             onClick={goToPrevious}
             disabled={currentQuestionIndex === 0}
-            className="text-muted-foreground"
+            className="text-muted-foreground px-3"
           >
             <ChevronLeft className="w-4 h-4 mr-1" />
-            Retour
+            <span className="hidden sm:inline">Retour</span>
           </Button>
+
+          <Link
+            to="/dashboard-client"
+            className="text-xs text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2"
+          >
+            Quitter
+          </Link>
 
           {isLastQuestion && currentQuestion.type !== "checkbox" && (
             <Button
               type="button"
               variant="hero"
+              size="sm"
               onClick={handleSubmit}
               disabled={isSubmitting}
+              className="px-3"
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                  Enregistrement...
+                  <Loader2 className="w-4 h-4 animate-spin mr-1" />
+                  <span className="hidden sm:inline">Enregistrement...</span>
                 </>
               ) : (
                 <>
-                  <Check className="w-4 h-4 mr-2" />
-                  Je valide mes informations
+                  <Check className="w-4 h-4 mr-1" />
+                  <span className="hidden sm:inline">Valider</span>
                 </>
               )}
             </Button>

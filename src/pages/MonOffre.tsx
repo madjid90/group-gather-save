@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { CheckCircle, XCircle, Zap, TrendingDown, Loader2 } from "lucide-react";
+import { CheckCircle, XCircle, Zap, TrendingDown, Loader2, ArrowLeft, Home } from "lucide-react";
 import { toast } from "sonner";
 
 interface UserOffer {
@@ -187,8 +187,25 @@ export default function MonOffre() {
   const hasResponded = offer.statut === "acceptee" || offer.statut === "refusee";
 
   return (
-    <div className="min-h-screen bg-gradient-subtle py-6 px-4">
-      <div className="max-w-lg mx-auto space-y-4">
+    <div className="min-h-screen bg-gradient-subtle py-6 px-4 relative">
+      {/* Fixed Navigation */}
+      <div className="fixed top-4 left-4 right-4 z-50 flex items-center justify-between">
+        <Link 
+          to="/dashboard-client" 
+          className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-card/80 backdrop-blur border border-border text-sm text-muted-foreground hover:text-foreground hover:bg-card transition-all shadow-sm"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span className="hidden sm:inline">Mon espace</span>
+        </Link>
+        <Link 
+          to="/" 
+          className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-card/80 backdrop-blur border border-border text-sm text-muted-foreground hover:text-foreground hover:bg-card transition-all shadow-sm"
+        >
+          <Home className="w-4 h-4" />
+        </Link>
+      </div>
+
+      <div className="max-w-lg mx-auto space-y-4 pt-12">
         {/* Header */}
         <div className="flex items-center justify-center">
           <Link to="/" className="flex items-center gap-2">

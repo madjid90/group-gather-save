@@ -85,7 +85,16 @@ export default function Connexion() {
   };
 
   return (
-    <div className="h-screen overflow-hidden flex items-center justify-center px-4 bg-gradient-subtle">
+    <div className="h-screen overflow-hidden flex items-center justify-center px-4 bg-gradient-subtle relative">
+      {/* Fixed Back Button */}
+      <Link 
+        to="/" 
+        className="fixed top-4 left-4 z-50 inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-card/80 backdrop-blur border border-border text-sm text-muted-foreground hover:text-foreground hover:bg-card transition-all shadow-sm"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        <span className="hidden sm:inline">Retour</span>
+      </Link>
+
       <div className="w-full max-w-md">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -93,15 +102,6 @@ export default function Connexion() {
           transition={{ duration: 0.5 }}
           className="bg-card rounded-xl md:rounded-2xl p-4 md:p-6 shadow-switchly-xl border border-border"
         >
-          {/* Back button */}
-          <Link 
-            to="/" 
-            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Retour
-          </Link>
-
           {/* Header */}
           <div className="text-center mb-4">
             <Link to="/" className="inline-flex items-center gap-2 mb-3">
