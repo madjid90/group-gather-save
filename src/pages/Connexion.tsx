@@ -103,14 +103,14 @@ export default function Connexion() {
           className="bg-card rounded-xl md:rounded-2xl p-4 md:p-6 shadow-switchly-xl border border-border"
         >
           {/* Header */}
-          <div className="text-center mb-4">
+          <div className="text-center mb-5">
             <Link to="/" className="inline-flex items-center gap-2 mb-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center">
                 <Zap className="w-5 h-5 text-primary-foreground" />
               </div>
               <span className="text-xl font-bold text-foreground">Switchly</span>
             </Link>
-            <h1 className="text-[20px] sm:text-2xl font-bold text-foreground mb-1 leading-tight">
+            <h1 className="text-[22px] sm:text-2xl font-bold text-foreground mb-1 leading-tight">
               Me connecter
             </h1>
             <p className="text-sm text-muted-foreground">
@@ -119,11 +119,11 @@ export default function Connexion() {
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-3">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="telephone" className="flex items-center gap-2 text-sm font-medium text-foreground">
-                <Phone className="w-4 h-4 text-muted-foreground" />
-                Numéro de téléphone
+                <Phone className="w-4 h-4 text-primary" />
+                Téléphone
               </Label>
               <Input
                 id="telephone"
@@ -132,7 +132,7 @@ export default function Connexion() {
                 value={formData.telephone}
                 onChange={handleChange}
                 placeholder="0612345678"
-                className={`text-sm ${errors.telephone ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
+                className={`h-12 text-base rounded-xl ${errors.telephone ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
               />
               {errors.telephone && (
                 <p className="text-xs text-destructive">{errors.telephone}</p>
@@ -141,7 +141,7 @@ export default function Connexion() {
 
             <div className="space-y-2">
               <Label htmlFor="password" className="flex items-center gap-2 text-sm font-medium text-foreground">
-                <Lock className="w-4 h-4 text-muted-foreground" />
+                <Lock className="w-4 h-4 text-primary" />
                 Mot de passe
               </Label>
               <div className="relative">
@@ -151,13 +151,13 @@ export default function Connexion() {
                   type={showPassword ? "text" : "password"}
                   value={formData.password}
                   onChange={handleChange}
-                  placeholder="••••••••"
-                  className={`pr-12 text-sm ${errors.password ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
+                  placeholder="Votre mot de passe"
+                  className={`h-12 text-base rounded-xl pr-12 ${errors.password ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1"
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
@@ -167,27 +167,25 @@ export default function Connexion() {
               )}
             </div>
 
-            <div className="pt-1">
-              <Button
-                type="submit"
-                variant="hero"
-                size="lg"
-                className="w-full py-3 text-sm"
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    Connexion en cours...
-                  </>
-                ) : (
-                  <>
-                    Me connecter
-                    <ArrowRight className="w-5 h-5 ml-2" />
-                  </>
-                )}
-              </Button>
-            </div>
+            <Button
+              type="submit"
+              variant="hero"
+              size="xl"
+              className="w-full mt-2"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Connexion...
+                </>
+              ) : (
+                <>
+                  Me connecter
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </>
+              )}
+            </Button>
           </form>
 
           {/* Footer */}

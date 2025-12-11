@@ -417,33 +417,33 @@ export default function FormulaireLogement() {
     const value = formData[question.field];
 
     return (
-      <div className="flex flex-col items-center justify-center min-h-[50vh] px-4">
+      <div className="flex flex-col items-center justify-center min-h-[45vh] px-4 py-4">
         {/* Question Label */}
-        <div className="text-center mb-8 max-w-md">
-          <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
-            <Icon className="w-7 h-7 text-primary" />
+        <div className="text-center mb-5 max-w-sm">
+          <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
+            <Icon className="w-6 h-6 text-primary" />
           </div>
-          <h2 className="text-xl md:text-2xl font-semibold text-foreground leading-tight">
+          <h2 className="text-lg sm:text-xl font-semibold text-foreground leading-snug">
             {question.label}
           </h2>
         </div>
 
         {/* Answer Input */}
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-sm">
           {question.type === "select" && question.options && (
-            <div className="grid gap-3">
+            <div className="grid gap-2.5">
               {question.options.map((option) => (
                 <button
                   key={option.value}
                   type="button"
                   onClick={() => handleChange(question.field, option.value, question.autoAdvance)}
-                  className={`w-full p-4 rounded-xl border-2 text-left transition-all duration-200 ${
+                  className={`w-full min-h-[52px] px-4 py-3 rounded-xl border-2 text-left transition-all duration-200 active:scale-[0.98] ${
                     value === option.value
-                      ? "border-primary bg-primary/5 text-foreground"
+                      ? "border-primary bg-primary/10 text-foreground shadow-sm"
                       : "border-border bg-card hover:border-primary/50 text-foreground"
                   }`}
                 >
-                  <span className="font-medium">{option.label}</span>
+                  <span className="font-medium text-base">{option.label}</span>
                 </button>
               ))}
             </div>
@@ -453,19 +453,19 @@ export default function FormulaireLogement() {
             <RadioGroup
               value={value as string}
               onValueChange={(v) => handleChange(question.field, v, question.autoAdvance)}
-              className="grid gap-3"
+              className="grid gap-2.5"
             >
               {question.options.map((option) => (
                 <label
                   key={option.value}
-                  className={`flex items-center gap-3 w-full p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
+                  className={`flex items-center gap-3 w-full min-h-[52px] px-4 py-3 rounded-xl border-2 cursor-pointer transition-all duration-200 active:scale-[0.98] ${
                     value === option.value
-                      ? "border-primary bg-primary/5"
+                      ? "border-primary bg-primary/10 shadow-sm"
                       : "border-border bg-card hover:border-primary/50"
                   }`}
                 >
                   <RadioGroupItem value={option.value} id={option.value} />
-                  <Label htmlFor={option.value} className="cursor-pointer font-medium flex-1">
+                  <Label htmlFor={option.value} className="cursor-pointer font-medium text-base flex-1">
                     {option.label}
                   </Label>
                 </label>
@@ -481,6 +481,7 @@ export default function FormulaireLogement() {
                 onChange={(e) => handleChange(question.field, e.target.value)}
                 placeholder={question.placeholder}
                 className="text-lg h-14 text-center rounded-xl border-2"
+                autoFocus
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && value) {
                     e.preventDefault();
@@ -491,7 +492,8 @@ export default function FormulaireLogement() {
               <Button
                 type="button"
                 variant="hero"
-                className="w-full h-12"
+                size="xl"
+                className="w-full"
                 onClick={goToNext}
                 disabled={!value}
               >
@@ -501,7 +503,7 @@ export default function FormulaireLogement() {
           )}
 
           {question.type === "slider" && (
-            <div className="space-y-6">
+            <div className="space-y-5">
               <div className="flex justify-between items-center text-sm text-muted-foreground">
                 <span>Pas satisfait</span>
                 <span>Très satisfait</span>
@@ -520,7 +522,7 @@ export default function FormulaireLogement() {
                     key={n}
                     type="button"
                     onClick={() => handleChange(question.field, n)}
-                    className={`w-12 h-12 rounded-full text-lg font-semibold transition-all ${
+                    className={`w-11 h-11 rounded-full text-base font-semibold transition-all active:scale-95 ${
                       value === n
                         ? "bg-primary text-primary-foreground"
                         : "bg-muted text-muted-foreground hover:bg-primary/20"
@@ -533,7 +535,8 @@ export default function FormulaireLogement() {
               <Button
                 type="button"
                 variant="hero"
-                className="w-full h-12"
+                size="xl"
+                className="w-full"
                 onClick={goToNext}
               >
                 Continuer
@@ -543,15 +546,15 @@ export default function FormulaireLogement() {
 
           {question.type === "checkbox" && question.options && (
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-2.5">
                 {question.options.map((option) => {
                   const isChecked = (value as string[]).includes(option.value);
                   return (
                     <label
                       key={option.value}
-                      className={`flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
+                      className={`flex items-center gap-2.5 min-h-[52px] px-3 py-3 rounded-xl border-2 cursor-pointer transition-all duration-200 active:scale-[0.98] ${
                         isChecked
-                          ? "border-primary bg-primary/5"
+                          ? "border-primary bg-primary/10 shadow-sm"
                           : "border-border bg-card hover:border-primary/50"
                       }`}
                     >
@@ -564,16 +567,17 @@ export default function FormulaireLogement() {
                   );
                 })}
               </div>
-              <p className="text-center text-sm text-muted-foreground">
-                Sélectionnez tous les équipements que vous avez
+              <p className="text-center text-xs text-muted-foreground">
+                Sélectionnez vos équipements
               </p>
               <Button
                 type="button"
                 variant="hero"
-                className="w-full h-12"
+                size="xl"
+                className="w-full"
                 onClick={handleNextOrSubmit}
               >
-                {isLastQuestion ? "Je valide mes informations" : "Continuer"}
+                {isLastQuestion ? "Valider" : "Continuer"}
               </Button>
             </div>
           )}
@@ -586,48 +590,42 @@ export default function FormulaireLogement() {
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <div className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b border-border">
-        <div className="max-w-lg mx-auto px-4 py-4">
-          {/* Logo */}
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <div className="w-8 h-8 rounded-lg bg-gradient-hero flex items-center justify-center">
-              <Zap className="w-4 h-4 text-primary-foreground" />
+        <div className="max-w-lg mx-auto px-4 py-3">
+          {/* Logo + Progress inline */}
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-gradient-hero flex items-center justify-center">
+                <Zap className="w-3.5 h-3.5 text-primary-foreground" />
+              </div>
+              <span className="text-base font-bold text-foreground">Switchly</span>
             </div>
-            <span className="text-lg font-bold text-foreground">Switchly</span>
+            <span className="text-xs font-medium text-muted-foreground">
+              {currentQuestionIndex + 1}/{totalQuestions}
+            </span>
           </div>
 
-          {/* Step indicators */}
-          <div className="flex items-center justify-center gap-2 mb-3">
+          {/* Step indicators - compact for mobile */}
+          <div className="flex items-center justify-center gap-1.5 mb-2">
             {STEPS.map((step) => {
-              const StepIcon = step.icon;
               const isActive = step.id === currentStep;
               const isCompleted = step.id < currentStep;
               return (
                 <div
                   key={step.id}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                  className={`h-1.5 flex-1 rounded-full transition-all ${
                     isActive
-                      ? "bg-primary text-primary-foreground"
+                      ? "bg-primary"
                       : isCompleted
-                      ? "bg-secondary/20 text-secondary"
-                      : "bg-muted text-muted-foreground"
+                      ? "bg-secondary"
+                      : "bg-muted"
                   }`}
-                >
-                  <StepIcon className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">{step.title}</span>
-                  <span className="sm:hidden">{step.id}</span>
-                </div>
+                />
               );
             })}
           </div>
 
           {/* Progress bar */}
-          <div className="space-y-1">
-            <div className="flex justify-between text-xs text-muted-foreground">
-              <span>Question {currentQuestionIndex + 1}/{totalQuestions}</span>
-              <span>{Math.round(overallProgress)}%</span>
-            </div>
-            <Progress value={overallProgress} className="h-1.5" />
-          </div>
+          <Progress value={overallProgress} className="h-1" />
         </div>
       </div>
 
