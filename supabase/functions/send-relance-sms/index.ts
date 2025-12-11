@@ -42,21 +42,65 @@ const handler = async (req: Request): Promise<Response> => {
     let messageTemplate = "";
 
     switch (type) {
-      case "relance_formulaire_24h":
-      case "relance_formulaire_j3": {
-        // Get users who haven't completed their housing form
-        const hoursAgo = type === "relance_formulaire_24h" ? 24 : 72;
-        const cutoffDate = new Date(Date.now() - hoursAgo * 60 * 60 * 1000).toISOString();
+      case "relance_formulaire_24h": {
+        // Get users registered between 23-25 hours ago who haven't completed form
+        const minHours = 23;
+        const maxHours = 25;
+        const minDate = new Date(Date.now() - maxHours * 60 * 60 * 1000).toISOString();
+        const maxDate = new Date(Date.now() - minHours * 60 * 60 * 1000).toISOString();
         
-        const { data } = await supabase
+        // Get users who haven't received this SMS type yet
+        const { data: alreadySent } = await supabase
+          .from("sms_logs")
+          .select("user_id")
+          .eq("type", "relance_formulaire_24h");
+        
+        const alreadySentUserIds = (alreadySent || []).map((s: any) => s.user_id);
+        
+        let query = supabase
           .from("profiles")
           .select("id, telephone, housing_token, prenom")
           .eq("housing_form_completed", false)
-          .lt("created_at", cutoffDate)
+          .gte("created_at", minDate)
+          .lte("created_at", maxDate)
           .not("telephone", "is", null);
-
-        users = data || [];
+        
+        const { data } = await query;
+        
+        // Filter out users who already received this SMS
+        users = (data || []).filter((u: any) => !alreadySentUserIds.includes(u.id));
         messageTemplate = "Switchly : n'oubliez pas de compléter votre profil logement pour recevoir votre offre personnalisée ! {{link}}";
+        break;
+      }
+
+      case "relance_formulaire_j3": {
+        // Get users registered between 71-73 hours ago who haven't completed form
+        const minHours = 71;
+        const maxHours = 73;
+        const minDate = new Date(Date.now() - maxHours * 60 * 60 * 1000).toISOString();
+        const maxDate = new Date(Date.now() - minHours * 60 * 60 * 1000).toISOString();
+        
+        // Get users who haven't received this SMS type yet
+        const { data: alreadySent } = await supabase
+          .from("sms_logs")
+          .select("user_id")
+          .eq("type", "relance_formulaire_j3");
+        
+        const alreadySentUserIds = (alreadySent || []).map((s: any) => s.user_id);
+        
+        let query = supabase
+          .from("profiles")
+          .select("id, telephone, housing_token, prenom")
+          .eq("housing_form_completed", false)
+          .gte("created_at", minDate)
+          .lte("created_at", maxDate)
+          .not("telephone", "is", null);
+        
+        const { data } = await query;
+        
+        // Filter out users who already received this SMS
+        users = (data || []).filter((u: any) => !alreadySentUserIds.includes(u.id));
+        messageTemplate = "Switchly : dernière relance ! Complétez votre profil en 2 min pour ne pas rater votre offre personnalisée 🔔 {{link}}";
         break;
       }
 
@@ -90,30 +134,45 @@ const handler = async (req: Request): Promise<Response> => {
           );
         }
 
-        // Get users with offers sent but no response after 48h
-        const cutoffDate = new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString();
+        // Get users with offers sent 47-49h ago but no response
+        const minHours = 47;
+        const maxHours = 49;
+        const minDate = new Date(Date.now() - maxHours * 60 * 60 * 1000).toISOString();
+        const maxDate = new Date(Date.now() - minHours * 60 * 60 * 1000).toISOString();
+        
+        // Get users who haven't received this SMS type yet
+        const { data: alreadySent } = await supabase
+          .from("sms_logs")
+          .select("user_id")
+          .eq("type", "relance_offre_48h");
+        
+        const alreadySentUserIds = (alreadySent || []).map((s: any) => s.user_id);
         
         const { data: offers } = await supabase
           .from("user_offers")
           .select("user_id, offer_token, updated_at")
           .eq("campaign_id", campaign_id)
           .eq("statut", "envoyee")
-          .lt("updated_at", cutoffDate);
+          .gte("updated_at", minDate)
+          .lte("updated_at", maxDate);
 
         if (offers && offers.length > 0) {
-          const userIds = offers.map((o: any) => o.user_id);
-          const { data: profiles } = await supabase
-            .from("profiles")
-            .select("id, telephone, prenom")
-            .in("id", userIds);
+          const userIds = offers.map((o: any) => o.user_id).filter((id: string) => !alreadySentUserIds.includes(id));
+          
+          if (userIds.length > 0) {
+            const { data: profiles } = await supabase
+              .from("profiles")
+              .select("id, telephone, prenom")
+              .in("id", userIds);
 
-          users = (profiles || []).map((p: any) => {
-            const offer = offers.find((o: any) => o.user_id === p.id);
-            return {
-              ...p,
-              offer_token: offer?.offer_token,
-            };
-          });
+            users = (profiles || []).map((p: any) => {
+              const offer = offers.find((o: any) => o.user_id === p.id);
+              return {
+                ...p,
+                offer_token: offer?.offer_token,
+              };
+            });
+          }
         }
         messageTemplate = "Switchly : votre offre personnalisée vous attend ! Ne passez pas à côté de vos économies 💰 {{link}}";
         break;
@@ -142,6 +201,8 @@ const handler = async (req: Request): Promise<Response> => {
       }
     }
 
+    console.log(`Found ${users.length} users to send ${type} SMS`);
+
     let sentCount = 0;
     let failedCount = 0;
 
@@ -162,7 +223,7 @@ const handler = async (req: Request): Promise<Response> => {
         const link = `${baseUrl}/formulaire-logement/${user.housing_token}`;
         message = message.replace("{{link}}", link);
       } else if (type === "relance_offre_48h" && user.offer_token) {
-        const link = `${baseUrl}/mon-offre?token=${user.offer_token}`;
+        const link = `${baseUrl}/mon-offre/${user.offer_token}`;
         message = message.replace("{{link}}", link);
       } else {
         message = message.replace(" {{link}}", "");
@@ -193,9 +254,11 @@ const handler = async (req: Request): Promise<Response> => {
             statut: "envoye",
           });
           sentCount++;
+          console.log(`SMS sent to ${formattedPhone}`);
         } else {
+          const errorResult = await twilioResponse.json();
           failedCount++;
-          console.error("Twilio error for user:", user.id);
+          console.error("Twilio error for user:", user.id, errorResult);
         }
       } catch (error) {
         failedCount++;
@@ -203,7 +266,7 @@ const handler = async (req: Request): Promise<Response> => {
       }
     }
 
-    console.log(`Relance SMS completed: ${sentCount} sent, ${failedCount} failed`);
+    console.log(`Relance SMS completed: ${sentCount} sent, ${failedCount} failed out of ${users.length}`);
 
     return new Response(
       JSON.stringify({ 
