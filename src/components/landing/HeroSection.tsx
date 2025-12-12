@@ -92,20 +92,12 @@ export function HeroSection() {
             {/* CTA Button - hidden on mobile (using fixed CTA instead) */}
             <div className="hidden md:flex justify-center lg:justify-start w-full">
               <motion.div
-                animate={{ 
-                  scale: [1, 1.02, 1],
-                  boxShadow: [
-                    "0 0 0 0 rgba(71, 199, 119, 0)",
-                    "0 0 0 8px rgba(71, 199, 119, 0.15)",
-                    "0 0 0 0 rgba(71, 199, 119, 0)"
-                  ]
-                }}
+                animate={{ scale: [1, 1.02, 1] }}
                 transition={{ 
                   duration: 2,
                   repeat: Infinity,
                   ease: "easeInOut"
                 }}
-                className="rounded-xl"
               >
                 <Button variant="hero" size="xl" className="w-[calc(100%-2rem)] max-w-md sm:w-auto text-base sm:text-lg py-7 sm:py-5 px-8" asChild>
                   <Link to="/inscription">
