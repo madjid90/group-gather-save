@@ -191,7 +191,7 @@ export default function Inscription() {
                 value={formData.nom}
                 onChange={handleChange}
                 placeholder="Jean Dupont"
-                className={`h-12 text-base rounded-xl ${errors.nom ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
+                className={errors.nom ? "border-destructive focus-visible:ring-destructive/30" : ""}
               />
               {errors.nom && (
                 <p className="text-xs text-destructive">{errors.nom}</p>
@@ -210,7 +210,7 @@ export default function Inscription() {
                 value={formData.telephone}
                 onChange={handleChange}
                 placeholder="0612345678"
-                className={`h-12 text-base rounded-xl ${errors.telephone ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
+                className={errors.telephone ? "border-destructive focus-visible:ring-destructive/30" : ""}
               />
               {errors.telephone && (
                 <p className="text-xs text-destructive">{errors.telephone}</p>
@@ -230,7 +230,7 @@ export default function Inscription() {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="6 caractères minimum"
-                  className={`h-12 text-base rounded-xl pr-12 ${errors.password ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
+                  className={`pr-12 ${errors.password ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
                 />
                 <button
                   type="button"
