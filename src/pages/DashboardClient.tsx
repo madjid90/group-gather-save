@@ -5,6 +5,17 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
   Home,
   FileCheck,
   Gift,
@@ -272,16 +283,36 @@ export default function DashboardClient() {
           </Card>
         )}
 
-        {/* Logout Button */}
-        <Button 
-          variant="outline" 
-          size="sm" 
-          onClick={handleLogout} 
-          className="w-full border-destructive/30 text-destructive hover:bg-destructive/10 hover:text-destructive gap-2 mt-4"
-        >
-          <LogOut className="h-4 w-4" />
-          Déconnexion
-        </Button>
+        {/* Logout Button with Confirmation */}
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="w-full border-destructive/30 text-destructive hover:bg-destructive/10 hover:text-destructive gap-2 mt-4"
+            >
+              <LogOut className="h-4 w-4" />
+              Déconnexion
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Confirmer la déconnexion</AlertDialogTitle>
+              <AlertDialogDescription>
+                Êtes-vous sûr de vouloir vous déconnecter de votre espace ?
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Annuler</AlertDialogCancel>
+              <AlertDialogAction 
+                onClick={handleLogout}
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              >
+                Se déconnecter
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
 
         {/* Footer */}
         <p className="text-center text-xs text-muted-foreground pt-2">
