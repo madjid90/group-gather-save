@@ -173,19 +173,26 @@ export default function DashboardClient() {
           <Home className="h-5 w-5" />
         </Link>
 
-        {/* Header with Logo and Logout */}
-        <div className="flex items-center justify-between">
+        {/* Header with Logo */}
+        <div className="flex items-center">
           <Link to="/" className="flex items-center gap-2.5">
             <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center">
               <Zap className="w-5 h-5 text-primary-foreground" />
             </div>
             <span className="text-xl font-bold text-foreground">Switchly</span>
           </Link>
-          <Button variant="ghost" size="sm" onClick={handleLogout} className="text-sm text-muted-foreground gap-2">
-            <LogOut className="h-4 w-4" />
-            Déconnexion
-          </Button>
         </div>
+
+        {/* Logout Button */}
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={handleLogout} 
+          className="w-full border-destructive/30 text-destructive hover:bg-destructive/10 hover:text-destructive gap-2"
+        >
+          <LogOut className="h-4 w-4" />
+          Déconnexion
+        </Button>
 
         {/* Welcome */}
         <Card className="rounded-xl border border-border shadow-switchly">
