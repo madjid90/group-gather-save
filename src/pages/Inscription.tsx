@@ -179,8 +179,8 @@ export default function Inscription() {
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
+          <form onSubmit={handleSubmit} className="space-y-3">
+            <div className="space-y-1.5">
               <Label htmlFor="nom" className="flex items-center gap-2 text-sm font-medium text-foreground">
                 <User className="w-4 h-4 text-primary" />
                 Nom complet
@@ -191,14 +191,14 @@ export default function Inscription() {
                 value={formData.nom}
                 onChange={handleChange}
                 placeholder="Jean Dupont"
-                className={errors.nom ? "border-destructive focus-visible:ring-destructive/30" : ""}
+                className={`text-sm ${errors.nom ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
               />
               {errors.nom && (
                 <p className="text-xs text-destructive">{errors.nom}</p>
               )}
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               <Label htmlFor="telephone" className="flex items-center gap-2 text-sm font-medium text-foreground">
                 <Phone className="w-4 h-4 text-primary" />
                 Téléphone
@@ -210,14 +210,14 @@ export default function Inscription() {
                 value={formData.telephone}
                 onChange={handleChange}
                 placeholder="0612345678"
-                className={errors.telephone ? "border-destructive focus-visible:ring-destructive/30" : ""}
+                className={`text-sm ${errors.telephone ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
               />
               {errors.telephone && (
                 <p className="text-xs text-destructive">{errors.telephone}</p>
               )}
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               <Label htmlFor="password" className="flex items-center gap-2 text-sm font-medium text-foreground">
                 <Lock className="w-4 h-4 text-primary" />
                 Mot de passe
@@ -230,7 +230,7 @@ export default function Inscription() {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="6 caractères minimum"
-                  className={`pr-12 ${errors.password ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
+                  className={`text-sm pr-12 ${errors.password ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
                 />
                 <button
                   type="button"
@@ -248,8 +248,8 @@ export default function Inscription() {
             <Button
               type="submit"
               variant="hero"
-              size="xl"
-              className="w-full mt-2"
+              size="lg"
+              className="w-full py-3 text-sm"
               disabled={isLoading}
             >
               {isLoading ? (
