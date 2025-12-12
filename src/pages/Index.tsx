@@ -6,10 +6,11 @@ import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
 import { FAQSection } from "@/components/landing/FAQSection";
 import { CTASection } from "@/components/landing/CTASection";
 import { MobileFixedCTA } from "@/components/landing/MobileFixedCTA";
+import { PageTransition } from "@/components/PageTransition";
 
 const Index = () => {
   return (
-    <>
+    <PageTransition>
       <HeroSection />
       {/* How it works moved higher on mobile via CSS order */}
       <div className="contents md:contents">
@@ -36,7 +37,7 @@ const Index = () => {
       <MobileFixedCTA />
       {/* Spacer for fixed CTA on mobile */}
       <div className="h-20 md:hidden" />
-    </>
+    </PageTransition>
   );
 };
 

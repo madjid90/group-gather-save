@@ -8,6 +8,7 @@ import { Zap, Check, ArrowRight, Loader2, Phone, User, Lock, Eye, EyeOff, ArrowL
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { z } from "zod";
+import { PageTransition } from "@/components/PageTransition";
 
 const inscriptionSchema = z.object({
   nom: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
@@ -116,7 +117,7 @@ export default function Inscription() {
 
   if (isSuccess) {
     return (
-      <div className="h-screen overflow-hidden flex items-center justify-center px-4 bg-gradient-subtle">
+      <PageTransition className="h-screen overflow-hidden flex items-center justify-center px-4 bg-gradient-subtle">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -140,12 +141,12 @@ export default function Inscription() {
             <Link to="/dashboard-client">Accéder à mon espace</Link>
           </Button>
         </motion.div>
-      </div>
+      </PageTransition>
     );
   }
 
   return (
-    <div className="h-screen overflow-hidden flex items-center justify-center px-4 bg-gradient-subtle relative">
+    <PageTransition className="h-screen overflow-hidden flex items-center justify-center px-4 bg-gradient-subtle relative">
       {/* Fixed Back Button */}
       <Link 
         to="/" 
@@ -291,6 +292,6 @@ export default function Inscription() {
           </div>
         </motion.div>
       </div>
-    </div>
+    </PageTransition>
   );
 }

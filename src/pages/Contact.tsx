@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
+import { PageTransition } from "@/components/PageTransition";
 
 const contactSchema = z.object({
   nom: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
@@ -84,7 +85,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen py-6 md:py-16 bg-gradient-subtle">
+    <PageTransition className="min-h-screen py-6 md:py-16 bg-gradient-subtle">
       <div className="container mx-auto px-4">
         {/* Back button */}
         <Link 
@@ -278,6 +279,6 @@ export default function Contact() {
           </motion.div>
         </div>
       </div>
-    </div>
+    </PageTransition>
   );
 }
