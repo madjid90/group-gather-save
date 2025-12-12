@@ -11,20 +11,12 @@ export function MobileFixedCTA() {
       className="fixed bottom-0 left-0 right-0 z-50 p-3 bg-background/95 backdrop-blur-sm border-t border-border shadow-lg md:hidden"
     >
       <motion.div
-        animate={{ 
-          scale: [1, 1.02, 1],
-          boxShadow: [
-            "0 0 0 0 rgba(71, 199, 119, 0)",
-            "0 0 0 8px rgba(71, 199, 119, 0.15)",
-            "0 0 0 0 rgba(71, 199, 119, 0)"
-          ]
-        }}
+        animate={{ scale: [1, 1.02, 1] }}
         transition={{ 
           duration: 2,
           repeat: Infinity,
           ease: "easeInOut"
         }}
-        className="rounded-xl"
       >
         <Button 
           variant="hero" 
