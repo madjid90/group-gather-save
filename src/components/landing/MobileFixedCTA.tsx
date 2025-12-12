@@ -8,7 +8,7 @@ export function MobileFixedCTA() {
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 1, type: "spring", stiffness: 100 }}
-      className="fixed bottom-0 left-0 right-0 z-50 p-3 bg-background/95 backdrop-blur-sm border-t border-border shadow-lg md:hidden"
+      className="fixed bottom-0 left-0 right-0 z-50 px-3 py-2 bg-background/95 backdrop-blur-sm border-t border-border shadow-lg md:hidden"
     >
       <motion.div
         animate={{ scale: [1, 1.02, 1] }}
