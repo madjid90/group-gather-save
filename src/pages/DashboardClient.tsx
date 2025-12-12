@@ -162,28 +162,27 @@ export default function DashboardClient() {
   const showOfferButton = currentOffer && currentOffer.statut !== "refusee";
 
   return (
-    <div className="min-h-screen bg-gradient-subtle py-6 px-4 relative">
-      {/* Fixed Back to Home */}
-      <Link 
-        to="/" 
-        className="fixed top-4 left-4 z-50 inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-card/80 backdrop-blur border border-border text-sm text-muted-foreground hover:text-foreground hover:bg-card transition-all shadow-sm"
-      >
-        <Home className="h-4 w-4" />
-        <span className="hidden sm:inline">Accueil</span>
-      </Link>
-
-      <div className="max-w-lg mx-auto space-y-4 pt-10 sm:pt-0">
+    <div className="min-h-screen bg-gradient-subtle py-6 px-4">
+      <div className="max-w-lg mx-auto space-y-4">
         
-        {/* Header */}
+        {/* Back to Home Button */}
+        <Link 
+          to="/" 
+          className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-card border border-border text-muted-foreground hover:text-foreground hover:bg-muted transition-all shadow-sm"
+        >
+          <Home className="h-5 w-5" />
+        </Link>
+
+        {/* Header with Logo and Logout */}
         <div className="flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-xl bg-gradient-hero flex items-center justify-center">
-              <Zap className="w-4 h-4 text-primary-foreground" />
+          <Link to="/" className="flex items-center gap-2.5">
+            <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center">
+              <Zap className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="text-lg font-bold text-foreground">Switchly</span>
+            <span className="text-xl font-bold text-foreground">Switchly</span>
           </Link>
-          <Button variant="ghost" size="sm" onClick={handleLogout} className="text-sm text-muted-foreground">
-            <LogOut className="h-4 w-4 mr-1.5" />
+          <Button variant="ghost" size="sm" onClick={handleLogout} className="text-sm text-muted-foreground gap-2">
+            <LogOut className="h-4 w-4" />
             Déconnexion
           </Button>
         </div>
