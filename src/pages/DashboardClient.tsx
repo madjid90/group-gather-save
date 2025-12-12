@@ -183,16 +183,6 @@ export default function DashboardClient() {
           </Link>
         </div>
 
-        {/* Logout Button */}
-        <Button 
-          variant="outline" 
-          size="sm" 
-          onClick={handleLogout} 
-          className="w-full border-destructive/30 text-destructive hover:bg-destructive/10 hover:text-destructive gap-2"
-        >
-          <LogOut className="h-4 w-4" />
-          Déconnexion
-        </Button>
 
         {/* Welcome */}
         <Card className="rounded-xl border border-border shadow-switchly">
@@ -281,6 +271,17 @@ export default function DashboardClient() {
             </CardContent>
           </Card>
         )}
+
+        {/* Logout Button */}
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={handleLogout} 
+          className="w-full border-destructive/30 text-destructive hover:bg-destructive/10 hover:text-destructive gap-2 mt-4"
+        >
+          <LogOut className="h-4 w-4" />
+          Déconnexion
+        </Button>
 
         {/* Footer */}
         <p className="text-center text-xs text-muted-foreground pt-2">
