@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { HelpCircle, ArrowRight, ArrowLeft } from "lucide-react";
+import { PageTransition } from "@/components/PageTransition";
 
 const faqItems = [
   {
@@ -60,7 +61,7 @@ export default function FAQ() {
   }, []);
 
   return (
-    <div className="min-h-screen py-6 md:py-16 bg-gradient-subtle">
+    <PageTransition className="min-h-screen py-6 md:py-16 bg-gradient-subtle">
       <div className="container mx-auto px-4">
         {/* Back button */}
         <Link 
@@ -150,6 +151,6 @@ export default function FAQ() {
           </motion.div>
         </motion.div>
       </div>
-    </div>
+    </PageTransition>
   );
 }

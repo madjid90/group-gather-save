@@ -8,6 +8,7 @@ import { Zap, ArrowRight, Loader2, Phone, Eye, EyeOff, Lock, ArrowLeft } from "l
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { z } from "zod";
+import { PageTransition } from "@/components/PageTransition";
 
 const connexionSchema = z.object({
   telephone: z.string().regex(/^(\+33|0)[1-9]\d{8}$/, "Numéro de téléphone invalide (ex: 0612345678)"),
@@ -85,7 +86,7 @@ export default function Connexion() {
   };
 
   return (
-    <div className="h-screen overflow-hidden flex items-center justify-center px-4 bg-gradient-subtle relative">
+    <PageTransition className="h-screen overflow-hidden flex items-center justify-center px-4 bg-gradient-subtle relative">
       {/* Fixed Back Button */}
       <Link 
         to="/" 
@@ -199,6 +200,6 @@ export default function Connexion() {
           </div>
         </motion.div>
       </div>
-    </div>
+    </PageTransition>
   );
 }
