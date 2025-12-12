@@ -4,12 +4,16 @@ import { Link } from "react-router-dom";
 
 export function MobileFixedCTA() {
   return (
-    <motion.div
-      initial={{ y: 100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 1, type: "spring", stiffness: 100 }}
-      className="fixed bottom-0 left-0 right-0 z-50 px-3 py-2 bg-background/95 backdrop-blur-sm border-t border-border shadow-lg md:hidden"
-    >
+    <>
+      {/* Gradient fade effect */}
+      <div className="fixed bottom-[60px] left-0 right-0 h-8 bg-gradient-to-t from-background to-transparent pointer-events-none z-40 md:hidden" />
+      
+      <motion.div
+        initial={{ y: 100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 1, type: "spring", stiffness: 100 }}
+        className="fixed bottom-0 left-0 right-0 z-50 px-3 py-2 bg-background border-t border-border/50 shadow-lg md:hidden"
+      >
       <motion.div
         animate={{ scale: [1, 1.02, 1] }}
         transition={{ 
@@ -29,6 +33,7 @@ export function MobileFixedCTA() {
           </Link>
         </Button>
       </motion.div>
-    </motion.div>
+      </motion.div>
+    </>
   );
 }
