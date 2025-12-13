@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { UserPlus, Users, Gift } from "lucide-react";
-import { CurvedArrow } from "@/components/ui/CurvedArrow";
 
 const steps = [
   {
@@ -83,14 +82,9 @@ export function HowItWorksSection() {
                 </p>
               </div>
 
-              {/* Curved arrow connector - desktop only */}
+              {/* Connector line - desktop only */}
               {index < steps.length - 1 && (
-                <div className="hidden md:flex absolute top-1/2 -right-6 transform -translate-y-1/2 items-center justify-center z-10">
-                  <CurvedArrow 
-                    className="text-primary/40 w-12 h-8" 
-                    flip={index % 2 === 1}
-                  />
-                </div>
+                <div className="hidden md:block absolute top-1/2 -right-4 w-8 border-t-2 border-dashed border-border" />
               )}
             </motion.div>
           ))}

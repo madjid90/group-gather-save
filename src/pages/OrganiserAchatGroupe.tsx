@@ -19,7 +19,6 @@ import {
 } from "lucide-react";
 import { PageTransition } from "@/components/PageTransition";
 import { MobileFixedCTAPartenaire } from "@/components/landing/MobileFixedCTAPartenaire";
-import { CurvedArrow } from "@/components/ui/CurvedArrow";
 
 const OrganiserAchatGroupe = () => {
   const benefits = [
@@ -250,14 +249,9 @@ const OrganiserAchatGroupe = () => {
                     </p>
                   </div>
 
-                  {/* Curved arrow connector - desktop only */}
+                  {/* Connector line - desktop only */}
                   {index < steps.length - 1 && (
-                    <div className="hidden lg:flex absolute top-1/2 -right-4 transform -translate-y-1/2 items-center justify-center z-10">
-                      <CurvedArrow 
-                        className="text-primary/40 w-10 h-6" 
-                        flip={index % 2 === 1}
-                      />
-                    </div>
+                    <div className="hidden lg:block absolute top-1/2 -right-3 w-6 border-t-2 border-dashed border-border" />
                   )}
                 </motion.div>
               ))}
