@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -27,9 +27,8 @@ interface Profile {
 }
 
 export default function MonOffre() {
-  const [searchParams] = useSearchParams();
+  const { token } = useParams<{ token: string }>();
   const navigate = useNavigate();
-  const token = searchParams.get("token");
 
   const [offer, setOffer] = useState<UserOffer | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
