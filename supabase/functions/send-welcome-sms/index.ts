@@ -54,8 +54,8 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Build the form URL
-    const baseUrl = Deno.env.get("SITE_URL") || "https://kaebtbcufbpkhyrhuson.lovable.app";
+    // Build the form URL with custom domain
+    const baseUrl = Deno.env.get("SITE_URL") || "https://switchly.fr";
     const formUrl = `${baseUrl}/formulaire-logement/${profile.housing_token}`;
 
     // Format phone number for Twilio (add +33 if needed)

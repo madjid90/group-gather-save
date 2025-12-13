@@ -64,7 +64,7 @@ serve(async (req: Request) => {
     let failed = 0;
 
     // Get base URL from environment or use default (same as welcome SMS)
-    const baseUrl = Deno.env.get("SITE_URL") || "https://kaebtbcufbpkhyrhuson.lovable.app";
+    const baseUrl = Deno.env.get("SITE_URL") || "https://switchly.fr";
 
     for (const offer of offers) {
       try {
