@@ -10,6 +10,9 @@ import Connexion from "./pages/Connexion";
 import FAQ from "./pages/FAQ";
 import Contact from "./pages/Contact";
 import MentionsLegales from "./pages/MentionsLegales";
+import PolitiqueRGPD from "./pages/PolitiqueRGPD";
+import CGU from "./pages/CGU";
+import PolitiqueConfidentialite from "./pages/PolitiqueConfidentialite";
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminUtilisateurs from "./pages/admin/AdminUtilisateurs";
@@ -46,9 +49,14 @@ const App = () => (
 
           {/* Client journey pages (SMS-based) */}
           <Route path="/formulaire-logement/:token" element={<FormulaireLogement />} />
-          <Route path="/mon-offre" element={<MonOffre />} />
+          <Route path="/mon-offre/:token" element={<MonOffre />} />
           <Route path="/offre-confirmation" element={<OffreConfirmation />} />
           <Route path="/dashboard-client" element={<DashboardClient />} />
+
+          {/* Legal pages */}
+          <Route path="/politique-rgpd" element={<PolitiqueRGPD />} />
+          <Route path="/cgu" element={<CGU />} />
+          <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
 
           {/* Admin pages */}
           <Route path="/admin" element={<AdminLayout />}>

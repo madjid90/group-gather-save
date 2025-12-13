@@ -63,8 +63,8 @@ serve(async (req: Request) => {
     let sent = 0;
     let failed = 0;
 
-    // Get base URL from environment or use default
-    const baseUrl = Deno.env.get("PUBLIC_SITE_URL") || "https://switchly.lovable.app";
+    // Get base URL from environment or use default (same as welcome SMS)
+    const baseUrl = Deno.env.get("SITE_URL") || "https://kaebtbcufbpkhyrhuson.lovable.app";
 
     for (const offer of offers) {
       try {
@@ -89,8 +89,8 @@ serve(async (req: Request) => {
           phone = "+33" + phone;
         }
 
-        // Build offer URL with token
-        const offerUrl = `${baseUrl}/mon-offre?token=${offer.offer_token}`;
+        // Build offer URL with token (route parameter format)
+        const offerUrl = `${baseUrl}/mon-offre/${offer.offer_token}`;
 
         // SMS text as specified
         const message = `Bonne nouvelle ! Votre offre personnalisée est prête. Consultez-la ici : ${offerUrl}`;
