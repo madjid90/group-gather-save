@@ -17,16 +17,16 @@ const steps = [
     number: "2",
     title: "Nous négocions pour vous",
     titleMobile: "Nous négocions pour vous",
-    description: "Plus nous sommes nombreux, plus les fournisseurs baissent les tarifs.",
-    descriptionMobile: "Plus on est nombreux, plus les prix baissent.",
+    description: "Nous regroupons les foyers inscrits pour négocier des tarifs collectifs auprès des fournisseurs.",
+    descriptionMobile: "On regroupe les foyers pour négocier.",
   },
   {
     icon: Gift,
     number: "3",
     title: "Recevez votre offre personnalisée",
     titleMobile: "Recevez votre offre",
-    description: "Vous êtes libre d'accepter ou de refuser. Aucune démarche obligatoire.",
-    descriptionMobile: "Libre à vous d'accepter ou refuser.",
+    description: "Vous restez entièrement libre d'accepter ou de refuser l'offre négociée.",
+    descriptionMobile: "Libre d'accepter ou de refuser.",
   },
 ];
 
@@ -45,8 +45,8 @@ export function HowItWorksSection() {
             Comment ça marche ?
           </h2>
           <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
-            <span className="hidden md:inline">Un processus simple et transparent pour économiser sur vos factures</span>
-            <span className="md:hidden">Simple, rapide et transparent</span>
+            <span className="hidden md:inline">Un fonctionnement clair basé sur la négociation collective</span>
+            <span className="md:hidden">Fonctionnement clair et collectif</span>
           </p>
         </motion.div>
 
@@ -89,6 +89,17 @@ export function HowItWorksSection() {
             </motion.div>
           ))}
         </div>
+
+        {/* Micro-texte explicatif */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="text-center text-sm text-muted-foreground mb-8 md:mb-16"
+        >
+          Switchly n'est pas un fournisseur. Nous organisons des achats groupés indépendants.
+        </motion.p>
 
         {/* CTA - hidden on mobile */}
         <motion.div

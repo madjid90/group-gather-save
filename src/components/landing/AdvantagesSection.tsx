@@ -6,28 +6,28 @@ import { TrendingDown, Scale, Clock, Eye } from "lucide-react";
 const advantages = [
   {
     icon: TrendingDown,
-    title: "Économies importantes",
+    title: "Tarifs négociés collectivement",
     description: "Profitez d'offres négociées permettant jusqu'à 400€/an d'économies sur l'électricité et l'internet.",
     descriptionMobile: "Jusqu'à 400€/an d'économies.",
     color: "primary",
   },
   {
     icon: Scale,
-    title: "Sans engagement",
+    title: "Liberté totale de décision",
     description: "Participez librement, refusez l'offre si elle ne vous convient pas.",
     descriptionMobile: "Refusez si ça ne convient pas.",
     color: "secondary",
   },
   {
     icon: Clock,
-    title: "Simplicité totale",
+    title: "Aucune démarche auprès des fournisseurs",
     description: "Nous négocions pour vous auprès des fournisseurs, sans aucune démarche de votre part.",
     descriptionMobile: "Aucune démarche de votre part.",
     color: "primary",
   },
   {
     icon: Eye,
-    title: "Transparence",
+    title: "Fonctionnement clair et expliqué",
     description: "Vous recevez une offre claire, détaillée et sans frais cachés.",
     descriptionMobile: "Offre claire, sans frais cachés.",
     color: "secondary",

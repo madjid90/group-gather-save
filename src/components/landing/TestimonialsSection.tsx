@@ -57,8 +57,8 @@ export function TestimonialsSection() {
             Ils ont déjà économisé
           </h2>
           <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-            <span className="hidden md:inline">Des milliers de français nous font confiance</span>
-            <span className="md:hidden">Rejoignez-les</span>
+            <span className="hidden md:inline">Avis recueillis auprès de participants aux achats groupés</span>
+            <span className="md:hidden">Avis de participants</span>
           </p>
         </motion.div>
 

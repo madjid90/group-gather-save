@@ -43,7 +43,7 @@ export function CTASection() {
               </Button>
             </div>
             <p className="text-xs sm:text-sm md:text-base text-primary-foreground/70 mt-4 md:mt-8">
-              <span className="hidden md:inline">Aucune publicité, aucune vente de données. Nous vous contactons uniquement pour vous transmettre les offres négociées.</span>
+              <span className="hidden md:inline">Aucune publicité, aucune vente de données. Switchly n'est pas un fournisseur d'énergie.</span>
               <span className="md:hidden">Zéro publicité, zéro vente de données.</span>
             </p>
           </div>
