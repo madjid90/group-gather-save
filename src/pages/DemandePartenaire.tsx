@@ -13,7 +13,7 @@ import {
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { PageTransition } from "@/components/PageTransition";
-import { CheckCircle2, Loader2 } from "lucide-react";
+import { CheckCircle2, Loader2, Zap, ArrowLeft, Building2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -91,16 +91,25 @@ ${formData.message || "Aucun message additionnel"}
     return (
       <PageTransition>
         <div className="min-h-screen bg-background flex flex-col">
-          <header className="border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-              <Link to="/" className="text-xl font-bold text-primary">
-                Switchly
+          {/* Header */}
+          <header className="fixed top-0 left-0 right-0 z-50 glass">
+            <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
+              <Link to="/" className="flex items-center gap-2 group" aria-label="Switchly - Retour à l'accueil">
+                <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center shadow-glow group-hover:scale-110 transition-transform">
+                  <Zap className="w-5 h-5 text-primary-foreground" aria-hidden="true" />
+                </div>
+                <span className="text-xl font-bold text-foreground hidden sm:block">Switchly</span>
               </Link>
-              <Button asChild variant="ghost" size="sm">
-                <Link to="/">Retour à l'accueil</Link>
+              <Button asChild variant="ghost" size="sm" className="gap-2">
+                <Link to="/">
+                  <ArrowLeft className="w-4 h-4" />
+                  Retour à l'accueil
+                </Link>
               </Button>
-            </div>
+            </nav>
           </header>
+
+          <div className="h-16" />
 
           <main className="flex-1 flex items-center justify-center p-4">
             <motion.div
@@ -109,17 +118,20 @@ ${formData.message || "Aucun message additionnel"}
               transition={{ duration: 0.5 }}
               className="max-w-md w-full text-center"
             >
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
-                <CheckCircle2 className="w-8 h-8 text-primary" />
+              <div className="w-20 h-20 rounded-2xl bg-gradient-hero flex items-center justify-center mx-auto mb-6 shadow-glow">
+                <CheckCircle2 className="w-10 h-10 text-primary-foreground" />
               </div>
-              <h1 className="text-2xl font-bold text-foreground mb-4">
+              <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
                 Merci pour votre demande
               </h1>
-              <p className="text-muted-foreground mb-8">
+              <p className="text-muted-foreground mb-8 text-base md:text-lg">
                 Notre équipe vous contactera rapidement.
               </p>
-              <Button asChild variant="outline">
-                <Link to="/">Retour à l'accueil</Link>
+              <Button asChild variant="outline" size="lg" className="gap-2">
+                <Link to="/">
+                  <ArrowLeft className="w-4 h-4" />
+                  Retour à l'accueil
+                </Link>
               </Button>
             </motion.div>
           </main>
@@ -131,145 +143,218 @@ ${formData.message || "Aucun message additionnel"}
   return (
     <PageTransition>
       <div className="min-h-screen bg-background">
-        <header className="border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-            <Link to="/" className="text-xl font-bold text-primary">
-              Switchly
+        {/* Header */}
+        <header className="fixed top-0 left-0 right-0 z-50 glass">
+          <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
+            <Link to="/" className="flex items-center gap-2 group" aria-label="Switchly - Retour à l'accueil">
+              <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center shadow-glow group-hover:scale-110 transition-transform">
+                <Zap className="w-5 h-5 text-primary-foreground" aria-hidden="true" />
+              </div>
+              <span className="text-xl font-bold text-foreground hidden sm:block">Switchly</span>
             </Link>
-            <Button asChild variant="ghost" size="sm">
-              <Link to="/organiser-achat-groupe">Retour</Link>
+            <Button asChild variant="ghost" size="sm" className="gap-2">
+              <Link to="/organiser-achat-groupe">
+                <ArrowLeft className="w-4 h-4" />
+                Retour
+              </Link>
             </Button>
-          </div>
+          </nav>
         </header>
 
-        <main className="py-12 md:py-20">
-          <div className="container mx-auto px-4">
+        <div className="h-16" />
+
+        {/* Hero section */}
+        <section className="relative py-12 md:py-16 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-subtle" />
+          
+          {/* Animated background elements */}
+          <div className="absolute inset-0 overflow-hidden">
+            <motion.div
+              className="absolute top-10 right-20 w-72 h-72 rounded-full bg-primary/5 blur-3xl"
+              animate={{ 
+                scale: [1, 1.2, 1],
+                opacity: [0.3, 0.5, 0.3]
+              }}
+              transition={{ duration: 8, repeat: Infinity }}
+            />
+          </div>
+
+          <div className="container mx-auto px-4 relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="max-w-xl mx-auto"
+              className="max-w-xl mx-auto text-center"
             >
-              <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-4 text-center">
-                Demande d'organisation d'un achat groupé
+              {/* Badge */}
+              <motion.div
+                initial={{ opacity: 0, y: -20, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                className="inline-flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-primary/10 text-primary border border-primary/20 mb-6"
+              >
+                <Building2 className="w-4 h-4" />
+                <span className="text-xs md:text-sm font-medium">Demande partenaire</span>
+              </motion.div>
+
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-4">
+                Demande d'organisation d'un{" "}
+                <span className="gradient-text">achat groupé</span>
               </h1>
-              <p className="text-muted-foreground text-center mb-10">
+              <p className="text-muted-foreground text-base md:text-lg">
                 Merci de compléter ce formulaire.
                 Notre équipe vous contactera afin d'étudier la mise en place
                 d'un achat groupé pour votre territoire.
               </p>
+            </motion.div>
+          </div>
+        </section>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="organisation">Nom de la collectivité / organisation *</Label>
-                  <Input
-                    id="organisation"
-                    value={formData.organisation}
-                    onChange={(e) => handleChange("organisation", e.target.value)}
-                    placeholder="Ex : Mairie de Lyon"
-                    required
-                  />
-                </div>
+        {/* Form section */}
+        <main className="py-8 md:py-12">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="max-w-xl mx-auto"
+            >
+              <div className="bg-card rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-switchly-lg border border-border">
+                <form onSubmit={handleSubmit} className="space-y-5 md:space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="organisation" className="text-sm font-medium">
+                      Nom de la collectivité / organisation *
+                    </Label>
+                    <Input
+                      id="organisation"
+                      value={formData.organisation}
+                      onChange={(e) => handleChange("organisation", e.target.value)}
+                      placeholder="Ex : Mairie de Lyon"
+                      className="h-12 rounded-xl"
+                      required
+                    />
+                  </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="type">Type d'organisation *</Label>
-                  <Select
-                    value={formData.type}
-                    onValueChange={(value) => handleChange("type", value)}
+                  <div className="space-y-2">
+                    <Label htmlFor="type" className="text-sm font-medium">
+                      Type d'organisation *
+                    </Label>
+                    <Select
+                      value={formData.type}
+                      onValueChange={(value) => handleChange("type", value)}
+                    >
+                      <SelectTrigger className="h-12 rounded-xl">
+                        <SelectValue placeholder="Sélectionner un type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="mairie">Mairie</SelectItem>
+                        <SelectItem value="collectivite">Collectivité</SelectItem>
+                        <SelectItem value="association">Association</SelectItem>
+                        <SelectItem value="partenaire">Partenaire privé</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="territoire" className="text-sm font-medium">
+                      Ville ou territoire concerné *
+                    </Label>
+                    <Input
+                      id="territoire"
+                      value={formData.territoire}
+                      onChange={(e) => handleChange("territoire", e.target.value)}
+                      placeholder="Ex : Lyon et métropole"
+                      className="h-12 rounded-xl"
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="contact" className="text-sm font-medium">
+                      Nom du contact *
+                    </Label>
+                    <Input
+                      id="contact"
+                      value={formData.contact}
+                      onChange={(e) => handleChange("contact", e.target.value)}
+                      placeholder="Prénom et nom"
+                      className="h-12 rounded-xl"
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="text-sm font-medium">
+                      Adresse email *
+                    </Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => handleChange("email", e.target.value)}
+                      placeholder="contact@mairie.fr"
+                      className="h-12 rounded-xl"
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="telephone" className="text-sm font-medium">
+                      Numéro de téléphone *
+                    </Label>
+                    <Input
+                      id="telephone"
+                      type="tel"
+                      value={formData.telephone}
+                      onChange={(e) => handleChange("telephone", e.target.value)}
+                      placeholder="01 23 45 67 89"
+                      className="h-12 rounded-xl"
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="message" className="text-sm font-medium">
+                      Message (optionnel)
+                    </Label>
+                    <Textarea
+                      id="message"
+                      value={formData.message}
+                      onChange={(e) => handleChange("message", e.target.value)}
+                      placeholder="Précisions sur votre projet..."
+                      rows={4}
+                      className="rounded-xl resize-none"
+                    />
+                  </div>
+
+                  <Button 
+                    type="submit" 
+                    variant="hero"
+                    size="xl" 
+                    className="w-full py-6 text-base md:text-lg"
+                    disabled={isSubmitting}
                   >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Sélectionner un type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="mairie">Mairie</SelectItem>
-                      <SelectItem value="collectivite">Collectivité</SelectItem>
-                      <SelectItem value="association">Association</SelectItem>
-                      <SelectItem value="partenaire">Partenaire privé</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="territoire">Ville ou territoire concerné *</Label>
-                  <Input
-                    id="territoire"
-                    value={formData.territoire}
-                    onChange={(e) => handleChange("territoire", e.target.value)}
-                    placeholder="Ex : Lyon et métropole"
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="contact">Nom du contact *</Label>
-                  <Input
-                    id="contact"
-                    value={formData.contact}
-                    onChange={(e) => handleChange("contact", e.target.value)}
-                    placeholder="Prénom et nom"
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="email">Adresse email *</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => handleChange("email", e.target.value)}
-                    placeholder="contact@mairie.fr"
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="telephone">Numéro de téléphone *</Label>
-                  <Input
-                    id="telephone"
-                    type="tel"
-                    value={formData.telephone}
-                    onChange={(e) => handleChange("telephone", e.target.value)}
-                    placeholder="01 23 45 67 89"
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="message">Message (optionnel)</Label>
-                  <Textarea
-                    id="message"
-                    value={formData.message}
-                    onChange={(e) => handleChange("message", e.target.value)}
-                    placeholder="Précisions sur votre projet..."
-                    rows={4}
-                  />
-                </div>
-
-                <Button 
-                  type="submit" 
-                  size="xl" 
-                  className="w-full py-6"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Envoi en cours...
-                    </>
-                  ) : (
-                    "Envoyer ma demande"
-                  )}
-                </Button>
-              </form>
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                        Envoi en cours...
+                      </>
+                    ) : (
+                      "Envoyer ma demande"
+                    )}
+                  </Button>
+                </form>
+              </div>
             </motion.div>
           </div>
         </main>
 
-        <footer className="border-t border-border/40 py-8">
+        {/* Footer simple */}
+        <footer className="border-t border-border py-8 bg-card">
           <div className="container mx-auto px-4 text-center">
-            <Link to="/" className="text-sm text-muted-foreground hover:text-primary">
-              ← Retour à l'accueil
+            <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
+              <ArrowLeft className="w-4 h-4" />
+              Retour à l'accueil
             </Link>
           </div>
         </footer>
