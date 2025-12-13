@@ -51,37 +51,37 @@ export function HeroSection() {
                 animate={{ scale: [1, 1.3, 1], opacity: [1, 0.7, 1] }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
               />
-              <span className="text-xs md:text-sm font-medium">Plus de 12 000 membres actifs</span>
+              <span className="text-xs md:text-sm font-medium">Achat groupé énergie & internet — gratuit</span>
             </motion.div>
 
             {/* Title - smaller on mobile */}
             <h1 className="text-[26px] leading-tight sm:text-3xl md:text-5xl lg:text-6xl font-bold text-foreground md:leading-tight">
-              Rejoignez notre achat groupé et économisez{" "}
+              Rejoignez l'achat groupé Switchly et économisez{" "}
               <span className="gradient-text">jusqu'à 30 %</span>{" "}
               <span className="gradient-text">
-                sur vos factures d'électricité et d'internet.
+                sur vos factures d'électricité et d'internet
               </span>
             </h1>
 
             {/* Subtitle - slightly larger on mobile for readability */}
             <p className="text-base sm:text-base md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0">
-              <span className="hidden md:inline">En moyenne, nos membres économisent jusqu'à 400€/an — gratuitement et sans engagement.</span>
-              <span className="md:hidden">Jusqu'à 400€/an d'économies — gratuit et sans engagement.</span>
+              <span className="hidden md:inline">Les économies observées lors des achats groupés atteignent jusqu'à 400 € par an — inscription gratuite et sans engagement</span>
+              <span className="md:hidden">Jusqu'à 400 € d'économies par an — gratuit et sans engagement</span>
             </p>
 
             {/* Trust badges - smaller on mobile */}
             <div className="flex flex-col sm:flex-row flex-wrap justify-center lg:justify-start gap-2 md:gap-6 pt-1 md:pt-4">
               <div className="flex items-center justify-center lg:justify-start gap-1.5 md:gap-2 text-sm md:text-base text-muted-foreground">
                 <CheckCircle className="w-4 h-4 md:w-5 md:h-5 text-secondary flex-shrink-0" />
-                <span>Jusqu'à –30 % grâce au groupe</span>
+                <span>Tarifs négociés collectivement</span>
               </div>
               <div className="flex items-center justify-center lg:justify-start gap-1.5 md:gap-2 text-sm md:text-base text-muted-foreground">
                 <Lock className="w-4 h-4 md:w-5 md:h-5 text-primary flex-shrink-0" />
-                <span>Offre 100 % personnalisée</span>
+                <span>Offre adaptée à votre logement</span>
               </div>
               <div className="flex items-center justify-center lg:justify-start gap-1.5 md:gap-2 text-sm md:text-base text-muted-foreground">
                 <Shield className="w-4 h-4 md:w-5 md:h-5 text-secondary flex-shrink-0" />
-                <span>Zéro démarche, zéro engagement</span>
+                <span>Libre d'accepter ou de refuser</span>
               </div>
             </div>
 
@@ -117,7 +117,7 @@ export function HeroSection() {
                 {/* Social proof text */}
                 <div className="text-center">
                   <p className="text-muted-foreground">
-                    Déjà <span className="font-bold text-foreground">12 847</span> foyers ont rejoint la prochaine négociation.
+                    <span className="font-bold text-foreground">Foyers inscrits</span> à l'achat groupé
                   </p>
                   <p className="text-sm text-primary font-medium mt-1">
                     Plus nous sommes nombreux, plus les prix baissent.
@@ -146,16 +146,16 @@ export function HeroSection() {
                       <Zap className="w-5 h-5 text-primary" />
                       <span className="text-xs font-medium text-muted-foreground">Électricité</span>
                     </div>
-                    <div className="text-2xl font-bold text-foreground">247€</div>
-                    <p className="text-xs text-secondary font-medium">économisés/an</p>
+                    <div className="text-2xl font-bold text-foreground">250 €</div>
+                    <p className="text-xs text-secondary font-medium">jusqu'à /an estimés</p>
                   </div>
                   <div className="bg-gradient-subtle rounded-2xl p-4 text-center">
                     <div className="flex items-center justify-center gap-2 mb-2">
                       <Wifi className="w-5 h-5 text-primary" />
                       <span className="text-xs font-medium text-muted-foreground">Internet</span>
                     </div>
-                    <div className="text-2xl font-bold text-foreground">156€</div>
-                    <p className="text-xs text-secondary font-medium">économisés/an</p>
+                    <div className="text-2xl font-bold text-foreground">150 €</div>
+                    <p className="text-xs text-secondary font-medium">jusqu'à /an estimés</p>
                   </div>
                 </div>
               </div>
@@ -177,7 +177,7 @@ export function HeroSection() {
               }}
               whileHover={{ scale: 1.1 }}
             >
-              🎉 +23 inscrits aujourd'hui
+              📊 Estimations basées sur des données publiques
             </motion.div>
           </motion.div>
         </div>

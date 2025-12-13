@@ -28,6 +28,11 @@ const faqItems = [
     answer:
       "Cela dépend de votre contrat actuel, mais l'objectif est de réduire au maximum vos factures d'énergie et d'internet.",
   },
+  {
+    question: "Switchly est-il un comparateur d'énergie ?",
+    answer:
+      "Non. Switchly organise des achats groupés afin de négocier des tarifs collectifs. Nous ne comparons pas l'ensemble du marché.",
+  },
 ];
 
 export function FAQSection() {
