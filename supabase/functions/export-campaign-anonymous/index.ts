@@ -28,14 +28,8 @@ serve(async (req) => {
 
     console.log("Starting anonymous export for campaign:", campaignId || "all participants");
 
-    // Fetch campaign settings to get the campaign ID
-    const { data: campaignSettings } = await supabase
-      .from("campaign_settings")
-      .select("id")
-      .limit(1)
-      .maybeSingle();
-
-    const actualCampaignId = campaignId || campaignSettings?.id;
+    // Use the provided campaign_id directly
+    const actualCampaignId = campaignId;
 
     // Fetch all users included in campaign (inclusion_campagne = true)
     const { data: profiles, error: profilesError } = await supabase

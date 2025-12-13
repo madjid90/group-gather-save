@@ -227,9 +227,27 @@ export default function AdminCampagneDetail() {
 
     setActionLoading("import");
     try {
+      // First, get the latest export_id for this campaign
+      const { data: latestExport, error: exportError } = await supabase
+        .from("campaign_exports")
+        .select("id")
+        .eq("campaign_id", campaign.id)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (exportError) {
+        console.error("Error fetching export:", exportError);
+      }
+
       const formData = new FormData();
       formData.append("file", file);
       formData.append("campaign_id", campaign.id);
+      
+      // Add export_id if we found one
+      if (latestExport?.id) {
+        formData.append("export_id", latestExport.id);
+      }
 
       const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
       const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;

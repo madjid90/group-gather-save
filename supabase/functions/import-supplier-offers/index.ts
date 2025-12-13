@@ -118,6 +118,7 @@ serve(async (req) => {
     const formData = await req.formData();
     const file = formData.get("file") as File | null;
     const exportId = formData.get("export_id") as string | null;
+    const campaignId = formData.get("campaign_id") as string | null;
     const fournisseurNom = formData.get("fournisseur_nom") as string | null;
 
     if (!file) {
@@ -126,6 +127,7 @@ serve(async (req) => {
 
     console.log("Received file:", file.name, "size:", file.size);
     console.log("Export ID:", exportId);
+    console.log("Campaign ID:", campaignId);
     console.log("Fournisseur:", fournisseurNom);
 
     // Read file content
@@ -184,6 +186,7 @@ serve(async (req) => {
       user_id: string;
       export_id: string | null;
       client_id: string;
+      campaign_id: string | null;
       fournisseur_nom: string | null;
       offre_nom: string | null;
       prix_kwh: number | null;
@@ -217,6 +220,7 @@ serve(async (req) => {
           user_id: mapping.user_id,
           export_id: mapping.export_id,
           client_id: row.client_id,
+          campaign_id: campaignId || null,
           fournisseur_nom: fournisseurNom || null,
           offre_nom: row.offre_nom || null,
           prix_kwh: parseNum(row.prix_kwh),
