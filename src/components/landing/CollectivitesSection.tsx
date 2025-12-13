@@ -101,12 +101,13 @@ export const CollectivitesSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
             viewport={{ once: true }}
+            className="hidden md:block"
           >
             <Button
               asChild
-              variant="outline"
+              variant="hero"
               size="xl"
-              className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 py-6 px-8 text-base md:text-lg"
+              className="py-7 sm:py-5 px-8 text-base sm:text-lg w-[calc(100%-2rem)] max-w-md sm:w-auto"
             >
               <Link to="/organiser-achat-groupe">
                 Organiser un achat groupé dans ma ville
