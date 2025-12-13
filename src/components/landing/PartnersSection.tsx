@@ -37,6 +37,10 @@ function PartnerLogo({ partner }: { partner: Partner }) {
         <img 
           src={partner.logo} 
           alt={`Logo ${partner.name}`}
+          loading="lazy"
+          decoding="async"
+          width={100}
+          height={48}
           className={`${logoClass} ${!partner.className ? '' : 'w-auto object-contain grayscale opacity-70'}`}
         />
       </div>
