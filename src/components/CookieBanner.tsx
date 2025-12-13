@@ -43,7 +43,7 @@ export function CookieBanner() {
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
           className="fixed bottom-0 left-0 right-0 z-50 p-4 md:p-6"
         >
-          <div className="max-w-4xl mx-auto bg-background border border-border rounded-2xl shadow-switchly p-4 md:p-6">
+          <div className="max-w-4xl mx-auto bg-card border border-border rounded-2xl shadow-switchly p-4 md:p-6">
             <div className="flex items-start gap-4">
               {/* Icon */}
               <div className="hidden sm:flex w-10 h-10 rounded-xl bg-primary/10 items-center justify-center flex-shrink-0">
@@ -60,18 +60,18 @@ export function CookieBanner() {
                   <button
                     onClick={handleClose}
                     className="p-1 rounded-lg hover:bg-primary/10 transition-colors flex-shrink-0"
-                    aria-label="Fermer"
+                    aria-label="Fermer le bandeau cookies"
                   >
-                    <X className="w-4 h-4 text-primary" />
+                    <X className="w-4 h-4 text-foreground" />
                   </button>
                 </div>
                 
-                <p className="text-xs md:text-sm text-muted-foreground mb-4 leading-relaxed">
+                <p className="text-xs md:text-sm text-foreground/80 mb-4 leading-relaxed">
                   Nous utilisons des cookies essentiels pour le fonctionnement du site. 
                   Aucun cookie publicitaire n'est utilisé.{" "}
                   <Link 
                     to="/politique-confidentialite" 
-                    className="text-primary font-medium hover:underline"
+                    className="text-primary font-semibold hover:underline"
                   >
                     En savoir plus
                   </Link>
@@ -82,7 +82,7 @@ export function CookieBanner() {
                   <Button
                     onClick={handleAccept}
                     size="sm"
-                    className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground"
+                    className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
                   >
                     Accepter
                   </Button>
@@ -90,13 +90,13 @@ export function CookieBanner() {
                     onClick={handleReject}
                     variant="outline"
                     size="sm"
-                    className="w-full sm:w-auto border-primary/30 text-primary hover:bg-primary/10"
+                    className="w-full sm:w-auto border-foreground/30 text-foreground hover:bg-foreground/10 font-semibold"
                   >
                     Refuser
                   </Button>
                   <Link 
                     to="/politique-rgpd"
-                    className="text-xs text-primary/70 hover:text-primary transition-colors self-center mt-1 sm:mt-0 sm:ml-2"
+                    className="text-xs text-foreground/70 hover:text-foreground transition-colors self-center mt-1 sm:mt-0 sm:ml-2 font-medium"
                   >
                     Politique RGPD
                   </Link>
