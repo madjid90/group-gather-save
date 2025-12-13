@@ -96,9 +96,9 @@ export function Navbar() {
     <header className="fixed top-0 left-0 right-0 z-50 glass">
       <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
         {/* Left side: Logo */}
-        <Link to="/" className="flex items-center gap-2 group">
+        <Link to="/" className="flex items-center gap-2 group" aria-label="Switchly - Retour à l'accueil">
           <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center shadow-glow group-hover:scale-110 transition-transform">
-            <Zap className="w-5 h-5 text-primary-foreground" />
+            <Zap className="w-5 h-5 text-primary-foreground" aria-hidden="true" />
           </div>
           <span className="text-xl font-bold text-foreground hidden sm:block">Switchly</span>
         </Link>
