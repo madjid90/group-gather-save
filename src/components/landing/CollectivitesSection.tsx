@@ -101,12 +101,13 @@ export const CollectivitesSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
             viewport={{ once: true }}
+            className="w-full px-4 md:px-0 md:w-auto"
           >
             <Button
               asChild
-              variant="outline"
+              variant="hero"
               size="xl"
-              className="border-2 border-primary bg-background text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 py-6 md:py-7 px-6 md:px-8 text-sm md:text-lg w-full sm:w-auto"
+              className="w-full md:w-auto py-6 md:py-7 px-6 md:px-8 text-sm md:text-lg"
             >
               <Link to="/organiser-achat-groupe">
                 Organiser un achat groupé dans ma ville
