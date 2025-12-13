@@ -20,8 +20,31 @@ export const CollectivitesSection = () => {
   ];
 
   return (
-    <section className="py-16 md:py-24 bg-muted/30">
-      <div className="container mx-auto px-4">
+    <section className="relative py-16 md:py-24 overflow-hidden">
+      {/* Background gradient matching hero */}
+      <div className="absolute inset-0 bg-gradient-subtle" />
+      
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.div
+          className="absolute top-10 right-20 w-72 h-72 rounded-full bg-primary/5 blur-3xl"
+          animate={{ 
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3]
+          }}
+          transition={{ duration: 8, repeat: Infinity }}
+        />
+        <motion.div
+          className="absolute bottom-10 left-20 w-96 h-96 rounded-full bg-secondary/5 blur-3xl"
+          animate={{ 
+            scale: [1.2, 1, 1.2],
+            opacity: [0.3, 0.5, 0.3]
+          }}
+          transition={{ duration: 8, repeat: Infinity, delay: 2 }}
+        />
+      </div>
+
+      <div className="container mx-auto px-4 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -29,17 +52,31 @@ export const CollectivitesSection = () => {
           viewport={{ once: true }}
           className="max-w-4xl mx-auto text-center"
         >
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground mb-6">
-            Vous souhaitez organiser un achat groupé dans votre ville ?
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: -20, scale: 0.9 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-primary/10 text-primary border border-primary/20 mb-6"
+          >
+            <Building2 className="w-4 h-4" />
+            <span className="text-xs md:text-sm font-medium">Collectivités & Partenaires</span>
+          </motion.div>
+
+          <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 md:mb-6">
+            Vous souhaitez organiser un{" "}
+            <span className="gradient-text">achat groupé</span>{" "}
+            dans votre ville ?
           </h2>
           
-          <p className="text-base md:text-lg text-muted-foreground mb-8 max-w-3xl mx-auto">
+          <p className="text-base md:text-xl text-muted-foreground mb-8 md:mb-12 max-w-3xl mx-auto">
             Switchly accompagne les mairies, collectivités et partenaires locaux
             dans l'organisation d'achats groupés d'électricité et d'internet
             au bénéfice des habitants, sans engagement et en toute transparence.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-10 md:mb-12">
             {points.map((point, index) => (
               <motion.div
                 key={index}
@@ -47,28 +84,35 @@ export const CollectivitesSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="flex flex-col items-center text-center p-4"
+                className="bg-card rounded-2xl md:rounded-3xl p-5 md:p-6 shadow-switchly-md border border-border card-hover"
               >
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
-                  <point.icon className="w-6 h-6 text-primary" />
+                <div className="w-12 h-12 rounded-xl bg-gradient-hero flex items-center justify-center mb-4 mx-auto shadow-glow">
+                  <point.icon className="w-6 h-6 text-primary-foreground" />
                 </div>
-                <p className="text-sm md:text-base text-muted-foreground">
+                <p className="text-sm md:text-base text-foreground font-medium">
                   {point.text}
                 </p>
               </motion.div>
             ))}
           </div>
 
-          <Button
-            asChild
-            variant="outline"
-            size="lg"
-            className="border-primary text-primary hover:bg-primary/10"
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            viewport={{ once: true }}
           >
-            <Link to="/organiser-achat-groupe">
-              Organiser un achat groupé dans ma ville
-            </Link>
-          </Button>
+            <Button
+              asChild
+              variant="outline"
+              size="xl"
+              className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 py-6 px-8 text-base md:text-lg"
+            >
+              <Link to="/organiser-achat-groupe">
+                Organiser un achat groupé dans ma ville
+              </Link>
+            </Button>
+          </motion.div>
         </motion.div>
       </div>
     </section>
