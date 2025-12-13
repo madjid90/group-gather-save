@@ -13,6 +13,8 @@ import MentionsLegales from "./pages/MentionsLegales";
 import PolitiqueRGPD from "./pages/PolitiqueRGPD";
 import CGU from "./pages/CGU";
 import PolitiqueConfidentialite from "./pages/PolitiqueConfidentialite";
+import OrganiserAchatGroupe from "./pages/OrganiserAchatGroupe";
+import DemandePartenaire from "./pages/DemandePartenaire";
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminUtilisateurs from "./pages/admin/AdminUtilisateurs";
@@ -46,6 +48,10 @@ const App = () => (
             <Route path="/contact" element={<Contact />} />
             <Route path="/mentions-legales" element={<MentionsLegales />} />
           </Route>
+
+          {/* Partner journey pages */}
+          <Route path="/organiser-achat-groupe" element={<OrganiserAchatGroupe />} />
+          <Route path="/demande-partenaire" element={<DemandePartenaire />} />
 
           {/* Client journey pages (SMS-based) */}
           <Route path="/formulaire-logement/:token" element={<FormulaireLogement />} />
