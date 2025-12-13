@@ -82,6 +82,7 @@ const MODES_CHAUFFAGE = [
   { value: "gaz", label: "Gaz" },
   { value: "pompe_chaleur", label: "Pompe à chaleur" },
   { value: "fioul", label: "Fioul" },
+  { value: "collectif", label: "Chauffage collectif" },
   { value: "autre", label: "Autre" },
 ];
 
@@ -95,6 +96,7 @@ const FOURNISSEURS_ENERGIE = [
   { value: "edf", label: "EDF" },
   { value: "engie", label: "Engie" },
   { value: "totalenergies", label: "TotalEnergies" },
+  { value: "eni", label: "Eni" },
   { value: "ohm_energie", label: "Ohm Énergie" },
   { value: "ekwateur", label: "Ekwateur" },
   { value: "autre", label: "Autre" },
@@ -945,22 +947,20 @@ export default function FormulaireLogement() {
                 <Button
                   type="button"
                   variant="hero"
-                  size="sm"
+                  size="xl"
                   onClick={handleSubmit}
                   disabled={isSubmitting}
-                  className="px-3"
+                  className="flex-1"
                 >
                   {isSubmitting ? (
                     <>
-                      <Loader2 className="w-4 h-4 animate-spin mr-1" />
-                      <span className="hidden sm:inline">Enregistrement...</span>
+                      <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                      Enregistrement...
                     </>
                   ) : (
                     <>
-                      <Check className="w-4 h-4 mr-1" />
-                      <span className="hidden sm:inline">
-                        Je valide mes informations
-                      </span>
+                      <Check className="w-4 h-4 mr-2" />
+                      Je valide mes informations
                     </>
                   )}
                 </Button>
