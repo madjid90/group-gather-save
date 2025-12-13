@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -13,7 +13,7 @@ import {
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { PageTransition } from "@/components/PageTransition";
-import { CheckCircle2, Loader2, Zap, ArrowLeft, Building2 } from "lucide-react";
+import { CheckCircle2, Loader2, ArrowLeft, Building2, ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -30,6 +30,11 @@ const DemandePartenaire = () => {
     telephone: "",
     message: ""
   });
+
+  // Scroll to top on mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -89,275 +94,217 @@ ${formData.message || "Aucun message additionnel"}
 
   if (isSubmitted) {
     return (
-      <PageTransition>
-        <div className="min-h-screen bg-background flex flex-col">
-          {/* Header */}
-          <header className="fixed top-0 left-0 right-0 z-50 glass">
-            <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
-              <Link to="/" className="flex items-center gap-2 group" aria-label="Switchly - Retour à l'accueil">
-                <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center shadow-glow group-hover:scale-110 transition-transform">
-                  <Zap className="w-5 h-5 text-primary-foreground" aria-hidden="true" />
-                </div>
-                <span className="text-xl font-bold text-foreground hidden sm:block">Switchly</span>
-              </Link>
-              <Button asChild variant="ghost" size="sm" className="gap-2">
-                <Link to="/">
-                  <ArrowLeft className="w-4 h-4" />
-                  Retour à l'accueil
-                </Link>
-              </Button>
-            </nav>
-          </header>
+      <PageTransition className="min-h-screen py-6 md:py-16 bg-gradient-subtle">
+        <div className="container mx-auto px-4">
+          {/* Back button */}
+          <Link 
+            to="/" 
+            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Retour
+          </Link>
 
-          <div className="h-16" />
-
-          <main className="flex-1 flex items-center justify-center p-4">
+          <div className="max-w-md mx-auto text-center py-12">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
-              className="max-w-md w-full text-center"
             >
-              <div className="w-20 h-20 rounded-2xl bg-gradient-hero flex items-center justify-center mx-auto mb-6 shadow-glow">
-                <CheckCircle2 className="w-10 h-10 text-primary-foreground" />
+              <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mx-auto mb-3">
+                <CheckCircle2 className="w-6 h-6 text-secondary" />
               </div>
-              <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
+              <h1 className="text-[20px] sm:text-2xl font-bold text-foreground mb-2">
                 Merci pour votre demande
               </h1>
-              <p className="text-muted-foreground mb-8 text-base md:text-lg">
+              <p className="text-sm text-muted-foreground mb-4">
                 Notre équipe vous contactera rapidement.
               </p>
-              <Button asChild variant="outline" size="lg" className="gap-2">
+              <Button asChild variant="outline" size="lg" className="py-3 text-sm">
                 <Link to="/">
-                  <ArrowLeft className="w-4 h-4" />
                   Retour à l'accueil
                 </Link>
               </Button>
             </motion.div>
-          </main>
+          </div>
         </div>
       </PageTransition>
     );
   }
 
   return (
-    <PageTransition>
-      <div className="min-h-screen bg-background">
+    <PageTransition className="min-h-screen py-6 md:py-16 bg-gradient-subtle">
+      <div className="container mx-auto px-4">
+        {/* Back button */}
+        <Link 
+          to="/organiser-achat-groupe" 
+          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Retour
+        </Link>
+
         {/* Header */}
-        <header className="fixed top-0 left-0 right-0 z-50 glass">
-          <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
-            <Link to="/" className="flex items-center gap-2 group" aria-label="Switchly - Retour à l'accueil">
-              <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center shadow-glow group-hover:scale-110 transition-transform">
-                <Zap className="w-5 h-5 text-primary-foreground" aria-hidden="true" />
-              </div>
-              <span className="text-xl font-bold text-foreground hidden sm:block">Switchly</span>
-            </Link>
-            <Button asChild variant="ghost" size="sm" className="gap-2">
-              <Link to="/organiser-achat-groupe">
-                <ArrowLeft className="w-4 h-4" />
-                Retour
-              </Link>
-            </Button>
-          </nav>
-        </header>
-
-        <div className="h-16" />
-
-        {/* Hero section */}
-        <section className="relative py-12 md:py-16 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-subtle" />
-          
-          {/* Animated background elements */}
-          <div className="absolute inset-0 overflow-hidden">
-            <motion.div
-              className="absolute top-10 right-20 w-72 h-72 rounded-full bg-primary/5 blur-3xl"
-              animate={{ 
-                scale: [1, 1.2, 1],
-                opacity: [0.3, 0.5, 0.3]
-              }}
-              transition={{ duration: 8, repeat: Infinity }}
-            />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-6 md:mb-12"
+        >
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary mb-3">
+            <Building2 className="w-4 h-4" />
+            <span className="text-sm font-medium">Demande partenaire</span>
           </div>
+          <h1 className="text-[20px] sm:text-2xl font-bold text-foreground mb-1">
+            Demande d'organisation d'un achat groupé
+          </h1>
+          <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
+            Notre équipe vous contactera afin d'étudier la mise en place
+            d'un achat groupé pour votre territoire.
+          </p>
+        </motion.div>
 
-          <div className="container mx-auto px-4 relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="max-w-xl mx-auto text-center"
-            >
-              {/* Badge */}
-              <motion.div
-                initial={{ opacity: 0, y: -20, scale: 0.9 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                className="inline-flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-primary/10 text-primary border border-primary/20 mb-6"
-              >
-                <Building2 className="w-4 h-4" />
-                <span className="text-xs md:text-sm font-medium">Demande partenaire</span>
-              </motion.div>
+        {/* Form */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="max-w-xl mx-auto"
+        >
+          <div className="bg-card rounded-xl p-4 md:p-6 border border-border shadow-switchly-lg">
+            <form onSubmit={handleSubmit} className="space-y-3">
+              <div className="grid sm:grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <Label htmlFor="organisation" className="text-sm font-medium text-foreground">
+                    Collectivité / Organisation *
+                  </Label>
+                  <Input
+                    id="organisation"
+                    value={formData.organisation}
+                    onChange={(e) => handleChange("organisation", e.target.value)}
+                    placeholder="Ex : Mairie de Lyon"
+                    className="text-sm"
+                    required
+                  />
+                </div>
 
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-4">
-                Demande d'organisation d'un{" "}
-                <span className="gradient-text">achat groupé</span>
-              </h1>
-              <p className="text-muted-foreground text-base md:text-lg">
-                Merci de compléter ce formulaire.
-                Notre équipe vous contactera afin d'étudier la mise en place
-                d'un achat groupé pour votre territoire.
-              </p>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Form section */}
-        <main className="py-8 md:py-12">
-          <div className="container mx-auto px-4">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="max-w-xl mx-auto"
-            >
-              <div className="bg-card rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-switchly-lg border border-border">
-                <form onSubmit={handleSubmit} className="space-y-5 md:space-y-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="organisation" className="text-sm font-medium">
-                      Nom de la collectivité / organisation *
-                    </Label>
-                    <Input
-                      id="organisation"
-                      value={formData.organisation}
-                      onChange={(e) => handleChange("organisation", e.target.value)}
-                      placeholder="Ex : Mairie de Lyon"
-                      className="h-12 rounded-xl"
-                      required
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="type" className="text-sm font-medium">
-                      Type d'organisation *
-                    </Label>
-                    <Select
-                      value={formData.type}
-                      onValueChange={(value) => handleChange("type", value)}
-                    >
-                      <SelectTrigger className="h-12 rounded-xl">
-                        <SelectValue placeholder="Sélectionner un type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="mairie">Mairie</SelectItem>
-                        <SelectItem value="collectivite">Collectivité</SelectItem>
-                        <SelectItem value="association">Association</SelectItem>
-                        <SelectItem value="partenaire">Partenaire privé</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="territoire" className="text-sm font-medium">
-                      Ville ou territoire concerné *
-                    </Label>
-                    <Input
-                      id="territoire"
-                      value={formData.territoire}
-                      onChange={(e) => handleChange("territoire", e.target.value)}
-                      placeholder="Ex : Lyon et métropole"
-                      className="h-12 rounded-xl"
-                      required
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="contact" className="text-sm font-medium">
-                      Nom du contact *
-                    </Label>
-                    <Input
-                      id="contact"
-                      value={formData.contact}
-                      onChange={(e) => handleChange("contact", e.target.value)}
-                      placeholder="Prénom et nom"
-                      className="h-12 rounded-xl"
-                      required
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="email" className="text-sm font-medium">
-                      Adresse email *
-                    </Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => handleChange("email", e.target.value)}
-                      placeholder="contact@mairie.fr"
-                      className="h-12 rounded-xl"
-                      required
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="telephone" className="text-sm font-medium">
-                      Numéro de téléphone *
-                    </Label>
-                    <Input
-                      id="telephone"
-                      type="tel"
-                      value={formData.telephone}
-                      onChange={(e) => handleChange("telephone", e.target.value)}
-                      placeholder="01 23 45 67 89"
-                      className="h-12 rounded-xl"
-                      required
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="message" className="text-sm font-medium">
-                      Message (optionnel)
-                    </Label>
-                    <Textarea
-                      id="message"
-                      value={formData.message}
-                      onChange={(e) => handleChange("message", e.target.value)}
-                      placeholder="Précisions sur votre projet..."
-                      rows={4}
-                      className="rounded-xl resize-none"
-                    />
-                  </div>
-
-                  <Button 
-                    type="submit" 
-                    variant="hero"
-                    size="xl" 
-                    className="w-full py-6 text-base md:text-lg"
-                    disabled={isSubmitting}
+                <div className="space-y-1.5">
+                  <Label htmlFor="type" className="text-sm font-medium text-foreground">
+                    Type d'organisation *
+                  </Label>
+                  <Select
+                    value={formData.type}
+                    onValueChange={(value) => handleChange("type", value)}
                   >
-                    {isSubmitting ? (
-                      <>
-                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                        Envoi en cours...
-                      </>
-                    ) : (
-                      "Envoyer ma demande"
-                    )}
-                  </Button>
-                </form>
+                    <SelectTrigger className="text-sm">
+                      <SelectValue placeholder="Sélectionner" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="mairie">Mairie</SelectItem>
+                      <SelectItem value="collectivite">Collectivité</SelectItem>
+                      <SelectItem value="association">Association</SelectItem>
+                      <SelectItem value="partenaire">Partenaire privé</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
-            </motion.div>
-          </div>
-        </main>
 
-        {/* Footer simple */}
-        <footer className="border-t border-border py-8 bg-card">
-          <div className="container mx-auto px-4 text-center">
-            <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
-              <ArrowLeft className="w-4 h-4" />
-              Retour à l'accueil
-            </Link>
+              <div className="space-y-1.5">
+                <Label htmlFor="territoire" className="text-sm font-medium text-foreground">
+                  Ville ou territoire concerné *
+                </Label>
+                <Input
+                  id="territoire"
+                  value={formData.territoire}
+                  onChange={(e) => handleChange("territoire", e.target.value)}
+                  placeholder="Ex : Lyon et métropole"
+                  className="text-sm"
+                  required
+                />
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <Label htmlFor="contact" className="text-sm font-medium text-foreground">
+                    Nom du contact *
+                  </Label>
+                  <Input
+                    id="contact"
+                    value={formData.contact}
+                    onChange={(e) => handleChange("contact", e.target.value)}
+                    placeholder="Prénom et nom"
+                    className="text-sm"
+                    required
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="telephone" className="text-sm font-medium text-foreground">
+                    Téléphone *
+                  </Label>
+                  <Input
+                    id="telephone"
+                    type="tel"
+                    value={formData.telephone}
+                    onChange={(e) => handleChange("telephone", e.target.value)}
+                    placeholder="01 23 45 67 89"
+                    className="text-sm"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="email" className="text-sm font-medium text-foreground">
+                  Adresse email *
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => handleChange("email", e.target.value)}
+                  placeholder="contact@mairie.fr"
+                  className="text-sm"
+                  required
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="message" className="text-sm font-medium text-foreground">
+                  Message (optionnel)
+                </Label>
+                <Textarea
+                  id="message"
+                  value={formData.message}
+                  onChange={(e) => handleChange("message", e.target.value)}
+                  placeholder="Précisions sur votre projet..."
+                  rows={3}
+                  className="text-sm resize-none"
+                />
+              </div>
+
+              <Button 
+                type="submit" 
+                variant="hero"
+                size="lg" 
+                className="w-full py-3 text-sm"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Envoi en cours...
+                  </>
+                ) : (
+                  <>
+                    Envoyer ma demande
+                    <ArrowRight className="w-5 h-5 ml-2" />
+                  </>
+                )}
+              </Button>
+            </form>
           </div>
-        </footer>
+        </motion.div>
       </div>
     </PageTransition>
   );
