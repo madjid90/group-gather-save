@@ -922,6 +922,7 @@ export default function FormulaireLogement() {
       {/* Bottom navigation */}
       <div className="sticky bottom-0 bg-background/95 backdrop-blur border-t border-border">
         <div className="max-w-lg mx-auto px-4 py-3 sm:py-4">
+          {/* Navigation row */}
           <div className="flex justify-between items-center gap-2 mb-2">
             <Button
               type="button"
@@ -941,31 +942,31 @@ export default function FormulaireLogement() {
             >
               Quitter
             </Link>
-
-            {isLastQuestion &&
-              currentQuestion.type !== "checkbox" && (
-                <Button
-                  type="button"
-                  variant="hero"
-                  size="xl"
-                  onClick={handleSubmit}
-                  disabled={isSubmitting}
-                  className="flex-1"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                      Enregistrement...
-                    </>
-                  ) : (
-                    <>
-                      <Check className="w-4 h-4 mr-2" />
-                      Je valide mes informations
-                    </>
-                  )}
-                </Button>
-              )}
           </div>
+
+          {/* Validation button - full width on last question */}
+          {isLastQuestion && currentQuestion.type !== "checkbox" && (
+            <Button
+              type="button"
+              variant="hero"
+              size="xl"
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+              className="w-full mb-2"
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                  Enregistrement...
+                </>
+              ) : (
+                <>
+                  <Check className="w-4 h-4 mr-2" />
+                  Je valide mes informations
+                </>
+              )}
+            </Button>
+          )}
 
           {/* Security message for final step */}
           {isLastQuestion && (
