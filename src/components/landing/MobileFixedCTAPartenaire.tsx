@@ -30,7 +30,7 @@ export function MobileFixedCTAPartenaire() {
             asChild
           >
             <Link to="/demande-partenaire">
-              Demander un achat groupé
+              Organiser un achat groupé
             </Link>
           </Button>
         </motion.div>
