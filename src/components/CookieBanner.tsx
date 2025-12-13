@@ -59,19 +59,19 @@ export function CookieBanner() {
                   </h3>
                   <button
                     onClick={handleClose}
-                    className="p-1 rounded-lg hover:bg-primary/10 transition-colors flex-shrink-0"
+                    className="p-1 rounded-lg hover:bg-muted transition-colors flex-shrink-0"
                     aria-label="Fermer le bandeau cookies"
                   >
                     <X className="w-4 h-4 text-foreground" />
                   </button>
                 </div>
                 
-                <p className="text-xs md:text-sm text-foreground/80 mb-4 leading-relaxed">
+                <p className="text-xs md:text-sm text-foreground mb-4 leading-relaxed">
                   Nous utilisons des cookies essentiels pour le fonctionnement du site. 
                   Aucun cookie publicitaire n'est utilisé.{" "}
                   <Link 
                     to="/politique-confidentialite" 
-                    className="text-primary font-semibold hover:underline"
+                    className="text-foreground font-bold underline hover:no-underline"
                   >
                     En savoir plus
                   </Link>
@@ -82,7 +82,7 @@ export function CookieBanner() {
                   <Button
                     onClick={handleAccept}
                     size="sm"
-                    className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
+                    className="w-full sm:w-auto bg-foreground hover:bg-foreground/90 text-background font-semibold"
                   >
                     Accepter
                   </Button>
@@ -90,16 +90,10 @@ export function CookieBanner() {
                     onClick={handleReject}
                     variant="outline"
                     size="sm"
-                    className="w-full sm:w-auto border-foreground/30 text-foreground hover:bg-foreground/10 font-semibold"
+                    className="w-full sm:w-auto border-foreground text-foreground hover:bg-foreground/10 font-semibold"
                   >
                     Refuser
                   </Button>
-                  <Link 
-                    to="/politique-rgpd"
-                    className="text-xs text-foreground/70 hover:text-foreground transition-colors self-center mt-1 sm:mt-0 sm:ml-2 font-medium"
-                  >
-                    Politique RGPD
-                  </Link>
                 </div>
               </div>
             </div>
