@@ -58,13 +58,9 @@ export function HeroSection() {
             <h1 className="text-[26px] leading-tight sm:text-3xl md:text-5xl lg:text-6xl font-bold text-foreground md:leading-tight">
               Rejoignez notre achat groupé et économisez{" "}
               <span className="gradient-text">jusqu'à 30 %</span>{" "}
-              <motion.span
-                className="bg-gradient-to-r from-primary via-secondary to-primary bg-[length:200%_auto] bg-clip-text text-transparent"
-                animate={{ backgroundPosition: ["0% center", "200% center"] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-              >
+              <span className="gradient-text">
                 sur vos factures d'électricité et d'internet.
-              </motion.span>
+              </span>
             </h1>
 
             {/* Subtitle - slightly larger on mobile for readability */}
