@@ -5,6 +5,7 @@ import { PartnersSection } from "@/components/landing/PartnersSection";
 import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
 import { FAQSection } from "@/components/landing/FAQSection";
 import { CTASection } from "@/components/landing/CTASection";
+import { CollectivitesSection } from "@/components/landing/CollectivitesSection";
 import { MobileFixedCTA } from "@/components/landing/MobileFixedCTA";
 import { PageTransition } from "@/components/PageTransition";
 
@@ -31,6 +32,9 @@ const Index = () => {
         </div>
         <div className="order-6 md:order-none">
           <CTASection />
+        </div>
+        <div className="order-7 md:order-none">
+          <CollectivitesSection />
         </div>
       </div>
       {/* Fixed CTA for mobile only */}
