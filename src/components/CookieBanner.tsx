@@ -43,7 +43,7 @@ export function CookieBanner() {
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
           className="fixed bottom-0 left-0 right-0 z-50 p-4 md:p-6"
         >
-          <div className="max-w-4xl mx-auto bg-card border border-border rounded-2xl shadow-lg p-4 md:p-6">
+          <div className="max-w-4xl mx-auto bg-background border border-border rounded-2xl shadow-switchly p-4 md:p-6">
             <div className="flex items-start gap-4">
               {/* Icon */}
               <div className="hidden sm:flex w-10 h-10 rounded-xl bg-primary/10 items-center justify-center flex-shrink-0">
@@ -53,15 +53,16 @@ export function CookieBanner() {
               {/* Content */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between gap-2 mb-2">
-                  <h3 className="font-semibold text-foreground text-sm md:text-base">
-                    🍪 Nous respectons votre vie privée
+                  <h3 className="font-semibold text-foreground text-sm md:text-base flex items-center gap-2">
+                    <Cookie className="w-4 h-4 text-primary sm:hidden" />
+                    Nous respectons votre vie privée
                   </h3>
                   <button
                     onClick={handleClose}
-                    className="p-1 rounded-lg hover:bg-muted transition-colors flex-shrink-0"
+                    className="p-1 rounded-lg hover:bg-primary/10 transition-colors flex-shrink-0"
                     aria-label="Fermer"
                   >
-                    <X className="w-4 h-4 text-muted-foreground" />
+                    <X className="w-4 h-4 text-primary" />
                   </button>
                 </div>
                 
@@ -70,7 +71,7 @@ export function CookieBanner() {
                   Aucun cookie publicitaire n'est utilisé.{" "}
                   <Link 
                     to="/politique-confidentialite" 
-                    className="text-primary hover:underline"
+                    className="text-primary font-medium hover:underline"
                   >
                     En savoir plus
                   </Link>
@@ -81,7 +82,7 @@ export function CookieBanner() {
                   <Button
                     onClick={handleAccept}
                     size="sm"
-                    className="w-full sm:w-auto"
+                    className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground"
                   >
                     Accepter
                   </Button>
@@ -89,13 +90,13 @@ export function CookieBanner() {
                     onClick={handleReject}
                     variant="outline"
                     size="sm"
-                    className="w-full sm:w-auto"
+                    className="w-full sm:w-auto border-primary/30 text-primary hover:bg-primary/10"
                   >
                     Refuser
                   </Button>
                   <Link 
                     to="/politique-rgpd"
-                    className="text-xs text-muted-foreground hover:text-foreground transition-colors self-center mt-1 sm:mt-0 sm:ml-2"
+                    className="text-xs text-primary/70 hover:text-primary transition-colors self-center mt-1 sm:mt-0 sm:ml-2"
                   >
                     Politique RGPD
                   </Link>
