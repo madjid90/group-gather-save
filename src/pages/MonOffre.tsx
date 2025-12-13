@@ -4,12 +4,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { CheckCircle, XCircle, Zap, TrendingDown, Loader2, ArrowLeft, Home } from "lucide-react";
+import { CheckCircle, XCircle, Zap, TrendingDown, Loader2, ArrowLeft, Home, Clock } from "lucide-react";
 import { toast } from "sonner";
 
 interface UserOffer {
   id: string;
-  user_id: string;
   offre_nom: string | null;
   fournisseur_nom: string | null;
   prix_kwh: number | null;
@@ -18,12 +17,7 @@ interface UserOffer {
   economie_estimee_annuelle: number | null;
   commentaire_fournisseur: string | null;
   statut: string | null;
-  offer_token: string | null;
-}
-
-interface Profile {
-  prenom: string;
-  nom: string;
+  is_expired: boolean;
 }
 
 export default function MonOffre() {
@@ -31,7 +25,6 @@ export default function MonOffre() {
   const navigate = useNavigate();
 
   const [offer, setOffer] = useState<UserOffer | null>(null);
-  const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -48,31 +41,27 @@ export default function MonOffre() {
 
   const fetchOffer = async () => {
     try {
+      // Use secure function that doesn't expose user_id or client_id
       const { data: offerData, error: offerError } = await supabase
-        .from("user_offers")
-        .select("*")
-        .eq("offer_token", token)
-        .maybeSingle();
+        .rpc("get_offer_by_token", { p_token: token });
 
       if (offerError) throw offerError;
 
-      if (!offerData) {
+      if (!offerData || offerData.length === 0) {
         setError("Offre non trouvée ou lien expiré.");
         setLoading(false);
         return;
       }
 
-      setOffer(offerData);
-
-      const { data: profileData } = await supabase
-        .from("profiles")
-        .select("prenom, nom")
-        .eq("id", offerData.user_id)
-        .single();
-
-      if (profileData) {
-        setProfile(profileData);
+      const offerRecord = offerData[0];
+      
+      if (offerRecord.is_expired) {
+        setError("Ce lien a expiré. Veuillez contacter le support pour obtenir un nouveau lien.");
+        setLoading(false);
+        return;
       }
+
+      setOffer(offerRecord);
     } catch (err) {
       console.error("Error fetching offer:", err);
       setError("Erreur lors du chargement de l'offre.");
@@ -82,33 +71,19 @@ export default function MonOffre() {
   };
 
   const handleAccept = async () => {
-    if (!offer) return;
+    if (!offer || !token) return;
     setSubmitting(true);
 
     try {
-      const { error } = await supabase
-        .from("user_offers")
-        .update({ statut: "acceptee" })
-        .eq("id", offer.id);
+      // Use secure function to update status
+      const { data: success, error } = await supabase
+        .rpc("update_offer_status_by_token", { p_token: token, p_statut: "acceptee" });
 
       if (error) throw error;
-
-      await supabase
-        .from("profiles")
-        .update({ statut: "souscription" })
-        .eq("id", offer.user_id);
-
-      await supabase
-        .from("campaign_users")
-        .update({ statut_dans_campagne: "offre_acceptee" })
-        .eq("user_id", offer.user_id);
-
-      try {
-        await supabase.functions.invoke("send-acceptance-sms", {
-          body: { userId: offer.user_id },
-        });
-      } catch (smsError) {
-        console.log("Acceptance SMS not sent:", smsError);
+      
+      if (!success) {
+        toast.error("Ce lien a expiré ou n'est plus valide.");
+        return;
       }
 
       toast.success("Merci ! Votre acceptation a été enregistrée.");
@@ -122,28 +97,19 @@ export default function MonOffre() {
   };
 
   const handleRefuse = async () => {
-    if (!offer) return;
+    if (!offer || !token) return;
     setSubmitting(true);
 
     try {
-      const { error } = await supabase
-        .from("user_offers")
-        .update({ statut: "refusee" })
-        .eq("id", offer.id);
+      // Use secure function to update status
+      const { data: success, error } = await supabase
+        .rpc("update_offer_status_by_token", { p_token: token, p_statut: "refusee" });
 
       if (error) throw error;
-
-      await supabase
-        .from("profiles")
-        .update({ statut: "inscrit" })
-        .eq("id", offer.user_id);
-
-      try {
-        await supabase.functions.invoke("send-refusal-sms", {
-          body: { userId: offer.user_id },
-        });
-      } catch (smsError) {
-        console.log("Refusal SMS not sent:", smsError);
+      
+      if (!success) {
+        toast.error("Ce lien a expiré ou n'est plus valide.");
+        return;
       }
 
       toast.success("Votre réponse a été enregistrée.");
@@ -172,9 +138,21 @@ export default function MonOffre() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-subtle px-4">
         <Card className="max-w-md w-full rounded-xl border border-border shadow-switchly">
           <CardContent className="pt-6 text-center">
-            <XCircle className="h-10 w-10 mx-auto text-destructive mb-3" />
-            <h2 className="text-lg font-semibold mb-2 text-foreground">Oups !</h2>
+            {error.includes("expiré") ? (
+              <Clock className="h-10 w-10 mx-auto text-amber-500 mb-3" />
+            ) : (
+              <XCircle className="h-10 w-10 mx-auto text-destructive mb-3" />
+            )}
+            <h2 className="text-lg font-semibold mb-2 text-foreground">
+              {error.includes("expiré") ? "Lien expiré" : "Oups !"}
+            </h2>
             <p className="text-sm text-muted-foreground">{error}</p>
+            <Link to="/" className="inline-block mt-4">
+              <Button variant="outline" size="sm">
+                <Home className="h-4 w-4 mr-2" />
+                Retour à l'accueil
+              </Button>
+            </Link>
           </CardContent>
         </Card>
       </div>
@@ -190,17 +168,11 @@ export default function MonOffre() {
       {/* Fixed Navigation */}
       <div className="fixed top-4 left-4 right-4 z-50 flex items-center justify-between">
         <Link 
-          to="/dashboard-client" 
-          className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-card/80 backdrop-blur border border-border text-sm text-muted-foreground hover:text-foreground hover:bg-card transition-all shadow-sm"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span className="hidden sm:inline">Mon espace</span>
-        </Link>
-        <Link 
           to="/" 
           className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-card/80 backdrop-blur border border-border text-sm text-muted-foreground hover:text-foreground hover:bg-card transition-all shadow-sm"
         >
-          <Home className="w-4 h-4" />
+          <ArrowLeft className="w-4 h-4" />
+          <span className="hidden sm:inline">Accueil</span>
         </Link>
       </div>
 
@@ -220,11 +192,6 @@ export default function MonOffre() {
           <h1 className="text-[20px] sm:text-2xl font-bold text-foreground mb-1">
             Votre réduction groupée est prête 🎉
           </h1>
-          {profile && (
-            <p className="text-sm text-muted-foreground">
-              Bonjour {profile.prenom} {profile.nom}
-            </p>
-          )}
         </div>
 
         {/* Main Offer Card */}
