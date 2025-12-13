@@ -710,6 +710,7 @@ export type Database = {
           offre_nom: string | null
           prix_kwh: number | null
           statut: string | null
+          token_expires_at: string | null
           updated_at: string | null
           user_id: string
         }
@@ -728,6 +729,7 @@ export type Database = {
           offre_nom?: string | null
           prix_kwh?: number | null
           statut?: string | null
+          token_expires_at?: string | null
           updated_at?: string | null
           user_id: string
         }
@@ -746,6 +748,7 @@ export type Database = {
           offre_nom?: string | null
           prix_kwh?: number | null
           statut?: string | null
+          token_expires_at?: string | null
           updated_at?: string | null
           user_id?: string
         }
@@ -789,6 +792,21 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_offer_by_token: {
+        Args: { p_token: string }
+        Returns: {
+          abonnement_mensuel: number
+          commentaire_fournisseur: string
+          economie_estimee_annuelle: number
+          economie_estimee_mensuelle: number
+          fournisseur_nom: string
+          id: string
+          is_expired: boolean
+          offre_nom: string
+          prix_kwh: number
+          statut: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -818,6 +836,10 @@ export type Database = {
           p_type_connexion: string
           p_type_logement: string
         }
+        Returns: boolean
+      }
+      update_offer_status_by_token: {
+        Args: { p_statut: string; p_token: string }
         Returns: boolean
       }
       validate_housing_token: {
