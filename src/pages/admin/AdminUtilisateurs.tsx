@@ -25,6 +25,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
@@ -36,7 +47,10 @@ import {
   ChevronRight, 
   AlertTriangle, 
   Merge,
-  Users
+  Users,
+  Trash2,
+  Edit,
+  Home
 } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -44,6 +58,7 @@ import { toast } from "sonner";
 import type { Database } from "@/integrations/supabase/types";
 
 type Profile = Database["public"]["Tables"]["profiles"]["Row"];
+type HousingProfile = Database["public"]["Tables"]["housing_profiles"]["Row"];
 
 interface DuplicateGroup {
   telephone: string;
@@ -61,13 +76,20 @@ export default function AdminUtilisateurs() {
   const [filterStatus, setFilterStatus] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("date");
   const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
+  const [housingProfile, setHousingProfile] = useState<HousingProfile | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDuplicateDialogOpen, setIsDuplicateDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [profileToDelete, setProfileToDelete] = useState<Profile | null>(null);
   const [selectedDuplicate, setSelectedDuplicate] = useState<DuplicateGroup | null>(null);
+  const [editMode, setEditMode] = useState(false);
+  const [editedProfile, setEditedProfile] = useState<Partial<Profile>>({});
+  const [editedHousing, setEditedHousing] = useState<Partial<HousingProfile>>({});
   const [editedNotes, setEditedNotes] = useState("");
   const [editedInclusion, setEditedInclusion] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [merging, setMerging] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     fetchProfiles();
@@ -166,30 +188,138 @@ export default function AdminUtilisateurs() {
     }
   };
 
-  const openProfileDialog = (profile: Profile) => {
+  const openProfileDialog = async (profile: Profile) => {
     setSelectedProfile(profile);
+    setEditedProfile({
+      prenom: profile.prenom,
+      nom: profile.nom,
+      telephone: profile.telephone,
+      email: profile.email,
+      ville: profile.ville,
+      code_postal: profile.code_postal,
+      statut: profile.statut,
+      contrats: profile.contrats,
+      fournisseur_energie_actuel: profile.fournisseur_energie_actuel,
+      fournisseur_internet_actuel: profile.fournisseur_internet_actuel,
+    });
     setEditedNotes(profile.notes_admin || "");
     setEditedInclusion(profile.inclusion_campagne ?? true);
+    setEditMode(false);
     setIsDialogOpen(true);
+
+    // Fetch housing profile
+    const { data: housing } = await supabase
+      .from("housing_profiles")
+      .select("*")
+      .eq("user_id", profile.id)
+      .maybeSingle();
+
+    setHousingProfile(housing);
+    if (housing) {
+      setEditedHousing({
+        type_logement: housing.type_logement,
+        surface: housing.surface,
+        nombre_occupants: housing.nombre_occupants,
+        isolation: housing.isolation,
+        mode_chauffage: housing.mode_chauffage,
+        chauffe_eau_electrique: housing.chauffe_eau_electrique,
+        fournisseur_electricite: housing.fournisseur_electricite,
+        option_tarifaire: housing.option_tarifaire,
+        puissance_compteur: housing.puissance_compteur,
+        montant_facture: housing.montant_facture,
+        type_connexion: housing.type_connexion,
+        fournisseur_internet: housing.fournisseur_internet,
+        prix_mensuel_internet: housing.prix_mensuel_internet,
+        satisfaction_internet: housing.satisfaction_internet,
+        eligible_fibre: housing.eligible_fibre,
+        temps_domicile: housing.temps_domicile,
+        equipements_energivores: housing.equipements_energivores,
+        recharge_vehicule_electrique: housing.recharge_vehicule_electrique,
+      });
+    }
   };
 
   const saveProfileChanges = async () => {
     if (!selectedProfile) return;
+    setSaving(true);
 
-    const { error } = await supabase
-      .from("profiles")
-      .update({
-        notes_admin: editedNotes,
-        inclusion_campagne: editedInclusion,
-      })
-      .eq("id", selectedProfile.id);
+    try {
+      // Update profile
+      const { error: profileError } = await supabase
+        .from("profiles")
+        .update({
+          ...editedProfile,
+          notes_admin: editedNotes,
+          inclusion_campagne: editedInclusion,
+        })
+        .eq("id", selectedProfile.id);
 
-    if (error) {
-      toast.error("Erreur lors de la sauvegarde");
-    } else {
+      if (profileError) throw profileError;
+
+      // Update housing profile if exists
+      if (housingProfile && editedHousing) {
+        const { error: housingError } = await supabase
+          .from("housing_profiles")
+          .update(editedHousing)
+          .eq("id", housingProfile.id);
+
+        if (housingError) throw housingError;
+      }
+
       toast.success("Modifications enregistrées");
       fetchProfiles();
+      setEditMode(false);
       setIsDialogOpen(false);
+    } catch (error) {
+      console.error("Error saving:", error);
+      toast.error("Erreur lors de la sauvegarde");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const confirmDeleteProfile = (profile: Profile) => {
+    setProfileToDelete(profile);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const deleteProfile = async () => {
+    if (!profileToDelete) return;
+
+    try {
+      // Delete housing profile first
+      await supabase
+        .from("housing_profiles")
+        .delete()
+        .eq("user_id", profileToDelete.id);
+
+      // Delete user offers
+      await supabase
+        .from("user_offers")
+        .delete()
+        .eq("user_id", profileToDelete.id);
+
+      // Delete campaign users
+      await supabase
+        .from("campaign_users")
+        .delete()
+        .eq("user_id", profileToDelete.id);
+
+      // Delete profile
+      const { error } = await supabase
+        .from("profiles")
+        .delete()
+        .eq("id", profileToDelete.id);
+
+      if (error) throw error;
+
+      toast.success("Profil supprimé");
+      setIsDeleteDialogOpen(false);
+      setIsDialogOpen(false);
+      fetchProfiles();
+    } catch (error) {
+      console.error("Error deleting profile:", error);
+      toast.error("Erreur lors de la suppression");
     }
   };
 
@@ -475,113 +605,523 @@ export default function AdminUtilisateurs() {
       )}
 
       {/* Profile Dialog */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="w-[95vw] max-w-lg max-h-[85vh] overflow-y-auto p-4 sm:p-6">
+      <Dialog open={isDialogOpen} onOpenChange={(open) => { setIsDialogOpen(open); if (!open) setEditMode(false); }}>
+        <DialogContent className="w-[95vw] max-w-2xl max-h-[90vh] overflow-y-auto p-4 sm:p-6">
           <DialogHeader>
-            <DialogTitle className="text-base sm:text-lg">
-              {selectedProfile?.prenom} {selectedProfile?.nom}
-            </DialogTitle>
+            <div className="flex items-center justify-between">
+              <DialogTitle className="text-base sm:text-lg">
+                {selectedProfile?.prenom} {selectedProfile?.nom}
+              </DialogTitle>
+              <div className="flex gap-2">
+                <Button
+                  variant={editMode ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setEditMode(!editMode)}
+                  className="h-8"
+                >
+                  <Edit className="h-3 w-3 mr-1" />
+                  {editMode ? "Annuler" : "Modifier"}
+                </Button>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() => selectedProfile && confirmDeleteProfile(selectedProfile)}
+                  className="h-8"
+                >
+                  <Trash2 className="h-3 w-3" />
+                </Button>
+              </div>
+            </div>
           </DialogHeader>
 
           {selectedProfile && (
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <Label className="text-xs text-muted-foreground">Téléphone</Label>
-                  <p className="text-sm font-medium">{selectedProfile.telephone || "-"}</p>
-                </div>
-                <div>
-                  <Label className="text-xs text-muted-foreground">Email</Label>
-                  <p className="text-sm font-medium truncate">{selectedProfile.email}</p>
-                </div>
-                <div>
-                  <Label className="text-xs text-muted-foreground">Ville</Label>
-                  <p className="text-sm font-medium">{selectedProfile.ville || "-"}</p>
-                </div>
-                <div>
-                  <Label className="text-xs text-muted-foreground">Code postal</Label>
-                  <p className="text-sm font-medium">{selectedProfile.code_postal || "-"}</p>
-                </div>
-                <div>
-                  <Label className="text-xs text-muted-foreground">Statut</Label>
-                  <div className="mt-0.5">{getStatusBadge(selectedProfile.statut)}</div>
-                </div>
-                <div>
-                  <Label className="text-xs text-muted-foreground">Formulaire</Label>
-                  <div className="mt-0.5">
-                    {selectedProfile.housing_form_completed ? (
-                      <Badge className="bg-green-500 text-white text-xs">Complété</Badge>
-                    ) : (
-                      <Badge variant="secondary" className="text-xs">En attente</Badge>
-                    )}
-                  </div>
-                </div>
-              </div>
+            <Tabs defaultValue="profil" className="w-full">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="profil" className="text-xs">Profil</TabsTrigger>
+                <TabsTrigger value="logement" className="text-xs" disabled={!housingProfile}>
+                  <Home className="h-3 w-3 mr-1" />
+                  Logement
+                </TabsTrigger>
+              </TabsList>
 
-              <div className="border-t pt-3">
-                <h3 className="text-sm font-semibold mb-2">Contrat</h3>
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <Label className="text-xs text-muted-foreground">Type</Label>
-                    <p className="text-sm font-medium">
-                      {selectedProfile.contrats === "electricite"
-                        ? "Énergie"
-                        : selectedProfile.contrats === "internet"
-                        ? "Internet"
-                        : "Les deux"}
-                    </p>
-                  </div>
-                  <div>
-                    <Label className="text-xs text-muted-foreground">Énergie actuel</Label>
-                    <p className="text-sm font-medium">{selectedProfile.fournisseur_energie_actuel || "-"}</p>
-                  </div>
-                  <div>
-                    <Label className="text-xs text-muted-foreground">Internet actuel</Label>
-                    <p className="text-sm font-medium">{selectedProfile.fournisseur_internet_actuel || "-"}</p>
-                  </div>
-                  <div>
-                    <Label className="text-xs text-muted-foreground">Inscription</Label>
-                    <p className="text-sm font-medium">
-                      {selectedProfile.created_at
-                        ? format(new Date(selectedProfile.created_at), "dd/MM/yy", { locale: fr })
-                        : "-"}
-                    </p>
+              <TabsContent value="profil" className="space-y-4 mt-4">
+                {editMode ? (
+                  <>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <Label className="text-xs">Prénom</Label>
+                        <Input
+                          value={editedProfile.prenom || ""}
+                          onChange={(e) => setEditedProfile({ ...editedProfile, prenom: e.target.value })}
+                          className="text-sm h-9"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs">Nom</Label>
+                        <Input
+                          value={editedProfile.nom || ""}
+                          onChange={(e) => setEditedProfile({ ...editedProfile, nom: e.target.value })}
+                          className="text-sm h-9"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs">Téléphone</Label>
+                        <Input
+                          value={editedProfile.telephone || ""}
+                          onChange={(e) => setEditedProfile({ ...editedProfile, telephone: e.target.value })}
+                          className="text-sm h-9"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs">Email</Label>
+                        <Input
+                          value={editedProfile.email || ""}
+                          onChange={(e) => setEditedProfile({ ...editedProfile, email: e.target.value })}
+                          className="text-sm h-9"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs">Ville</Label>
+                        <Input
+                          value={editedProfile.ville || ""}
+                          onChange={(e) => setEditedProfile({ ...editedProfile, ville: e.target.value })}
+                          className="text-sm h-9"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs">Code postal</Label>
+                        <Input
+                          value={editedProfile.code_postal || ""}
+                          onChange={(e) => setEditedProfile({ ...editedProfile, code_postal: e.target.value })}
+                          className="text-sm h-9"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs">Statut</Label>
+                        <Select 
+                          value={editedProfile.statut || "inscrit"} 
+                          onValueChange={(val) => setEditedProfile({ ...editedProfile, statut: val as Profile["statut"] })}
+                        >
+                          <SelectTrigger className="text-xs h-9">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="inscrit">Inscrit</SelectItem>
+                            <SelectItem value="offre_envoyee">Offre envoyée</SelectItem>
+                            <SelectItem value="clic">Clic</SelectItem>
+                            <SelectItem value="souscription">Souscription</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div>
+                        <Label className="text-xs">Contrats</Label>
+                        <Select 
+                          value={editedProfile.contrats || "les_deux"} 
+                          onValueChange={(val) => setEditedProfile({ ...editedProfile, contrats: val as Profile["contrats"] })}
+                        >
+                          <SelectTrigger className="text-xs h-9">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="electricite">Énergie</SelectItem>
+                            <SelectItem value="internet">Internet</SelectItem>
+                            <SelectItem value="les_deux">Les deux</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div>
+                        <Label className="text-xs">Fournisseur énergie</Label>
+                        <Input
+                          value={editedProfile.fournisseur_energie_actuel || ""}
+                          onChange={(e) => setEditedProfile({ ...editedProfile, fournisseur_energie_actuel: e.target.value })}
+                          className="text-sm h-9"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs">Fournisseur internet</Label>
+                        <Input
+                          value={editedProfile.fournisseur_internet_actuel || ""}
+                          onChange={(e) => setEditedProfile({ ...editedProfile, fournisseur_internet_actuel: e.target.value })}
+                          className="text-sm h-9"
+                        />
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <Label className="text-xs text-muted-foreground">Téléphone</Label>
+                        <p className="text-sm font-medium">{selectedProfile.telephone || "-"}</p>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-muted-foreground">Email</Label>
+                        <p className="text-sm font-medium truncate">{selectedProfile.email}</p>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-muted-foreground">Ville</Label>
+                        <p className="text-sm font-medium">{selectedProfile.ville || "-"}</p>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-muted-foreground">Code postal</Label>
+                        <p className="text-sm font-medium">{selectedProfile.code_postal || "-"}</p>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-muted-foreground">Statut</Label>
+                        <div className="mt-0.5">{getStatusBadge(selectedProfile.statut)}</div>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-muted-foreground">Formulaire</Label>
+                        <div className="mt-0.5">
+                          {selectedProfile.housing_form_completed ? (
+                            <Badge className="bg-green-500 text-white text-xs">Complété</Badge>
+                          ) : (
+                            <Badge variant="secondary" className="text-xs">En attente</Badge>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="border-t pt-3">
+                      <h3 className="text-sm font-semibold mb-2">Contrat</h3>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <Label className="text-xs text-muted-foreground">Type</Label>
+                          <p className="text-sm font-medium">
+                            {selectedProfile.contrats === "electricite"
+                              ? "Énergie"
+                              : selectedProfile.contrats === "internet"
+                              ? "Internet"
+                              : "Les deux"}
+                          </p>
+                        </div>
+                        <div>
+                          <Label className="text-xs text-muted-foreground">Énergie actuel</Label>
+                          <p className="text-sm font-medium">{selectedProfile.fournisseur_energie_actuel || "-"}</p>
+                        </div>
+                        <div>
+                          <Label className="text-xs text-muted-foreground">Internet actuel</Label>
+                          <p className="text-sm font-medium">{selectedProfile.fournisseur_internet_actuel || "-"}</p>
+                        </div>
+                        <div>
+                          <Label className="text-xs text-muted-foreground">Inscription</Label>
+                          <p className="text-sm font-medium">
+                            {selectedProfile.created_at
+                              ? format(new Date(selectedProfile.created_at), "dd/MM/yy", { locale: fr })
+                              : "-"}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                <div className="border-t pt-3">
+                  <h3 className="text-sm font-semibold mb-2">Admin</h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="inclusion" className="text-sm">Inclusion campagne</Label>
+                      <Switch
+                        id="inclusion"
+                        checked={editedInclusion}
+                        onCheckedChange={setEditedInclusion}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="notes" className="text-sm">Notes</Label>
+                      <Textarea
+                        id="notes"
+                        value={editedNotes}
+                        onChange={(e) => setEditedNotes(e.target.value)}
+                        placeholder="Notes internes..."
+                        rows={2}
+                        className="text-sm mt-1"
+                      />
+                    </div>
+                    <Button onClick={saveProfileChanges} size="sm" className="w-full" disabled={saving}>
+                      <Save className="h-3 w-3 mr-1" />
+                      {saving ? "Enregistrement..." : "Enregistrer"}
+                    </Button>
                   </div>
                 </div>
-              </div>
+              </TabsContent>
 
-              <div className="border-t pt-3">
-                <h3 className="text-sm font-semibold mb-2">Admin</h3>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="inclusion" className="text-sm">Inclusion campagne</Label>
-                    <Switch
-                      id="inclusion"
-                      checked={editedInclusion}
-                      onCheckedChange={setEditedInclusion}
-                    />
+              <TabsContent value="logement" className="space-y-4 mt-4">
+                {housingProfile ? (
+                  editMode ? (
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <Label className="text-xs">Type de logement</Label>
+                        <Select 
+                          value={editedHousing.type_logement || ""} 
+                          onValueChange={(val) => setEditedHousing({ ...editedHousing, type_logement: val })}
+                        >
+                          <SelectTrigger className="text-xs h-9">
+                            <SelectValue placeholder="Sélectionner" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="maison">Maison</SelectItem>
+                            <SelectItem value="appartement">Appartement</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div>
+                        <Label className="text-xs">Surface (m²)</Label>
+                        <Input
+                          type="number"
+                          value={editedHousing.surface || ""}
+                          onChange={(e) => setEditedHousing({ ...editedHousing, surface: parseInt(e.target.value) || null })}
+                          className="text-sm h-9"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs">Nb occupants</Label>
+                        <Input
+                          type="number"
+                          value={editedHousing.nombre_occupants || ""}
+                          onChange={(e) => setEditedHousing({ ...editedHousing, nombre_occupants: parseInt(e.target.value) || null })}
+                          className="text-sm h-9"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs">Isolation</Label>
+                        <Select 
+                          value={editedHousing.isolation || ""} 
+                          onValueChange={(val) => setEditedHousing({ ...editedHousing, isolation: val })}
+                        >
+                          <SelectTrigger className="text-xs h-9">
+                            <SelectValue placeholder="Sélectionner" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="bonne">Bonne</SelectItem>
+                            <SelectItem value="moyenne">Moyenne</SelectItem>
+                            <SelectItem value="mauvaise">Mauvaise</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div>
+                        <Label className="text-xs">Mode de chauffage</Label>
+                        <Select 
+                          value={editedHousing.mode_chauffage || ""} 
+                          onValueChange={(val) => setEditedHousing({ ...editedHousing, mode_chauffage: val })}
+                        >
+                          <SelectTrigger className="text-xs h-9">
+                            <SelectValue placeholder="Sélectionner" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="electrique">Électrique</SelectItem>
+                            <SelectItem value="gaz">Gaz</SelectItem>
+                            <SelectItem value="fioul">Fioul</SelectItem>
+                            <SelectItem value="pompe_chaleur">Pompe à chaleur</SelectItem>
+                            <SelectItem value="bois">Bois</SelectItem>
+                            <SelectItem value="collectif">Chauffage collectif</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Label className="text-xs">Chauffe-eau électrique</Label>
+                        <Switch
+                          checked={editedHousing.chauffe_eau_electrique || false}
+                          onCheckedChange={(val) => setEditedHousing({ ...editedHousing, chauffe_eau_electrique: val })}
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs">Fournisseur électricité</Label>
+                        <Input
+                          value={editedHousing.fournisseur_electricite || ""}
+                          onChange={(e) => setEditedHousing({ ...editedHousing, fournisseur_electricite: e.target.value })}
+                          className="text-sm h-9"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs">Option tarifaire</Label>
+                        <Select 
+                          value={editedHousing.option_tarifaire || ""} 
+                          onValueChange={(val) => setEditedHousing({ ...editedHousing, option_tarifaire: val })}
+                        >
+                          <SelectTrigger className="text-xs h-9">
+                            <SelectValue placeholder="Sélectionner" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="base">Base</SelectItem>
+                            <SelectItem value="heures_creuses">Heures creuses</SelectItem>
+                            <SelectItem value="tempo">Tempo</SelectItem>
+                            <SelectItem value="ejp">EJP</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div>
+                        <Label className="text-xs">Puissance (kVA)</Label>
+                        <Input
+                          value={editedHousing.puissance_compteur || ""}
+                          onChange={(e) => setEditedHousing({ ...editedHousing, puissance_compteur: e.target.value })}
+                          className="text-sm h-9"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs">Facture mensuelle (€)</Label>
+                        <Input
+                          type="number"
+                          value={editedHousing.montant_facture || ""}
+                          onChange={(e) => setEditedHousing({ ...editedHousing, montant_facture: parseFloat(e.target.value) || null })}
+                          className="text-sm h-9"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs">Type connexion</Label>
+                        <Select 
+                          value={editedHousing.type_connexion || ""} 
+                          onValueChange={(val) => setEditedHousing({ ...editedHousing, type_connexion: val })}
+                        >
+                          <SelectTrigger className="text-xs h-9">
+                            <SelectValue placeholder="Sélectionner" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="fibre">Fibre</SelectItem>
+                            <SelectItem value="adsl">ADSL</SelectItem>
+                            <SelectItem value="4g_box">Box 4G</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div>
+                        <Label className="text-xs">Fournisseur internet</Label>
+                        <Input
+                          value={editedHousing.fournisseur_internet || ""}
+                          onChange={(e) => setEditedHousing({ ...editedHousing, fournisseur_internet: e.target.value })}
+                          className="text-sm h-9"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs">Prix internet (€/mois)</Label>
+                        <Input
+                          type="number"
+                          value={editedHousing.prix_mensuel_internet || ""}
+                          onChange={(e) => setEditedHousing({ ...editedHousing, prix_mensuel_internet: parseFloat(e.target.value) || null })}
+                          className="text-sm h-9"
+                        />
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Label className="text-xs">Éligible fibre</Label>
+                        <Switch
+                          checked={editedHousing.eligible_fibre || false}
+                          onCheckedChange={(val) => setEditedHousing({ ...editedHousing, eligible_fibre: val })}
+                        />
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Label className="text-xs">Recharge véhicule</Label>
+                        <Switch
+                          checked={editedHousing.recharge_vehicule_electrique || false}
+                          onCheckedChange={(val) => setEditedHousing({ ...editedHousing, recharge_vehicule_electrique: val })}
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <Label className="text-xs text-muted-foreground">Type</Label>
+                        <p className="text-sm font-medium capitalize">{housingProfile.type_logement || "-"}</p>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-muted-foreground">Surface</Label>
+                        <p className="text-sm font-medium">{housingProfile.surface ? `${housingProfile.surface} m²` : "-"}</p>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-muted-foreground">Occupants</Label>
+                        <p className="text-sm font-medium">{housingProfile.nombre_occupants || "-"}</p>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-muted-foreground">Isolation</Label>
+                        <p className="text-sm font-medium capitalize">{housingProfile.isolation || "-"}</p>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-muted-foreground">Chauffage</Label>
+                        <p className="text-sm font-medium capitalize">{housingProfile.mode_chauffage?.replace("_", " ") || "-"}</p>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-muted-foreground">Chauffe-eau élec.</Label>
+                        <p className="text-sm font-medium">{housingProfile.chauffe_eau_electrique ? "Oui" : "Non"}</p>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-muted-foreground">Fournisseur élec.</Label>
+                        <p className="text-sm font-medium">{housingProfile.fournisseur_electricite || "-"}</p>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-muted-foreground">Option tarifaire</Label>
+                        <p className="text-sm font-medium capitalize">{housingProfile.option_tarifaire?.replace("_", " ") || "-"}</p>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-muted-foreground">Puissance</Label>
+                        <p className="text-sm font-medium">{housingProfile.puissance_compteur || "-"}</p>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-muted-foreground">Facture</Label>
+                        <p className="text-sm font-medium">{housingProfile.montant_facture ? `${housingProfile.montant_facture}€/mois` : "-"}</p>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-muted-foreground">Internet</Label>
+                        <p className="text-sm font-medium capitalize">{housingProfile.type_connexion || "-"}</p>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-muted-foreground">FAI</Label>
+                        <p className="text-sm font-medium">{housingProfile.fournisseur_internet || "-"}</p>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-muted-foreground">Prix internet</Label>
+                        <p className="text-sm font-medium">{housingProfile.prix_mensuel_internet ? `${housingProfile.prix_mensuel_internet}€/mois` : "-"}</p>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-muted-foreground">Fibre</Label>
+                        <p className="text-sm font-medium">{housingProfile.eligible_fibre ? "Éligible" : "Non éligible"}</p>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-muted-foreground">Véhicule élec.</Label>
+                        <p className="text-sm font-medium">{housingProfile.recharge_vehicule_electrique ? "Oui" : "Non"}</p>
+                      </div>
+                      {housingProfile.equipements_energivores && housingProfile.equipements_energivores.length > 0 && (
+                        <div className="col-span-2">
+                          <Label className="text-xs text-muted-foreground">Équipements</Label>
+                          <p className="text-sm font-medium">{housingProfile.equipements_energivores.join(", ")}</p>
+                        </div>
+                      )}
+                    </div>
+                  )
+                ) : (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <Home className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                    <p className="text-sm">Aucun formulaire logement rempli</p>
                   </div>
-                  <div>
-                    <Label htmlFor="notes" className="text-sm">Notes</Label>
-                    <Textarea
-                      id="notes"
-                      value={editedNotes}
-                      onChange={(e) => setEditedNotes(e.target.value)}
-                      placeholder="Notes internes..."
-                      rows={2}
-                      className="text-sm mt-1"
-                    />
-                  </div>
-                  <Button onClick={saveProfileChanges} size="sm" className="w-full">
+                )}
+
+                {editMode && housingProfile && (
+                  <Button onClick={saveProfileChanges} size="sm" className="w-full" disabled={saving}>
                     <Save className="h-3 w-3 mr-1" />
-                    Enregistrer
+                    {saving ? "Enregistrement..." : "Enregistrer les modifications"}
                   </Button>
-                </div>
-              </div>
-            </div>
+                )}
+              </TabsContent>
+            </Tabs>
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Supprimer ce profil ?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Cette action est irréversible. Le profil de {profileToDelete?.prenom} {profileToDelete?.nom} 
+              ainsi que toutes ses données (formulaire logement, offres) seront définitivement supprimés.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction onClick={deleteProfile} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Supprimer
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {/* Duplicates Dialog */}
       <Dialog open={isDuplicateDialogOpen} onOpenChange={setIsDuplicateDialogOpen}>
