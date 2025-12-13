@@ -1,3 +1,4 @@
+# Switchly robots.txt
 User-agent: Googlebot
 Allow: /
 
@@ -12,3 +13,13 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+# Pages privées
+Disallow: /admin/
+Disallow: /dashboard-client
+Disallow: /formulaire-logement/
+Disallow: /mon-offre/
+Disallow: /offre-confirmation
+
+# Sitemap
+Sitemap: https://switchly.fr/sitemap.xml
