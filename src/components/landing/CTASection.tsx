@@ -5,14 +5,14 @@ import { ArrowRight } from "lucide-react";
 
 export function CTASection() {
   return (
-    <section className="py-10 md:py-20 bg-card">
+    <section className="py-8 md:py-16 bg-card">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="relative overflow-hidden rounded-2xl md:rounded-3xl bg-gradient-hero p-6 sm:p-10 md:p-14 lg:p-20 text-center"
+          className="relative overflow-hidden rounded-2xl md:rounded-3xl bg-gradient-hero p-6 sm:p-8 md:p-12 lg:p-16 text-center"
         >
           {/* Background pattern */}
           <div className="absolute inset-0 opacity-10">

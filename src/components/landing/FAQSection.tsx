@@ -37,14 +37,14 @@ const faqItems = [
 
 export function FAQSection() {
   return (
-    <section className="py-10 md:py-24 bg-background">
+    <section className="py-8 md:py-20 bg-background">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-6 md:mb-14"
+          className="text-center mb-5 md:mb-10"
         >
           <div className="inline-flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-primary/10 text-primary mb-3 md:mb-6">
             <HelpCircle className="w-3.5 h-3.5 md:w-4 md:h-4" />
@@ -66,8 +66,8 @@ export function FAQSection() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="max-w-3xl mx-auto"
         >
-          <div className="bg-card rounded-xl md:rounded-3xl p-4 sm:p-6 md:p-10 border border-border shadow-switchly-lg">
-            <Accordion type="single" collapsible className="space-y-3 md:space-y-5">
+          <div className="bg-card rounded-xl md:rounded-2xl p-4 sm:p-5 md:p-8 border border-border shadow-switchly-lg">
+            <Accordion type="single" collapsible className="space-y-2 md:space-y-4">
               {faqItems.map((item, index) => (
                 <AccordionItem
                   key={index}

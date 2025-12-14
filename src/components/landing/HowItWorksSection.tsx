@@ -32,14 +32,14 @@ const steps = [
 
 export function HowItWorksSection() {
   return (
-    <section id="comment-ca-marche" className="py-10 md:py-24 bg-card">
+    <section id="comment-ca-marche" className="py-8 md:py-20 bg-card">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-8 md:mb-16"
+          className="text-center mb-6 md:mb-12"
         >
           <h2 className="text-[20px] sm:text-2xl md:text-4xl lg:text-5xl font-bold text-foreground mb-2 md:mb-6">
             Comment ça marche ?
@@ -50,7 +50,7 @@ export function HowItWorksSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 mb-8 md:mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 mb-6 md:mb-10">
           {steps.map((step, index) => (
             <motion.div
               key={index}
@@ -60,7 +60,7 @@ export function HowItWorksSection() {
               transition={{ duration: 0.5, delay: index * 0.15 }}
               className="relative"
             >
-              <div className="bg-background rounded-xl md:rounded-2xl p-4 md:p-8 h-full border border-border card-hover">
+              <div className="bg-background rounded-xl md:rounded-2xl p-4 md:p-6 h-full border border-border card-hover">
                 {/* Number badge */}
                 <div className="absolute -top-2 md:-top-4 left-4 md:left-8 bg-gradient-hero text-primary-foreground text-xs font-bold px-2 md:px-3 py-0.5 md:py-1 rounded-full">
                   Étape {step.number}
@@ -96,7 +96,7 @@ export function HowItWorksSection() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="text-center text-sm text-muted-foreground mb-8 md:mb-16"
+          className="text-center text-sm text-muted-foreground mb-6 md:mb-10"
         >
           Switchly n'est pas un fournisseur. Nous organisons des achats groupés indépendants.
         </motion.p>

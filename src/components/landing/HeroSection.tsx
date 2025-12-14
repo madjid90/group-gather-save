@@ -5,7 +5,7 @@ import { Shield, Lock, CheckCircle, Zap, Wifi, CheckCircle2 } from "lucide-react
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-[calc(100vh-140px)] md:min-h-[90vh] flex items-center overflow-hidden py-6 md:py-0">
+    <section className="relative min-h-[calc(100vh-120px)] md:min-h-[85vh] flex items-center overflow-hidden py-4 md:py-0">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-subtle" />
       
