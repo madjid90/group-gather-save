@@ -56,37 +56,56 @@ export function HeroSection() {
 
             {/* Title - smaller on mobile */}
             <h1 className="text-[26px] leading-tight sm:text-3xl md:text-5xl lg:text-6xl font-bold text-foreground md:leading-tight">
-              Rejoignez l'achat groupé Switchly et économisez{" "}
+              Rejoignez l'achat groupé Switchly et réduisez{" "}
               <span className="gradient-text">jusqu'à 30 %</span>{" "}
               <span className="gradient-text">
-                sur vos factures d'électricité et d'internet
+                vos factures d'électricité et d'internet
               </span>
             </h1>
 
             {/* Subtitle - slightly larger on mobile for readability */}
             <p className="text-base sm:text-base md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0">
-              <span className="hidden md:inline">Les économies observées lors des achats groupés atteignent jusqu'à 400 € par an — inscription gratuite et sans engagement</span>
-              <span className="md:hidden">Jusqu'à 400 € d'économies par an — gratuit et sans engagement</span>
+              <span className="hidden md:inline">Grâce à l'achat groupé d'énergie et d'internet, nos membres économisent jusqu'à 400 € par an — inscription gratuite et sans engagement.</span>
+              <span className="md:hidden">Jusqu'à 400 € d'économies par an grâce à l'achat groupé — gratuit et sans engagement.</span>
             </p>
+
+            {/* CTA Button - desktop only, above the fold */}
+            <div className="hidden lg:flex flex-col items-start gap-2 pt-2">
+              <motion.div
+                animate={{ scale: [1, 1.02, 1] }}
+                transition={{ 
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                <Button variant="hero" size="xl" className="text-base sm:text-lg py-7 sm:py-5 px-8" asChild>
+                  <Link to="/inscription">
+                    Je rejoins l'achat groupé gratuitement
+                  </Link>
+                </Button>
+              </motion.div>
+              <p className="text-sm text-muted-foreground">Gratuit • Sans engagement • Aucune démarche</p>
+            </div>
 
             {/* Trust badges - smaller on mobile */}
             <div className="flex flex-col sm:flex-row flex-wrap justify-center lg:justify-start gap-2 md:gap-6 pt-1 md:pt-4">
               <div className="flex items-center justify-center lg:justify-start gap-1.5 md:gap-2 text-sm md:text-base text-muted-foreground">
                 <CheckCircle className="w-4 h-4 md:w-5 md:h-5 text-secondary flex-shrink-0" />
-                <span>Tarifs négociés collectivement</span>
+                <span>Jusqu'à –30 % grâce à l'achat groupé</span>
               </div>
               <div className="flex items-center justify-center lg:justify-start gap-1.5 md:gap-2 text-sm md:text-base text-muted-foreground">
                 <Lock className="w-4 h-4 md:w-5 md:h-5 text-primary flex-shrink-0" />
-                <span>Offre adaptée à votre logement</span>
+                <span>Offre personnalisée selon votre logement</span>
               </div>
               <div className="flex items-center justify-center lg:justify-start gap-1.5 md:gap-2 text-sm md:text-base text-muted-foreground">
                 <Shield className="w-4 h-4 md:w-5 md:h-5 text-secondary flex-shrink-0" />
-                <span>Libre d'accepter ou de refuser</span>
+                <span>Zéro démarche, zéro engagement</span>
               </div>
             </div>
 
-            {/* CTA Button - hidden on mobile (using fixed CTA instead) */}
-            <div className="hidden md:flex justify-center lg:justify-start w-full">
+            {/* CTA Button - hidden on mobile, shown on tablet (md) but not lg */}
+            <div className="hidden md:flex lg:hidden justify-center w-full">
               <motion.div
                 animate={{ scale: [1, 1.02, 1] }}
                 transition={{ 
