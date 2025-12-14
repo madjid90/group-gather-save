@@ -42,7 +42,7 @@ const testimonials = [
 
 export function TestimonialsSection() {
   return (
-    <section className="py-10 md:py-16 relative overflow-hidden">
+    <section className="py-8 md:py-16 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-subtle" />
 
       <div className="container mx-auto px-4 relative z-10">
@@ -51,7 +51,7 @@ export function TestimonialsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-8 md:mb-16"
+          className="text-center mb-6 md:mb-10"
         >
           <h2 className="text-[20px] sm:text-2xl md:text-4xl font-bold text-foreground mb-2 md:mb-4">
             Ils ont déjà économisé
@@ -63,7 +63,7 @@ export function TestimonialsSection() {
         </motion.div>
 
         {/* Desktop: Show all 5, Mobile: Show first 3 */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 mb-8 md:mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 mb-6 md:mb-10">
           {testimonials.map((testimonial, index) => (
             <motion.div
               key={index}

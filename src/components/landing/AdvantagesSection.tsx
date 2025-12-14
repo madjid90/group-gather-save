@@ -36,14 +36,14 @@ const advantages = [
 
 export function AdvantagesSection() {
   return (
-    <section className="py-10 md:py-24 bg-card">
+    <section className="py-8 md:py-20 bg-card">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-8 md:mb-16"
+          className="text-center mb-6 md:mb-12"
         >
           <h2 className="text-[20px] sm:text-2xl md:text-4xl lg:text-5xl font-bold text-foreground mb-2 md:mb-6">
             Pourquoi rejoindre Switchly ?
@@ -54,7 +54,7 @@ export function AdvantagesSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mb-8 md:mb-16">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5 mb-6 md:mb-10">
           {advantages.map((advantage, index) => (
             <motion.div
               key={index}
@@ -64,7 +64,7 @@ export function AdvantagesSection() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="group"
             >
-              <div className="bg-background rounded-xl md:rounded-2xl p-4 md:p-8 h-full border border-border card-hover text-center">
+              <div className="bg-background rounded-xl md:rounded-2xl p-4 md:p-6 h-full border border-border card-hover text-center">
                 {/* Icon - smaller on mobile */}
                 <div
                   className={`w-10 h-10 md:w-18 md:h-18 rounded-xl md:rounded-2xl mx-auto mb-3 md:mb-5 flex items-center justify-center transition-transform group-hover:scale-110 ${
