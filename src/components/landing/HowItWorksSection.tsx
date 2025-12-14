@@ -7,7 +7,7 @@ const steps = [
   {
     icon: UserPlus,
     number: "1",
-    title: "Inscription en 1 minute",
+    title: "Inscrivez-vous gratuitement à l'achat groupé énergie et internet",
     titleMobile: "Inscription en 1 minute",
     description: "Indiquez vos informations pour rejoindre l'achat groupé.",
     descriptionMobile: "Indiquez vos informations.",
@@ -15,15 +15,15 @@ const steps = [
   {
     icon: Users,
     number: "2",
-    title: "Nous négocions pour vous",
+    title: "Nous négocions des tarifs d'électricité et d'internet grâce à la force du groupe",
     titleMobile: "Nous négocions pour vous",
-    description: "Nous regroupons les foyers inscrits pour négocier des tarifs collectifs auprès des fournisseurs.",
+    description: "Nous regroupons les foyers inscrits pour négocier des tarifs collectifs auprès des fournisseurs d'énergie et d'internet.",
     descriptionMobile: "On regroupe les foyers pour négocier.",
   },
   {
     icon: Gift,
     number: "3",
-    title: "Recevez votre offre personnalisée",
+    title: "Recevez une offre adaptée à votre logement et décidez librement",
     titleMobile: "Recevez votre offre",
     description: "Vous restez entièrement libre d'accepter ou de refuser l'offre négociée.",
     descriptionMobile: "Libre d'accepter ou de refuser.",

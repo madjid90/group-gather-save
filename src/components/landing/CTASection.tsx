@@ -25,7 +25,7 @@ export function CTASection() {
               Rejoignez l'achat groupé Switchly
             </h2>
             <p className="text-sm sm:text-base md:text-xl text-primary-foreground/80 mb-6 md:mb-10 max-w-2xl mx-auto">
-              <span className="hidden md:inline">L'inscription est gratuite et sans engagement. Plus le groupe grandit, plus nous pouvons négocier des prix avantageux.</span>
+              <span className="hidden md:inline">L'inscription est gratuite et sans engagement. Plus le groupe grandit, plus nous pouvons négocier des prix avantageux sur l'électricité et l'internet.</span>
               <span className="md:hidden">Gratuit et sans engagement.</span>
             </p>
             {/* CTA - hidden on mobile */}
@@ -37,13 +37,13 @@ export function CTASection() {
                 asChild
               >
                 <Link to="/inscription">
-                  Je rejoins l'achat groupé gratuitement
+                  Rejoindre l'achat groupé gratuitement
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Button>
             </div>
             <p className="text-xs sm:text-sm md:text-base text-primary-foreground/70 mt-4 md:mt-8">
-              <span className="hidden md:inline">Aucune publicité, aucune vente de données. Switchly n'est pas un fournisseur d'énergie.</span>
+              <span className="hidden md:inline">Aucune publicité • Aucune revente de données • Contact uniquement pour les offres</span>
               <span className="md:hidden">Zéro publicité, zéro vente de données.</span>
             </p>
           </div>

@@ -11,27 +11,27 @@ const faqItems = [
   {
     question: "Est-ce vraiment gratuit ?",
     answer:
-      "Oui, l'inscription est totalement gratuite et sans engagement.",
+      "Oui, l'inscription à l'achat groupé énergie et internet est totalement gratuite et sans engagement.",
   },
   {
     question: "Suis-je obligé d'accepter l'offre ?",
     answer:
-      "Non. Vous décidez librement d'accepter ou non l'offre négociée.",
+      "Non. Vous décidez librement d'accepter ou de refuser l'offre négociée. Aucune obligation.",
   },
   {
     question: "Comment Switchly se rémunère ?",
     answer:
-      "Certains fournisseurs peuvent nous rémunérer si vous acceptez une offre, sans impact sur votre tarif.",
+      "Certains fournisseurs d'énergie ou d'internet peuvent nous rémunérer si vous acceptez une offre, sans aucun impact sur votre tarif.",
   },
   {
     question: "Quelles économies puis-je espérer ?",
     answer:
-      "Cela dépend de votre contrat actuel, mais l'objectif est de réduire au maximum vos factures d'énergie et d'internet.",
+      "Grâce à l'achat groupé d'électricité et d'internet, nos membres peuvent réduire leur facture jusqu'à 400 € par an selon leur contrat actuel.",
   },
   {
     question: "Switchly est-il un comparateur d'énergie ?",
     answer:
-      "Non. Switchly organise des achats groupés afin de négocier des tarifs collectifs. Nous ne comparons pas l'ensemble du marché.",
+      "Non. Switchly organise des achats groupés d'énergie et d'internet pour négocier des tarifs collectifs. Nous ne comparons pas l'ensemble du marché.",
   },
 ];
 

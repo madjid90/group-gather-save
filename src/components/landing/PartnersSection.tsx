@@ -67,7 +67,7 @@ export function PartnersSection() {
             Nos fournisseurs partenaires
           </h2>
           <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-            <span className="hidden md:inline">Certains fournisseurs reconnus peuvent participer aux campagnes d'achats groupés selon les périodes</span>
+            <span className="hidden md:inline">Nous travaillons avec des fournisseurs d'énergie et d'internet reconnus pour négocier des tarifs avantageux via l'achat groupé.</span>
             <span className="md:hidden">Fournisseurs selon les campagnes</span>
           </p>
         </motion.div>

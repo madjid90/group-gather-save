@@ -57,7 +57,7 @@ export function TestimonialsSection() {
             Ils ont déjà économisé
           </h2>
           <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-            <span className="hidden md:inline">Avis recueillis auprès de participants aux achats groupés</span>
+            <span className="hidden md:inline">Des milliers de foyers ont déjà réduit leurs factures d'électricité et d'internet grâce à l'achat groupé Switchly.</span>
             <span className="md:hidden">Avis de participants</span>
           </p>
         </motion.div>
