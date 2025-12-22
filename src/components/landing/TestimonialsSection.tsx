@@ -42,7 +42,7 @@ const testimonials = [
 
 export function TestimonialsSection() {
   return (
-    <section className="py-8 md:py-16 relative overflow-hidden">
+    <section className="py-10 lg:py-16 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-subtle" />
 
       <div className="container mx-auto px-4 relative z-10">
@@ -51,14 +51,14 @@ export function TestimonialsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-6 md:mb-10"
+          className="text-center mb-8 lg:mb-12"
         >
-          <h2 className="text-[20px] sm:text-2xl md:text-4xl font-bold text-foreground mb-2 md:mb-4">
+          <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold text-foreground mb-3 lg:mb-4">
             Ils ont déjà économisé
           </h2>
-          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-            <span className="hidden md:inline">Des milliers de foyers ont déjà réduit leurs factures d'électricité et d'internet grâce à l'achat groupé Switchly.</span>
-            <span className="md:hidden">Avis de participants</span>
+          <p className="text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
+            <span className="hidden lg:inline">Des milliers de foyers ont déjà réduit leurs factures d'électricité et d'internet grâce à l'achat groupé Switchly.</span>
+            <span className="lg:hidden">Avis de participants</span>
           </p>
         </motion.div>
 

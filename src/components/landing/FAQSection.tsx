@@ -37,25 +37,25 @@ const faqItems = [
 
 export function FAQSection() {
   return (
-    <section className="py-8 md:py-20 bg-background">
+    <section className="py-10 lg:py-20 bg-background">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-5 md:mb-10"
+          className="text-center mb-8 lg:mb-12"
         >
-          <div className="inline-flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-primary/10 text-primary mb-3 md:mb-6">
-            <HelpCircle className="w-3.5 h-3.5 md:w-4 md:h-4" />
-            <span className="text-xs md:text-sm font-medium">Questions fréquentes</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-4 lg:mb-6">
+            <HelpCircle className="w-4 h-4" />
+            <span className="text-sm font-medium">Questions fréquentes</span>
           </div>
-          <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold text-foreground mb-2 md:mb-6">
+          <h2 className="text-xl sm:text-2xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-3 lg:mb-6">
             Questions fréquentes
           </h2>
-          <p className="text-sm md:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
-            <span className="hidden md:inline">Les réponses à vos questions sur l'achat groupé</span>
-            <span className="md:hidden">Vos questions, nos réponses</span>
+          <p className="text-sm lg:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
+            <span className="hidden lg:inline">Les réponses à vos questions sur l'achat groupé</span>
+            <span className="lg:hidden">Vos questions, nos réponses</span>
           </p>
         </motion.div>
 

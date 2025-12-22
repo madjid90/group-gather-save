@@ -36,25 +36,25 @@ const advantages = [
 
 export function AdvantagesSection() {
   return (
-    <section className="py-8 md:py-20 bg-card">
+    <section className="py-10 lg:py-20 bg-card">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-6 md:mb-12"
+          className="text-center mb-8 lg:mb-14"
         >
-          <h2 className="text-[20px] sm:text-2xl md:text-4xl lg:text-5xl font-bold text-foreground mb-2 md:mb-6">
+          <h2 className="text-xl sm:text-2xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-3 lg:mb-6">
             Pourquoi rejoindre Switchly ?
           </h2>
-          <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
-            <span className="hidden md:inline">Des avantages concrets pour réduire vos factures durablement</span>
-            <span className="md:hidden">Réduisez vos factures durablement</span>
+          <p className="text-base lg:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
+            <span className="hidden lg:inline">Des avantages concrets pour réduire vos factures durablement</span>
+            <span className="lg:hidden">Réduisez vos factures durablement</span>
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5 mb-6 md:mb-10">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8 lg:mb-12">
           {advantages.map((advantage, index) => (
             <motion.div
               key={index}
@@ -64,17 +64,17 @@ export function AdvantagesSection() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="group"
             >
-              <div className="bg-background rounded-xl md:rounded-2xl p-4 md:p-6 h-full border border-border card-hover text-center">
-                {/* Icon - smaller on mobile */}
+              <div className="bg-background rounded-xl lg:rounded-2xl p-5 lg:p-8 h-full border border-border card-hover text-center">
+                {/* Icon */}
                 <div
-                  className={`w-10 h-10 md:w-18 md:h-18 rounded-xl md:rounded-2xl mx-auto mb-3 md:mb-5 flex items-center justify-center transition-transform group-hover:scale-110 ${
+                  className={`w-12 h-12 lg:w-16 lg:h-16 rounded-xl lg:rounded-2xl mx-auto mb-4 lg:mb-6 flex items-center justify-center transition-transform group-hover:scale-110 ${
                     advantage.color === "primary"
                       ? "bg-primary/10"
                       : "bg-secondary/10"
                   }`}
                 >
                   <advantage.icon
-                    className={`w-5 h-5 md:w-9 md:h-9 ${
+                    className={`w-6 h-6 lg:w-8 lg:h-8 ${
                       advantage.color === "primary"
                         ? "text-primary"
                         : "text-secondary"
@@ -83,12 +83,12 @@ export function AdvantagesSection() {
                 </div>
 
                 {/* Content */}
-                <h3 className="text-sm md:text-xl font-semibold text-foreground mb-1 md:mb-3">
+                <h3 className="text-sm lg:text-xl font-semibold text-foreground mb-2 lg:mb-3">
                   {advantage.title}
                 </h3>
-                <p className="text-xs md:text-lg text-muted-foreground">
-                  <span className="hidden md:inline">{advantage.description}</span>
-                  <span className="md:hidden">{advantage.descriptionMobile}</span>
+                <p className="text-xs lg:text-base text-muted-foreground">
+                  <span className="hidden lg:inline">{advantage.description}</span>
+                  <span className="lg:hidden">{advantage.descriptionMobile}</span>
                 </p>
               </div>
             </motion.div>
@@ -101,9 +101,9 @@ export function AdvantagesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.5 }}
-          className="hidden md:flex justify-center"
+          className="hidden lg:flex justify-center"
         >
-          <Button variant="hero" size="xl" className="w-[calc(100%-2rem)] max-w-md sm:w-auto py-7 sm:py-5 text-base sm:text-lg" asChild>
+          <Button variant="hero" size="xl" className="py-6 px-10 text-lg" asChild>
             <Link to="/inscription">Je veux profiter de l'offre négociée</Link>
           </Button>
         </motion.div>
