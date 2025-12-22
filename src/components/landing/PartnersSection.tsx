@@ -53,7 +53,7 @@ export function PartnersSection() {
   const duplicatedPartners = [...partners, ...partners];
 
   return (
-    <section className="py-8 md:py-16 bg-muted/30 overflow-hidden">
+    <section className="py-10 lg:py-16 bg-muted/30 overflow-hidden">
       <div className="container mx-auto px-4">
         {/* Header */}
         <motion.div
@@ -61,14 +61,14 @@ export function PartnersSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-6 md:mb-10"
+          className="text-center mb-8 lg:mb-12"
         >
-          <h2 className="text-[20px] sm:text-2xl md:text-4xl font-bold text-foreground mb-2 md:mb-4">
+          <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold text-foreground mb-3 lg:mb-4">
             Nos fournisseurs partenaires
           </h2>
-          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-            <span className="hidden md:inline">Nous travaillons avec des fournisseurs d'énergie et d'internet reconnus pour négocier des tarifs avantageux via l'achat groupé.</span>
-            <span className="md:hidden">Fournisseurs selon les campagnes</span>
+          <p className="text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
+            <span className="hidden lg:inline">Nous travaillons avec des fournisseurs d'énergie et d'internet reconnus pour négocier des tarifs avantageux via l'achat groupé.</span>
+            <span className="lg:hidden">Fournisseurs selon les campagnes</span>
           </p>
         </motion.div>
 

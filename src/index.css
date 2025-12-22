@@ -49,6 +49,12 @@
     --shadow-glow: 0 0 40px hsl(217 91% 60% / 0.3);
     --shadow-success-glow: 0 0 40px hsl(145 58% 55% / 0.3);
     
+    /* Spacing tokens for consistency */
+    --section-py-mobile: 2.5rem;
+    --section-py-desktop: 5rem;
+    --section-gap-mobile: 1.5rem;
+    --section-gap-desktop: 3rem;
+    
     /* Sidebar */
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 222 47% 11%;

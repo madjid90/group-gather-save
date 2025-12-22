@@ -66,6 +66,10 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      spacing: {
+        'section-mobile': 'var(--section-py-mobile)',
+        'section-desktop': 'var(--section-py-desktop)',
+      },
       boxShadow: {
         'switchly': 'var(--shadow-md)',
         'switchly-lg': 'var(--shadow-lg)',

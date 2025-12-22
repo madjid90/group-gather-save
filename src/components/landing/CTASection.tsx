@@ -5,14 +5,14 @@ import { ArrowRight } from "lucide-react";
 
 export function CTASection() {
   return (
-    <section className="py-8 md:py-16 bg-card">
+    <section className="py-10 lg:py-20 bg-card">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="relative overflow-hidden rounded-2xl md:rounded-3xl bg-gradient-hero p-6 sm:p-8 md:p-12 lg:p-16 text-center"
+          className="relative overflow-hidden rounded-2xl lg:rounded-3xl bg-gradient-hero p-8 lg:p-16 text-center"
         >
           {/* Background pattern */}
           <div className="absolute inset-0 opacity-10">
@@ -21,19 +21,19 @@ export function CTASection() {
           </div>
 
           <div className="relative z-10">
-            <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-3 md:mb-8">
+            <h2 className="text-xl sm:text-2xl lg:text-4xl xl:text-5xl font-bold text-primary-foreground mb-4 lg:mb-8">
               Rejoignez l'achat groupé Switchly
             </h2>
-            <p className="text-sm sm:text-base md:text-xl text-primary-foreground/80 mb-6 md:mb-10 max-w-2xl mx-auto">
-              <span className="hidden md:inline">L'inscription est gratuite et sans engagement. Plus le groupe grandit, plus nous pouvons négocier des prix avantageux sur l'électricité et l'internet.</span>
-              <span className="md:hidden">Gratuit et sans engagement.</span>
+            <p className="text-sm lg:text-xl text-primary-foreground/80 mb-8 lg:mb-10 max-w-2xl mx-auto">
+              <span className="hidden lg:inline">L'inscription est gratuite et sans engagement. Plus le groupe grandit, plus nous pouvons négocier des prix avantageux sur l'électricité et l'internet.</span>
+              <span className="lg:hidden">Gratuit et sans engagement.</span>
             </p>
             {/* CTA - hidden on mobile */}
-            <div className="hidden md:flex justify-center">
+            <div className="hidden lg:flex justify-center">
               <Button
                 variant="secondary"
                 size="xl"
-                className="group w-[calc(100%-2rem)] max-w-md sm:w-auto py-7 sm:py-5 text-base sm:text-lg"
+                className="group py-6 px-10 text-lg"
                 asChild
               >
                 <Link to="/inscription">
@@ -42,9 +42,9 @@ export function CTASection() {
                 </Link>
               </Button>
             </div>
-            <p className="text-xs sm:text-sm md:text-base text-primary-foreground/70 mt-4 md:mt-8">
-              <span className="hidden md:inline">Aucune publicité • Aucune revente de données • Contact uniquement pour les offres</span>
-              <span className="md:hidden">Zéro publicité, zéro vente de données.</span>
+            <p className="text-xs lg:text-base text-primary-foreground/70 mt-6 lg:mt-8">
+              <span className="hidden lg:inline">Aucune publicité • Aucune revente de données • Contact uniquement pour les offres</span>
+              <span className="lg:hidden">Zéro publicité, zéro vente de données.</span>
             </p>
           </div>
         </motion.div>
