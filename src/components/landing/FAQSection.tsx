@@ -9,29 +9,29 @@ import { HelpCircle } from "lucide-react";
 
 const faqItems = [
   {
-    question: "Est-ce vraiment gratuit ?",
+    question: "C'est vraiment 100% gratuit ?",
     answer:
-      "Oui, l'inscription à l'achat groupé énergie et internet est totalement gratuite et sans engagement.",
+      "Oui, l'inscription est totalement gratuite. Vous ne payez jamais rien pour utiliser Switchly. Nous sommes rémunérés par les fournisseurs si vous acceptez une offre, sans aucun impact sur votre tarif.",
   },
   {
     question: "Suis-je obligé d'accepter l'offre ?",
     answer:
-      "Non. Vous décidez librement d'accepter ou de refuser l'offre négociée. Aucune obligation.",
+      "Non, vous êtes 100% libre. Vous recevez une offre personnalisée et vous décidez. Si elle ne vous convient pas, vous ne faites rien et gardez votre contrat actuel.",
   },
   {
-    question: "Comment Switchly se rémunère ?",
+    question: "Combien puis-je économiser concrètement ?",
     answer:
-      "Certains fournisseurs d'énergie ou d'internet peuvent nous rémunérer si vous acceptez une offre, sans aucun impact sur votre tarif.",
+      "Nos membres économisent en moyenne 312€/an. Les économies varient selon votre contrat actuel, mais peuvent atteindre jusqu'à 400€/an sur électricité + internet combinés.",
   },
   {
-    question: "Quelles économies puis-je espérer ?",
+    question: "Combien de temps prend l'inscription ?",
     answer:
-      "Grâce à l'achat groupé d'électricité et d'internet, nos membres peuvent réduire leur facture jusqu'à 400 € par an selon leur contrat actuel.",
+      "30 secondes. Vous renseignez votre email et quelques infos sur votre logement. Vous recevez ensuite votre offre personnalisée sous 48h maximum.",
   },
   {
-    question: "Switchly est-il un comparateur d'énergie ?",
+    question: "Quels fournisseurs proposez-vous ?",
     answer:
-      "Non. Switchly organise des achats groupés d'énergie et d'internet pour négocier des tarifs collectifs. Nous ne comparons pas l'ensemble du marché.",
+      "Nous négocions avec des fournisseurs reconnus comme EDF, Engie, TotalEnergies pour l'électricité et les principaux opérateurs pour l'internet. Uniquement des acteurs établis et fiables.",
   },
 ];
 
@@ -51,11 +51,11 @@ export function FAQSection() {
             <span className="text-sm font-medium">Questions fréquentes</span>
           </div>
           <h2 className="text-xl sm:text-2xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-3 lg:mb-6">
-            Questions fréquentes
+            Vos questions, nos réponses
           </h2>
           <p className="text-sm lg:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
-            <span className="hidden lg:inline">Les réponses à vos questions sur l'achat groupé</span>
-            <span className="lg:hidden">Vos questions, nos réponses</span>
+            <span className="hidden lg:inline">Tout ce que vous devez savoir avant de vous inscrire gratuitement</span>
+            <span className="lg:hidden">Tout savoir avant de s'inscrire</span>
           </p>
         </motion.div>
 

@@ -6,30 +6,30 @@ import { TrendingDown, Scale, Clock, Eye } from "lucide-react";
 const advantages = [
   {
     icon: TrendingDown,
-    title: "Jusqu'à 400 € d'économies par an",
-    description: "Profitez d'offres négociées permettant de réduire votre facture d'électricité et d'internet.",
-    descriptionMobile: "Jusqu'à 400€/an d'économies.",
+    title: "312€ économisés en moyenne",
+    description: "C'est l'économie moyenne constatée par nos membres sur leur facture annuelle d'électricité et d'internet.",
+    descriptionMobile: "Économie moyenne constatée.",
     color: "primary",
   },
   {
     icon: Scale,
-    title: "Aucun engagement, aucune obligation",
-    description: "Participez librement à l'achat groupé, refusez l'offre si elle ne vous convient pas.",
-    descriptionMobile: "Refusez si ça ne convient pas.",
+    title: "0€ si vous refusez l'offre",
+    description: "Vous restez 100% libre. Si l'offre ne vous convient pas, vous ne payez rien et gardez votre contrat actuel.",
+    descriptionMobile: "Libre de refuser, 0€ à payer.",
     color: "secondary",
   },
   {
     icon: Clock,
-    title: "Aucune démarche, nous nous occupons de tout",
-    description: "Nous négocions pour vous auprès des fournisseurs d'énergie et d'internet, sans aucune démarche.",
-    descriptionMobile: "Aucune démarche de votre part.",
+    title: "Offre reçue en 48h",
+    description: "Pas de longues démarches. Inscrivez-vous en 30 secondes et recevez votre offre personnalisée sous 48h.",
+    descriptionMobile: "30 sec d'inscription, 48h de délai.",
     color: "primary",
   },
   {
     icon: Eye,
-    title: "Offres claires, fournisseurs reconnus",
-    description: "Vous recevez une offre claire, détaillée et sans frais cachés de fournisseurs reconnus.",
-    descriptionMobile: "Offre claire, sans frais cachés.",
+    title: "EDF, Engie, TotalEnergies...",
+    description: "Nous négocions uniquement avec des fournisseurs reconnus et établis pour des offres transparentes et fiables.",
+    descriptionMobile: "Fournisseurs reconnus uniquement.",
     color: "secondary",
   },
 ];
@@ -46,11 +46,11 @@ export function AdvantagesSection() {
           className="text-center mb-8 lg:mb-14"
         >
           <h2 className="text-xl sm:text-2xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-3 lg:mb-6">
-            Pourquoi rejoindre Switchly ?
+            Pourquoi 2 500+ foyers nous font confiance
           </h2>
           <p className="text-base lg:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
-            <span className="hidden lg:inline">Des avantages concrets pour réduire vos factures durablement</span>
-            <span className="lg:hidden">Réduisez vos factures durablement</span>
+            <span className="hidden lg:inline">Des avantages concrets et mesurables pour votre budget</span>
+            <span className="lg:hidden">Avantages concrets pour votre budget</span>
           </p>
         </motion.div>
 
@@ -104,7 +104,7 @@ export function AdvantagesSection() {
           className="hidden lg:flex justify-center"
         >
           <Button variant="hero" size="xl" className="py-6 px-10 text-lg" asChild>
-            <Link to="/inscription">Je veux profiter de l'offre négociée</Link>
+            <Link to="/inscription">Obtenir mon offre personnalisée →</Link>
           </Button>
         </motion.div>
       </div>

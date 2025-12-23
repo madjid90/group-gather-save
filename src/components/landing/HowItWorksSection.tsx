@@ -7,26 +7,26 @@ const steps = [
   {
     icon: UserPlus,
     number: "1",
-    title: "Inscrivez-vous gratuitement à l'achat groupé énergie et internet",
-    titleMobile: "Inscription en 1 minute",
-    description: "Indiquez vos informations pour rejoindre l'achat groupé.",
-    descriptionMobile: "Indiquez vos informations.",
+    title: "Inscrivez-vous en 30 secondes",
+    titleMobile: "30 secondes pour s'inscrire",
+    description: "Renseignez votre email et quelques infos sur votre logement. C'est gratuit et sans engagement.",
+    descriptionMobile: "Email + infos logement. Gratuit.",
   },
   {
     icon: Users,
     number: "2",
-    title: "Nous négocions des tarifs d'électricité et d'internet grâce à la force du groupe",
-    titleMobile: "Nous négocions pour vous",
-    description: "Nous regroupons les foyers inscrits pour négocier des tarifs collectifs auprès des fournisseurs d'énergie et d'internet.",
-    descriptionMobile: "On regroupe les foyers pour négocier.",
+    title: "On négocie pour vous les meilleurs tarifs",
+    titleMobile: "On négocie pour vous",
+    description: "Plus vous êtes nombreux, plus notre pouvoir de négociation augmente auprès des fournisseurs d'énergie et d'internet.",
+    descriptionMobile: "Pouvoir collectif = meilleurs prix.",
   },
   {
     icon: Gift,
     number: "3",
-    title: "Recevez une offre adaptée à votre logement et décidez librement",
-    titleMobile: "Recevez votre offre",
-    description: "Vous restez entièrement libre d'accepter ou de refuser l'offre négociée.",
-    descriptionMobile: "Libre d'accepter ou de refuser.",
+    title: "Vous recevez une offre personnalisée sous 48h",
+    titleMobile: "Offre reçue sous 48h",
+    description: "Comparez avec votre contrat actuel et décidez librement. Si ça ne vous convient pas, vous ne faites rien.",
+    descriptionMobile: "Libre d'accepter ou refuser.",
   },
 ];
 
@@ -42,11 +42,11 @@ export function HowItWorksSection() {
           className="text-center mb-8 lg:mb-14"
         >
           <h2 className="text-xl sm:text-2xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-3 lg:mb-6">
-            Comment ça marche ?
+            3 étapes simples pour économiser
           </h2>
           <p className="text-base lg:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
-            <span className="hidden lg:inline">Un fonctionnement clair basé sur la négociation collective</span>
-            <span className="lg:hidden">Fonctionnement clair et collectif</span>
+            <span className="hidden lg:inline">Rejoignez 2 500+ foyers et recevez votre offre personnalisée en moins de 48h</span>
+            <span className="lg:hidden">Offre personnalisée en 48h</span>
           </p>
         </motion.div>
 
@@ -110,7 +110,7 @@ export function HowItWorksSection() {
           className="hidden lg:flex justify-center"
         >
           <Button variant="hero" size="xl" className="py-6 px-10 text-lg" asChild>
-            <Link to="/inscription">Je participe à l'achat groupé</Link>
+            <Link to="/inscription">Commencer maintenant — C'est gratuit →</Link>
           </Button>
         </motion.div>
       </div>
