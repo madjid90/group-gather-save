@@ -20,7 +20,7 @@ export const CollectivitesSection = () => {
   ];
 
   return (
-    <section className="relative py-16 md:py-24 overflow-hidden">
+    <section className="relative py-12 md:py-16 lg:py-20 overflow-hidden">
       {/* Background gradient matching hero */}
       <div className="absolute inset-0 bg-gradient-subtle" />
       
