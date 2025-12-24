@@ -8,7 +8,7 @@ export function HeroSection() {
   const { count, notification, showNotification } = useAnimatedSocialProof(2547, 12000);
 
   return (
-    <section className="relative min-h-[50vh] lg:min-h-[70vh] flex items-center overflow-hidden py-8 lg:py-0">
+    <section className="relative min-h-[100svh] flex items-center overflow-hidden py-0">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-subtle" />
       
@@ -75,22 +75,54 @@ export function HeroSection() {
             </div>
 
             {/* MOBILE VERSION - Ultra allégée */}
-            <div className="lg:hidden space-y-4">
+            <div className="lg:hidden space-y-6 flex flex-col items-center justify-center">
               {/* Title - Mobile */}
-              <h1 className="text-2xl sm:text-3xl font-bold text-foreground leading-tight">
+              <h1 className="text-3xl sm:text-4xl font-bold text-foreground leading-tight text-center">
                 Payez moins cher{" "}
                 <span className="gradient-text">votre électricité</span>
               </h1>
 
               {/* Subtitle - Mobile (1 seule phrase courte) */}
-              <p className="text-base text-muted-foreground">
+              <p className="text-lg text-muted-foreground text-center">
                 Achat groupé gratuit, sans engagement
               </p>
 
-              {/* Micro-texte mobile sous le CTA fixe */}
-              <p className="text-xs text-muted-foreground pt-2">
+              {/* CTA Mobile visible dans le hero */}
+              <motion.div
+                animate={{ scale: [1, 1.02, 1] }}
+                transition={{ 
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="pt-4"
+              >
+                <Button variant="hero" size="lg" className="text-base py-5 px-8" asChild>
+                  <Link to="/inscription">
+                    Rejoindre gratuitement
+                  </Link>
+                </Button>
+              </motion.div>
+
+              {/* Micro-texte mobile */}
+              <p className="text-sm text-muted-foreground">
                 30 secondes • Sans engagement
               </p>
+              
+              {/* Scroll indicator */}
+              <motion.div 
+                className="pt-8"
+                animate={{ y: [0, 8, 0] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 flex items-start justify-center p-1">
+                  <motion.div 
+                    className="w-1.5 h-2.5 bg-muted-foreground/50 rounded-full"
+                    animate={{ y: [0, 12, 0] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  />
+                </div>
+              </motion.div>
             </div>
           </motion.div>
 
