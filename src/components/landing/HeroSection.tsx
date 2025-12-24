@@ -8,7 +8,7 @@ export function HeroSection() {
   const { count, notification, showNotification } = useAnimatedSocialProof(2547, 12000);
 
   return (
-    <section className="relative min-h-[100svh] flex items-center overflow-hidden py-0">
+    <section className="relative min-h-[100svh] flex items-center overflow-hidden py-8 lg:py-0">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-subtle" />
       
