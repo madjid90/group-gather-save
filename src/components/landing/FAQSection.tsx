@@ -26,7 +26,7 @@ const faqItems = [
   {
     question: "Combien de temps prend l'inscription ?",
     answer:
-      "30 secondes. Email + quelques infos sur votre logement. Offre reçue sous 48h.",
+      "30 secondes. Email + quelques infos sur votre logement. Vous recevez ensuite votre offre personnalisée.",
   },
   {
     question: "Quels fournisseurs ?",

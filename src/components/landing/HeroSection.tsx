@@ -41,53 +41,19 @@ export function HeroSection() {
             transition={{ duration: 0.6 }}
             className="space-y-6 lg:space-y-8 text-center lg:text-left"
           >
-            {/* DESKTOP VERSION */}
-            <div className="hidden lg:block space-y-6">
-              {/* Title - Desktop */}
-              <h1 className="text-4xl xl:text-5xl font-bold text-foreground leading-tight">
-                Économisez jusqu'à 400€ par an{" "}
-                <span className="gradient-text">sur vos factures d'énergie</span>
-              </h1>
+            {/* Title - same for all */}
+            <h1 className="text-3xl sm:text-4xl xl:text-5xl font-bold text-foreground leading-tight text-center lg:text-left">
+              Économisez jusqu'à 400€ par an{" "}
+              <span className="gradient-text">sur vos factures d'énergie</span>
+            </h1>
 
-              {/* Subtitle - Desktop (1 seule phrase) */}
-              <p className="text-xl text-muted-foreground max-w-xl">
-                Achat groupé gratuit et sans engagement. Plus on est nombreux, plus les prix baissent.
-              </p>
+            {/* Subtitle - same for all */}
+            <p className="text-lg lg:text-xl text-muted-foreground max-w-xl text-center lg:text-left">
+              Achat groupé gratuit et sans engagement. Plus on est nombreux, plus les prix baissent.
+            </p>
 
-              {/* CTA Button - Desktop */}
-              <div className="flex flex-col items-start gap-3 pt-2">
-                <motion.div
-                  animate={{ scale: [1, 1.02, 1] }}
-                  transition={{ 
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                >
-                  <Button variant="hero" size="xl" className="text-lg py-6 px-10" asChild>
-                    <Link to="/inscription">
-                      Rejoindre l'achat groupé gratuitement
-                    </Link>
-                  </Button>
-                </motion.div>
-                <p className="text-sm text-muted-foreground">Gratuit • Sans engagement • Résultat en 48h</p>
-              </div>
-            </div>
-
-            {/* MOBILE VERSION - Ultra allégée */}
-            <div className="lg:hidden space-y-6 flex flex-col items-center justify-center">
-              {/* Title - Mobile */}
-              <h1 className="text-3xl sm:text-4xl font-bold text-foreground leading-tight text-center">
-                Payez moins cher{" "}
-                <span className="gradient-text">votre électricité</span>
-              </h1>
-
-              {/* Subtitle - Mobile (1 seule phrase courte) */}
-              <p className="text-lg text-muted-foreground text-center">
-                Achat groupé gratuit, sans engagement
-              </p>
-
-              {/* CTA Mobile visible dans le hero */}
+            {/* CTA Button - Desktop only */}
+            <div className="hidden lg:flex flex-col items-start gap-3 pt-2">
               <motion.div
                 animate={{ scale: [1, 1.02, 1] }}
                 transition={{ 
@@ -95,35 +61,30 @@ export function HeroSection() {
                   repeat: Infinity,
                   ease: "easeInOut"
                 }}
-                className="pt-4"
               >
-                <Button variant="hero" size="lg" className="text-base py-5 px-8" asChild>
+                <Button variant="hero" size="xl" className="text-lg py-6 px-10" asChild>
                   <Link to="/inscription">
-                    Rejoindre gratuitement
+                    Rejoindre l'achat groupé gratuitement
                   </Link>
                 </Button>
               </motion.div>
-
-              {/* Micro-texte mobile */}
-              <p className="text-sm text-muted-foreground">
-                30 secondes • Sans engagement
-              </p>
-              
-              {/* Scroll indicator */}
-              <motion.div 
-                className="pt-8"
-                animate={{ y: [0, 8, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 flex items-start justify-center p-1">
-                  <motion.div 
-                    className="w-1.5 h-2.5 bg-muted-foreground/50 rounded-full"
-                    animate={{ y: [0, 12, 0] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
-                </div>
-              </motion.div>
+              <p className="text-sm text-muted-foreground">Gratuit • Sans engagement</p>
             </div>
+            
+            {/* Scroll indicator - Mobile/Tablet only */}
+            <motion.div 
+              className="lg:hidden pt-8 flex justify-center"
+              animate={{ y: [0, 8, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 flex items-start justify-center p-1">
+                <motion.div 
+                  className="w-1.5 h-2.5 bg-muted-foreground/50 rounded-full"
+                  animate={{ y: [0, 12, 0] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
+              </div>
+            </motion.div>
           </motion.div>
 
           {/* Visual - desktop only: Preuve sociale avec compteur animé */}
