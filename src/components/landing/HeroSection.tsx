@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 
 export function HeroSection() {
   return (
@@ -90,18 +91,25 @@ export function HeroSection() {
             </div>
           </motion.div>
 
-          {/* Visual - desktop only: Preuve sociale unique */}
+          {/* Visual - desktop only: Preuve sociale avec compteur animé */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
             className="relative hidden lg:block"
           >
-            {/* Main card - Social proof */}
+            {/* Main card - Social proof with animated counter */}
             <div className="relative bg-card rounded-3xl p-10 shadow-switchly-xl border border-border text-center">
               <div className="space-y-4">
-                {/* Social proof counter */}
-                <div className="text-5xl font-bold text-foreground">2 547</div>
+                {/* Animated counter */}
+                <div className="text-5xl font-bold text-foreground">
+                  <AnimatedCounter 
+                    target={2547} 
+                    duration={2.5}
+                    showLiveIndicator={true}
+                    incrementInterval={12000}
+                  />
+                </div>
                 <p className="text-xl text-muted-foreground">
                   <span className="font-semibold text-foreground">foyers déjà inscrits</span> cette semaine
                 </p>
@@ -110,6 +118,24 @@ export function HeroSection() {
                 </p>
               </div>
             </div>
+
+            {/* Floating notification - simulated new signup */}
+            <motion.div
+              className="absolute -bottom-4 -left-4 bg-card border border-border rounded-xl p-3 shadow-switchly-lg"
+              initial={{ opacity: 0, y: 20, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ delay: 3, duration: 0.5 }}
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center">
+                  <span className="text-secondary text-sm">✓</span>
+                </div>
+                <div className="text-left">
+                  <p className="text-xs font-medium text-foreground">Marie L. vient de s'inscrire</p>
+                  <p className="text-xs text-muted-foreground">Paris • il y a 2 min</p>
+                </div>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
       </div>
