@@ -29,7 +29,7 @@ export function MobileFixedCTA() {
             asChild
           >
             <Link to="/inscription">
-              Rejoindre gratuitement
+              Rejoindre l'achat groupé gratuitement
             </Link>
           </Button>
         </motion.div>
