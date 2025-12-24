@@ -1,48 +1,88 @@
+import { lazy, Suspense } from "react";
 import { HeroSection } from "@/components/landing/HeroSection";
-import { HowItWorksSection } from "@/components/landing/HowItWorksSection";
-import { AdvantagesSection } from "@/components/landing/AdvantagesSection";
-import { PartnersSection } from "@/components/landing/PartnersSection";
-import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
-import { FAQSection } from "@/components/landing/FAQSection";
-import { CTASection } from "@/components/landing/CTASection";
-import { CollectivitesSection } from "@/components/landing/CollectivitesSection";
 import { MobileFixedCTA } from "@/components/landing/MobileFixedCTA";
-import { SocialProofNotifications } from "@/components/landing/SocialProofNotifications";
 import { FloatingShareButton } from "@/components/landing/FloatingShareButton";
 import { PageTransition } from "@/components/PageTransition";
+import { LazySection } from "@/components/ui/LazySection";
+
+// Lazy load sections below the fold
+const HowItWorksSection = lazy(() => import("@/components/landing/HowItWorksSection").then(m => ({ default: m.HowItWorksSection })));
+const AdvantagesSection = lazy(() => import("@/components/landing/AdvantagesSection").then(m => ({ default: m.AdvantagesSection })));
+const TestimonialsSection = lazy(() => import("@/components/landing/TestimonialsSection").then(m => ({ default: m.TestimonialsSection })));
+const PartnersSection = lazy(() => import("@/components/landing/PartnersSection").then(m => ({ default: m.PartnersSection })));
+const FAQSection = lazy(() => import("@/components/landing/FAQSection").then(m => ({ default: m.FAQSection })));
+const CTASection = lazy(() => import("@/components/landing/CTASection").then(m => ({ default: m.CTASection })));
+const CollectivitesSection = lazy(() => import("@/components/landing/CollectivitesSection").then(m => ({ default: m.CollectivitesSection })));
+const SocialProofNotifications = lazy(() => import("@/components/landing/SocialProofNotifications").then(m => ({ default: m.SocialProofNotifications })));
+
+const SectionLoader = () => (
+  <div className="py-16 lg:py-24 flex items-center justify-center">
+    <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+  </div>
+);
 
 const Index = () => {
   return (
     <PageTransition>
-      {/* 1. Hero simplifié */}
+      {/* 1. Hero - Always loaded immediately */}
       <HeroSection />
       
       {/* 2. Comment ça marche */}
-      <HowItWorksSection />
+      <LazySection>
+        <Suspense fallback={<SectionLoader />}>
+          <HowItWorksSection />
+        </Suspense>
+      </LazySection>
       
       {/* 3. Pourquoi Switchly */}
-      <AdvantagesSection />
+      <LazySection>
+        <Suspense fallback={<SectionLoader />}>
+          <AdvantagesSection />
+        </Suspense>
+      </LazySection>
       
       {/* 4. Témoignages */}
-      <TestimonialsSection />
+      <LazySection>
+        <Suspense fallback={<SectionLoader />}>
+          <TestimonialsSection />
+        </Suspense>
+      </LazySection>
       
       {/* 5. Fournisseurs partenaires */}
-      <PartnersSection />
+      <LazySection>
+        <Suspense fallback={<SectionLoader />}>
+          <PartnersSection />
+        </Suspense>
+      </LazySection>
       
       {/* 6. FAQ */}
-      <FAQSection />
+      <LazySection>
+        <Suspense fallback={<SectionLoader />}>
+          <FAQSection />
+        </Suspense>
+      </LazySection>
       
       {/* 7. CTA final */}
-      <CTASection />
+      <LazySection>
+        <Suspense fallback={<SectionLoader />}>
+          <CTASection />
+        </Suspense>
+      </LazySection>
       
       {/* 8. Collectivités */}
-      <CollectivitesSection />
+      <LazySection>
+        <Suspense fallback={<SectionLoader />}>
+          <CollectivitesSection />
+        </Suspense>
+      </LazySection>
       
       {/* Fixed CTA for mobile only */}
       <MobileFixedCTA />
       
-      {/* Social proof notifications */}
-      <SocialProofNotifications />
+      {/* Social proof notifications - lazy loaded */}
+      <Suspense fallback={null}>
+        <SocialProofNotifications />
+      </Suspense>
       
       {/* Floating share button */}
       <FloatingShareButton />
