@@ -21,15 +21,12 @@ export function CTASection() {
           </div>
 
           <div className="relative z-10">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-foreground/20 text-primary-foreground mb-4 lg:mb-6">
-              <span className="text-sm font-medium">⏰ Négociation en cours — Places limitées</span>
-            </div>
-            <h2 className="text-xl sm:text-2xl lg:text-4xl xl:text-5xl font-bold text-primary-foreground mb-4 lg:mb-8">
-              Obtenez votre offre personnalisée en 48h
+            <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold text-primary-foreground mb-4 lg:mb-8">
+              Rejoindre l'achat groupé Switchly
             </h2>
             <p className="text-sm lg:text-xl text-primary-foreground/80 mb-8 lg:mb-10 max-w-2xl mx-auto">
-              <span className="hidden lg:inline">Rejoignez les 2 547 foyers déjà inscrits et économisez en moyenne 312€/an sur vos factures. Inscription gratuite en 30 secondes.</span>
-              <span className="lg:hidden">2 547 foyers inscrits. 312€/an économisés en moyenne.</span>
+              <span className="hidden lg:inline">Inscription gratuite en 30 secondes. Offre personnalisée sous 48h. Sans engagement.</span>
+              <span className="lg:hidden">Gratuit, sans engagement, 30 secondes.</span>
             </p>
             {/* CTA - hidden on mobile */}
             <div className="hidden lg:flex justify-center">
@@ -40,14 +37,13 @@ export function CTASection() {
                 asChild
               >
                 <Link to="/inscription">
-                  Obtenir mon offre personnalisée — Gratuit
+                  Rejoindre l'achat groupé gratuitement
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Button>
             </div>
             <p className="text-xs lg:text-base text-primary-foreground/70 mt-6 lg:mt-8">
-              <span className="hidden lg:inline">✓ 100% gratuit • ✓ Sans engagement • ✓ Données sécurisées • ✓ Résultat en 48h</span>
-              <span className="lg:hidden">Gratuit • Sans engagement • Résultat en 48h</span>
+              Gratuit • Sans engagement • Résultat en 48h
             </p>
           </div>
         </motion.div>

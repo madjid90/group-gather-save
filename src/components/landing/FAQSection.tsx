@@ -9,29 +9,29 @@ import { HelpCircle } from "lucide-react";
 
 const faqItems = [
   {
-    question: "C'est vraiment 100% gratuit ?",
+    question: "C'est vraiment gratuit ?",
     answer:
-      "Oui, l'inscription est totalement gratuite. Vous ne payez jamais rien pour utiliser Switchly. Nous sommes rémunérés par les fournisseurs si vous acceptez une offre, sans aucun impact sur votre tarif.",
+      "Oui, 100% gratuit. Nous sommes rémunérés par les fournisseurs si vous acceptez une offre, sans aucun impact sur votre tarif.",
   },
   {
-    question: "Suis-je obligé d'accepter l'offre ?",
+    question: "Suis-je obligé d'accepter ?",
     answer:
-      "Non, vous êtes 100% libre. Vous recevez une offre personnalisée et vous décidez. Si elle ne vous convient pas, vous ne faites rien et gardez votre contrat actuel.",
+      "Non, vous êtes libre. Vous recevez une offre et vous décidez. Si elle ne convient pas, vous gardez votre contrat actuel.",
   },
   {
-    question: "Combien puis-je économiser concrètement ?",
+    question: "Combien puis-je économiser ?",
     answer:
-      "Nos membres économisent en moyenne 312€/an. Les économies varient selon votre contrat actuel, mais peuvent atteindre jusqu'à 400€/an sur électricité + internet combinés.",
+      "En moyenne 312€/an. Les économies varient selon votre contrat actuel, mais peuvent atteindre 400€/an.",
   },
   {
     question: "Combien de temps prend l'inscription ?",
     answer:
-      "30 secondes. Vous renseignez votre email et quelques infos sur votre logement. Vous recevez ensuite votre offre personnalisée sous 48h maximum.",
+      "30 secondes. Email + quelques infos sur votre logement. Offre reçue sous 48h.",
   },
   {
-    question: "Quels fournisseurs proposez-vous ?",
+    question: "Quels fournisseurs ?",
     answer:
-      "Nous négocions avec des fournisseurs reconnus comme EDF, Engie, TotalEnergies pour l'électricité et les principaux opérateurs pour l'internet. Uniquement des acteurs établis et fiables.",
+      "EDF, Engie, TotalEnergies... Uniquement des fournisseurs reconnus et fiables.",
   },
 ];
 
@@ -48,15 +48,11 @@ export function FAQSection() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-4 lg:mb-6">
             <HelpCircle className="w-4 h-4" />
-            <span className="text-sm font-medium">Questions fréquentes</span>
+            <span className="text-sm font-medium">FAQ</span>
           </div>
-          <h2 className="text-xl sm:text-2xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-3 lg:mb-6">
-            Vos questions, nos réponses
+          <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold text-foreground mb-3 lg:mb-6">
+            Questions fréquentes
           </h2>
-          <p className="text-sm lg:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
-            <span className="hidden lg:inline">Tout ce que vous devez savoir avant de vous inscrire gratuitement</span>
-            <span className="lg:hidden">Tout savoir avant de s'inscrire</span>
-          </p>
         </motion.div>
 
         <motion.div
