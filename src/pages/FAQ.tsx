@@ -143,7 +143,7 @@ export default function FAQ() {
                 asChild
               >
                 <Link to="/inscription">
-                  Je rejoins l'achat groupé gratuitement
+                  Rejoindre l'achat groupé gratuitement
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Link>
               </Button>

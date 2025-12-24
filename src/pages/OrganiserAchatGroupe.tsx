@@ -104,7 +104,7 @@ const OrganiserAchatGroupe = () => {
         <div className="h-16" />
 
         {/* Hero */}
-        <section className="relative py-10 md:py-24 overflow-hidden">
+        <section className="relative py-12 md:py-20 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-subtle" />
           
           {/* Animated background elements */}
@@ -159,7 +159,7 @@ const OrganiserAchatGroupe = () => {
         </section>
 
         {/* Pourquoi un achat groupé local */}
-        <section className="py-10 md:py-20 bg-card">
+        <section className="py-12 md:py-16 lg:py-20 bg-card">
           <div className="container mx-auto px-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -197,7 +197,7 @@ const OrganiserAchatGroupe = () => {
         </section>
 
         {/* Comment ça fonctionne - Same design as HowItWorksSection */}
-        <section className="py-10 md:py-24 relative overflow-hidden">
+        <section className="py-12 md:py-16 lg:py-20 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-subtle" />
           
           <div className="container mx-auto px-4 relative z-10">
@@ -271,7 +271,7 @@ const OrganiserAchatGroupe = () => {
         </section>
 
         {/* À qui s'adresse ce dispositif */}
-        <section className="py-10 md:py-20 bg-card">
+        <section className="py-12 md:py-16 lg:py-20 bg-card">
           <div className="container mx-auto px-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -305,7 +305,7 @@ const OrganiserAchatGroupe = () => {
         </section>
 
         {/* CTA Section - matching CTASection style */}
-        <section className="py-10 md:py-20">
+        <section className="py-12 md:py-16 lg:py-20">
           <div className="container mx-auto px-4">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
