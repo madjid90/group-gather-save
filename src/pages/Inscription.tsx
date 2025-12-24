@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router-dom";
-import { Zap, Check, ArrowRight, Loader2, Phone, User, Lock, Eye, EyeOff, ArrowLeft } from "lucide-react";
+import { Zap, Check, ArrowRight, Loader2, Phone, User, Lock, Eye, EyeOff, ArrowLeft, Share2, MessageCircle, Mail, Copy } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -27,6 +27,10 @@ export default function Inscription() {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [showPassword, setShowPassword] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/inscription` : "";
+  const shareText = "Je viens de m'inscrire à l'achat groupé Switchly pour économiser sur mes factures ! Rejoins-moi :";
 
   // Scroll to top on mount
   useEffect(() => {
@@ -39,6 +43,34 @@ export default function Inscription() {
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
+  };
+
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      toast.success("Lien copié !");
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      toast.error("Impossible de copier le lien");
+    }
+  };
+
+  const handleWhatsAppShare = () => {
+    const url = `https://wa.me/?text=${encodeURIComponent(`${shareText} ${shareUrl}`)}`;
+    window.open(url, "_blank");
+  };
+
+  const handleSMSShare = () => {
+    const url = `sms:?body=${encodeURIComponent(`${shareText} ${shareUrl}`)}`;
+    window.location.href = url;
+  };
+
+  const handleEmailShare = () => {
+    const subject = "Rejoins l'achat groupé Switchly !";
+    const body = `${shareText}\n\n${shareUrl}`;
+    const url = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = url;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -106,8 +138,6 @@ export default function Inscription() {
 
       setIsSuccess(true);
       toast.success("Inscription réussie !");
-      // Redirect to dashboard after a short delay
-      setTimeout(() => navigate("/dashboard-client"), 2000);
     } catch (error) {
       toast.error("Une erreur est survenue. Veuillez réessayer.");
     } finally {
@@ -117,29 +147,88 @@ export default function Inscription() {
 
   if (isSuccess) {
     return (
-      <PageTransition className="h-screen overflow-hidden flex items-center justify-center px-4 bg-gradient-subtle">
+      <PageTransition className="min-h-screen flex items-center justify-center px-4 py-8 bg-gradient-subtle">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="w-full max-w-md bg-card rounded-xl md:rounded-2xl p-4 md:p-6 shadow-switchly-xl border border-border text-center"
+          className="w-full max-w-md bg-card rounded-xl md:rounded-2xl p-5 md:p-8 shadow-switchly-xl border border-border text-center"
         >
-          <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mx-auto mb-4">
-            <Check className="w-6 h-6 text-secondary" />
+          {/* Success icon */}
+          <div className="w-14 h-14 rounded-full bg-secondary/10 flex items-center justify-center mx-auto mb-5">
+            <Check className="w-7 h-7 text-secondary" />
           </div>
-          <h1 className="text-[20px] sm:text-2xl font-bold text-foreground mb-2">
+
+          {/* Welcome message */}
+          <h1 className="text-xl sm:text-2xl font-bold text-foreground mb-2">
             Bienvenue sur Switchly !
           </h1>
-          <p className="text-sm text-muted-foreground mb-4">
+          <p className="text-sm text-muted-foreground mb-6">
             Votre inscription est confirmée. Complétez votre profil logement pour recevoir une offre personnalisée.
           </p>
+
+          {/* Primary CTA */}
           <Button 
             variant="hero" 
             size="lg"
-            className="w-full py-3 text-sm"
+            className="w-full py-4 text-sm mb-6"
             asChild
           >
             <Link to="/dashboard-client">Accéder à mon espace</Link>
           </Button>
+
+          {/* Share section */}
+          <div className="border-t border-border pt-6">
+            <h2 className="text-base font-semibold text-foreground mb-2">
+              Invitez vos proches !
+            </h2>
+            <p className="text-xs text-muted-foreground mb-4">
+              Plus on est nombreux, plus on économise. Partagez Switchly !
+            </p>
+
+            {/* Share buttons */}
+            <div className="flex flex-wrap justify-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleWhatsAppShare}
+                className="gap-1.5"
+              >
+                <MessageCircle className="w-4 h-4 text-green-500" />
+                WhatsApp
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleSMSShare}
+                className="gap-1.5"
+              >
+                <MessageCircle className="w-4 h-4" />
+                SMS
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleEmailShare}
+                className="gap-1.5"
+              >
+                <Mail className="w-4 h-4" />
+                Email
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleCopyLink}
+                className="gap-1.5"
+              >
+                {copied ? <Check className="w-4 h-4 text-secondary" /> : <Copy className="w-4 h-4" />}
+                {copied ? "Copié !" : "Copier"}
+              </Button>
+            </div>
+
+            <p className="text-xs text-muted-foreground mt-3">
+              Aucun engagement pour vos proches
+            </p>
+          </div>
         </motion.div>
       </PageTransition>
     );
