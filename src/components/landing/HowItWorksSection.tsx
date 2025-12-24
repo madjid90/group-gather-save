@@ -24,7 +24,7 @@ const steps = [
     icon: Gift,
     number: "3",
     title: "Vous recevez votre offre",
-    titleMobile: "Offre reçue sous 48h",
+    titleMobile: "Recevez votre offre",
     description: "Comparez et décidez librement. Si ça ne convient pas, vous ne faites rien.",
     descriptionMobile: "Libre d'accepter ou refuser.",
   },

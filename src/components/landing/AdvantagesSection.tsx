@@ -20,9 +20,9 @@ const advantages = [
   },
   {
     icon: Clock,
-    title: "Offre en 48h",
-    description: "Inscription en 30 secondes, offre personnalisée sous 48h.",
-    descriptionMobile: "30 sec d'inscription, 48h de délai.",
+    title: "Rapide et simple",
+    description: "Inscription en 30 secondes, offre personnalisée rapidement.",
+    descriptionMobile: "30 sec d'inscription, offre rapide.",
     color: "primary",
   },
   {

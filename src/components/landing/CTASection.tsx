@@ -25,8 +25,7 @@ export function CTASection() {
               Rejoindre l'achat groupé Switchly
             </h2>
             <p className="text-sm lg:text-xl text-primary-foreground/80 mb-8 lg:mb-10 max-w-2xl mx-auto">
-              <span className="hidden lg:inline">Inscription gratuite en 30 secondes. Offre personnalisée sous 48h. Sans engagement.</span>
-              <span className="lg:hidden">Gratuit, sans engagement, 30 secondes.</span>
+              Inscription gratuite en 30 secondes. Offre personnalisée. Sans engagement.
             </p>
             {/* CTA - hidden on mobile */}
             <div className="hidden lg:flex justify-center">
@@ -43,7 +42,7 @@ export function CTASection() {
               </Button>
             </div>
             <p className="text-xs lg:text-base text-primary-foreground/70 mt-6 lg:mt-8">
-              Gratuit • Sans engagement • Résultat en 48h
+              Gratuit • Sans engagement
             </p>
           </div>
         </motion.div>
