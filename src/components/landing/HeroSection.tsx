@@ -44,12 +44,12 @@ export function HeroSection() {
             {/* Title - same for all */}
             <h1 className="text-3xl sm:text-4xl xl:text-5xl font-bold text-foreground leading-tight text-center lg:text-left">
               Économisez jusqu'à 400€ par an{" "}
-              <span className="gradient-text">sur vos factures d'énergie</span>
+              <span className="gradient-text">sur vos factures d'énergie et d'internet</span>
             </h1>
 
             {/* Subtitle - same for all */}
             <p className="text-lg lg:text-xl text-muted-foreground max-w-xl text-center lg:text-left">
-              Achat groupé gratuit et sans engagement. Plus on est nombreux, plus les prix baissent.
+              Achat groupé d'électricité et d'internet, gratuit et sans engagement. Plus on est nombreux, plus les prix baissent.
             </p>
 
             {/* CTA Button - Desktop only */}

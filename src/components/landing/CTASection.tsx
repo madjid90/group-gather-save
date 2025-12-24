@@ -22,7 +22,7 @@ export function CTASection() {
 
           <div className="relative z-10">
             <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold text-primary-foreground mb-4 lg:mb-8">
-              Rejoindre l'achat groupé Switchly
+              Rejoignez l'achat groupé électricité & internet
             </h2>
             <p className="text-sm lg:text-xl text-primary-foreground/80 mb-8 lg:mb-10 max-w-2xl mx-auto">
               Inscription gratuite en 30 secondes. Offre personnalisée. Sans engagement.
