@@ -1,9 +1,12 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
+import { AnimatedCounter, useAnimatedSocialProof } from "@/components/ui/AnimatedCounter";
+import { CheckCircle } from "lucide-react";
 
 export function HeroSection() {
+  const { count, notification, showNotification } = useAnimatedSocialProof(2547, 12000);
+
   return (
     <section className="relative min-h-[50vh] lg:min-h-[70vh] flex items-center overflow-hidden py-8 lg:py-0">
       {/* Background gradient */}
@@ -101,13 +104,13 @@ export function HeroSection() {
             {/* Main card - Social proof with animated counter */}
             <div className="relative bg-card rounded-3xl p-10 shadow-switchly-xl border border-border text-center">
               <div className="space-y-4">
-                {/* Animated counter */}
+                {/* Animated counter - synchronized with notifications */}
                 <div className="text-5xl font-bold text-foreground">
                   <AnimatedCounter 
-                    target={2547} 
+                    target={2547}
+                    externalValue={count}
                     duration={2.5}
                     showLiveIndicator={true}
-                    incrementInterval={12000}
                   />
                 </div>
                 <p className="text-xl text-muted-foreground">
@@ -119,23 +122,32 @@ export function HeroSection() {
               </div>
             </div>
 
-            {/* Floating notification - simulated new signup */}
-            <motion.div
-              className="absolute -bottom-4 -left-4 bg-card border border-border rounded-xl p-3 shadow-switchly-lg"
-              initial={{ opacity: 0, y: 20, scale: 0.9 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ delay: 3, duration: 0.5 }}
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center">
-                  <span className="text-secondary text-sm">✓</span>
-                </div>
-                <div className="text-left">
-                  <p className="text-xs font-medium text-foreground">Marie L. vient de s'inscrire</p>
-                  <p className="text-xs text-muted-foreground">Paris • il y a 2 min</p>
-                </div>
-              </div>
-            </motion.div>
+            {/* Floating notification - animated with real data */}
+            <AnimatePresence>
+              {showNotification && notification && (
+                <motion.div
+                  className="absolute -bottom-4 -left-4 bg-card border border-border rounded-xl p-3 shadow-switchly-lg"
+                  initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center">
+                      <CheckCircle className="w-5 h-5 text-secondary" />
+                    </div>
+                    <div className="text-left">
+                      <p className="text-sm font-medium text-foreground">
+                        {notification.name} vient de s'inscrire
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {notification.city} • {notification.time}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         </div>
       </div>

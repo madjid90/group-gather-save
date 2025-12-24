@@ -1,5 +1,5 @@
-import { useEffect, useState, useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useEffect, useState, useRef, useCallback } from "react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 
 interface AnimatedCounterProps {
   target: number;
@@ -8,7 +8,8 @@ interface AnimatedCounterProps {
   prefix?: string;
   className?: string;
   showLiveIndicator?: boolean;
-  incrementInterval?: number;
+  onIncrement?: (newValue: number) => void;
+  externalValue?: number;
 }
 
 export function AnimatedCounter({
@@ -18,21 +19,22 @@ export function AnimatedCounter({
   prefix = "",
   className = "",
   showLiveIndicator = false,
-  incrementInterval = 8000,
+  externalValue,
 }: AnimatedCounterProps) {
   const [count, setCount] = useState(0);
-  const [displayTarget, setDisplayTarget] = useState(target);
-  const [isIncrementing, setIsIncrementing] = useState(false);
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true });
   const hasAnimated = useRef(false);
+
+  // Use external value if provided, otherwise use internal count
+  const displayValue = externalValue !== undefined ? externalValue : count;
 
   // Initial count-up animation
   useEffect(() => {
     if (isInView && !hasAnimated.current) {
       hasAnimated.current = true;
       const startTime = Date.now();
-      const endTime = startTime + duration * 1000;
+      const animationTarget = externalValue !== undefined ? externalValue : target;
 
       const animate = () => {
         const now = Date.now();
@@ -40,54 +42,36 @@ export function AnimatedCounter({
         
         // Easing function for smooth deceleration
         const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-        const currentCount = Math.floor(easeOutQuart * displayTarget);
+        const currentCount = Math.floor(easeOutQuart * animationTarget);
         
         setCount(currentCount);
 
         if (progress < 1) {
           requestAnimationFrame(animate);
         } else {
-          setCount(displayTarget);
+          setCount(animationTarget);
         }
       };
 
       requestAnimationFrame(animate);
     }
-  }, [isInView, displayTarget, duration]);
+  }, [isInView, target, duration, externalValue]);
 
-  // Simulate live increments
-  useEffect(() => {
-    if (!showLiveIndicator || !hasAnimated.current) return;
-
-    const interval = setInterval(() => {
-      const increment = Math.floor(Math.random() * 3) + 1; // 1-3 new signups
-      setIsIncrementing(true);
-      
-      setDisplayTarget((prev) => {
-        const newTarget = prev + increment;
-        setCount(newTarget);
-        return newTarget;
-      });
-
-      // Reset increment indicator after animation
-      setTimeout(() => setIsIncrementing(false), 500);
-    }, incrementInterval);
-
-    return () => clearInterval(interval);
-  }, [showLiveIndicator, incrementInterval]);
-
-  const formattedCount = count.toLocaleString("fr-FR");
+  const formattedCount = displayValue.toLocaleString("fr-FR");
 
   return (
     <span ref={ref} className={`relative inline-flex items-center gap-2 ${className}`}>
-      <motion.span
-        key={count}
-        initial={isIncrementing ? { scale: 1.1, color: "hsl(var(--secondary))" } : false}
-        animate={{ scale: 1, color: "hsl(var(--foreground))" }}
-        transition={{ duration: 0.3 }}
-      >
-        {prefix}{formattedCount}{suffix}
-      </motion.span>
+      <AnimatePresence mode="popLayout">
+        <motion.span
+          key={displayValue}
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 20, opacity: 0 }}
+          transition={{ duration: 0.3, type: "spring", stiffness: 200 }}
+        >
+          {prefix}{formattedCount}{suffix}
+        </motion.span>
+      </AnimatePresence>
       
       {showLiveIndicator && (
         <span className="inline-flex items-center gap-1.5">
@@ -108,4 +92,75 @@ export function AnimatedCounter({
       )}
     </span>
   );
+}
+
+// Hook to manage synchronized counter and notifications
+const firstNames = [
+  "Marie", "Thomas", "Julie", "Nicolas", "Sophie", "Pierre", "Camille", "Lucas",
+  "Emma", "Maxime", "Léa", "Antoine", "Chloé", "Alexandre", "Manon", "Julien",
+  "Sarah", "Romain", "Laura", "Mathieu", "Pauline", "Florian", "Marine", "Kevin"
+];
+
+const cities = [
+  "Paris", "Lyon", "Marseille", "Toulouse", "Nice", "Nantes", "Strasbourg", "Montpellier",
+  "Bordeaux", "Lille", "Rennes", "Reims", "Toulon", "Grenoble", "Dijon", "Angers"
+];
+
+export function useAnimatedSocialProof(initialCount: number, intervalMs: number = 10000) {
+  const [count, setCount] = useState(initialCount);
+  const [notification, setNotification] = useState<{
+    name: string;
+    city: string;
+    initial: string;
+    time: string;
+  } | null>(null);
+  const [showNotification, setShowNotification] = useState(false);
+
+  const generateNotification = useCallback(() => {
+    const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+    const city = cities[Math.floor(Math.random() * cities.length)];
+    const times = ["à l'instant", "il y a 1 min", "il y a 2 min"];
+    const time = times[Math.floor(Math.random() * times.length)];
+    
+    return {
+      name: `${firstName} ${firstName.charAt(0)}.`,
+      city,
+      initial: firstName.charAt(0),
+      time
+    };
+  }, []);
+
+  useEffect(() => {
+    // Initial notification after delay
+    const initialTimeout = setTimeout(() => {
+      const newNotification = generateNotification();
+      setNotification(newNotification);
+      setShowNotification(true);
+      setCount(prev => prev + 1);
+
+      // Hide after 4 seconds
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 4000);
+    }, 4000);
+
+    // Recurring notifications
+    const interval = setInterval(() => {
+      const newNotification = generateNotification();
+      setNotification(newNotification);
+      setShowNotification(true);
+      setCount(prev => prev + 1);
+
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 4000);
+    }, intervalMs);
+
+    return () => {
+      clearTimeout(initialTimeout);
+      clearInterval(interval);
+    };
+  }, [generateNotification, intervalMs]);
+
+  return { count, notification, showNotification };
 }
