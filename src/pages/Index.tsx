@@ -8,6 +8,7 @@ import { FAQSection } from "@/components/landing/FAQSection";
 import { CTASection } from "@/components/landing/CTASection";
 import { CollectivitesSection } from "@/components/landing/CollectivitesSection";
 import { MobileFixedCTA } from "@/components/landing/MobileFixedCTA";
+import { SocialProofNotifications } from "@/components/landing/SocialProofNotifications";
 import { PageTransition } from "@/components/PageTransition";
 
 const Index = () => {
@@ -42,6 +43,9 @@ const Index = () => {
       
       {/* Fixed CTA for mobile only */}
       <MobileFixedCTA />
+      
+      {/* Social proof notifications */}
+      <SocialProofNotifications />
       
       {/* Spacer for fixed CTA on mobile */}
       <div className="h-20 md:hidden" />
