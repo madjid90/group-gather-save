@@ -1,5 +1,4 @@
 import { HeroSection } from "@/components/landing/HeroSection";
-import { ShareSection } from "@/components/landing/ShareSection";
 import { HowItWorksSection } from "@/components/landing/HowItWorksSection";
 import { AdvantagesSection } from "@/components/landing/AdvantagesSection";
 import { PartnersSection } from "@/components/landing/PartnersSection";
@@ -9,6 +8,7 @@ import { CTASection } from "@/components/landing/CTASection";
 import { CollectivitesSection } from "@/components/landing/CollectivitesSection";
 import { MobileFixedCTA } from "@/components/landing/MobileFixedCTA";
 import { SocialProofNotifications } from "@/components/landing/SocialProofNotifications";
+import { FloatingShareButton } from "@/components/landing/FloatingShareButton";
 import { PageTransition } from "@/components/PageTransition";
 
 const Index = () => {
@@ -17,28 +17,25 @@ const Index = () => {
       {/* 1. Hero simplifié */}
       <HeroSection />
       
-      {/* 2. Partage & viralité */}
-      <ShareSection />
-      
-      {/* 3. Comment ça marche */}
+      {/* 2. Comment ça marche */}
       <HowItWorksSection />
       
-      {/* 4. Pourquoi Switchly */}
+      {/* 3. Pourquoi Switchly */}
       <AdvantagesSection />
       
-      {/* 5. Témoignages */}
+      {/* 4. Témoignages */}
       <TestimonialsSection />
       
-      {/* 6. Fournisseurs partenaires */}
+      {/* 5. Fournisseurs partenaires */}
       <PartnersSection />
       
-      {/* 7. FAQ */}
+      {/* 6. FAQ */}
       <FAQSection />
       
-      {/* 8. CTA final */}
+      {/* 7. CTA final */}
       <CTASection />
       
-      {/* 9. Collectivités (section bonus) */}
+      {/* 8. Collectivités */}
       <CollectivitesSection />
       
       {/* Fixed CTA for mobile only */}
@@ -46,6 +43,9 @@ const Index = () => {
       
       {/* Social proof notifications */}
       <SocialProofNotifications />
+      
+      {/* Floating share button */}
+      <FloatingShareButton />
       
       {/* Spacer for fixed CTA on mobile */}
       <div className="h-20 md:hidden" />
