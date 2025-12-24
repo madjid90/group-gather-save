@@ -142,14 +142,7 @@ export function FloatingShareButton() {
             exit={{ opacity: 0, scale: 0.8 }}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => {
-              // On mobile, use native share if available
-              if (window.innerWidth < 768 && navigator.share) {
-                handleNativeShare();
-              } else {
-                setIsOpen(!isOpen);
-              }
-            }}
+            onClick={() => setIsOpen(!isOpen)}
             className="fixed bottom-20 md:bottom-6 right-4 z-50 w-12 h-12 rounded-full bg-gradient-hero text-primary-foreground shadow-glow flex items-center justify-center"
           >
             <Share2 className="w-5 h-5" />
