@@ -239,7 +239,7 @@ export function Navbar() {
                       asChild
                     >
                       <Link to="/inscription" onClick={() => setIsMobileOpen(false)}>
-                        Rejoindre l'achat groupé
+                        Rejoindre l'achat groupé gratuitement
                         <ArrowRight className="w-4 h-4 ml-2" />
                       </Link>
                     </Button>
