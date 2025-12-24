@@ -1,4 +1,5 @@
 import { HeroSection } from "@/components/landing/HeroSection";
+import { ShareSection } from "@/components/landing/ShareSection";
 import { HowItWorksSection } from "@/components/landing/HowItWorksSection";
 import { AdvantagesSection } from "@/components/landing/AdvantagesSection";
 import { PartnersSection } from "@/components/landing/PartnersSection";
@@ -12,33 +13,36 @@ import { PageTransition } from "@/components/PageTransition";
 const Index = () => {
   return (
     <PageTransition>
+      {/* 1. Hero simplifié */}
       <HeroSection />
-      {/* How it works moved higher on mobile via CSS order */}
-      <div className="contents md:contents">
-        <div className="order-1 md:order-none">
-          <HowItWorksSection />
-        </div>
-        <div className="order-2 md:order-none">
-          <AdvantagesSection />
-        </div>
-        <div className="order-3 md:order-none">
-          <PartnersSection />
-        </div>
-        <div className="order-4 md:order-none">
-          <TestimonialsSection />
-        </div>
-        <div className="order-5 md:order-none">
-          <FAQSection />
-        </div>
-        <div className="order-6 md:order-none">
-          <CTASection />
-        </div>
-        <div className="order-7 md:order-none">
-          <CollectivitesSection />
-        </div>
-      </div>
+      
+      {/* 2. Partage & viralité */}
+      <ShareSection />
+      
+      {/* 3. Comment ça marche */}
+      <HowItWorksSection />
+      
+      {/* 4. Pourquoi Switchly */}
+      <AdvantagesSection />
+      
+      {/* 5. Témoignages */}
+      <TestimonialsSection />
+      
+      {/* 6. Fournisseurs partenaires */}
+      <PartnersSection />
+      
+      {/* 7. FAQ */}
+      <FAQSection />
+      
+      {/* 8. CTA final */}
+      <CTASection />
+      
+      {/* 9. Collectivités (section bonus) */}
+      <CollectivitesSection />
+      
       {/* Fixed CTA for mobile only */}
       <MobileFixedCTA />
+      
       {/* Spacer for fixed CTA on mobile */}
       <div className="h-20 md:hidden" />
     </PageTransition>

@@ -8,31 +8,31 @@ const steps = [
     icon: UserPlus,
     number: "1",
     title: "Inscrivez-vous en 30 secondes",
-    titleMobile: "30 secondes pour s'inscrire",
-    description: "Renseignez votre email et quelques infos sur votre logement. C'est gratuit et sans engagement.",
+    titleMobile: "Inscription en 30 sec",
+    description: "Email + quelques infos sur votre logement. Gratuit et sans engagement.",
     descriptionMobile: "Email + infos logement. Gratuit.",
   },
   {
     icon: Users,
     number: "2",
-    title: "On négocie pour vous les meilleurs tarifs",
+    title: "On négocie pour vous",
     titleMobile: "On négocie pour vous",
-    description: "Plus vous êtes nombreux, plus notre pouvoir de négociation augmente auprès des fournisseurs d'énergie et d'internet.",
+    description: "Plus vous êtes nombreux, plus notre pouvoir de négociation augmente.",
     descriptionMobile: "Pouvoir collectif = meilleurs prix.",
   },
   {
     icon: Gift,
     number: "3",
-    title: "Vous recevez une offre personnalisée sous 48h",
+    title: "Vous recevez votre offre",
     titleMobile: "Offre reçue sous 48h",
-    description: "Comparez avec votre contrat actuel et décidez librement. Si ça ne vous convient pas, vous ne faites rien.",
+    description: "Comparez et décidez librement. Si ça ne convient pas, vous ne faites rien.",
     descriptionMobile: "Libre d'accepter ou refuser.",
   },
 ];
 
 export function HowItWorksSection() {
   return (
-    <section id="comment-ca-marche" className="py-10 lg:py-20 bg-card">
+    <section id="comment-ca-marche" className="py-10 lg:py-20 bg-background">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -41,12 +41,12 @@ export function HowItWorksSection() {
           transition={{ duration: 0.5 }}
           className="text-center mb-8 lg:mb-14"
         >
-          <h2 className="text-xl sm:text-2xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-3 lg:mb-6">
-            3 étapes simples pour économiser
+          <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold text-foreground mb-3 lg:mb-6">
+            Comment ça marche
           </h2>
           <p className="text-base lg:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
-            <span className="hidden lg:inline">Rejoignez 2 500+ foyers et recevez votre offre personnalisée en moins de 48h</span>
-            <span className="lg:hidden">Offre personnalisée en 48h</span>
+            <span className="hidden lg:inline">3 étapes simples pour économiser sur vos factures</span>
+            <span className="lg:hidden">3 étapes simples</span>
           </p>
         </motion.div>
 
@@ -60,7 +60,7 @@ export function HowItWorksSection() {
               transition={{ duration: 0.5, delay: index * 0.15 }}
               className="relative"
             >
-              <div className="bg-background rounded-xl lg:rounded-2xl p-5 lg:p-8 h-full border border-border card-hover">
+              <div className="bg-card rounded-xl lg:rounded-2xl p-5 lg:p-8 h-full border border-border card-hover">
                 {/* Number badge */}
                 <div className="absolute -top-2 lg:-top-4 left-5 lg:left-8 bg-gradient-hero text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
                   Étape {step.number}
@@ -90,17 +90,6 @@ export function HowItWorksSection() {
           ))}
         </div>
 
-        {/* Micro-texte explicatif */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="text-center text-sm text-muted-foreground mb-8 lg:mb-12"
-        >
-          Switchly n'est pas un fournisseur. Nous organisons des achats groupés indépendants.
-        </motion.p>
-
         {/* CTA - hidden on mobile */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -110,7 +99,7 @@ export function HowItWorksSection() {
           className="hidden lg:flex justify-center"
         >
           <Button variant="hero" size="xl" className="py-6 px-10 text-lg" asChild>
-            <Link to="/inscription">Commencer maintenant — C'est gratuit →</Link>
+            <Link to="/inscription">Rejoindre l'achat groupé gratuitement</Link>
           </Button>
         </motion.div>
       </div>

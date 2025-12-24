@@ -7,35 +7,35 @@ const testimonials = [
   {
     name: "Julie M.",
     rating: 5,
-    text: "J'économise 27€/mois sur l'électricité. En 6 mois, c'est déjà 162€ de gagnés. Je recommande vivement !",
-    textMobile: "27€/mois économisés, 162€ en 6 mois.",
+    text: "J'économise 27€/mois sur l'électricité. En 6 mois, c'est déjà 162€ de gagnés.",
+    textMobile: "27€/mois économisés.",
     avatar: "J",
   },
   {
     name: "Thomas D.",
     rating: 5,
-    text: "Sceptique au début, j'ai finalement économisé 340€ sur l'année sans changer mes habitudes. Top !",
-    textMobile: "340€/an économisés, sans effort.",
+    text: "Sceptique au début, j'ai finalement économisé 340€ sur l'année sans changer mes habitudes.",
+    textMobile: "340€/an économisés.",
     avatar: "T",
   },
   {
     name: "Camille P.",
     rating: 5,
-    text: "Inscription en 30 secondes, offre reçue le lendemain. J'ai comparé : 23% moins cher que mon ancien contrat.",
-    textMobile: "23% moins cher, offre reçue en 24h.",
+    text: "Inscription en 30 secondes, offre reçue le lendemain. 23% moins cher que mon ancien contrat.",
+    textMobile: "23% moins cher.",
     avatar: "C",
   },
   {
     name: "Nadia K.",
     rating: 5,
-    text: "J'ai hésité mais c'est vraiment gratuit. Mon offre internet est passée de 45€ à 29€/mois. Merci Switchly !",
+    text: "Mon offre internet est passée de 45€ à 29€/mois. Merci Switchly !",
     textMobile: "Internet : de 45€ à 29€/mois.",
     avatar: "N",
   },
   {
     name: "Karim B.",
     rating: 5,
-    text: "Le concept est simple et efficace. En un an, j'ai économisé 412€ sur électricité + internet combinés.",
+    text: "En un an, j'ai économisé 412€ sur électricité + internet combinés.",
     textMobile: "412€ économisés en 1 an.",
     avatar: "K",
   },
@@ -55,11 +55,11 @@ export function TestimonialsSection() {
           className="text-center mb-8 lg:mb-12"
         >
           <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold text-foreground mb-3 lg:mb-4">
-            Ils économisent en moyenne 312€/an
+            Témoignages
           </h2>
           <p className="text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
-            <span className="hidden lg:inline">Découvrez les témoignages de nos membres qui ont réduit leurs factures grâce à l'achat groupé Switchly.</span>
-            <span className="lg:hidden">Témoignages vérifiés de nos membres</span>
+            <span className="hidden lg:inline">Découvrez les économies réalisées par nos membres</span>
+            <span className="lg:hidden">Économies de nos membres</span>
           </p>
         </motion.div>
 
@@ -88,7 +88,7 @@ export function TestimonialsSection() {
                 {/* Quote - smaller on mobile */}
                 <p className="text-foreground mb-3 md:mb-4 text-sm md:text-sm leading-relaxed">
                   "<span className="hidden md:inline">{testimonial.text}</span>
-                  <span className="md:hidden">{testimonial.textMobile || testimonial.text}</span>"
+                  <span className="md:hidden">{testimonial.textMobile}</span>"
                 </p>
 
                 {/* Author - smaller on mobile */}
@@ -119,7 +119,7 @@ export function TestimonialsSection() {
           className="hidden md:block text-center"
         >
           <Button variant="hero" size="lg" asChild>
-            <Link to="/inscription">Rejoindre les 2 500+ membres →</Link>
+            <Link to="/inscription">Rejoindre l'achat groupé gratuitement</Link>
           </Button>
         </motion.div>
       </div>

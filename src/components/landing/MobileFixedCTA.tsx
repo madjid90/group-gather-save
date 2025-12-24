@@ -14,25 +14,25 @@ export function MobileFixedCTA() {
         transition={{ delay: 1, type: "spring", stiffness: 100 }}
         className="fixed bottom-0 left-0 right-0 z-50 px-4 py-1 bg-background md:hidden flex justify-center"
       >
-      <motion.div
-        animate={{ scale: [1, 1.02, 1] }}
-        transition={{ 
-          duration: 2,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-      >
-        <Button 
-          variant="hero" 
-          size="lg" 
-          className="w-full py-4 text-sm font-semibold"
-          asChild
+        <motion.div
+          animate={{ scale: [1, 1.02, 1] }}
+          transition={{ 
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
         >
-          <Link to="/inscription">
-            Je rejoins l'achat groupé gratuitement
-          </Link>
-        </Button>
-      </motion.div>
+          <Button 
+            variant="hero" 
+            size="lg" 
+            className="w-full py-4 text-sm font-semibold"
+            asChild
+          >
+            <Link to="/inscription">
+              Rejoindre gratuitement
+            </Link>
+          </Button>
+        </motion.div>
       </motion.div>
     </>
   );
