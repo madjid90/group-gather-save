@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { TrendingDown, Scale, Clock, Shield } from "lucide-react";
+import { TrendingDown, Scale, Clock, Shield, Zap, Wifi } from "lucide-react";
 
 const advantages = [
   {
@@ -45,9 +45,19 @@ export function AdvantagesSection() {
           transition={{ duration: 0.5 }}
           className="text-center mb-8 lg:mb-14"
         >
-          <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold text-foreground mb-3 lg:mb-6">
+          <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold text-foreground mb-3 lg:mb-4">
             Pourquoi Switchly
           </h2>
+          <div className="flex items-center justify-center gap-3 mb-3 lg:mb-6">
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 text-primary">
+              <Zap className="w-3.5 h-3.5" />
+              <span className="text-xs font-medium">Électricité</span>
+            </div>
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary/10 text-secondary">
+              <Wifi className="w-3.5 h-3.5" />
+              <span className="text-xs font-medium">Internet</span>
+            </div>
+          </div>
           <p className="text-base lg:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
             <span className="hidden lg:inline">Des avantages concrets pour votre budget</span>
             <span className="lg:hidden">Avantages concrets</span>

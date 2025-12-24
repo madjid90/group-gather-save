@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Zap, Wifi } from "lucide-react";
 
 export function CTASection() {
   return (
@@ -21,8 +21,18 @@ export function CTASection() {
           </div>
 
           <div className="relative z-10">
+            <div className="flex items-center justify-center gap-3 mb-4 lg:mb-6">
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary-foreground/20 text-primary-foreground">
+                <Zap className="w-4 h-4" />
+                <span className="text-sm font-medium">Électricité</span>
+              </div>
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary-foreground/20 text-primary-foreground">
+                <Wifi className="w-4 h-4" />
+                <span className="text-sm font-medium">Internet</span>
+              </div>
+            </div>
             <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold text-primary-foreground mb-4 lg:mb-8">
-              Rejoignez l'achat groupé électricité & internet
+              Rejoignez l'achat groupé
             </h2>
             <p className="text-sm lg:text-xl text-primary-foreground/80 mb-8 lg:mb-10 max-w-2xl mx-auto">
               Inscription gratuite en 30 secondes. Offre personnalisée. Sans engagement.
