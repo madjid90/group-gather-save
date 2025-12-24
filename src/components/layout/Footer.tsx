@@ -65,7 +65,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  to="/mentions-legales#rgpd"
+                  to="/politique-rgpd"
                   className="text-sm text-muted-foreground hover:text-primary transition-colors"
                 >
                   Politique RGPD
@@ -73,7 +73,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  to="/mentions-legales#cgu"
+                  to="/cgu"
                   className="text-sm text-muted-foreground hover:text-primary transition-colors"
                 >
                   CGU

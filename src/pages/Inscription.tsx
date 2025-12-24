@@ -264,7 +264,7 @@ export default function Inscription() {
               Rejoindre l'achat groupé
             </h1>
             <p className="text-sm text-muted-foreground">
-              Inscription gratuite en 10 secondes
+              Inscription gratuite en 30 secondes
             </p>
           </div>
 

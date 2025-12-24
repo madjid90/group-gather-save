@@ -9,8 +9,8 @@ const steps = [
     number: "1",
     title: "Inscrivez-vous en 30 secondes",
     titleMobile: "Inscription en 30 sec",
-    description: "Email + quelques infos sur votre logement. Gratuit et sans engagement.",
-    descriptionMobile: "Email + infos logement. Gratuit.",
+    description: "Téléphone + quelques infos sur votre logement. Gratuit et sans engagement.",
+    descriptionMobile: "Téléphone + infos logement. Gratuit.",
   },
   {
     icon: Users,
