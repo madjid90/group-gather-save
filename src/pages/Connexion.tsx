@@ -86,7 +86,7 @@ export default function Connexion() {
   };
 
   return (
-    <PageTransition className="h-screen overflow-hidden flex items-center justify-center px-4 bg-gradient-subtle relative">
+    <PageTransition className="min-h-screen flex items-center justify-center px-4 py-8 bg-gradient-subtle relative">
       {/* Fixed Back Button */}
       <Link 
         to="/" 
@@ -101,27 +101,27 @@ export default function Connexion() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="bg-card rounded-xl md:rounded-2xl p-4 md:p-6 shadow-switchly-xl border border-border"
+          className="bg-card rounded-2xl p-6 md:p-8 shadow-switchly-xl border border-border"
         >
           {/* Header */}
-          <div className="text-center mb-5">
-            <Link to="/" className="inline-flex items-center gap-2 mb-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center">
-                <Zap className="w-5 h-5 text-primary-foreground" />
+          <div className="text-center mb-6">
+            <Link to="/" className="inline-flex items-center gap-2 mb-4">
+              <div className="w-12 h-12 rounded-xl bg-gradient-hero flex items-center justify-center">
+                <Zap className="w-6 h-6 text-primary-foreground" />
               </div>
-              <span className="text-xl font-bold text-foreground">Switchly</span>
+              <span className="text-2xl font-bold text-foreground">Switchly</span>
             </Link>
-            <h1 className="text-[22px] sm:text-2xl font-bold text-foreground mb-1 leading-tight">
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
               Me connecter
             </h1>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-base text-muted-foreground">
               Accédez à votre espace membre
             </p>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-3">
-            <div className="space-y-1.5">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
               <Label htmlFor="telephone" className="flex items-center gap-2 text-sm font-medium text-foreground">
                 <Phone className="w-4 h-4 text-primary" />
                 Téléphone
@@ -133,14 +133,14 @@ export default function Connexion() {
                 value={formData.telephone}
                 onChange={handleChange}
                 placeholder="0612345678"
-                className={`text-sm ${errors.telephone ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
+                className={`h-12 text-base ${errors.telephone ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
               />
               {errors.telephone && (
-                <p className="text-xs text-destructive">{errors.telephone}</p>
+                <p className="text-sm text-destructive">{errors.telephone}</p>
               )}
             </div>
 
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               <Label htmlFor="password" className="flex items-center gap-2 text-sm font-medium text-foreground">
                 <Lock className="w-4 h-4 text-primary" />
                 Mot de passe
@@ -153,7 +153,7 @@ export default function Connexion() {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="Votre mot de passe"
-                  className={`text-sm pr-12 ${errors.password ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
+                  className={`h-12 text-base pr-12 ${errors.password ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
                 />
                 <button
                   type="button"
@@ -164,7 +164,7 @@ export default function Connexion() {
                 </button>
               </div>
               {errors.password && (
-                <p className="text-xs text-destructive">{errors.password}</p>
+                <p className="text-sm text-destructive">{errors.password}</p>
               )}
             </div>
 
@@ -172,7 +172,7 @@ export default function Connexion() {
               type="submit"
               variant="hero"
               size="lg"
-              className="w-full py-3 text-sm"
+              className="w-full h-12 text-base mt-2"
               disabled={isLoading}
             >
               {isLoading ? (
@@ -190,11 +190,11 @@ export default function Connexion() {
           </form>
 
           {/* Footer */}
-          <div className="mt-4 text-center">
-            <p className="text-sm text-muted-foreground">
+          <div className="mt-6 text-center">
+            <p className="text-base text-muted-foreground">
               Pas encore de compte ?{" "}
               <Link to="/inscription" className="text-primary hover:underline font-medium">
-                Inscrivez-vous
+                Inscrivez-vous gratuitement
               </Link>
             </p>
           </div>

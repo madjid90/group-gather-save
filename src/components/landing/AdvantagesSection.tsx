@@ -36,31 +36,33 @@ const advantages = [
 
 export function AdvantagesSection() {
   return (
-    <section className="py-12 md:py-16 lg:py-20 bg-card">
+    <section className="py-16 md:py-20 lg:py-24 bg-card">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-8 lg:mb-14"
+          className="text-center mb-10 lg:mb-16"
         >
-          <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold text-foreground mb-3 lg:mb-4">
-            Pourquoi Switchly
+          <span className="inline-block text-secondary font-semibold text-sm uppercase tracking-wide mb-3">
+            Nos avantages
+          </span>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4 lg:mb-6">
+            Pourquoi choisir Switchly ?
           </h2>
-          <div className="flex items-center justify-center gap-3 mb-3 lg:mb-6">
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 text-primary">
-              <Zap className="w-3.5 h-3.5" />
-              <span className="text-xs font-medium">Électricité</span>
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary">
+              <Zap className="w-4 h-4" />
+              <span className="text-sm font-medium">Électricité</span>
             </div>
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary/10 text-secondary">
-              <Wifi className="w-3.5 h-3.5" />
-              <span className="text-xs font-medium">Internet</span>
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary/10 text-secondary">
+              <Wifi className="w-4 h-4" />
+              <span className="text-sm font-medium">Internet</span>
             </div>
           </div>
-          <p className="text-base lg:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
-            <span className="hidden lg:inline">Des avantages concrets pour votre budget</span>
-            <span className="lg:hidden">Avantages concrets</span>
+          <p className="text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
+            Des économies réelles, sans risque et sans engagement. Découvrez les avantages de l'achat groupé.
           </p>
         </motion.div>
 

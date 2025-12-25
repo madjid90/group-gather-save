@@ -20,7 +20,7 @@ export const CollectivitesSection = () => {
   ];
 
   return (
-    <section className="relative py-12 md:py-16 lg:py-20 overflow-hidden">
+    <section className="relative py-16 md:py-20 lg:py-24 overflow-hidden">
       {/* Background gradient matching hero */}
       <div className="absolute inset-0 bg-gradient-subtle" />
       
@@ -58,22 +58,20 @@ export const CollectivitesSection = () => {
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-primary/10 text-primary border border-primary/20 mb-6"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary border border-primary/20 mb-6"
           >
             <Building2 className="w-4 h-4" />
-            <span className="text-xs md:text-sm font-medium">Collectivités & Partenaires</span>
+            <span className="text-sm font-medium">Collectivités & Partenaires</span>
           </motion.div>
 
-          <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 md:mb-6">
-            Vous souhaitez organiser un{" "}
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4 lg:mb-6">
+            Organisez un{" "}
             <span className="gradient-text">achat groupé</span>{" "}
-            dans votre ville ?
+            dans votre ville
           </h2>
           
-          <p className="text-base md:text-xl text-muted-foreground mb-8 md:mb-12 max-w-3xl mx-auto">
-            Switchly accompagne les mairies, collectivités et partenaires locaux
-            dans l'organisation d'achats groupés d'électricité et d'internet
-            au bénéfice des habitants, sans engagement et en toute transparence.
+          <p className="text-base lg:text-lg text-muted-foreground mb-10 lg:mb-12 max-w-3xl mx-auto">
+            Switchly accompagne les mairies, collectivités et partenaires locaux dans l'organisation d'achats groupés d'électricité et d'internet au bénéfice des habitants.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-10 md:mb-12">
