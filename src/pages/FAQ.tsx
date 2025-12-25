@@ -86,10 +86,10 @@ export default function FAQ() {
         {/* Back button */}
         <Link 
           to="/" 
-          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4"
+          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
         >
           <ArrowLeft className="w-4 h-4" />
-          Retour
+          Retour à l'accueil
         </Link>
 
         {/* Header */}
@@ -97,9 +97,9 @@ export default function FAQ() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-6 md:mb-12"
+          className="text-center mb-8 lg:mb-12"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary mb-3">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-4">
             <HelpCircle className="w-4 h-4" />
             <span className="text-sm font-medium">Questions fréquentes</span>
           </div>
@@ -118,8 +118,8 @@ export default function FAQ() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="max-w-3xl mx-auto"
         >
-          <div className="bg-card rounded-xl p-4 border border-border shadow-switchly-lg">
-            <Accordion type="single" collapsible className="space-y-2">
+          <div className="bg-card rounded-2xl p-6 md:p-8 border border-border shadow-switchly-lg">
+            <Accordion type="single" collapsible className="space-y-3">
               {faqItems.map((item, index) => (
                 <AccordionItem
                   key={index}
