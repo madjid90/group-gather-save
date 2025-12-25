@@ -127,6 +127,17 @@ export function HeroSection() {
               </div>
             </div>
             
+            {/* Trust badges - Mobile only */}
+            <div className="lg:hidden flex items-center justify-center gap-2 flex-wrap">
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card border border-border shadow-sm">
+                <MessageSquare className="w-4 h-4 text-primary" />
+                <span className="text-sm font-medium text-foreground">100% digital</span>
+              </div>
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card border border-border shadow-sm">
+                <Gift className="w-4 h-4 text-secondary" />
+                <span className="text-sm font-medium text-foreground">100% gratuit</span>
+              </div>
+            </div>
             
             {/* Scroll indicator - Mobile/Tablet only */}
             <motion.div 
