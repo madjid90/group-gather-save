@@ -197,20 +197,14 @@ export function HeroSection() {
                   y: { delay: 1.2, duration: 3, repeat: Infinity, ease: "easeInOut" }
                 }}
               >
-                <div className="flex items-center gap-3">
-                  {/* Avatar with initial */}
-                  <div className="w-11 h-11 rounded-full bg-gradient-to-br from-secondary to-primary flex items-center justify-center text-primary-foreground font-bold text-lg shadow-md">
-                    {notification?.name?.charAt(0) || "M"}
-                  </div>
-                  <div className="text-left">
-                    <p className="text-sm font-medium text-foreground flex items-center gap-1.5">
-                      <CheckCircle className="w-4 h-4 text-secondary" />
-                      {notification?.name || "Maxime"} vient de s'inscrire
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {notification?.city || "Amiens"} • {notification?.time || "il y a 2 min"}
-                    </p>
-                  </div>
+                <div className="text-left">
+                  <p className="text-sm font-medium text-foreground flex items-center gap-1.5">
+                    <CheckCircle className="w-4 h-4 text-secondary" />
+                    {notification?.name || "Maxime"} vient de s'inscrire
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {notification?.city || "Amiens"} • {notification?.time || "il y a 2 min"}
+                  </p>
                 </div>
               </motion.div>
             </div>
