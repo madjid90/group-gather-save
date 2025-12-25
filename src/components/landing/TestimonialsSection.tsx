@@ -8,8 +8,8 @@ const testimonials = [
     name: "Julie M.",
     location: "Lyon",
     rating: 5,
-    text: "Inscription rapide, aucun appel, tout par SMS. J'économise 27€/mois sur l'électricité depuis 6 mois.",
-    textMobile: "27€/mois économisés, tout par SMS.",
+    text: "Inscription rapide, aucun appel, tout par SMS. J'économise 70€/mois sur l'électricité depuis 6 mois.",
+    textMobile: "70€/mois économisés, tout par SMS.",
     avatar: "J",
   },
   {
