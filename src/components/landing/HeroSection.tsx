@@ -34,6 +34,40 @@ export function HeroSection() {
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          {/* Mobile counter - top */}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="lg:hidden flex items-center justify-center gap-3 mb-6"
+          >
+            <div className="flex items-center gap-2 bg-card/80 backdrop-blur-sm border border-border rounded-full px-4 py-2 shadow-lg">
+              <motion.span 
+                className="flex items-center gap-1.5 bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full text-xs font-semibold"
+                animate={{ 
+                  scale: [1, 1.05, 1],
+                }}
+                transition={{ 
+                  duration: 2, 
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-secondary-foreground animate-pulse" />
+                en direct
+              </motion.span>
+              <span className="text-lg font-bold text-foreground">
+                <AnimatedCounter 
+                  target={2547}
+                  externalValue={count}
+                  duration={2}
+                  showLiveIndicator={false}
+                />
+              </span>
+              <span className="text-sm text-muted-foreground">inscrits</span>
+            </div>
+          </motion.div>
+
           {/* Content */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
