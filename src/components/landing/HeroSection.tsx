@@ -148,17 +148,29 @@ export function HeroSection() {
                 </p>
               </motion.div>
 
-              {/* Social proof notification - always visible */}
+              {/* Social proof notification - always visible with subtle animation */}
               <motion.div
                 className="absolute -bottom-4 -left-4 bg-card border border-border rounded-xl p-3 shadow-switchly-lg"
                 initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ delay: 0.9, type: "spring", stiffness: 200, damping: 20 }}
+                animate={{ 
+                  opacity: 1, 
+                  y: [0, -4, 0], 
+                  scale: 1 
+                }}
+                transition={{ 
+                  opacity: { delay: 0.9, duration: 0.3 },
+                  scale: { delay: 0.9, duration: 0.3 },
+                  y: { delay: 1.2, duration: 3, repeat: Infinity, ease: "easeInOut" }
+                }}
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center">
+                  <motion.div 
+                    className="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center"
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  >
                     <CheckCircle className="w-5 h-5 text-secondary" />
-                  </div>
+                  </motion.div>
                   <div className="text-left">
                     <p className="text-sm font-medium text-foreground">
                       {notification?.name || "Marie M."} vient de s'inscrire
