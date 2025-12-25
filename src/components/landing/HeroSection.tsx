@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { AnimatedCounter, useAnimatedSocialProof } from "@/components/ui/AnimatedCounter";
-import { CheckCircle, MessageSquare, Gift } from "lucide-react";
+import { CheckCircle, MessageSquare, Gift, Zap, Wifi } from "lucide-react";
 import { trackClick } from "@/hooks/useClickTracking";
 
 export function HeroSection() {
@@ -199,9 +199,37 @@ export function HeroSection() {
                 </p>
               </motion.div>
 
+              {/* Savings cards */}
+              <motion.div 
+                className="flex gap-4 mt-6"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8, duration: 0.5 }}
+              >
+                {/* Electricity savings */}
+                <div className="flex-1 bg-card rounded-2xl p-5 shadow-switchly border border-border text-center">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <Zap className="w-5 h-5 text-primary" />
+                    <span className="text-sm font-medium text-muted-foreground">Électricité</span>
+                  </div>
+                  <p className="text-3xl font-bold text-foreground">250 €</p>
+                  <p className="text-sm text-secondary font-medium">jusqu'à /an estimés</p>
+                </div>
+
+                {/* Internet savings */}
+                <div className="flex-1 bg-card rounded-2xl p-5 shadow-switchly border border-border text-center">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <Wifi className="w-5 h-5 text-secondary" />
+                    <span className="text-sm font-medium text-muted-foreground">Internet</span>
+                  </div>
+                  <p className="text-3xl font-bold text-foreground">150 €</p>
+                  <p className="text-sm text-secondary font-medium">jusqu'à /an estimés</p>
+                </div>
+              </motion.div>
+
               {/* Social proof notification - always visible with subtle animation */}
               <motion.div
-                className="absolute -bottom-4 -left-4 bg-card border border-border rounded-2xl p-3 pr-5 shadow-switchly-lg"
+                className="absolute -bottom-16 -left-4 bg-card border border-border rounded-2xl p-3 pr-5 shadow-switchly-lg"
                 initial={{ opacity: 0, y: 20, scale: 0.9 }}
                 animate={{ 
                   opacity: 1, 
