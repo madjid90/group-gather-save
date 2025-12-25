@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { AnimatedCounter, useAnimatedSocialProof } from "@/components/ui/AnimatedCounter";
-import { CheckCircle, Zap, Wifi, MessageSquare, Gift } from "lucide-react";
+import { CheckCircle, MessageSquare, Gift } from "lucide-react";
 
 export function HeroSection() {
   const { count, notification, showNotification } = useAnimatedSocialProof(2547, 12000);
@@ -81,22 +81,10 @@ export function HeroSection() {
               <span className="gradient-text">d'énergie et d'internet</span>
             </h1>
 
-            {/* Service badges */}
-            <div className="flex flex-col items-center lg:items-start gap-3">
-              <div className="flex items-center justify-center lg:justify-start gap-2">
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary">
-                  <Zap className="w-4 h-4" />
-                  <span className="text-sm font-medium">Électricité</span>
-                </div>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary/10 text-secondary">
-                  <Wifi className="w-4 h-4" />
-                  <span className="text-sm font-medium">Internet</span>
-                </div>
-              </div>
-              <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-xl">
-                Achat groupé sans engagement. Plus on est nombreux, plus les prix baissent.
-              </p>
-            </div>
+            {/* Description */}
+            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-xl">
+              Achat groupé sans engagement. Plus on est nombreux, plus les prix baissent.
+            </p>
 
             {/* CTA Button - Desktop only */}
             <div className="hidden lg:flex flex-col items-start gap-4 pt-2">
