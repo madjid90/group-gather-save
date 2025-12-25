@@ -62,18 +62,18 @@ export default function PartageInvitation() {
           {/* Share buttons */}
           <div className="space-y-3 mb-6">
             <Button
-              variant="outline"
+              variant="outline-secondary"
               onClick={handleWhatsAppShare}
-              className="w-full gap-2 h-12 bg-green-50 border-green-200 hover:bg-green-100 text-green-700"
+              className="w-full gap-2 h-12"
             >
               <MessageCircle className="w-5 h-5" />
               Partager sur WhatsApp
             </Button>
 
             <Button
-              variant="outline"
+              variant="outline-primary"
               onClick={handleSMSShare}
-              className="w-full gap-2 h-12 bg-blue-50 border-blue-200 hover:bg-blue-100 text-blue-700"
+              className="w-full gap-2 h-12"
             >
               <MessageCircle className="w-5 h-5" />
               Partager par SMS
@@ -83,9 +83,7 @@ export default function PartageInvitation() {
               variant="outline"
               onClick={handleCopyLink}
               className={`w-full gap-2 h-12 ${
-                copied 
-                  ? 'bg-secondary/10 border-secondary text-secondary' 
-                  : 'bg-muted/50 border-border hover:bg-muted'
+                copied ? 'bg-secondary/10 border-secondary text-secondary' : ''
               }`}
             >
               {copied ? (
