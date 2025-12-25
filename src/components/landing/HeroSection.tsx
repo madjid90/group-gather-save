@@ -83,7 +83,7 @@ export function HeroSection() {
 
             {/* Subtitle with service icons */}
             <div className="flex flex-col items-center lg:items-start gap-3">
-              <div className="flex items-center justify-center lg:justify-start gap-3">
+              <div className="flex items-center justify-center lg:justify-start gap-2 flex-wrap">
                 <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary">
                   <Zap className="w-4 h-4" />
                   <span className="text-sm font-medium">Électricité</span>
@@ -91,6 +91,14 @@ export function HeroSection() {
                 <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary/10 text-secondary">
                   <Wifi className="w-4 h-4" />
                   <span className="text-sm font-medium">Internet</span>
+                </div>
+              </div>
+              <div className="flex items-center justify-center lg:justify-start gap-2 flex-wrap">
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted border border-border">
+                  <span className="text-sm font-medium text-foreground">100% digital</span>
+                </div>
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted border border-border">
+                  <span className="text-sm font-medium text-foreground">100% gratuit</span>
                 </div>
               </div>
               <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-xl">
