@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { trackClick } from "@/hooks/useClickTracking";
 
 export function MobileFixedCTA() {
   return (
@@ -27,6 +28,7 @@ export function MobileFixedCTA() {
             size="lg" 
             className="w-full py-4 text-sm font-semibold"
             asChild
+            onClick={() => trackClick({ eventType: 'cta_inscription', source: 'mobile_cta' })}
           >
             <Link to="/inscription">
               Rejoindre l'achat groupé gratuitement

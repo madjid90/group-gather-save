@@ -301,6 +301,44 @@ export type Database = {
         }
         Relationships: []
       }
+      click_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          metadata: Json | null
+          offer_id: string | null
+          source: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          metadata?: Json | null
+          offer_id?: string | null
+          source?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          metadata?: Json | null
+          offer_id?: string | null
+          source?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "click_events_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "user_offers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       export_client_mapping: {
         Row: {
           client_id: string

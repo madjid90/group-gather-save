@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, Zap, User, LogOut, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
+import { trackClick } from "@/hooks/useClickTracking";
 
 const navLinks = [
   { href: "/", label: "Accueil" },
@@ -127,7 +128,13 @@ export function Navbar() {
               <Button variant="ghost" size="sm" className="text-sm px-3 sm:px-4 h-10" asChild>
                 <Link to="/connexion">Connexion</Link>
               </Button>
-              <Button variant="hero" size="sm" className="hidden sm:inline-flex text-sm px-4 sm:px-5 h-10" asChild>
+              <Button 
+                variant="hero" 
+                size="sm" 
+                className="hidden sm:inline-flex text-sm px-4 sm:px-5 h-10" 
+                asChild
+                onClick={() => trackClick({ eventType: 'cta_inscription', source: 'navbar' })}
+              >
                 <Link to="/inscription">Rejoindre</Link>
               </Button>
             </>
@@ -237,8 +244,12 @@ export function Navbar() {
                       size="lg"
                       className="w-full py-4 text-sm font-semibold" 
                       asChild
+                      onClick={() => {
+                        trackClick({ eventType: 'cta_inscription', source: 'navbar' });
+                        setIsMobileOpen(false);
+                      }}
                     >
-                      <Link to="/inscription" onClick={() => setIsMobileOpen(false)}>
+                      <Link to="/inscription">
                         Rejoindre l'achat groupé gratuitement
                         <ArrowRight className="w-4 h-4 ml-2" />
                       </Link>

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { AnimatedCounter, useAnimatedSocialProof } from "@/components/ui/AnimatedCounter";
 import { CheckCircle, MessageSquare, Gift } from "lucide-react";
+import { trackClick } from "@/hooks/useClickTracking";
 
 export function HeroSection() {
   const { count, notification, showNotification } = useAnimatedSocialProof(2547, 12000);
@@ -96,11 +97,17 @@ export function HeroSection() {
                   ease: "easeInOut"
                 }}
               >
-                <Button variant="hero" size="xl" className="text-lg py-6 px-10" asChild>
+                <Button 
+                  variant="hero" 
+                  size="xl" 
+                  className="text-lg py-6 px-10" 
+                  asChild
+                  onClick={() => trackClick({ eventType: 'cta_inscription', source: 'hero' })}
+                >
                   <Link to="/inscription">
                     Rejoindre l'achat groupé gratuitement
                   </Link>
-              </Button>
+                </Button>
               </motion.div>
               {/* Trust badges below CTA */}
               <div className="flex items-center gap-3 flex-wrap">
