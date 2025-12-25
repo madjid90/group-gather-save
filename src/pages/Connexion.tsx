@@ -189,8 +189,18 @@ export default function Connexion() {
             </Button>
           </form>
 
+          {/* Forgot password link */}
+          <div className="mt-4 text-center">
+            <Link 
+              to="/mot-de-passe-oublie" 
+              className="text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              Mot de passe oublié ?
+            </Link>
+          </div>
+
           {/* Footer */}
-          <div className="mt-6 text-center">
+          <div className="mt-4 text-center">
             <p className="text-base text-muted-foreground">
               Pas encore de compte ?{" "}
               <Link to="/inscription" className="text-primary hover:underline font-medium">

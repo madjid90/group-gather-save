@@ -7,6 +7,7 @@ import { PublicLayout } from "@/components/layout/PublicLayout";
 import Index from "./pages/Index";
 import Inscription from "./pages/Inscription";
 import Connexion from "./pages/Connexion";
+import MotDePasseOublie from "./pages/MotDePasseOublie";
 import FAQ from "./pages/FAQ";
 import Contact from "./pages/Contact";
 import MentionsLegales from "./pages/MentionsLegales";
@@ -46,6 +47,7 @@ const App = () => (
           <Route path="/partage-accueil" element={<PartageAccueil />} />
           <Route path="/invitation" element={<Invitation />} />
           <Route path="/connexion" element={<Connexion />} />
+          <Route path="/mot-de-passe-oublie" element={<MotDePasseOublie />} />
           
           {/* Public pages with full layout */}
           <Route element={<PublicLayout />}>
