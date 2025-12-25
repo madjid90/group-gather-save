@@ -18,8 +18,8 @@ import { toast } from "sonner";
 export default function PartageInvitation() {
   const [copied, setCopied] = useState(false);
 
-  const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/inscription` : "";
-  const shareText = "🔥 Rejoins l'achat groupé Switchly et économise jusqu'à 400€/an sur tes factures d'énergie et d'internet ! C'est 100% gratuit et sans engagement.";
+  const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/invitation` : "";
+  const shareText = "🔥 Je viens de m'inscrire à un achat groupé d'électricité et de box internet avec Switchly ! Rejoins-moi pour économiser jusqu'à 400€/an. C'est 100% gratuit et sans engagement.";
 
   const handleCopyLink = async () => {
     try {
