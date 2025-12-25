@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 const firstNames = [
   "Marie", "Thomas", "Julie", "Nicolas", "Sophie", "Pierre", "Camille", "Lucas",
@@ -39,6 +40,29 @@ export function SocialProofNotifications() {
     id: number;
   } | null>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [isInHeroSection, setIsInHeroSection] = useState(true);
+  const location = useLocation();
+
+  // Detect if user has scrolled past hero section
+  useEffect(() => {
+    const handleScroll = () => {
+      // Only check on homepage
+      if (location.pathname === "/") {
+        // Hero section is approximately viewport height
+        const heroHeight = window.innerHeight;
+        setIsInHeroSection(window.scrollY < heroHeight * 0.8);
+      } else {
+        // On other pages, always show notifications
+        setIsInHeroSection(false);
+      }
+    };
+
+    // Initial check
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [location.pathname]);
 
   useEffect(() => {
     // Initial delay before first notification
@@ -64,9 +88,12 @@ export function SocialProofNotifications() {
     }, 4000);
   };
 
+  // Don't show in hero section
+  const shouldShow = isVisible && notification && !isInHeroSection;
+
   return (
     <AnimatePresence>
-      {isVisible && notification && (
+      {shouldShow && (
         <motion.div
           initial={{ opacity: 0, y: 50, x: 0 }}
           animate={{ opacity: 1, y: 0, x: 0 }}

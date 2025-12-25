@@ -3,6 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
 import { CookieBanner } from "@/components/CookieBanner";
+import { SocialProofNotifications } from "@/components/landing/SocialProofNotifications";
 
 export function PublicLayout() {
   const location = useLocation();
@@ -20,6 +21,7 @@ export function PublicLayout() {
       </main>
       <Footer />
       <CookieBanner />
+      <SocialProofNotifications />
     </div>
   );
 }
