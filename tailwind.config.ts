@@ -16,6 +16,14 @@ export default {
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
       },
+      fontSize: {
+        // Consistent typography scale
+        'heading-1': ['clamp(1.5rem, 4vw, 2.25rem)', { lineHeight: '1.2', fontWeight: '700' }],
+        'heading-2': ['clamp(1.25rem, 3vw, 2rem)', { lineHeight: '1.25', fontWeight: '700' }],
+        'heading-3': ['clamp(1rem, 2vw, 1.25rem)', { lineHeight: '1.3', fontWeight: '600' }],
+        'body-lg': ['clamp(1rem, 1.5vw, 1.125rem)', { lineHeight: '1.6' }],
+        'body': ['clamp(0.875rem, 1.2vw, 1rem)', { lineHeight: '1.6' }],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

@@ -31,7 +31,7 @@ export default function MentionsLegales() {
             <FileText className="w-4 h-4" />
             <span className="text-sm font-medium">Informations légales</span>
           </div>
-          <h1 className="text-[20px] sm:text-2xl font-bold text-foreground">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">
             Mentions légales
           </h1>
         </motion.div>

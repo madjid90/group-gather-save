@@ -103,11 +103,11 @@ export default function FAQ() {
             <HelpCircle className="w-4 h-4" />
             <span className="text-sm font-medium">Questions fréquentes</span>
           </div>
-          <h1 className="text-[20px] sm:text-2xl font-bold text-foreground mb-1">
-            FAQ
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4">
+            Questions fréquentes
           </h1>
-          <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
-            Tout savoir sur Switchly et l'achat groupé
+          <p className="text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
+            Tout ce que vous devez savoir sur Switchly et l'achat groupé
           </p>
         </motion.div>
 
@@ -126,10 +126,10 @@ export default function FAQ() {
                   value={`item-${index}`}
                   className="border border-border rounded-xl px-4 data-[state=open]:bg-muted/50 transition-colors"
                 >
-                  <AccordionTrigger className="text-left text-sm font-medium hover:no-underline py-3 text-foreground">
+                  <AccordionTrigger className="text-left text-sm md:text-base font-medium hover:no-underline py-4 text-foreground">
                     {item.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-xs text-muted-foreground pb-3 leading-relaxed">
+                  <AccordionContent className="text-sm md:text-base text-muted-foreground pb-4 leading-relaxed">
                     {item.answer}
                   </AccordionContent>
                 </AccordionItem>

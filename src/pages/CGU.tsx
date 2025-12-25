@@ -29,7 +29,7 @@ export default function CGU() {
             <FileText className="w-4 h-4" />
             <span className="text-sm font-medium">Conditions d'utilisation</span>
           </div>
-          <h1 className="text-[20px] sm:text-2xl font-bold text-foreground">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">
             Conditions Générales d'Utilisation
           </h1>
         </motion.div>

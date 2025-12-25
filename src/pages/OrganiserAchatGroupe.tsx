@@ -145,14 +145,13 @@ const OrganiserAchatGroupe = () => {
                 <span className="text-xs md:text-sm font-medium">Collectivités & Partenaires</span>
               </motion.div>
 
-              <h1 className="text-[22px] leading-tight sm:text-3xl md:text-5xl font-bold text-foreground mb-3 md:mb-6">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-4 lg:mb-6">
                 Organiser un{" "}
                 <span className="gradient-text">achat groupé d'énergie</span>{" "}
                 dans votre ville
               </h1>
-              <p className="text-sm md:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
-                <span className="hidden md:inline">Switchly accompagne les collectivités et partenaires locaux dans la mise en place de campagnes d'achats groupés d'électricité et d'internet pour les habitants.</span>
-                <span className="md:hidden">Accompagnement des collectivités pour les achats groupés.</span>
+              <p className="text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
+                Switchly accompagne les collectivités et partenaires locaux dans la mise en place de campagnes d'achats groupés.
               </p>
             </motion.div>
           </div>
@@ -168,12 +167,11 @@ const OrganiserAchatGroupe = () => {
               viewport={{ once: true }}
               className="max-w-3xl mx-auto"
             >
-              <h2 className="text-[20px] sm:text-2xl md:text-4xl font-bold text-foreground mb-2 md:mb-6 text-center">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4 lg:mb-6 text-center">
                 Pourquoi un achat groupé local ?
               </h2>
-              <p className="text-sm md:text-lg text-muted-foreground mb-6 md:mb-10 text-center max-w-2xl mx-auto px-2">
-                <span className="hidden md:inline">Les achats groupés permettent de négocier des tarifs plus avantageux grâce au regroupement des foyers volontaires, tout en laissant aux habitants la liberté d'accepter ou de refuser l'offre.</span>
-                <span className="md:hidden">Négociez des tarifs avantageux pour vos habitants.</span>
+              <p className="text-base lg:text-lg text-muted-foreground mb-8 lg:mb-10 text-center max-w-2xl mx-auto">
+                Les achats groupés permettent de négocier des tarifs plus avantageux grâce au regroupement des foyers volontaires.
               </p>
               <div className="space-y-3 md:space-y-4">
                 {benefits.map((benefit, index) => (
@@ -208,12 +206,11 @@ const OrganiserAchatGroupe = () => {
               transition={{ duration: 0.5 }}
               className="text-center mb-8 md:mb-16"
             >
-              <h2 className="text-[20px] sm:text-2xl md:text-4xl lg:text-5xl font-bold text-foreground mb-2 md:mb-6">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4 lg:mb-6">
                 Comment ça fonctionne ?
               </h2>
-              <p className="text-sm md:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
-                <span className="hidden md:inline">Un processus simple en 5 étapes pour votre territoire</span>
-                <span className="md:hidden">5 étapes simples</span>
+              <p className="text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
+                Un processus simple en 5 étapes pour votre territoire
               </p>
             </motion.div>
 
@@ -280,7 +277,7 @@ const OrganiserAchatGroupe = () => {
               viewport={{ once: true }}
               className="max-w-4xl mx-auto text-center"
             >
-              <h2 className="text-[20px] sm:text-2xl md:text-4xl font-bold text-foreground mb-6 md:mb-12">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-8 lg:mb-12">
                 À qui s'adresse ce dispositif ?
               </h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-6">
@@ -321,12 +318,11 @@ const OrganiserAchatGroupe = () => {
               </div>
 
               <div className="relative z-10">
-                <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-3 md:mb-8">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary-foreground mb-4 lg:mb-6">
                   Prêt à lancer un achat groupé ?
                 </h2>
-                <p className="text-sm sm:text-base md:text-xl text-primary-foreground/80 mb-6 md:mb-10 max-w-2xl mx-auto">
-                  <span className="hidden md:inline">Contactez-nous pour étudier la mise en place d'une campagne pour votre territoire.</span>
-                  <span className="md:hidden">Contactez-nous dès maintenant.</span>
+                <p className="text-base lg:text-lg text-primary-foreground/80 mb-8 lg:mb-10 max-w-2xl mx-auto">
+                  Contactez-nous pour étudier la mise en place d'une campagne pour votre territoire.
                 </p>
                 {/* CTA - hidden on mobile (using fixed CTA instead) */}
                 <div className="hidden md:flex justify-center">
