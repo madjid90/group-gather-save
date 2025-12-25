@@ -112,7 +112,7 @@ export function HeroSection() {
               <img 
                 src={heroIllustration} 
                 alt="Groupe de personnes économisant ensemble sur l'énergie et internet" 
-                className="w-full max-w-lg mx-auto"
+                className="w-full max-w-lg mx-auto mix-blend-multiply"
               />
               
               {/* Floating counter card */}
