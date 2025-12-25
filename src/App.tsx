@@ -23,6 +23,7 @@ import AdminCampagnesList from "./pages/admin/AdminCampagnesList";
 import AdminCampagneDetail from "./pages/admin/AdminCampagneDetail";
 import AdminOffresClients from "./pages/admin/AdminOffresClients";
 import AdminReactivation from "./pages/admin/AdminReactivation";
+import AdminClicsStats from "./pages/admin/AdminClicsStats";
 import FormulaireLogement from "./pages/FormulaireLogement";
 import MonOffre from "./pages/MonOffre";
 import OffreConfirmation from "./pages/OffreConfirmation";
@@ -79,6 +80,7 @@ const App = () => (
             <Route path="campagnes" element={<AdminCampagnesList />} />
             <Route path="campagnes/:id" element={<AdminCampagneDetail />} />
             <Route path="offres" element={<AdminOffresClients />} />
+            <Route path="clics" element={<AdminClicsStats />} />
             <Route path="reactivation" element={<AdminReactivation />} />
           </Route>
 
