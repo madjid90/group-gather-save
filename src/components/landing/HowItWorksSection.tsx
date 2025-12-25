@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { UserPlus, Users, Gift } from "lucide-react";
+import { UserPlus, Users, MessageSquare, CheckCircle } from "lucide-react";
 
 const steps = [
   {
@@ -21,12 +21,20 @@ const steps = [
     descriptionMobile: "Pouvoir collectif = meilleurs prix.",
   },
   {
-    icon: Gift,
+    icon: MessageSquare,
     number: "3",
     title: "Recevez votre offre par SMS",
     titleMobile: "Offre reçue par SMS",
     description: "Vous recevez votre offre personnalisée par SMS. Comparez et décidez librement sur votre espace.",
     descriptionMobile: "Offre par SMS, décision libre.",
+  },
+  {
+    icon: CheckCircle,
+    number: "4",
+    title: "On s'occupe de tout",
+    titleMobile: "On gère les démarches",
+    description: "Si vous acceptez, nous faisons les démarches auprès du nouveau fournisseur. Vous n'avez rien à faire.",
+    descriptionMobile: "Démarches faites pour vous.",
   },
 ];
 
@@ -45,14 +53,14 @@ export function HowItWorksSection() {
             Comment ça marche
           </span>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4 lg:mb-6">
-            Rejoignez l'achat groupé en 3 étapes
+            Rejoignez l'achat groupé en 4 étapes
           </h2>
           <p className="text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
             Un processus simple et transparent pour économiser sur vos factures d'énergie et d'internet sans effort.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-8 mb-8 lg:mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8 lg:mb-12">
           {steps.map((step, index) => (
             <motion.div
               key={index}
