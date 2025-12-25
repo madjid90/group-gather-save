@@ -114,9 +114,9 @@ export function HeroSection() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.6 }}
               >
-                {/* Live indicator - top right */}
+                {/* Live indicator - top left */}
                 <motion.div 
-                  className="absolute -top-2 -right-2 flex items-center gap-1.5 bg-secondary text-secondary-foreground px-3 py-1.5 rounded-full shadow-lg"
+                  className="absolute -top-2 -left-2 flex items-center gap-1.5 bg-secondary text-secondary-foreground px-3 py-1.5 rounded-full shadow-lg"
                   animate={{ 
                     scale: [1, 1.05, 1],
                     boxShadow: [
@@ -147,34 +147,29 @@ export function HeroSection() {
                   foyers inscrits
                 </p>
               </motion.div>
-            </div>
 
-            {/* Floating notification - animated with real data */}
-            <AnimatePresence>
-              {showNotification && notification && (
-                <motion.div
-                  className="absolute -bottom-4 -left-4 bg-card border border-border rounded-xl p-3 shadow-switchly-lg"
-                  initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                  transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center">
-                      <CheckCircle className="w-5 h-5 text-secondary" />
-                    </div>
-                    <div className="text-left">
-                      <p className="text-sm font-medium text-foreground">
-                        {notification.name} vient de s'inscrire
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {notification.city} • {notification.time}
-                      </p>
-                    </div>
+              {/* Social proof notification - always visible */}
+              <motion.div
+                className="absolute -bottom-4 -left-4 bg-card border border-border rounded-xl p-3 shadow-switchly-lg"
+                initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ delay: 0.9, type: "spring", stiffness: 200, damping: 20 }}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center">
+                    <CheckCircle className="w-5 h-5 text-secondary" />
                   </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+                  <div className="text-left">
+                    <p className="text-sm font-medium text-foreground">
+                      {notification?.name || "Marie M."} vient de s'inscrire
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {notification?.city || "Paris"} • {notification?.time || "à l'instant"}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
           </motion.div>
         </div>
       </div>
