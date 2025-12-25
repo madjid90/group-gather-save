@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight, Zap, Wifi } from "lucide-react";
+import { trackClick } from "@/hooks/useClickTracking";
 
 export function CTASection() {
   return (
@@ -44,6 +45,7 @@ export function CTASection() {
                 size="xl"
                 className="group py-5 md:py-6 px-8 md:px-10 text-base md:text-lg"
                 asChild
+                onClick={() => trackClick({ eventType: 'cta_inscription', source: 'cta_section' })}
               >
                 <Link to="/inscription">
                   Rejoindre gratuitement

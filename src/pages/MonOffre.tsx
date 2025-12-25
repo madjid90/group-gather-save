@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { CheckCircle, XCircle, Zap, TrendingDown, Loader2, ArrowLeft, Home, Clock } from "lucide-react";
 import { toast } from "sonner";
+import { useClickTracking } from "@/hooks/useClickTracking";
 
 interface UserOffer {
   id: string;
@@ -23,6 +24,7 @@ interface UserOffer {
 export default function MonOffre() {
   const { token } = useParams<{ token: string }>();
   const navigate = useNavigate();
+  const { trackOfferAccepted, trackOfferRefused } = useClickTracking();
 
   const [offer, setOffer] = useState<UserOffer | null>(null);
   const [loading, setLoading] = useState(true);
@@ -86,6 +88,9 @@ export default function MonOffre() {
         return;
       }
 
+      // Track the acceptance
+      trackOfferAccepted(offer.id);
+
       toast.success("Merci ! Votre acceptation a été enregistrée.");
       navigate("/offre-confirmation?status=acceptee");
     } catch (err) {
@@ -111,6 +116,9 @@ export default function MonOffre() {
         toast.error("Ce lien a expiré ou n'est plus valide.");
         return;
       }
+
+      // Track the refusal
+      trackOfferRefused(offer.id);
 
       toast.success("Votre réponse a été enregistrée.");
       navigate("/offre-confirmation?status=refusee");
