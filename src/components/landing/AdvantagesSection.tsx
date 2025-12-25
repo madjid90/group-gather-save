@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { TrendingDown, Scale, Clock, Shield, Zap, Wifi } from "lucide-react";
+import { TrendingDown, Scale, MessageSquare, Shield, Zap, Wifi } from "lucide-react";
 
 const advantages = [
   {
-    icon: Clock,
+    icon: MessageSquare,
     title: "100% digital par SMS",
     description: "Tout se fait par SMS et sur votre espace. Aucun démarchage téléphonique.",
     descriptionMobile: "Par SMS, zéro appel.",
