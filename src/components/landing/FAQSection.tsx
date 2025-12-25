@@ -10,43 +10,23 @@ import { HelpCircle } from "lucide-react";
 const faqItems = [
   {
     question: "Comment économiser sur ma facture d'électricité et de gaz ?",
-    answer:
-      "Grâce à l'achat groupé, nous négocions des tarifs préférentiels auprès des fournisseurs d'énergie. Plus nous sommes nombreux, plus les prix baissent. Nos membres économisent en moyenne 312€/an sur leurs factures d'électricité et de gaz.",
+    answer: "Grâce à l'achat groupé, nous négocions des tarifs préférentiels. Nos membres économisent en moyenne 312€/an.",
   },
   {
-    question: "L'inscription est-elle vraiment gratuite et sans engagement ?",
-    answer:
-      "Oui, l'inscription est 100% gratuite et sans aucun engagement. Vous recevez une offre personnalisée par SMS et vous êtes libre d'accepter ou de refuser. Si l'offre ne vous convient pas, vous ne payez rien et gardez votre contrat actuel.",
+    question: "L'inscription est-elle vraiment gratuite ?",
+    answer: "Oui, 100% gratuite et sans engagement. Vous recevez une offre par SMS et décidez librement.",
   },
   {
     question: "Puis-je aussi économiser sur ma box internet ?",
-    answer:
-      "Absolument ! Nous négocions également des offres internet (fibre, ADSL) avec les opérateurs. Nos membres économisent jusqu'à 16€/mois sur leur abonnement internet, soit près de 200€/an.",
+    answer: "Oui ! Économisez jusqu'à 16€/mois sur votre abonnement internet grâce à nos négociations groupées.",
   },
   {
-    question: "Quels sont les fournisseurs partenaires de confiance ?",
-    answer:
-      "Nous travaillons uniquement avec des fournisseurs reconnus et fiables : EDF, Engie, TotalEnergies pour l'énergie, et Orange, SFR, Bouygues, Free pour internet. Tous sont des acteurs majeurs du marché français.",
+    question: "Quels sont les fournisseurs partenaires ?",
+    answer: "EDF, Engie, TotalEnergies, Orange, SFR, Bouygues, Free. Uniquement des acteurs majeurs de confiance.",
   },
   {
     question: "Comment fonctionne la démarche 100% digitale ?",
-    answer:
-      "Tout se fait en ligne et par SMS : inscription en 30 secondes, réception de votre offre personnalisée par SMS, acceptation depuis votre espace client. Aucun démarchage téléphonique, aucun commercial ne vous appellera jamais.",
-  },
-  {
-    question: "Combien de temps faut-il pour recevoir mon offre ?",
-    answer:
-      "Après votre inscription, vous recevez votre offre personnalisée sous 24 à 48h par SMS. Vous pouvez ensuite la consulter en détail sur votre espace client et prendre votre décision en toute tranquillité.",
-  },
-  {
-    question: "Qui s'occupe des démarches de changement de fournisseur ?",
-    answer:
-      "Si vous acceptez l'offre, nous nous occupons de toutes les démarches administratives auprès du nouveau fournisseur. La transition se fait sans coupure et sans intervention de votre part. Vous n'avez rien à faire.",
-  },
-  {
-    question: "L'achat groupé est-il fiable et sécurisé ?",
-    answer:
-      "Oui, Switchly est une plateforme 100% française et sécurisée. Vos données personnelles sont protégées conformément au RGPD. Nous ne revendons jamais vos informations et travaillons uniquement avec des partenaires de confiance.",
+    answer: "Tout par SMS et en ligne. Aucun démarchage téléphonique, aucun commercial ne vous appellera.",
   },
 ];
 

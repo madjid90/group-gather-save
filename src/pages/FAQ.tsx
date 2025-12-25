@@ -13,44 +13,64 @@ import { PageTransition } from "@/components/PageTransition";
 
 const faqItems = [
   {
-    question: "Comment fonctionne l'achat groupé ?",
+    question: "Comment fonctionne l'achat groupé pour économiser sur l'électricité et le gaz ?",
     answer:
-      "L'achat groupé permet de négocier de meilleurs tarifs grâce au nombre. Plus il y a de participants dans votre ville, plus notre pouvoir de négociation augmente auprès des fournisseurs d'énergie et d'internet. Une fois le nombre de membres suffisant atteint, nous négocions les meilleures offres et vous les présentons.",
+      "L'achat groupé est un principe simple et efficace : plus nous sommes nombreux à nous regrouper, plus notre pouvoir de négociation augmente face aux fournisseurs d'énergie. Concrètement, nous rassemblons des milliers de foyers français souhaitant réduire leurs factures d'électricité et de gaz. Grâce à ce volume, nous négocions directement avec EDF, Engie, TotalEnergies et d'autres fournisseurs pour obtenir des tarifs préférentiels impossibles à obtenir seul. Une fois les négociations terminées, vous recevez une offre personnalisée par SMS que vous êtes libre d'accepter ou de refuser.",
   },
   {
-    question: "Est-ce vraiment gratuit et sans engagement ?",
+    question: "L'inscription est-elle vraiment 100% gratuite et sans engagement ?",
     answer:
-      "Oui, l'inscription au groupement est 100% gratuite. Vous n'êtes engagé à rien. Quand une offre négociée vous est proposée, vous êtes libre de l'accepter ou non. Nous ne prélevons aucun frais d'adhésion ou de souscription.",
+      "Oui, l'inscription est totalement gratuite et vous n'êtes engagé à rien. Vous pouvez vous inscrire en 30 secondes, recevoir votre offre personnalisée, et décider librement de l'accepter ou non. Si l'offre ne vous convient pas, vous ne payez rien et gardez votre contrat actuel sans aucune pénalité. Notre rémunération provient uniquement d'une commission versée par les fournisseurs lorsque vous acceptez une offre - cette commission n'impacte pas le tarif que vous payez, qui reste inférieur aux tarifs publics.",
   },
   {
-    question: "Combien puis-je économiser ?",
+    question: "Combien puis-je réellement économiser sur mes factures d'énergie ?",
     answer:
-      "Les économies varient selon le nombre de participants et les offres négociées. En moyenne, nos membres économisent entre 150€ et 400€ par an en combinant électricité et internet. Plus le groupement est important, plus les réductions sont avantageuses.",
+      "Les économies varient selon votre situation actuelle et votre consommation, mais nos membres économisent en moyenne 312€ par an sur leurs factures d'électricité et de gaz. Certains foyers avec une consommation élevée (chauffage électrique, grande surface) peuvent atteindre jusqu'à 400€ d'économies annuelles. Nous vous fournissons une estimation personnalisée avant toute souscription pour que vous puissiez prendre une décision éclairée.",
   },
   {
-    question: "Comment êtes-vous rémunérés ?",
+    question: "Puis-je aussi économiser sur mon abonnement box internet ?",
     answer:
-      "Nous percevons une commission de la part des fournisseurs lorsque vous souscrivez à une offre. Cette commission n'impacte pas le prix que vous payez - au contraire, les tarifs négociés sont inférieurs aux tarifs publics.",
+      "Absolument ! En plus de l'énergie, nous négocions également des offres internet avantageuses avec les principaux opérateurs : Orange, SFR, Bouygues Telecom et Free. Que vous soyez en fibre optique ou en ADSL, nos membres économisent jusqu'à 16€ par mois sur leur abonnement internet, soit près de 200€ par an. Vous pouvez combiner les offres énergie et internet pour maximiser vos économies et atteindre plus de 400€ d'économies annuelles.",
+  },
+  {
+    question: "Quels sont les fournisseurs partenaires et sont-ils fiables ?",
+    answer:
+      "Nous travaillons exclusivement avec des fournisseurs reconnus et établis sur le marché français. Pour l'énergie : EDF (fournisseur historique), Engie, TotalEnergies, et d'autres acteurs majeurs. Pour internet : Orange, SFR, Bouygues Telecom et Free. Tous ces fournisseurs sont des entreprises de confiance, présentes depuis des années sur le marché français. Nous ne travaillons jamais avec des fournisseurs inconnus ou des offres douteuses.",
+  },
+  {
+    question: "Comment fonctionne la démarche 100% digitale par SMS ?",
+    answer:
+      "Notre processus est entièrement digital pour votre confort : inscription en 30 secondes sur notre site, réception de votre offre personnalisée par SMS sous 24 à 48h, consultation détaillée sur votre espace client sécurisé, et acceptation en un clic si l'offre vous convient. Aucun démarchage téléphonique, aucun commercial ne vous appellera jamais. Vous gardez le contrôle total et décidez à votre rythme, sans pression.",
   },
   {
     question: "Que se passe-t-il si je refuse l'offre proposée ?",
     answer:
-      "Rien du tout ! Vous êtes libre de refuser l'offre sans aucune conséquence. Vous pouvez rester membre du groupement et attendre la prochaine campagne de négociation pour bénéficier d'une nouvelle offre.",
+      "Absolument rien ! Vous êtes 100% libre de refuser l'offre sans aucune conséquence ni frais. Vous conservez simplement votre contrat actuel. Vous pouvez rester inscrit et attendre la prochaine campagne de négociation pour bénéficier d'une nouvelle offre potentiellement encore plus avantageuse. Il n'y a aucune pression, aucune relance commerciale agressive.",
   },
   {
-    question: "Comment puis-je résilier mon contrat actuel ?",
+    question: "Qui s'occupe des démarches de changement de fournisseur ?",
     answer:
-      "Dans la plupart des cas, le nouveau fournisseur s'occupe de toutes les démarches de résiliation pour vous. Vous n'avez rien à faire. Si vous êtes engagé, nous vous informerons des éventuels frais de résiliation avant toute souscription.",
+      "Si vous acceptez l'offre, nous nous occupons de tout ! Nous transmettons votre dossier au nouveau fournisseur qui prend en charge l'intégralité des démarches administratives, y compris la résiliation de votre ancien contrat. La transition se fait sans coupure d'électricité, de gaz ou d'internet, et sans intervention de votre part. Vous n'avez littéralement rien à faire, si ce n'est profiter de vos économies.",
   },
   {
-    question: "Mes données sont-elles sécurisées ?",
+    question: "Mes données personnelles sont-elles sécurisées ?",
     answer:
-      "Absolument. Nous utilisons les dernières technologies de sécurité pour protéger vos données. Vos informations ne sont jamais partagées avec des tiers à des fins commerciales. Nous respectons strictement le RGPD.",
+      "La sécurité de vos données est notre priorité absolue. Switchly est une plateforme 100% française, hébergée en France, et conforme au RGPD (Règlement Général sur la Protection des Données). Vos informations personnelles sont chiffrées et ne sont jamais revendues à des tiers. Nous les utilisons uniquement pour vous proposer des offres personnalisées et gérer votre dossier auprès des fournisseurs partenaires.",
   },
   {
     question: "Puis-je participer si je suis locataire ?",
     answer:
-      "Oui, tout à fait ! Que vous soyez propriétaire ou locataire, vous pouvez rejoindre le groupement et bénéficier des offres négociées pour vos contrats d'électricité et d'internet.",
+      "Oui, que vous soyez propriétaire ou locataire, vous pouvez rejoindre l'achat groupé et bénéficier des offres négociées. En tant que locataire, vous êtes généralement titulaire du contrat d'électricité, de gaz et d'internet de votre logement, et vous pouvez donc librement changer de fournisseur pour profiter de tarifs plus avantageux.",
+  },
+  {
+    question: "Combien de temps faut-il pour recevoir mon offre personnalisée ?",
+    answer:
+      "Après votre inscription (30 secondes), vous recevez votre offre personnalisée par SMS sous 24 à 48 heures. Cette offre tient compte de votre situation actuelle et de votre consommation pour vous proposer le tarif le plus avantageux. Vous pouvez ensuite la consulter en détail sur votre espace client et prendre votre décision en toute tranquillité, sans limite de temps.",
+  },
+  {
+    question: "L'achat groupé est-il vraiment fiable ?",
+    answer:
+      "Oui, l'achat groupé est un modèle éprouvé utilisé depuis des années dans de nombreux secteurs. Des milliers de foyers français ont déjà économisé grâce à Switchly. Notre transparence est totale : vous connaissez le tarif exact avant d'accepter, vous savez avec quel fournisseur vous signez, et vous pouvez refuser sans conséquence. Les témoignages de nos membres attestent de la fiabilité de notre service.",
   },
 ];
 
