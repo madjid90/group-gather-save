@@ -81,9 +81,9 @@ export function HeroSection() {
               <span className="gradient-text">d'énergie et d'internet</span>
             </h1>
 
-            {/* Service & Trust badges */}
+            {/* Service badges */}
             <div className="flex flex-col items-center lg:items-start gap-3">
-              <div className="flex items-center justify-center lg:justify-start gap-2 flex-wrap">
+              <div className="flex items-center justify-center lg:justify-start gap-2">
                 <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary">
                   <Zap className="w-4 h-4" />
                   <span className="text-sm font-medium">Électricité</span>
@@ -92,14 +92,6 @@ export function HeroSection() {
                   <Wifi className="w-4 h-4" />
                   <span className="text-sm font-medium">Internet</span>
                 </div>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card border border-border shadow-sm">
-                  <MessageSquare className="w-4 h-4 text-primary" />
-                  <span className="text-sm font-medium text-foreground">100% digital</span>
-                </div>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card border border-border shadow-sm">
-                  <Gift className="w-4 h-4 text-secondary" />
-                  <span className="text-sm font-medium text-foreground">100% gratuit</span>
-                </div>
               </div>
               <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-xl">
                 Achat groupé sans engagement. Plus on est nombreux, plus les prix baissent.
@@ -107,7 +99,7 @@ export function HeroSection() {
             </div>
 
             {/* CTA Button - Desktop only */}
-            <div className="hidden lg:flex flex-col items-start gap-3 pt-2">
+            <div className="hidden lg:flex flex-col items-start gap-4 pt-2">
               <motion.div
                 animate={{ scale: [1, 1.02, 1] }}
                 transition={{ 
@@ -122,7 +114,29 @@ export function HeroSection() {
                   </Link>
               </Button>
               </motion.div>
-              <p className="text-sm text-muted-foreground">Gratuit • Sans engagement • Aucun démarchage téléphonique</p>
+              {/* Trust badges below CTA */}
+              <div className="flex items-center gap-3 flex-wrap">
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card border border-border shadow-sm">
+                  <MessageSquare className="w-4 h-4 text-primary" />
+                  <span className="text-sm font-medium text-foreground">100% digital</span>
+                </div>
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card border border-border shadow-sm">
+                  <Gift className="w-4 h-4 text-secondary" />
+                  <span className="text-sm font-medium text-foreground">100% gratuit</span>
+                </div>
+              </div>
+            </div>
+            
+            {/* Trust badges - Mobile only */}
+            <div className="lg:hidden flex items-center justify-center gap-2 flex-wrap">
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card border border-border shadow-sm">
+                <MessageSquare className="w-4 h-4 text-primary" />
+                <span className="text-sm font-medium text-foreground">100% digital</span>
+              </div>
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card border border-border shadow-sm">
+                <Gift className="w-4 h-4 text-secondary" />
+                <span className="text-sm font-medium text-foreground">100% gratuit</span>
+              </div>
             </div>
             
             {/* Scroll indicator - Mobile/Tablet only */}
