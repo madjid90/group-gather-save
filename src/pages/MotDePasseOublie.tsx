@@ -18,9 +18,6 @@ import {
 const phoneSchema = z.string().regex(/^(\+33|0)[1-9]\d{8}$/, "Numéro de téléphone invalide");
 const passwordSchema = z.string().min(6, "Le mot de passe doit contenir au moins 6 caractères");
 
-const MAX_ATTEMPTS = 3;
-const BLOCK_DURATION_MS = 5 * 60 * 1000; // 5 minutes
-
 type Step = "phone" | "code" | "newPassword" | "success";
 
 export default function MotDePasseOublie() {
@@ -31,10 +28,10 @@ export default function MotDePasseOublie() {
   const [code, setCode] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [generatedCode, setGeneratedCode] = useState("");
+  const [resetToken, setResetToken] = useState("");
   const [userId, setUserId] = useState("");
   const [error, setError] = useState("");
-  const [attempts, setAttempts] = useState(0);
+  const [attemptsRemaining, setAttemptsRemaining] = useState(3);
   const [blockedUntil, setBlockedUntil] = useState<number | null>(null);
   const [remainingTime, setRemainingTime] = useState(0);
   const [resendCooldown, setResendCooldown] = useState(0);
@@ -47,7 +44,7 @@ export default function MotDePasseOublie() {
       const now = Date.now();
       if (now >= blockedUntil) {
         setBlockedUntil(null);
-        setAttempts(0);
+        setAttemptsRemaining(3);
         setRemainingTime(0);
       } else {
         setRemainingTime(Math.ceil((blockedUntil - now) / 1000));
@@ -89,33 +86,37 @@ export default function MotDePasseOublie() {
     setIsLoading(true);
 
     try {
-      // Check if user exists with this phone number
-      const cleanPhone = telephone.replace(/[^0-9]/g, "");
-      const email = `${cleanPhone}@switchly.temp`;
-
-      // Generate a 6-digit code
-      const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
-      setGeneratedCode(resetCode);
-
-      // Send SMS with code
       const { data, error: smsError } = await supabase.functions.invoke("send-reset-code-sms", {
-        body: {
-          telephone,
-          code: resetCode,
-        },
+        body: { telephone },
       });
 
       if (smsError) {
         throw smsError;
       }
 
+      // Handle server-side blocks
+      if (data?.blocked) {
+        setBlockedUntil(Date.now() + (data.remainingSeconds * 1000));
+        setRemainingTime(data.remainingSeconds);
+        setError(data.message);
+        return;
+      }
+
+      // Handle cooldown
+      if (data?.cooldown) {
+        setResendCooldown(data.remainingCooldown);
+        setError(data.message);
+        return;
+      }
+
       if (data?.userId) {
         setUserId(data.userId);
         setStep("code");
-        setResendCooldown(60); // Start 60s cooldown
+        setResendCooldown(data.cooldownSeconds || 60);
+        setAttemptsRemaining(3);
         toast.success("Code envoyé par SMS !");
       } else {
-        setError("Aucun compte trouvé avec ce numéro de téléphone.");
+        setError(data?.message || "Aucun compte trouvé avec ce numéro de téléphone.");
       }
     } catch (err) {
       console.error("Error sending reset code:", err);
@@ -139,24 +140,44 @@ export default function MotDePasseOublie() {
       return;
     }
 
-    if (code !== generatedCode) {
-      const newAttempts = attempts + 1;
-      setAttempts(newAttempts);
-      
-      if (newAttempts >= MAX_ATTEMPTS) {
-        setBlockedUntil(Date.now() + BLOCK_DURATION_MS);
-        setRemainingTime(Math.ceil(BLOCK_DURATION_MS / 1000));
-        setError(`Trop de tentatives. Compte bloqué pendant 5 minutes.`);
-        toast.error("Compte temporairement bloqué");
-      } else {
-        setError(`Code incorrect. ${MAX_ATTEMPTS - newAttempts} tentative(s) restante(s).`);
-      }
-      return;
-    }
+    setIsLoading(true);
 
-    // Reset attempts on success
-    setAttempts(0);
-    setStep("newPassword");
+    try {
+      const { data, error: verifyError } = await supabase.functions.invoke("verify-reset-code", {
+        body: { telephone, code },
+      });
+
+      if (verifyError) {
+        throw verifyError;
+      }
+
+      // Handle server-side blocks
+      if (data?.blocked) {
+        setBlockedUntil(Date.now() + (data.remainingSeconds * 1000));
+        setRemainingTime(data.remainingSeconds);
+        setError(data.message);
+        toast.error("Compte temporairement bloqué");
+        return;
+      }
+
+      if (!data?.success) {
+        if (data?.attemptsRemaining !== undefined) {
+          setAttemptsRemaining(data.attemptsRemaining);
+        }
+        setError(data?.message || "Code incorrect");
+        return;
+      }
+
+      // Success - save token for password update
+      setResetToken(data.resetToken);
+      if (data.userId) setUserId(data.userId);
+      setStep("newPassword");
+    } catch (err) {
+      console.error("Error verifying code:", err);
+      setError("Une erreur est survenue. Veuillez réessayer.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleResetPassword = async (e: React.FormEvent) => {
@@ -177,16 +198,22 @@ export default function MotDePasseOublie() {
     setIsLoading(true);
 
     try {
-      // Update password via edge function
-      const { error: updateError } = await supabase.functions.invoke("update-password", {
+      const { data, error: updateError } = await supabase.functions.invoke("update-password", {
         body: {
           userId,
           newPassword,
+          resetToken,
+          telephone,
         },
       });
 
       if (updateError) {
         throw updateError;
+      }
+
+      if (!data?.success) {
+        setError(data?.message || "Erreur lors de la mise à jour");
+        return;
       }
 
       setStep("success");
@@ -200,24 +227,33 @@ export default function MotDePasseOublie() {
   };
 
   const handleResendCode = async () => {
-    if (resendCooldown > 0) return;
+    if (resendCooldown > 0 || isBlocked) return;
     
     setIsLoading(true);
     try {
-      const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
-      setGeneratedCode(resetCode);
-      setCode(""); // Reset code input
-      setAttempts(0); // Reset attempts on new code
-
-      await supabase.functions.invoke("send-reset-code-sms", {
-        body: {
-          telephone,
-          code: resetCode,
-        },
+      const { data, error: smsError } = await supabase.functions.invoke("send-reset-code-sms", {
+        body: { telephone },
       });
 
-      setResendCooldown(60); // Start 60s cooldown
-      toast.success("Nouveau code envoyé !");
+      if (smsError) {
+        throw smsError;
+      }
+
+      // Handle cooldown from server
+      if (data?.cooldown) {
+        setResendCooldown(data.remainingCooldown);
+        toast.info(data.message);
+        return;
+      }
+
+      if (data?.success) {
+        setCode("");
+        setAttemptsRemaining(3);
+        setResendCooldown(data.cooldownSeconds || 60);
+        toast.success("Nouveau code envoyé !");
+      } else {
+        toast.error(data?.message || "Erreur lors de l'envoi du code");
+      }
     } catch {
       toast.error("Erreur lors de l'envoi du code");
     } finally {
@@ -381,9 +417,9 @@ export default function MotDePasseOublie() {
                 {error && !isBlocked && <p className="text-sm text-destructive text-center">{error}</p>}
                 
                 {/* Attempts indicator */}
-                {!isBlocked && attempts > 0 && (
+                {!isBlocked && attemptsRemaining < 3 && (
                   <p className="text-xs text-muted-foreground text-center">
-                    {MAX_ATTEMPTS - attempts} tentative(s) restante(s)
+                    {attemptsRemaining} tentative(s) restante(s)
                   </p>
                 )}
               </div>

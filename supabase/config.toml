@@ -45,5 +45,8 @@ verify_jwt = false
 [functions.send-reset-code-sms]
 verify_jwt = false
 
+[functions.verify-reset-code]
+verify_jwt = false
+
 [functions.update-password]
 verify_jwt = false

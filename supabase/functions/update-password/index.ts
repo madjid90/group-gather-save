@@ -9,16 +9,17 @@ const corsHeaders = {
 interface UpdatePasswordRequest {
   userId: string;
   newPassword: string;
+  resetToken: string;
+  telephone: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
-  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { userId, newPassword }: UpdatePasswordRequest = await req.json();
+    const { userId, newPassword, resetToken, telephone }: UpdatePasswordRequest = await req.json();
 
     console.log(`Updating password for user ${userId}`);
 
@@ -30,7 +31,6 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Get Supabase admin client
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey, {
@@ -40,7 +40,33 @@ const handler = async (req: Request): Promise<Response> => {
       },
     });
 
-    // Update user password using admin API
+    // Normalize phone number
+    const cleanPhone = telephone.replace(/[^0-9]/g, "");
+    const normalizedPhone = cleanPhone.startsWith("33") 
+      ? "0" + cleanPhone.substring(2) 
+      : cleanPhone.startsWith("0") 
+        ? cleanPhone 
+        : "0" + cleanPhone;
+
+    // Verify the reset token is valid
+    const { data: attempt, error: attemptError } = await supabase
+      .from("password_reset_attempts")
+      .select("*")
+      .eq("phone_number", normalizedPhone)
+      .eq("reset_code", resetToken)
+      .eq("used", false)
+      .gt("expires_at", new Date().toISOString())
+      .maybeSingle();
+
+    if (attemptError || !attempt) {
+      console.error("Invalid or expired reset token");
+      return new Response(
+        JSON.stringify({ success: false, message: "Session expirée. Veuillez recommencer." }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
+    // Update user password
     const { error: updateError } = await supabase.auth.admin.updateUserById(
       userId,
       { password: newPassword }
@@ -53,6 +79,12 @@ const handler = async (req: Request): Promise<Response> => {
         { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
       );
     }
+
+    // Mark the reset attempt as used
+    await supabase
+      .from("password_reset_attempts")
+      .update({ used: true })
+      .eq("id", attempt.id);
 
     console.log("Password updated successfully for user:", userId);
 

@@ -518,6 +518,42 @@ export type Database = {
         }
         Relationships: []
       }
+      password_reset_attempts: {
+        Row: {
+          attempts: number | null
+          blocked_until: string | null
+          created_at: string | null
+          expires_at: string | null
+          id: string
+          last_sms_sent_at: string | null
+          phone_number: string
+          reset_code: string
+          used: boolean | null
+        }
+        Insert: {
+          attempts?: number | null
+          blocked_until?: string | null
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          last_sms_sent_at?: string | null
+          phone_number: string
+          reset_code: string
+          used?: boolean | null
+        }
+        Update: {
+          attempts?: number | null
+          blocked_until?: string | null
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          last_sms_sent_at?: string | null
+          phone_number?: string
+          reset_code?: string
+          used?: boolean | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           a_reactiver: boolean | null
@@ -792,6 +828,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      cleanup_expired_reset_attempts: { Args: never; Returns: undefined }
       get_offer_by_token: {
         Args: { p_token: string }
         Returns: {
