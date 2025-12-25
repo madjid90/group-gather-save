@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle } from "lucide-react";
 import { useLocation } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const firstNames = [
   "Marie", "Thomas", "Julie", "Nicolas", "Sophie", "Pierre", "Camille", "Lucas",
@@ -42,6 +43,7 @@ export function SocialProofNotifications() {
   const [isVisible, setIsVisible] = useState(false);
   const [isInHeroSection, setIsInHeroSection] = useState(true);
   const location = useLocation();
+  const isMobile = useIsMobile();
 
   // Detect if user has scrolled past hero section
   useEffect(() => {
@@ -88,8 +90,8 @@ export function SocialProofNotifications() {
     }, 4000);
   };
 
-  // Don't show in hero section
-  const shouldShow = isVisible && notification && !isInHeroSection;
+  // Don't show in hero section on desktop, but always show on mobile
+  const shouldShow = isVisible && notification && (isMobile || !isInHeroSection);
 
   return (
     <AnimatePresence>
