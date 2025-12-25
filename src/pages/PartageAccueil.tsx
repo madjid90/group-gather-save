@@ -6,20 +6,21 @@ import {
   Mail, 
   Copy, 
   Check, 
-  PartyPopper, 
   Users, 
   TrendingDown,
   Share2,
-  ChevronRight
+  ChevronRight,
+  Sparkles,
+  Zap
 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-export default function PartageInvitation() {
+export default function PartageAccueil() {
   const [copied, setCopied] = useState(false);
 
   const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/invitation` : "";
-  const shareText = "🎉 Je viens de m'inscrire à l'achat groupé Switchly pour économiser sur mes factures d'électricité et d'internet ! Rejoins-moi vite, plus on est nombreux, plus les prix baissent. C'est 100% gratuit et sans engagement.";
+  const shareText = "💡 J'ai découvert Switchly, un achat groupé d'électricité et de box internet qui permet d'économiser jusqu'à 400€/an ! Inscription gratuite et sans engagement.";
 
   const handleCopyLink = async () => {
     try {
@@ -43,7 +44,7 @@ export default function PartageInvitation() {
   };
 
   const handleEmailShare = () => {
-    const subject = "💡 Économise sur tes factures d'énergie avec Switchly";
+    const subject = "💡 Découvre Switchly - Économise sur tes factures d'énergie";
     const body = `Salut !\n\n${shareText}\n\nInscris-toi gratuitement ici : ${shareUrl}\n\nÀ bientôt !`;
     const url = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     window.location.href = url;
@@ -65,29 +66,28 @@ export default function PartageInvitation() {
 
   return (
     <div className="min-h-screen bg-gradient-subtle flex flex-col">
-      {/* Confetti/celebration background */}
+      {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(20)].map((_, i) => (
+        {[...Array(12)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-3 h-3 rounded-full"
+            className="absolute w-2 h-2 rounded-full"
             style={{
-              background: i % 2 === 0 ? 'hsl(var(--primary))' : 'hsl(var(--secondary))',
-              left: `${Math.random() * 100}%`,
-              top: `-20px`,
+              background: i % 3 === 0 ? 'hsl(var(--primary))' : i % 3 === 1 ? 'hsl(var(--secondary))' : 'hsl(var(--accent))',
+              left: `${10 + (i * 7)}%`,
+              top: `${20 + (i * 5) % 60}%`,
+              opacity: 0.3,
             }}
             animate={{
-              y: ['0vh', '110vh'],
-              x: [0, (Math.random() - 0.5) * 100],
-              rotate: [0, 360 * (Math.random() > 0.5 ? 1 : -1)],
-              opacity: [1, 1, 0],
+              y: [0, -30, 0],
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.6, 0.3],
             }}
             transition={{
-              duration: 4 + Math.random() * 3,
-              delay: Math.random() * 2,
+              duration: 3 + i * 0.5,
+              delay: i * 0.3,
               repeat: Infinity,
-              repeatDelay: Math.random() * 5,
-              ease: "linear",
+              ease: "easeInOut",
             }}
           />
         ))}
@@ -100,16 +100,16 @@ export default function PartageInvitation() {
           transition={{ duration: 0.5 }}
           className="w-full max-w-md"
         >
-          {/* Success card */}
+          {/* Share card */}
           <div className="bg-card border border-border rounded-3xl p-6 sm:p-8 shadow-switchly-xl text-center">
-            {/* Celebration icon */}
+            {/* Icon */}
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-              className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center"
+              className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center"
             >
-              <PartyPopper className="w-10 h-10 text-white" />
+              <Sparkles className="w-10 h-10 text-primary" />
             </motion.div>
 
             {/* Title */}
@@ -119,7 +119,7 @@ export default function PartageInvitation() {
               transition={{ delay: 0.3 }}
               className="text-2xl sm:text-3xl font-bold text-foreground mb-3"
             >
-              Inscription réussie ! 🎉
+              Partagez la bonne nouvelle !
             </motion.h1>
 
             <motion.p
@@ -128,10 +128,10 @@ export default function PartageInvitation() {
               transition={{ delay: 0.4 }}
               className="text-muted-foreground mb-8"
             >
-              Vous faites maintenant partie de l'achat groupé Switchly
+              Aidez vos proches à économiser sur leurs factures
             </motion.p>
 
-            {/* Benefits reminder */}
+            {/* Benefits */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -155,19 +155,32 @@ export default function PartageInvitation() {
               </div>
             </motion.div>
 
+            {/* Message preview */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.55 }}
+              className="bg-muted/30 rounded-xl p-4 mb-6 text-left"
+            >
+              <div className="flex items-start gap-2 mb-2">
+                <Zap className="w-4 h-4 text-primary mt-0.5" />
+                <p className="text-xs text-muted-foreground font-medium">Message pré-écrit</p>
+              </div>
+              <p className="text-sm text-foreground leading-relaxed">
+                {shareText}
+              </p>
+            </motion.div>
+
             {/* Share section */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
             >
-              <h2 className="text-lg font-semibold text-foreground mb-2 flex items-center justify-center gap-2">
+              <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center justify-center gap-2">
                 <Share2 className="w-5 h-5 text-primary" />
-                Invitez vos proches
+                Choisissez votre méthode
               </h2>
-              <p className="text-sm text-muted-foreground mb-6">
-                Partagez Switchly et aidez-les à économiser aussi !
-              </p>
 
               {/* Share buttons */}
               <div className="grid grid-cols-2 gap-3 mb-4">
@@ -248,20 +261,30 @@ export default function PartageInvitation() {
               )}
             </motion.div>
 
-            {/* Continue button */}
+            {/* Back button */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8 }}
+              className="flex flex-col gap-2"
             >
+              <Button
+                variant="default"
+                asChild
+                className="w-full"
+              >
+                <Link to="/inscription">
+                  Je m'inscris aussi
+                  <ChevronRight className="w-4 h-4 ml-1" />
+                </Link>
+              </Button>
               <Button
                 variant="ghost"
                 asChild
                 className="text-muted-foreground hover:text-foreground"
               >
                 <Link to="/">
-                  Continuer vers l'accueil
-                  <ChevronRight className="w-4 h-4 ml-1" />
+                  Retour à l'accueil
                 </Link>
               </Button>
             </motion.div>

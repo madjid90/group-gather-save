@@ -27,6 +27,7 @@ import MonOffre from "./pages/MonOffre";
 import OffreConfirmation from "./pages/OffreConfirmation";
 import DashboardClient from "./pages/DashboardClient";
 import PartageInvitation from "./pages/PartageInvitation";
+import PartageAccueil from "./pages/PartageAccueil";
 import Invitation from "./pages/Invitation";
 import NotFound from "./pages/NotFound";
 
@@ -42,6 +43,7 @@ const App = () => (
           {/* Auth pages */}
           <Route path="/inscription" element={<Inscription />} />
           <Route path="/partage-invitation" element={<PartageInvitation />} />
+          <Route path="/partage-accueil" element={<PartageAccueil />} />
           <Route path="/invitation" element={<Invitation />} />
           <Route path="/connexion" element={<Connexion />} />
           
