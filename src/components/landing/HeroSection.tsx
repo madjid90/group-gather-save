@@ -109,17 +109,38 @@ export function HeroSection() {
             <div className="relative">
               {/* Floating counter card */}
               <motion.div 
-                className="bg-card rounded-2xl p-8 shadow-switchly-xl border border-border text-center"
+                className="relative bg-card rounded-2xl p-8 shadow-switchly-xl border border-border text-center"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.6 }}
               >
+                {/* Live indicator - top right */}
+                <motion.div 
+                  className="absolute -top-2 -right-2 flex items-center gap-1.5 bg-secondary text-secondary-foreground px-3 py-1.5 rounded-full shadow-lg"
+                  animate={{ 
+                    scale: [1, 1.05, 1],
+                    boxShadow: [
+                      "0 0 0 0 rgba(34, 197, 94, 0.4)",
+                      "0 0 0 8px rgba(34, 197, 94, 0)",
+                      "0 0 0 0 rgba(34, 197, 94, 0)"
+                    ]
+                  }}
+                  transition={{ 
+                    duration: 2, 
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                >
+                  <span className="w-2 h-2 rounded-full bg-secondary-foreground animate-pulse" />
+                  <span className="text-xs font-semibold">en direct</span>
+                </motion.div>
+
                 <div className="text-5xl font-bold text-foreground">
                   <AnimatedCounter 
                     target={2547}
                     externalValue={count}
                     duration={2.5}
-                    showLiveIndicator={true}
+                    showLiveIndicator={false}
                   />
                 </div>
                 <p className="text-lg text-muted-foreground mt-2">
