@@ -6,30 +6,37 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+const RESEND_COOLDOWN_SECONDS = 60;
+const MAX_ATTEMPTS = 3;
+const BLOCK_DURATION_MINUTES = 5;
+
 interface ResetCodeRequest {
   telephone: string;
-  code: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
-  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { telephone, code }: ResetCodeRequest = await req.json();
+    const { telephone }: ResetCodeRequest = await req.json();
 
-    console.log(`Sending reset code SMS to ${telephone}`);
+    console.log(`Processing reset code request for ${telephone}`);
 
-    // Get Supabase client
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Find user by phone number
+    // Normalize phone number
     const cleanPhone = telephone.replace(/[^0-9]/g, "");
-    
+    const normalizedPhone = cleanPhone.startsWith("33") 
+      ? "0" + cleanPhone.substring(2) 
+      : cleanPhone.startsWith("0") 
+        ? cleanPhone 
+        : "0" + cleanPhone;
+
+    // Find user by phone number
     const { data: profile, error: profileError } = await supabase
       .from("profiles")
       .select("id, telephone")
@@ -52,7 +59,77 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Get Twilio credentials from environment
+    // Check for existing valid reset attempt
+    const { data: existingAttempt } = await supabase
+      .from("password_reset_attempts")
+      .select("*")
+      .eq("phone_number", normalizedPhone)
+      .eq("used", false)
+      .gt("expires_at", new Date().toISOString())
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    // Check if blocked
+    if (existingAttempt?.blocked_until && new Date(existingAttempt.blocked_until) > new Date()) {
+      const remainingSeconds = Math.ceil((new Date(existingAttempt.blocked_until).getTime() - Date.now()) / 1000);
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          blocked: true,
+          remainingSeconds,
+          message: `Trop de tentatives. Réessayez dans ${Math.ceil(remainingSeconds / 60)} minutes.` 
+        }),
+        { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
+    // Check cooldown for resending
+    if (existingAttempt?.last_sms_sent_at) {
+      const lastSent = new Date(existingAttempt.last_sms_sent_at);
+      const secondsSinceLastSms = (Date.now() - lastSent.getTime()) / 1000;
+      
+      if (secondsSinceLastSms < RESEND_COOLDOWN_SECONDS) {
+        const remainingCooldown = Math.ceil(RESEND_COOLDOWN_SECONDS - secondsSinceLastSms);
+        return new Response(
+          JSON.stringify({ 
+            success: false, 
+            cooldown: true,
+            remainingCooldown,
+            message: `Veuillez patienter ${remainingCooldown} secondes avant de renvoyer un code.` 
+          }),
+          { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
+        );
+      }
+    }
+
+    // Generate new 6-digit code
+    const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // Create or update reset attempt record
+    if (existingAttempt) {
+      await supabase
+        .from("password_reset_attempts")
+        .update({
+          reset_code: resetCode,
+          last_sms_sent_at: new Date().toISOString(),
+          attempts: 0, // Reset attempts on new code
+          blocked_until: null,
+          expires_at: new Date(Date.now() + 10 * 60 * 1000).toISOString(),
+        })
+        .eq("id", existingAttempt.id);
+    } else {
+      await supabase
+        .from("password_reset_attempts")
+        .insert({
+          phone_number: normalizedPhone,
+          reset_code: resetCode,
+          attempts: 0,
+          expires_at: new Date(Date.now() + 10 * 60 * 1000).toISOString(),
+        });
+    }
+
+    // Get Twilio credentials
     const accountSid = Deno.env.get("TWILIO_ACCOUNT_SID");
     const authToken = Deno.env.get("TWILIO_AUTH_TOKEN");
     const twilioPhoneNumber = Deno.env.get("TWILIO_PHONE_NUMBER");
@@ -65,7 +142,7 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Format phone number for Twilio
+    // Format phone for Twilio
     let formattedPhone = telephone.replace(/\s/g, "");
     if (formattedPhone.startsWith("0")) {
       formattedPhone = "+33" + formattedPhone.substring(1);
@@ -73,9 +150,9 @@ const handler = async (req: Request): Promise<Response> => {
       formattedPhone = "+" + formattedPhone;
     }
 
-    // Send SMS via Twilio
+    // Send SMS
     const twilioUrl = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`;
-    const smsBody = `Switchly - Votre code de réinitialisation est : ${code}. Ce code expire dans 10 minutes.`;
+    const smsBody = `Switchly - Votre code de réinitialisation est : ${resetCode}. Ce code expire dans 10 minutes.`;
 
     const twilioResponse = await fetch(twilioUrl, {
       method: "POST",
@@ -100,7 +177,7 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Log the SMS
+    // Log SMS
     await supabase.from("sms_logs").insert({
       user_id: profile.id,
       telephone: formattedPhone,
@@ -112,7 +189,11 @@ const handler = async (req: Request): Promise<Response> => {
     console.log("Reset code SMS sent successfully:", twilioResult.sid);
 
     return new Response(
-      JSON.stringify({ success: true, userId: profile.id }),
+      JSON.stringify({ 
+        success: true, 
+        userId: profile.id,
+        cooldownSeconds: RESEND_COOLDOWN_SECONDS,
+      }),
       { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
     );
 
