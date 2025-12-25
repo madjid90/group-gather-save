@@ -20,9 +20,9 @@ const advantages = [
   },
   {
     icon: Clock,
-    title: "Rapide et simple",
-    description: "Inscription en 30 secondes, offre personnalisée rapidement.",
-    descriptionMobile: "30 sec d'inscription, offre rapide.",
+    title: "100% digital par SMS",
+    description: "Tout se fait par SMS et sur votre espace. Aucun démarchage téléphonique.",
+    descriptionMobile: "Par SMS, zéro appel.",
     color: "primary",
   },
   {
