@@ -32,21 +32,23 @@ const steps = [
 
 export function HowItWorksSection() {
   return (
-    <section id="comment-ca-marche" className="py-12 md:py-16 lg:py-20 bg-background">
+    <section id="comment-ca-marche" className="py-16 md:py-20 lg:py-24 bg-background">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-8 lg:mb-14"
+          className="text-center mb-10 lg:mb-16"
         >
-          <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold text-foreground mb-3 lg:mb-6">
+          <span className="inline-block text-primary font-semibold text-sm uppercase tracking-wide mb-3">
             Comment ça marche
+          </span>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4 lg:mb-6">
+            Rejoignez l'achat groupé en 3 étapes
           </h2>
-          <p className="text-base lg:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
-            <span className="hidden lg:inline">3 étapes simples pour économiser sur vos factures</span>
-            <span className="lg:hidden">3 étapes simples</span>
+          <p className="text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
+            Un processus simple et transparent pour économiser sur vos factures d'énergie et d'internet sans effort.
           </p>
         </motion.div>
 

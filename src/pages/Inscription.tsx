@@ -151,26 +151,26 @@ export default function Inscription() {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="w-full max-w-md bg-card rounded-xl md:rounded-2xl p-5 md:p-8 shadow-switchly-xl border border-border text-center"
+          className="w-full max-w-md bg-card rounded-2xl p-6 md:p-8 shadow-switchly-xl border border-border text-center"
         >
           {/* Success icon */}
-          <div className="w-14 h-14 rounded-full bg-secondary/10 flex items-center justify-center mx-auto mb-5">
-            <Check className="w-7 h-7 text-secondary" />
+          <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center mx-auto mb-6">
+            <Check className="w-8 h-8 text-secondary" />
           </div>
 
           {/* Welcome message */}
-          <h1 className="text-xl sm:text-2xl font-bold text-foreground mb-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
             Bienvenue sur Switchly !
           </h1>
-          <p className="text-sm text-muted-foreground mb-6">
-            Votre inscription est confirmée. Complétez votre profil logement pour recevoir une offre personnalisée.
+          <p className="text-base text-muted-foreground mb-8">
+            Votre inscription est confirmée. Complétez votre profil pour recevoir une offre personnalisée adaptée à votre consommation.
           </p>
 
           {/* Primary CTA */}
           <Button 
             variant="hero" 
             size="lg"
-            className="w-full py-4 text-sm mb-6"
+            className="w-full py-5 text-base mb-6"
             asChild
           >
             <Link to="/dashboard-client">Accéder à mon espace</Link>
@@ -235,7 +235,7 @@ export default function Inscription() {
   }
 
   return (
-    <PageTransition className="h-screen overflow-hidden flex items-center justify-center px-4 bg-gradient-subtle relative">
+    <PageTransition className="min-h-screen flex items-center justify-center px-4 py-8 bg-gradient-subtle relative">
       {/* Fixed Back Button */}
       <Link 
         to="/" 
@@ -250,27 +250,27 @@ export default function Inscription() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="bg-card rounded-xl md:rounded-2xl p-4 md:p-6 shadow-switchly-xl border border-border"
+          className="bg-card rounded-2xl p-6 md:p-8 shadow-switchly-xl border border-border"
         >
           {/* Header */}
-          <div className="text-center mb-5">
-            <Link to="/" className="inline-flex items-center gap-2 mb-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center">
-                <Zap className="w-5 h-5 text-primary-foreground" />
+          <div className="text-center mb-6">
+            <Link to="/" className="inline-flex items-center gap-2 mb-4">
+              <div className="w-12 h-12 rounded-xl bg-gradient-hero flex items-center justify-center">
+                <Zap className="w-6 h-6 text-primary-foreground" />
               </div>
-              <span className="text-xl font-bold text-foreground">Switchly</span>
+              <span className="text-2xl font-bold text-foreground">Switchly</span>
             </Link>
-            <h1 className="text-[22px] sm:text-2xl font-bold text-foreground mb-1 leading-tight">
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
               Rejoindre l'achat groupé
             </h1>
-            <p className="text-sm text-muted-foreground">
-              Inscription gratuite en 30 secondes
+            <p className="text-base text-muted-foreground">
+              Inscription gratuite en 30 secondes • Sans engagement
             </p>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-3">
-            <div className="space-y-1.5">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
               <Label htmlFor="nom" className="flex items-center gap-2 text-sm font-medium text-foreground">
                 <User className="w-4 h-4 text-primary" />
                 Nom complet
@@ -281,14 +281,14 @@ export default function Inscription() {
                 value={formData.nom}
                 onChange={handleChange}
                 placeholder="Jean Dupont"
-                className={`text-sm ${errors.nom ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
+                className={`h-12 text-base ${errors.nom ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
               />
               {errors.nom && (
-                <p className="text-xs text-destructive">{errors.nom}</p>
+                <p className="text-sm text-destructive">{errors.nom}</p>
               )}
             </div>
 
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               <Label htmlFor="telephone" className="flex items-center gap-2 text-sm font-medium text-foreground">
                 <Phone className="w-4 h-4 text-primary" />
                 Téléphone
@@ -300,14 +300,14 @@ export default function Inscription() {
                 value={formData.telephone}
                 onChange={handleChange}
                 placeholder="0612345678"
-                className={`text-sm ${errors.telephone ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
+                className={`h-12 text-base ${errors.telephone ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
               />
               {errors.telephone && (
-                <p className="text-xs text-destructive">{errors.telephone}</p>
+                <p className="text-sm text-destructive">{errors.telephone}</p>
               )}
             </div>
 
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               <Label htmlFor="password" className="flex items-center gap-2 text-sm font-medium text-foreground">
                 <Lock className="w-4 h-4 text-primary" />
                 Mot de passe
@@ -320,7 +320,7 @@ export default function Inscription() {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="6 caractères minimum"
-                  className={`text-sm pr-12 ${errors.password ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
+                  className={`h-12 text-base pr-12 ${errors.password ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
                 />
                 <button
                   type="button"
@@ -331,7 +331,7 @@ export default function Inscription() {
                 </button>
               </div>
               {errors.password && (
-                <p className="text-xs text-destructive">{errors.password}</p>
+                <p className="text-sm text-destructive">{errors.password}</p>
               )}
             </div>
 
@@ -339,7 +339,7 @@ export default function Inscription() {
               type="submit"
               variant="hero"
               size="lg"
-              className="w-full py-3 text-sm"
+              className="w-full h-12 text-base mt-2"
               disabled={isLoading}
             >
               {isLoading ? (
@@ -357,8 +357,8 @@ export default function Inscription() {
           </form>
 
           {/* Footer */}
-          <div className="mt-4 text-center">
-            <p className="text-sm text-muted-foreground">
+          <div className="mt-6 text-center">
+            <p className="text-base text-muted-foreground">
               Déjà inscrit ?{" "}
               <Link to="/connexion" className="text-primary hover:underline font-medium">
                 Connectez-vous
@@ -367,13 +367,13 @@ export default function Inscription() {
           </div>
 
           {/* Trust badges */}
-          <div className="mt-4 pt-4 border-t border-border">
-            <div className="flex items-center justify-center gap-6 text-xs text-muted-foreground">
-              <div className="flex items-center gap-1.5">
+          <div className="mt-6 pt-6 border-t border-border">
+            <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
                 <Check className="w-4 h-4 text-secondary" />
                 <span>Données sécurisées</span>
               </div>
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-2">
                 <Check className="w-4 h-4 text-secondary" />
                 <span>Sans engagement</span>
               </div>

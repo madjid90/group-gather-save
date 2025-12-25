@@ -37,22 +37,25 @@ const faqItems = [
 
 export function FAQSection() {
   return (
-    <section className="py-12 md:py-16 lg:py-20 bg-background">
+    <section className="py-16 md:py-20 lg:py-24 bg-background">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-8 lg:mb-12"
+          className="text-center mb-10 lg:mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-4 lg:mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-4">
             <HelpCircle className="w-4 h-4" />
             <span className="text-sm font-medium">FAQ</span>
           </div>
-          <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold text-foreground mb-3 lg:mb-6">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4 lg:mb-6">
             Questions fréquentes
           </h2>
+          <p className="text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
+            Tout ce que vous devez savoir sur l'achat groupé d'énergie et d'internet avec Switchly.
+          </p>
         </motion.div>
 
         <motion.div
