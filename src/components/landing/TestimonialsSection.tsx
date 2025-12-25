@@ -42,6 +42,7 @@ const testimonials = [
 ];
 
 export function TestimonialsSection() {
+  // Force rebuild
   return (
     <section className="py-12 sm:py-16 md:py-20 lg:py-24 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-subtle" />
