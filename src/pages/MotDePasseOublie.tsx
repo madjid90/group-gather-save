@@ -37,6 +37,7 @@ export default function MotDePasseOublie() {
   const [attempts, setAttempts] = useState(0);
   const [blockedUntil, setBlockedUntil] = useState<number | null>(null);
   const [remainingTime, setRemainingTime] = useState(0);
+  const [resendCooldown, setResendCooldown] = useState(0);
 
   // Timer for blocked state
   useEffect(() => {
@@ -55,6 +56,17 @@ export default function MotDePasseOublie() {
 
     return () => clearInterval(interval);
   }, [blockedUntil]);
+
+  // Timer for resend cooldown
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+
+    const interval = setInterval(() => {
+      setResendCooldown((prev) => Math.max(0, prev - 1));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [resendCooldown]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -100,6 +112,7 @@ export default function MotDePasseOublie() {
       if (data?.userId) {
         setUserId(data.userId);
         setStep("code");
+        setResendCooldown(60); // Start 60s cooldown
         toast.success("Code envoyé par SMS !");
       } else {
         setError("Aucun compte trouvé avec ce numéro de téléphone.");
@@ -187,10 +200,14 @@ export default function MotDePasseOublie() {
   };
 
   const handleResendCode = async () => {
+    if (resendCooldown > 0) return;
+    
     setIsLoading(true);
     try {
       const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
       setGeneratedCode(resetCode);
+      setCode(""); // Reset code input
+      setAttempts(0); // Reset attempts on new code
 
       await supabase.functions.invoke("send-reset-code-sms", {
         body: {
@@ -199,6 +216,7 @@ export default function MotDePasseOublie() {
         },
       });
 
+      setResendCooldown(60); // Start 60s cooldown
       toast.success("Nouveau code envoyé !");
     } catch {
       toast.error("Erreur lors de l'envoi du code");
@@ -384,10 +402,16 @@ export default function MotDePasseOublie() {
                 <button
                   type="button"
                   onClick={handleResendCode}
-                  disabled={isLoading}
-                  className="text-sm text-primary hover:underline"
+                  disabled={isLoading || resendCooldown > 0}
+                  className={`text-sm transition-colors ${
+                    resendCooldown > 0 
+                      ? "text-muted-foreground cursor-not-allowed" 
+                      : "text-primary hover:underline"
+                  }`}
                 >
-                  Renvoyer le code
+                  {resendCooldown > 0 
+                    ? `Renvoyer le code (${resendCooldown}s)` 
+                    : "Renvoyer le code"}
                 </button>
               </div>
             </form>
