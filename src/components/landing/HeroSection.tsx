@@ -106,18 +106,10 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="relative hidden lg:block"
           >
-            <div className="relative flex items-center justify-center min-h-[350px]">
-              {/* Decorative background circles */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-64 h-64 rounded-full bg-primary/5 blur-2xl" />
-              </div>
-              <div className="absolute top-10 right-10">
-                <div className="w-32 h-32 rounded-full bg-secondary/10 blur-xl" />
-              </div>
-              
-              {/* Floating counter card - center */}
+            <div className="relative">
+              {/* Floating counter card */}
               <motion.div 
-                className="relative bg-card rounded-2xl p-8 shadow-switchly-xl border border-border text-center z-10"
+                className="bg-card rounded-2xl p-8 shadow-switchly-xl border border-border text-center"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.6 }}
@@ -134,37 +126,34 @@ export function HeroSection() {
                   foyers inscrits
                 </p>
               </motion.div>
-
-              {/* Floating notification - bottom left */}
-              <AnimatePresence>
-                {showNotification && notification && (
-                  <motion.div
-                    className="absolute bottom-0 left-0 bg-card border border-border rounded-xl p-3 shadow-switchly-lg z-20"
-                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                    transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-hero flex items-center justify-center text-primary-foreground font-semibold text-sm">
-                        {notification.name.charAt(0)}
-                      </div>
-                      <div className="text-left">
-                        <div className="flex items-center gap-1.5">
-                          <CheckCircle className="w-3.5 h-3.5 text-secondary" />
-                          <p className="text-sm font-medium text-foreground">
-                            {notification.name} vient de s'inscrire
-                          </p>
-                        </div>
-                        <p className="text-xs text-muted-foreground">
-                          {notification.city} • {notification.time}
-                        </p>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
             </div>
+
+            {/* Floating notification - animated with real data */}
+            <AnimatePresence>
+              {showNotification && notification && (
+                <motion.div
+                  className="absolute -bottom-4 -left-4 bg-card border border-border rounded-xl p-3 shadow-switchly-lg"
+                  initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center">
+                      <CheckCircle className="w-5 h-5 text-secondary" />
+                    </div>
+                    <div className="text-left">
+                      <p className="text-sm font-medium text-foreground">
+                        {notification.name} vient de s'inscrire
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {notification.city} • {notification.time}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         </div>
       </div>
