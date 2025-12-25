@@ -88,7 +88,7 @@ const Index = () => {
       <FloatingShareButton />
       
       {/* Spacer for fixed CTA on mobile */}
-      <div className="h-20 md:hidden" />
+      <div className="h-24 md:hidden" />
     </PageTransition>
   );
 };
