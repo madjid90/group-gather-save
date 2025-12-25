@@ -155,12 +155,12 @@ export function HeroSection() {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="relative hidden lg:flex flex-col justify-center"
+            className="relative hidden lg:block"
           >
-            <div className="relative pb-16">
+            <div className="relative">
               {/* Floating counter card */}
               <motion.div 
-                className="relative bg-card rounded-2xl p-8 shadow-switchly-xl border border-border text-center max-w-sm mx-auto"
+                className="relative bg-card rounded-2xl p-8 shadow-switchly-xl border border-border text-center"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.6 }}
@@ -201,7 +201,7 @@ export function HeroSection() {
 
               {/* Savings cards */}
               <motion.div 
-                className="flex gap-4 mt-6 max-w-md mx-auto"
+                className="flex gap-4 mt-6"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8, duration: 0.5 }}
@@ -227,9 +227,9 @@ export function HeroSection() {
                 </div>
               </motion.div>
 
-              {/* Social proof notification */}
+              {/* Social proof notification - always visible with subtle animation */}
               <motion.div
-                className="absolute -bottom-4 left-0 bg-card border border-border rounded-2xl p-3 pr-5 shadow-switchly-lg"
+                className="absolute -bottom-16 -left-4 bg-card border border-border rounded-2xl p-3 pr-5 shadow-switchly-lg"
                 initial={{ opacity: 0, y: 20, scale: 0.9 }}
                 animate={{ 
                   opacity: 1, 
