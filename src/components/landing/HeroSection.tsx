@@ -43,8 +43,8 @@ export function HeroSection() {
           >
             {/* Title - same for all */}
             <h1 className="text-3xl sm:text-4xl xl:text-5xl font-bold text-foreground leading-tight text-center lg:text-left">
-              Économisez jusqu'à 400€ par an{" "}
-              <span className="gradient-text">sur vos factures d'énergie et d'internet</span>
+              Économisez jusqu'à <span className="gradient-text">400€</span> par an sur vos factures{" "}
+              <span className="gradient-text">d'énergie et d'internet</span>
             </h1>
 
             {/* Subtitle with service icons */}
