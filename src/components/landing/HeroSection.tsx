@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { AnimatedCounter, useAnimatedSocialProof } from "@/components/ui/AnimatedCounter";
 import { CheckCircle, Zap, Wifi } from "lucide-react";
-import { HeroIllustration } from "./HeroIllustration";
+import heroIllustration from "@/assets/illustrations/hero-group-savings.png";
 
 export function HeroSection() {
   const { count, notification, showNotification } = useAnimatedSocialProof(2547, 12000);
@@ -109,7 +109,19 @@ export function HeroSection() {
           >
             {/* Hero illustration */}
             <div className="relative">
-              <HeroIllustration />
+              <div 
+                className="w-full max-w-lg mx-auto"
+                style={{
+                  maskImage: 'radial-gradient(ellipse 80% 70% at 50% 50%, black 60%, transparent 100%)',
+                  WebkitMaskImage: 'radial-gradient(ellipse 80% 70% at 50% 50%, black 60%, transparent 100%)'
+                }}
+              >
+                <img 
+                  src={heroIllustration} 
+                  alt="Groupe de personnes économisant ensemble sur l'énergie et internet" 
+                  className="w-full"
+                />
+              </div>
               
               {/* Floating counter card */}
               <motion.div 
