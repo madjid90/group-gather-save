@@ -26,6 +26,7 @@ import FormulaireLogement from "./pages/FormulaireLogement";
 import MonOffre from "./pages/MonOffre";
 import OffreConfirmation from "./pages/OffreConfirmation";
 import DashboardClient from "./pages/DashboardClient";
+import PartageInvitation from "./pages/PartageInvitation";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -39,6 +40,7 @@ const App = () => (
         <Routes>
           {/* Auth pages */}
           <Route path="/inscription" element={<Inscription />} />
+          <Route path="/partage-invitation" element={<PartageInvitation />} />
           <Route path="/connexion" element={<Connexion />} />
           
           {/* Public pages with full layout */}
