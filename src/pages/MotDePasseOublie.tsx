@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,6 +18,9 @@ import {
 const phoneSchema = z.string().regex(/^(\+33|0)[1-9]\d{8}$/, "Numéro de téléphone invalide");
 const passwordSchema = z.string().min(6, "Le mot de passe doit contenir au moins 6 caractères");
 
+const MAX_ATTEMPTS = 3;
+const BLOCK_DURATION_MS = 5 * 60 * 1000; // 5 minutes
+
 type Step = "phone" | "code" | "newPassword" | "success";
 
 export default function MotDePasseOublie() {
@@ -31,6 +34,35 @@ export default function MotDePasseOublie() {
   const [generatedCode, setGeneratedCode] = useState("");
   const [userId, setUserId] = useState("");
   const [error, setError] = useState("");
+  const [attempts, setAttempts] = useState(0);
+  const [blockedUntil, setBlockedUntil] = useState<number | null>(null);
+  const [remainingTime, setRemainingTime] = useState(0);
+
+  // Timer for blocked state
+  useEffect(() => {
+    if (!blockedUntil) return;
+
+    const interval = setInterval(() => {
+      const now = Date.now();
+      if (now >= blockedUntil) {
+        setBlockedUntil(null);
+        setAttempts(0);
+        setRemainingTime(0);
+      } else {
+        setRemainingTime(Math.ceil((blockedUntil - now) / 1000));
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [blockedUntil]);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
+  };
+
+  const isBlocked = blockedUntil !== null && Date.now() < blockedUntil;
 
   const handleSendCode = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,16 +116,33 @@ export default function MotDePasseOublie() {
     e.preventDefault();
     setError("");
 
+    if (isBlocked) {
+      setError(`Trop de tentatives. Réessayez dans ${formatTime(remainingTime)}`);
+      return;
+    }
+
     if (code.length !== 6) {
       setError("Veuillez entrer le code à 6 chiffres");
       return;
     }
 
     if (code !== generatedCode) {
-      setError("Code incorrect. Veuillez réessayer.");
+      const newAttempts = attempts + 1;
+      setAttempts(newAttempts);
+      
+      if (newAttempts >= MAX_ATTEMPTS) {
+        setBlockedUntil(Date.now() + BLOCK_DURATION_MS);
+        setRemainingTime(Math.ceil(BLOCK_DURATION_MS / 1000));
+        setError(`Trop de tentatives. Compte bloqué pendant 5 minutes.`);
+        toast.error("Compte temporairement bloqué");
+      } else {
+        setError(`Code incorrect. ${MAX_ATTEMPTS - newAttempts} tentative(s) restante(s).`);
+      }
       return;
     }
 
+    // Reset attempts on success
+    setAttempts(0);
     setStep("newPassword");
   };
 
@@ -274,6 +323,21 @@ export default function MotDePasseOublie() {
           {/* Step: Code verification */}
           {step === "code" && (
             <form onSubmit={handleVerifyCode} className="space-y-4">
+              {/* Blocked warning */}
+              {isBlocked && (
+                <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-xl text-center">
+                  <p className="text-sm font-medium text-destructive">
+                    Trop de tentatives incorrectes
+                  </p>
+                  <p className="text-2xl font-bold text-destructive mt-1">
+                    {formatTime(remainingTime)}
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Veuillez patienter avant de réessayer
+                  </p>
+                </div>
+              )}
+
               <div className="space-y-2">
                 <Label className="flex items-center gap-2 text-sm font-medium text-foreground justify-center">
                   <Shield className="w-4 h-4 text-primary" />
@@ -284,6 +348,7 @@ export default function MotDePasseOublie() {
                     maxLength={6}
                     value={code}
                     onChange={(value) => setCode(value)}
+                    disabled={isBlocked}
                   >
                     <InputOTPGroup>
                       <InputOTPSlot index={0} />
@@ -295,7 +360,14 @@ export default function MotDePasseOublie() {
                     </InputOTPGroup>
                   </InputOTP>
                 </div>
-                {error && <p className="text-sm text-destructive text-center">{error}</p>}
+                {error && !isBlocked && <p className="text-sm text-destructive text-center">{error}</p>}
+                
+                {/* Attempts indicator */}
+                {!isBlocked && attempts > 0 && (
+                  <p className="text-xs text-muted-foreground text-center">
+                    {MAX_ATTEMPTS - attempts} tentative(s) restante(s)
+                  </p>
+                )}
               </div>
 
               <Button
@@ -303,7 +375,7 @@ export default function MotDePasseOublie() {
                 variant="hero"
                 size="lg"
                 className="w-full h-12 text-base"
-                disabled={isLoading || code.length !== 6}
+                disabled={isLoading || code.length !== 6 || isBlocked}
               >
                 Vérifier le code
               </Button>
