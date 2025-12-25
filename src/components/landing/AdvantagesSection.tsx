@@ -5,20 +5,6 @@ import { TrendingDown, Scale, Clock, Shield, Zap, Wifi } from "lucide-react";
 
 const advantages = [
   {
-    icon: TrendingDown,
-    title: "312€ économisés/an",
-    description: "Économie moyenne constatée par nos membres sur leurs factures.",
-    descriptionMobile: "Économie moyenne constatée.",
-    color: "primary",
-  },
-  {
-    icon: Scale,
-    title: "0€ si vous refusez",
-    description: "Vous restez libre. Si l'offre ne convient pas, vous ne payez rien.",
-    descriptionMobile: "Libre de refuser, 0€ à payer.",
-    color: "secondary",
-  },
-  {
     icon: Clock,
     title: "100% digital par SMS",
     description: "Tout se fait par SMS et sur votre espace. Aucun démarchage téléphonique.",
@@ -26,10 +12,24 @@ const advantages = [
     color: "primary",
   },
   {
+    icon: TrendingDown,
+    title: "312€ économisés/an",
+    description: "Économie moyenne constatée par nos membres sur leurs factures.",
+    descriptionMobile: "Économie moyenne constatée.",
+    color: "secondary",
+  },
+  {
     icon: Shield,
     title: "Fournisseurs reconnus",
     description: "EDF, Engie, TotalEnergies... Uniquement des acteurs établis.",
     descriptionMobile: "EDF, Engie, TotalEnergies...",
+    color: "primary",
+  },
+  {
+    icon: Scale,
+    title: "0€ si vous refusez",
+    description: "Vous restez libre. Si l'offre ne convient pas, vous ne payez rien.",
+    descriptionMobile: "Libre de refuser, 0€ à payer.",
     color: "secondary",
   },
 ];
