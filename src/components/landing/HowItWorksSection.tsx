@@ -2,6 +2,9 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { UserPlus, Users, Gift } from "lucide-react";
+import stepSignup from "@/assets/illustrations/step-signup.png";
+import stepNegotiation from "@/assets/illustrations/step-negotiation.png";
+import stepOffer from "@/assets/illustrations/step-offer.png";
 
 const steps = [
   {
@@ -11,6 +14,7 @@ const steps = [
     titleMobile: "Inscription en 30 sec",
     description: "Téléphone + quelques infos sur votre logement. Gratuit et sans engagement.",
     descriptionMobile: "Téléphone + infos logement. Gratuit.",
+    illustration: stepSignup,
   },
   {
     icon: Users,
@@ -19,6 +23,7 @@ const steps = [
     titleMobile: "On négocie pour vous",
     description: "Plus vous êtes nombreux, plus notre pouvoir de négociation augmente.",
     descriptionMobile: "Pouvoir collectif = meilleurs prix.",
+    illustration: stepNegotiation,
   },
   {
     icon: Gift,
@@ -27,6 +32,7 @@ const steps = [
     titleMobile: "Recevez votre offre",
     description: "Comparez et décidez librement. Si ça ne convient pas, vous ne faites rien.",
     descriptionMobile: "Libre d'accepter ou refuser.",
+    illustration: stepOffer,
   },
 ];
 
@@ -66,9 +72,13 @@ export function HowItWorksSection() {
                   Étape {step.number}
                 </div>
 
-                {/* Icon */}
-                <div className="w-12 h-12 lg:w-16 lg:h-16 rounded-xl lg:rounded-2xl bg-primary/10 flex items-center justify-center mb-4 lg:mb-6 mt-2 mx-auto lg:mx-0">
-                  <step.icon className="w-6 h-6 lg:w-8 lg:h-8 text-primary" />
+                {/* Illustration */}
+                <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-xl lg:rounded-2xl overflow-hidden mb-4 lg:mb-6 mt-2 mx-auto lg:mx-0">
+                  <img 
+                    src={step.illustration} 
+                    alt={step.title}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
 
                 {/* Content */}
