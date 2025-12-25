@@ -23,10 +23,10 @@ const steps = [
   {
     icon: Gift,
     number: "3",
-    title: "Vous recevez votre offre",
-    titleMobile: "Recevez votre offre",
-    description: "Comparez et décidez librement. Si ça ne convient pas, vous ne faites rien.",
-    descriptionMobile: "Libre d'accepter ou refuser.",
+    title: "Recevez votre offre par SMS",
+    titleMobile: "Offre reçue par SMS",
+    description: "Vous recevez votre offre personnalisée par SMS. Comparez et décidez librement sur votre espace.",
+    descriptionMobile: "Offre par SMS, décision libre.",
   },
 ];
 
