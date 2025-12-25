@@ -136,7 +136,8 @@ export default function Inscription() {
         }
       }
 
-      setIsSuccess(true);
+      // Redirect to share page
+      navigate("/partage-invitation");
       toast.success("Inscription réussie !");
     } catch (error) {
       toast.error("Une erreur est survenue. Veuillez réessayer.");
