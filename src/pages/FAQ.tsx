@@ -81,8 +81,8 @@ export default function FAQ() {
   }, []);
 
   return (
-    <PageTransition className="min-h-screen py-6 md:py-16 bg-gradient-subtle">
-      <div className="container mx-auto px-4">
+    <PageTransition className="min-h-screen py-10 md:py-20 bg-gradient-subtle">
+      <div className="container mx-auto px-5 sm:px-6">
         {/* Back button */}
         <Link 
           to="/" 

@@ -4,8 +4,8 @@ import { Zap, Mail, Phone, MapPin } from "lucide-react";
 export function Footer() {
   return (
     <footer className="bg-card border-t border-border pb-20 md:pb-0">
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="container mx-auto px-5 sm:px-6 py-14 lg:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 lg:gap-12">
           {/* Brand */}
           <div className="space-y-4">
             <Link to="/" className="flex items-center gap-2">

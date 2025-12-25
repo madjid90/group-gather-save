@@ -86,7 +86,7 @@ export default function Connexion() {
   };
 
   return (
-    <PageTransition className="min-h-screen flex items-center justify-center px-4 py-8 bg-gradient-subtle relative">
+    <PageTransition className="min-h-screen flex items-center justify-center px-5 sm:px-6 py-10 sm:py-12 bg-gradient-subtle relative">
       {/* Fixed Back Button */}
       <Link 
         to="/" 

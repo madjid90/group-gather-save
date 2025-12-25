@@ -49,10 +49,10 @@ const testimonials = [
 export function TestimonialsSection() {
   // Force rebuild
   return (
-    <section className="py-12 sm:py-16 md:py-20 lg:py-24 relative overflow-hidden">
+    <section className="py-16 sm:py-20 lg:py-28 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-subtle" />
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-5 sm:px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -72,7 +72,7 @@ export function TestimonialsSection() {
         </motion.div>
 
         {/* Desktop: Show all 5, Mobile: Show first 3 */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 mb-6 md:mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-5 mb-8 md:mb-12">
           {testimonials.map((testimonial, index) => (
             <motion.div
               key={index}
