@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { AnimatedCounter, useAnimatedSocialProof } from "@/components/ui/AnimatedCounter";
 import { CheckCircle, Zap, Wifi } from "lucide-react";
+import heroIllustration from "@/assets/illustrations/hero-group-savings.png";
 
 export function HeroSection() {
   const { count, notification, showNotification } = useAnimatedSocialProof(2547, 12000);
@@ -99,18 +100,29 @@ export function HeroSection() {
             </motion.div>
           </motion.div>
 
-          {/* Visual - desktop only: Preuve sociale avec compteur animé */}
+          {/* Visual - desktop only */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
             className="relative hidden lg:block"
           >
-            {/* Main card - Social proof with animated counter */}
-            <div className="relative bg-card rounded-3xl p-10 shadow-switchly-xl border border-border text-center">
-              <div className="space-y-4">
-                {/* Animated counter - synchronized with notifications */}
-                <div className="text-5xl font-bold text-foreground">
+            {/* Hero illustration */}
+            <div className="relative">
+              <img 
+                src={heroIllustration} 
+                alt="Groupe de personnes économisant ensemble sur l'énergie et internet" 
+                className="w-full max-w-lg mx-auto"
+              />
+              
+              {/* Floating counter card */}
+              <motion.div 
+                className="absolute -bottom-4 -right-4 bg-card rounded-2xl p-6 shadow-switchly-xl border border-border text-center"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.6 }}
+              >
+                <div className="text-3xl font-bold text-foreground">
                   <AnimatedCounter 
                     target={2547}
                     externalValue={count}
@@ -118,13 +130,10 @@ export function HeroSection() {
                     showLiveIndicator={true}
                   />
                 </div>
-                <p className="text-xl text-muted-foreground">
-                  <span className="font-semibold text-foreground">foyers déjà inscrits</span> cette semaine
+                <p className="text-sm text-muted-foreground">
+                  foyers inscrits
                 </p>
-                <p className="text-sm text-secondary font-medium">
-                  Plus on est nombreux, plus on économise
-                </p>
-              </div>
+              </motion.div>
             </div>
 
             {/* Floating notification - animated with real data */}
