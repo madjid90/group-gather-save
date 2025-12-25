@@ -103,14 +103,9 @@ export function SocialProofNotifications() {
           transition={{ type: "spring", stiffness: 200, damping: 20 }}
           className="fixed bottom-20 md:bottom-6 left-4 z-40 max-w-xs"
         >
-          <div className="bg-card border border-border rounded-xl p-3 shadow-switchly-xl flex items-center gap-3">
-            {/* Avatar */}
-            <div className="w-10 h-10 rounded-full bg-gradient-hero flex items-center justify-center text-primary-foreground font-semibold text-sm flex-shrink-0">
-              {notification.initial}
-            </div>
-            
+          <div className="bg-card border border-border rounded-xl p-3 shadow-switchly-xl">
             {/* Content */}
-            <div className="flex-1 min-w-0">
+            <div className="min-w-0">
               <div className="flex items-center gap-1.5 mb-0.5">
                 <CheckCircle className="w-3.5 h-3.5 text-secondary flex-shrink-0" />
                 <p className="text-sm font-medium text-foreground truncate">
