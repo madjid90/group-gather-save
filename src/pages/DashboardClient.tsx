@@ -54,22 +54,22 @@ const STATUS_MAP: Record<string, { label: string; icon: React.ElementType; color
   inscrit: { 
     label: "Dossier en attente", 
     icon: Clock, 
-    color: "bg-blue-100 text-blue-800" 
+    color: "bg-primary/10 text-primary" 
   },
   profil_ok: { 
     label: "Profil complet - En négociation", 
     icon: FileCheck, 
-    color: "bg-yellow-100 text-yellow-800" 
+    color: "bg-muted text-muted-foreground" 
   },
   offre_envoyee: { 
     label: "Offre disponible", 
     icon: Gift, 
-    color: "bg-green-100 text-green-800" 
+    color: "bg-secondary/10 text-secondary" 
   },
   souscription: { 
     label: "Offre acceptée", 
     icon: CheckCircle, 
-    color: "bg-emerald-100 text-emerald-800" 
+    color: "bg-secondary/20 text-secondary" 
   },
 };
 
