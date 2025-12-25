@@ -53,7 +53,7 @@ export function PartnersSection() {
   const duplicatedPartners = [...partners, ...partners];
 
   return (
-    <section className="py-16 md:py-20 lg:py-24 bg-muted/30 overflow-hidden">
+    <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-muted/30 overflow-hidden">
       <div className="container mx-auto px-4">
         {/* Header */}
         <motion.div

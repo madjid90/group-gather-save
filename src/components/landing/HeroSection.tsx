@@ -8,7 +8,7 @@ export function HeroSection() {
   const { count, notification, showNotification } = useAnimatedSocialProof(2547, 12000);
 
   return (
-    <section className="relative min-h-[100svh] flex items-center overflow-hidden py-8 lg:py-0">
+    <section className="relative min-h-[85svh] lg:min-h-[100svh] flex items-center overflow-hidden py-6 sm:py-8 lg:py-0">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-subtle" />
       
@@ -33,17 +33,17 @@ export function HeroSection() {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-6 lg:gap-12 items-center">
           {/* Mobile counter - top */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="lg:hidden flex items-center justify-center gap-3 mb-6"
+            className="lg:hidden flex items-center justify-center mb-4"
           >
-            <div className="flex items-center gap-2 bg-card/80 backdrop-blur-sm border border-border rounded-full px-4 py-2 shadow-lg">
+            <div className="flex items-center gap-2 bg-card/80 backdrop-blur-sm border border-border rounded-full px-4 py-2.5 shadow-lg">
               <motion.span 
-                className="flex items-center gap-1.5 bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full text-xs font-semibold"
+                className="flex items-center gap-1.5 bg-secondary text-secondary-foreground px-2.5 py-1 rounded-full text-xs font-semibold"
                 animate={{ 
                   scale: [1, 1.05, 1],
                 }}
@@ -56,7 +56,7 @@ export function HeroSection() {
                 <span className="w-1.5 h-1.5 rounded-full bg-secondary-foreground animate-pulse" />
                 en direct
               </motion.span>
-              <span className="text-lg font-bold text-foreground">
+              <span className="text-xl font-bold text-foreground">
                 <AnimatedCounter 
                   target={2547}
                   externalValue={count}
@@ -73,17 +73,17 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="space-y-6 lg:space-y-8 text-center lg:text-left"
+            className="space-y-5 lg:space-y-8 text-center lg:text-left"
           >
-            {/* Title - same for all */}
-            <h1 className="text-3xl sm:text-4xl xl:text-5xl font-bold text-foreground leading-tight text-center lg:text-left">
+            {/* Title */}
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground leading-tight">
               Économisez jusqu'à <span className="gradient-text">400€</span> par an sur vos factures{" "}
               <span className="gradient-text">d'énergie et d'internet</span>
             </h1>
 
             {/* Subtitle with service icons */}
             <div className="flex flex-col items-center lg:items-start gap-3">
-              <div className="flex items-center justify-center lg:justify-start gap-4">
+              <div className="flex items-center justify-center lg:justify-start gap-3">
                 <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary">
                   <Zap className="w-4 h-4" />
                   <span className="text-sm font-medium">Électricité</span>
@@ -93,7 +93,7 @@ export function HeroSection() {
                   <span className="text-sm font-medium">Internet</span>
                 </div>
               </div>
-              <p className="text-lg lg:text-xl text-muted-foreground max-w-xl text-center lg:text-left">
+              <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-xl">
                 Achat groupé gratuit et sans engagement. Plus on est nombreux, plus les prix baissent.
               </p>
             </div>
@@ -119,7 +119,7 @@ export function HeroSection() {
             
             {/* Scroll indicator - Mobile/Tablet only */}
             <motion.div 
-              className="lg:hidden pt-8 flex justify-center"
+              className="lg:hidden pt-4 flex justify-center"
               animate={{ y: [0, 8, 0] }}
               transition={{ duration: 2, repeat: Infinity }}
             >

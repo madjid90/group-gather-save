@@ -5,7 +5,7 @@ import { ArrowRight, Zap, Wifi } from "lucide-react";
 
 export function CTASection() {
   return (
-    <section className="py-16 md:py-20 lg:py-24 bg-card">
+    <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-card">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
