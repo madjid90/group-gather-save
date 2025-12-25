@@ -13,6 +13,7 @@ import {
   Menu,
   X,
   Loader2,
+  BarChart3,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -22,6 +23,7 @@ const adminLinks = [
   { href: "/admin/clients", label: "Clients", icon: Users },
   { href: "/admin/campagnes", label: "Campagnes", icon: Calendar },
   { href: "/admin/offres", label: "Offres Clients", icon: Gift },
+  { href: "/admin/clics", label: "Statistiques clics", icon: BarChart3 },
   { href: "/admin/reactivation", label: "Réactivation", icon: RefreshCw },
 ];
 
