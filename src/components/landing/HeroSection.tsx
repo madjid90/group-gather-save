@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { AnimatedCounter, useAnimatedSocialProof } from "@/components/ui/AnimatedCounter";
-import { CheckCircle, Zap, Wifi } from "lucide-react";
+import { CheckCircle, Zap, Wifi, MessageSquare, Gift } from "lucide-react";
 
 export function HeroSection() {
   const { count, notification, showNotification } = useAnimatedSocialProof(2547, 12000);
@@ -81,7 +81,7 @@ export function HeroSection() {
               <span className="gradient-text">d'énergie et d'internet</span>
             </h1>
 
-            {/* Subtitle with service icons */}
+            {/* Service & Trust badges */}
             <div className="flex flex-col items-center lg:items-start gap-3">
               <div className="flex items-center justify-center lg:justify-start gap-2 flex-wrap">
                 <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary">
@@ -92,17 +92,17 @@ export function HeroSection() {
                   <Wifi className="w-4 h-4" />
                   <span className="text-sm font-medium">Internet</span>
                 </div>
-              </div>
-              <div className="flex items-center justify-center lg:justify-start gap-2 flex-wrap">
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted border border-border">
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card border border-border shadow-sm">
+                  <MessageSquare className="w-4 h-4 text-primary" />
                   <span className="text-sm font-medium text-foreground">100% digital</span>
                 </div>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted border border-border">
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card border border-border shadow-sm">
+                  <Gift className="w-4 h-4 text-secondary" />
                   <span className="text-sm font-medium text-foreground">100% gratuit</span>
                 </div>
               </div>
               <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-xl">
-                Achat groupé gratuit et sans engagement. Plus on est nombreux, plus les prix baissent.
+                Achat groupé sans engagement. Plus on est nombreux, plus les prix baissent.
               </p>
             </div>
 
