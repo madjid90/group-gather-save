@@ -20,7 +20,7 @@ export const CollectivitesSection = () => {
   ];
 
   return (
-    <section className="relative py-12 sm:py-16 md:py-20 lg:py-24 overflow-hidden">
+    <section className="relative py-16 sm:py-20 lg:py-28 overflow-hidden">
       {/* Background gradient matching hero */}
       <div className="absolute inset-0 bg-gradient-subtle" />
       
@@ -44,7 +44,7 @@ export const CollectivitesSection = () => {
         />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-5 sm:px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

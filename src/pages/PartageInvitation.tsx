@@ -93,7 +93,7 @@ export default function PartageInvitation() {
         ))}
       </div>
 
-      <div className="flex-1 flex items-center justify-center px-4 py-8 relative z-10">
+      <div className="flex-1 flex items-center justify-center px-5 sm:px-6 py-10 sm:py-12 relative z-10">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}

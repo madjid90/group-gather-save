@@ -8,7 +8,7 @@ export function HeroSection() {
   const { count, notification, showNotification } = useAnimatedSocialProof(2547, 12000);
 
   return (
-    <section className="relative min-h-[85svh] lg:min-h-[100svh] flex items-center overflow-hidden py-6 sm:py-8 lg:py-0">
+    <section className="relative min-h-[80svh] lg:min-h-[100svh] flex items-center overflow-hidden py-8 sm:py-10 lg:py-0">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-subtle" />
       
@@ -32,8 +32,8 @@ export function HeroSection() {
         />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-6 lg:gap-12 items-center">
+      <div className="container mx-auto px-5 sm:px-6 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           {/* Mobile counter - top */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
@@ -73,7 +73,7 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="space-y-5 lg:space-y-8 text-center lg:text-left"
+            className="space-y-6 lg:space-y-8 text-center lg:text-left"
           >
             {/* Title */}
             <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground leading-tight">

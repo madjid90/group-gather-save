@@ -36,8 +36,8 @@ const advantages = [
 
 export function AdvantagesSection() {
   return (
-    <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-card">
-      <div className="container mx-auto px-4">
+    <section className="py-16 sm:py-20 lg:py-28 bg-card">
+      <div className="container mx-auto px-5 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -66,7 +66,7 @@ export function AdvantagesSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8 lg:mb-12">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8 mb-10 lg:mb-14">
           {advantages.map((advantage, index) => (
             <motion.div
               key={index}
