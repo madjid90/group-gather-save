@@ -76,7 +76,7 @@ export function HeroSection() {
             className="space-y-5 lg:space-y-8 text-center lg:text-left"
           >
             {/* Title */}
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground leading-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground leading-tight">
               Économisez jusqu'à <span className="gradient-text">400€</span> par an sur vos factures{" "}
               <span className="gradient-text">d'énergie et d'internet</span>
             </h1>
