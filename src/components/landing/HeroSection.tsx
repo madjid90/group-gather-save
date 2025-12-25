@@ -197,14 +197,12 @@ export function HeroSection() {
                   y: { delay: 1.2, duration: 3, repeat: Infinity, ease: "easeInOut" }
                 }}
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
                   <motion.div 
-                    className="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center"
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    <CheckCircle className="w-5 h-5 text-secondary" />
-                  </motion.div>
+                    className="w-2 h-2 rounded-full bg-secondary"
+                    animate={{ scale: [1, 1.3, 1], opacity: [1, 0.7, 1] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                  />
                   <div className="text-left">
                     <p className="text-sm font-medium text-foreground">
                       {notification?.name || "Marie M."} vient de s'inscrire
