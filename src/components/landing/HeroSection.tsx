@@ -107,40 +107,44 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="relative hidden lg:block"
           >
-            {/* Hero illustration */}
-            <div className="relative">
+            {/* Main counter card - prominent */}
+            <motion.div 
+              className="relative z-10 bg-card rounded-3xl p-8 shadow-switchly-xl border border-border text-center mb-8"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              <div className="text-5xl font-bold text-foreground mb-2">
+                <AnimatedCounter 
+                  target={2547}
+                  externalValue={count}
+                  duration={2.5}
+                  showLiveIndicator={true}
+                />
+              </div>
+              <p className="text-lg text-muted-foreground">
+                foyers déjà inscrits
+              </p>
+              <div className="mt-4 flex items-center justify-center gap-2 text-sm text-secondary">
+                <span className="w-2 h-2 bg-secondary rounded-full animate-pulse" />
+                Inscriptions en cours
+              </div>
+            </motion.div>
+
+            {/* Hero illustration - subtle background */}
+            <div className="absolute inset-0 flex items-center justify-center opacity-30 -z-10">
               <img 
                 src={heroIllustration} 
-                alt="Groupe de personnes économisant ensemble sur l'énergie et internet" 
-                className="w-full max-w-lg mx-auto"
+                alt="Groupe de personnes économisant ensemble" 
+                className="w-full max-w-md"
               />
-              
-              {/* Floating counter card */}
-              <motion.div 
-                className="absolute -bottom-4 -right-4 bg-card rounded-2xl p-6 shadow-switchly-xl border border-border text-center"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.6 }}
-              >
-                <div className="text-3xl font-bold text-foreground">
-                  <AnimatedCounter 
-                    target={2547}
-                    externalValue={count}
-                    duration={2.5}
-                    showLiveIndicator={true}
-                  />
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  foyers inscrits
-                </p>
-              </motion.div>
             </div>
 
             {/* Floating notification - animated with real data */}
             <AnimatePresence>
               {showNotification && notification && (
                 <motion.div
-                  className="absolute -bottom-4 -left-4 bg-card border border-border rounded-xl p-3 shadow-switchly-lg"
+                  className="bg-card border border-border rounded-xl p-3 shadow-switchly-lg"
                   initial={{ opacity: 0, y: 20, scale: 0.9 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -10, scale: 0.95 }}
