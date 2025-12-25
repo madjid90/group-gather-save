@@ -112,9 +112,9 @@ export function HeroSection() {
                   <Link to="/inscription">
                     Rejoindre l'achat groupé gratuitement
                   </Link>
-                </Button>
+              </Button>
               </motion.div>
-              <p className="text-sm text-muted-foreground">Gratuit • Sans engagement</p>
+              <p className="text-sm text-muted-foreground">Gratuit • Sans engagement • Aucun démarchage téléphonique</p>
             </div>
             
             {/* Scroll indicator - Mobile/Tablet only */}
