@@ -26,13 +26,7 @@ export default defineConfig(({ mode }) => ({
         },
       },
     },
-    // Reduce bundle size
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: mode === 'production',
-        drop_debugger: true,
-      },
-    },
+    // Use esbuild (default) for minification - faster and no extra dependency
+    minify: 'esbuild',
   },
 }));
