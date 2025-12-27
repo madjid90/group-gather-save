@@ -1,4 +1,4 @@
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -26,27 +26,13 @@ export const HeroSection = memo(function HeroSection() {
 
   return (
     <section className="relative min-h-[80svh] lg:min-h-[100svh] flex items-center overflow-hidden py-8 sm:py-10 lg:py-0">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-subtle" />
+      {/* Background gradient - simplified for performance */}
+      <div className="absolute inset-0 bg-gradient-subtle" aria-hidden="true" />
       
-      {/* Animated background elements - hidden on mobile for performance */}
-      <div className="absolute inset-0 overflow-hidden hidden md:block">
-        <motion.div
-          className="absolute top-20 left-10 w-72 h-72 rounded-full bg-primary/5 blur-3xl will-change-transform"
-          animate={{ 
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3]
-          }}
-          transition={{ duration: 8, repeat: Infinity }}
-        />
-        <motion.div
-          className="absolute bottom-20 right-10 w-96 h-96 rounded-full bg-secondary/5 blur-3xl will-change-transform"
-          animate={{ 
-            scale: [1.2, 1, 1.2],
-            opacity: [0.3, 0.5, 0.3]
-          }}
-          transition={{ duration: 8, repeat: Infinity, delay: 2 }}
-        />
+      {/* Animated background - desktop only, reduced motion */}
+      <div className="absolute inset-0 overflow-hidden hidden lg:block" aria-hidden="true">
+        <div className="absolute top-20 left-10 w-72 h-72 rounded-full bg-primary/5 blur-3xl opacity-30" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 rounded-full bg-secondary/5 blur-3xl opacity-30" />
       </div>
 
       <div className="container mx-auto px-5 sm:px-6 relative z-10">

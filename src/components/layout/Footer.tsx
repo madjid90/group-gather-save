@@ -3,7 +3,7 @@ import { Zap, Mail, Phone, MapPin } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="bg-card border-t border-border pb-20 md:pb-0">
+    <footer className="bg-card border-t border-border pb-20 md:pb-0" role="contentinfo">
       <div className="container mx-auto px-5 sm:px-6 py-14 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 lg:gap-12">
           {/* Brand */}
@@ -21,7 +21,7 @@ export function Footer() {
           </div>
 
           {/* Navigation */}
-          <div>
+          <nav aria-label="Liens de navigation">
             <h3 className="font-semibold text-foreground mb-4">Navigation</h3>
             <ul className="space-y-2">
               <li>
@@ -49,10 +49,10 @@ export function Footer() {
                 </Link>
               </li>
             </ul>
-          </div>
+          </nav>
 
           {/* Légal */}
-          <div>
+          <nav aria-label="Liens légaux">
             <h3 className="font-semibold text-foreground mb-4">Légal</h3>
             <ul className="space-y-2">
               <li>
@@ -80,7 +80,7 @@ export function Footer() {
                 </Link>
               </li>
             </ul>
-          </div>
+          </nav>
 
           {/* Contact */}
           <div>
