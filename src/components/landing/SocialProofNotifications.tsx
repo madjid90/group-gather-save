@@ -101,7 +101,7 @@ export function SocialProofNotifications() {
           animate={{ opacity: 1, y: 0, x: 0 }}
           exit={{ opacity: 0, y: 20 }}
           transition={{ type: "spring", stiffness: 200, damping: 20 }}
-          className="fixed bottom-20 md:bottom-6 left-4 z-40 max-w-xs"
+          className="fixed bottom-32 md:bottom-6 left-4 z-40 max-w-[calc(100vw-6rem)]"
         >
           <div className="bg-card border border-border rounded-xl p-3 shadow-switchly-xl">
             {/* Content */}
