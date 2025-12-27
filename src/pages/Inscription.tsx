@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router-dom";
-import { Zap, Check, ArrowRight, Loader2, Phone, User, Lock, Eye, EyeOff, ArrowLeft, Share2, MessageCircle, Mail, Copy } from "lucide-react";
+import { Zap, Check, ArrowRight, Loader2, Phone, User, Lock, Eye, EyeOff, ArrowLeft, MessageCircle, Mail, Copy, Users, Shield, Clock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -16,6 +16,21 @@ const inscriptionSchema = z.object({
   password: z.string().min(6, "Le mot de passe doit contenir au moins 6 caractères"),
 });
 
+// Password strength checker
+function getPasswordStrength(password: string): { score: number; label: string; color: string } {
+  let score = 0;
+  if (password.length >= 6) score++;
+  if (password.length >= 8) score++;
+  if (/[A-Z]/.test(password)) score++;
+  if (/[0-9]/.test(password)) score++;
+  if (/[^A-Za-z0-9]/.test(password)) score++;
+  
+  if (score <= 1) return { score: 1, label: "Faible", color: "bg-destructive" };
+  if (score <= 2) return { score: 2, label: "Moyen", color: "bg-yellow-500" };
+  if (score <= 3) return { score: 3, label: "Bon", color: "bg-secondary" };
+  return { score: 4, label: "Excellent", color: "bg-secondary" };
+}
+
 export default function Inscription() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -26,16 +41,52 @@ export default function Inscription() {
     password: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [showPassword, setShowPassword] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [liveCount, setLiveCount] = useState(2547);
 
   const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/inscription` : "";
   const shareText = "Je viens de m'inscrire à l'achat groupé Switchly pour économiser sur mes factures ! Rejoins-moi :";
+
+  // Simulate live counter
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (Math.random() > 0.7) {
+        setLiveCount(prev => prev + 1);
+      }
+    }, 15000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Scroll to top on mount
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  // Real-time validation
+  const validationState = useMemo(() => {
+    const result: Record<string, { valid: boolean; message?: string }> = {};
+    
+    if (touched.nom) {
+      const nomValid = formData.nom.length >= 2;
+      result.nom = { valid: nomValid, message: nomValid ? undefined : "Min. 2 caractères" };
+    }
+    
+    if (touched.telephone) {
+      const phoneValid = /^(\+33|0)[1-9]\d{8}$/.test(formData.telephone);
+      result.telephone = { valid: phoneValid, message: phoneValid ? undefined : "Format: 0612345678" };
+    }
+    
+    if (touched.password) {
+      const passValid = formData.password.length >= 6;
+      result.password = { valid: passValid, message: passValid ? undefined : "Min. 6 caractères" };
+    }
+    
+    return result;
+  }, [formData, touched]);
+
+  const passwordStrength = useMemo(() => getPasswordStrength(formData.password), [formData.password]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -43,6 +94,11 @@ export default function Inscription() {
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name } = e.target;
+    setTouched((prev) => ({ ...prev, [name]: true }));
   };
 
   const handleCopyLink = async () => {
@@ -92,7 +148,6 @@ export default function Inscription() {
     setIsLoading(true);
 
     try {
-      // Create email from phone number for Supabase auth
       const cleanPhone = formData.telephone.replace(/[^0-9]/g, "");
       const email = `${cleanPhone}@switchly.temp`;
 
@@ -121,7 +176,6 @@ export default function Inscription() {
         return;
       }
 
-      // Try to send welcome SMS (will fail gracefully if Twilio not configured)
       if (data.user) {
         try {
           await supabase.functions.invoke("send-welcome-sms", {
@@ -131,12 +185,10 @@ export default function Inscription() {
             },
           });
         } catch (smsError) {
-          // SMS sending is optional, don't block registration
           console.log("SMS not sent (Twilio may not be configured)");
         }
       }
 
-      // Redirect to share page
       navigate("/partage-invitation");
       toast.success("Inscription réussie !");
     } catch (error) {
@@ -154,81 +206,36 @@ export default function Inscription() {
           animate={{ opacity: 1, scale: 1 }}
           className="w-full max-w-md bg-card rounded-2xl p-6 md:p-8 shadow-switchly-xl border border-border text-center"
         >
-          {/* Success icon */}
           <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center mx-auto mb-6">
             <Check className="w-8 h-8 text-secondary" />
           </div>
-
-          {/* Welcome message */}
           <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
             Bienvenue sur Switchly !
           </h1>
           <p className="text-base text-muted-foreground mb-8">
             Votre inscription est confirmée. Complétez votre profil pour recevoir une offre personnalisée adaptée à votre consommation.
           </p>
-
-          {/* Primary CTA */}
-          <Button 
-            variant="hero" 
-            size="lg"
-            className="w-full py-5 text-base mb-6"
-            asChild
-          >
+          <Button variant="hero" size="lg" className="w-full py-5 text-base mb-6" asChild>
             <Link to="/dashboard-client">Accéder à mon espace</Link>
           </Button>
-
-          {/* Share section */}
           <div className="border-t border-border pt-6">
-            <h2 className="text-base font-semibold text-foreground mb-2">
-              Invitez vos proches !
-            </h2>
-            <p className="text-xs text-muted-foreground mb-4">
-              Plus on est nombreux, plus on économise. Partagez Switchly !
-            </p>
-
-            {/* Share buttons */}
+            <h2 className="text-base font-semibold text-foreground mb-2">Invitez vos proches !</h2>
+            <p className="text-xs text-muted-foreground mb-4">Plus on est nombreux, plus on économise.</p>
             <div className="flex flex-wrap justify-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleWhatsAppShare}
-                className="gap-1.5"
-              >
-                <MessageCircle className="w-4 h-4 text-green-500" />
-                WhatsApp
+              <Button variant="outline" size="sm" onClick={handleWhatsAppShare} className="gap-1.5">
+                <MessageCircle className="w-4 h-4 text-green-500" />WhatsApp
               </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleSMSShare}
-                className="gap-1.5"
-              >
-                <MessageCircle className="w-4 h-4" />
-                SMS
+              <Button variant="outline" size="sm" onClick={handleSMSShare} className="gap-1.5">
+                <MessageCircle className="w-4 h-4" />SMS
               </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleEmailShare}
-                className="gap-1.5"
-              >
-                <Mail className="w-4 h-4" />
-                Email
+              <Button variant="outline" size="sm" onClick={handleEmailShare} className="gap-1.5">
+                <Mail className="w-4 h-4" />Email
               </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleCopyLink}
-                className="gap-1.5"
-              >
+              <Button variant="outline" size="sm" onClick={handleCopyLink} className="gap-1.5">
                 {copied ? <Check className="w-4 h-4 text-secondary" /> : <Copy className="w-4 h-4" />}
                 {copied ? "Copié !" : "Copier"}
               </Button>
             </div>
-
-            <p className="text-xs text-muted-foreground mt-3">
-              Aucun engagement pour vos proches
-            </p>
           </div>
         </motion.div>
       </PageTransition>
@@ -247,6 +254,24 @@ export default function Inscription() {
       </Link>
 
       <div className="w-full max-w-md">
+        {/* Live counter badge */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex justify-center mb-4"
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/10 border border-secondary/20">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
+            </span>
+            <span className="text-sm font-medium text-foreground">
+              <span className="font-bold">{liveCount.toLocaleString()}</span> inscrits
+            </span>
+            <Users className="w-4 h-4 text-secondary" />
+          </div>
+        </motion.div>
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -265,7 +290,8 @@ export default function Inscription() {
               Rejoindre l'achat groupé
             </h1>
             <p className="text-base text-muted-foreground">
-              Inscription gratuite en 30 secondes • Sans engagement
+              <Clock className="w-4 h-4 inline mr-1" />
+              Inscription gratuite en 30 secondes
             </p>
           </div>
 
@@ -276,17 +302,33 @@ export default function Inscription() {
                 <User className="w-4 h-4 text-primary" />
                 Nom complet
               </Label>
-              <Input
-                id="nom"
-                name="nom"
-                value={formData.nom}
-                onChange={handleChange}
-                placeholder="Jean Dupont"
-                className={`h-12 text-base ${errors.nom ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
-              />
-              {errors.nom && (
-                <p className="text-sm text-destructive">{errors.nom}</p>
-              )}
+              <div className="relative">
+                <Input
+                  id="nom"
+                  name="nom"
+                  value={formData.nom}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="Jean Dupont"
+                  className={`h-12 text-base pr-10 ${
+                    errors.nom ? "border-destructive focus-visible:ring-destructive/30" : 
+                    validationState.nom?.valid ? "border-secondary focus-visible:ring-secondary/30" : ""
+                  }`}
+                />
+                <AnimatePresence>
+                  {validationState.nom?.valid && (
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      exit={{ scale: 0 }}
+                      className="absolute right-3 top-1/2 -translate-y-1/2"
+                    >
+                      <Check className="w-5 h-5 text-secondary" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+              {errors.nom && <p className="text-sm text-destructive">{errors.nom}</p>}
             </div>
 
             <div className="space-y-2">
@@ -294,18 +336,34 @@ export default function Inscription() {
                 <Phone className="w-4 h-4 text-primary" />
                 Téléphone
               </Label>
-              <Input
-                id="telephone"
-                name="telephone"
-                type="tel"
-                value={formData.telephone}
-                onChange={handleChange}
-                placeholder="0612345678"
-                className={`h-12 text-base ${errors.telephone ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
-              />
-              {errors.telephone && (
-                <p className="text-sm text-destructive">{errors.telephone}</p>
-              )}
+              <div className="relative">
+                <Input
+                  id="telephone"
+                  name="telephone"
+                  type="tel"
+                  value={formData.telephone}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="0612345678"
+                  className={`h-12 text-base pr-10 ${
+                    errors.telephone ? "border-destructive focus-visible:ring-destructive/30" : 
+                    validationState.telephone?.valid ? "border-secondary focus-visible:ring-secondary/30" : ""
+                  }`}
+                />
+                <AnimatePresence>
+                  {validationState.telephone?.valid && (
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      exit={{ scale: 0 }}
+                      className="absolute right-3 top-1/2 -translate-y-1/2"
+                    >
+                      <Check className="w-5 h-5 text-secondary" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+              {errors.telephone && <p className="text-sm text-destructive">{errors.telephone}</p>}
             </div>
 
             <div className="space-y-2">
@@ -320,8 +378,12 @@ export default function Inscription() {
                   type={showPassword ? "text" : "password"}
                   value={formData.password}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   placeholder="6 caractères minimum"
-                  className={`h-12 text-base pr-12 ${errors.password ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
+                  className={`h-12 text-base pr-12 ${
+                    errors.password ? "border-destructive focus-visible:ring-destructive/30" : 
+                    validationState.password?.valid ? "border-secondary focus-visible:ring-secondary/30" : ""
+                  }`}
                 />
                 <button
                   type="button"
@@ -331,27 +393,47 @@ export default function Inscription() {
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
               </div>
-              {errors.password && (
-                <p className="text-sm text-destructive">{errors.password}</p>
+              {/* Password strength indicator */}
+              {formData.password.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  className="space-y-1"
+                >
+                  <div className="flex gap-1">
+                    {[1, 2, 3, 4].map((level) => (
+                      <div
+                        key={level}
+                        className={`h-1 flex-1 rounded-full transition-colors ${
+                          level <= passwordStrength.score ? passwordStrength.color : "bg-muted"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <p className={`text-xs ${passwordStrength.score >= 3 ? "text-secondary" : "text-muted-foreground"}`}>
+                    Force : {passwordStrength.label}
+                  </p>
+                </motion.div>
               )}
+              {errors.password && <p className="text-sm text-destructive">{errors.password}</p>}
             </div>
 
             <Button
               type="submit"
               variant="hero"
               size="lg"
-              className="w-full h-12 text-base mt-2"
+              className="w-full h-14 text-base mt-4 group"
               disabled={isLoading}
             >
               {isLoading ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin" />
-                  Inscription...
+                  Inscription en cours...
                 </>
               ) : (
                 <>
                   M'inscrire gratuitement
-                  <ArrowRight className="w-5 h-5 ml-2" />
+                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                 </>
               )}
             </Button>
@@ -369,17 +451,33 @@ export default function Inscription() {
 
           {/* Trust badges */}
           <div className="mt-6 pt-6 border-t border-border">
-            <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <Check className="w-4 h-4 text-secondary" />
+            <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground">
+              <div className="flex items-center gap-1.5">
+                <Shield className="w-4 h-4 text-secondary" />
                 <span>Données sécurisées</span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5">
                 <Check className="w-4 h-4 text-secondary" />
                 <span>Sans engagement</span>
               </div>
+              <div className="flex items-center gap-1.5">
+                <Zap className="w-4 h-4 text-secondary" />
+                <span>100% gratuit</span>
+              </div>
             </div>
           </div>
+        </motion.div>
+
+        {/* Social proof mini testimonial */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="mt-4 text-center"
+        >
+          <p className="text-sm text-muted-foreground italic">
+            "J'ai économisé 280€ sur ma facture d'électricité !" — Marie, Lyon
+          </p>
         </motion.div>
       </div>
     </PageTransition>

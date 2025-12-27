@@ -1,10 +1,36 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, Zap, Wifi } from "lucide-react";
+import { ArrowRight, Zap, Wifi, Clock } from "lucide-react";
 import { trackClick } from "@/hooks/useClickTracking";
 
 export function CTASection() {
+  const [timeLeft, setTimeLeft] = useState({ hours: 23, minutes: 59, seconds: 59 });
+
+  // Countdown timer (resets daily)
+  useEffect(() => {
+    const now = new Date();
+    const endOfDay = new Date(now);
+    endOfDay.setHours(23, 59, 59, 999);
+    
+    const updateTimer = () => {
+      const now = new Date();
+      const diff = endOfDay.getTime() - now.getTime();
+      if (diff > 0) {
+        setTimeLeft({
+          hours: Math.floor(diff / (1000 * 60 * 60)),
+          minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((diff % (1000 * 60)) / 1000),
+        });
+      }
+    };
+    
+    updateTimer();
+    const interval = setInterval(updateTimer, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section className="py-16 sm:py-20 lg:py-28 bg-card">
       <div className="container mx-auto px-5 sm:px-6">
@@ -16,12 +42,25 @@ export function CTASection() {
           className="relative overflow-hidden rounded-2xl lg:rounded-3xl bg-gradient-hero p-8 md:p-12 lg:p-16 text-center"
         >
           {/* Background pattern */}
-          <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0 opacity-10" aria-hidden="true">
             <div className="absolute top-0 left-0 w-40 h-40 rounded-full bg-primary-foreground blur-3xl" />
             <div className="absolute bottom-0 right-0 w-60 h-60 rounded-full bg-primary-foreground blur-3xl" />
           </div>
 
           <div className="relative z-10">
+            {/* Urgency timer */}
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-foreground/20 text-primary-foreground">
+                <Clock className="w-4 h-4" />
+                <span className="text-sm font-medium">
+                  Clôture des inscriptions dans{" "}
+                  <span className="font-bold tabular-nums">
+                    {String(timeLeft.hours).padStart(2, "0")}:{String(timeLeft.minutes).padStart(2, "0")}:{String(timeLeft.seconds).padStart(2, "0")}
+                  </span>
+                </span>
+              </div>
+            </div>
+
             <div className="flex items-center justify-center gap-3 mb-6">
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary-foreground/20 text-primary-foreground">
                 <Zap className="w-4 h-4" />
@@ -32,13 +71,15 @@ export function CTASection() {
                 <span className="text-sm font-medium">Internet</span>
               </div>
             </div>
+            
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary-foreground mb-4 lg:mb-6">
-              Prêt à réduire vos factures ?
+              Ne ratez pas cette opportunité
             </h2>
             <p className="text-base lg:text-xl text-primary-foreground/90 mb-8 lg:mb-10 max-w-2xl mx-auto">
-              Rejoignez plus de 2 500 foyers qui économisent déjà sur leurs factures d'électricité et d'internet grâce à l'achat groupé.
+              <span className="font-semibold">Plus de 2 500 foyers</span> ont déjà rejoint l'achat groupé. Inscrivez-vous maintenant pour bénéficier des meilleurs tarifs négociés.
             </p>
-            {/* CTA - all screens */}
+            
+            {/* CTA */}
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Button
                 variant="secondary"
@@ -48,13 +89,14 @@ export function CTASection() {
                 onClick={() => trackClick({ eventType: 'cta_inscription', source: 'cta_section' })}
               >
                 <Link to="/inscription">
-                  Rejoindre gratuitement
+                  Rejoindre maintenant
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Button>
             </div>
+            
             <p className="text-sm text-primary-foreground/70 mt-6">
-              ✓ Inscription gratuite en 30 secondes • ✓ Sans engagement • ✓ Offre personnalisée
+              ✓ Inscription en 30 secondes • ✓ Sans engagement • ✓ 100% gratuit
             </p>
           </div>
         </motion.div>
