@@ -182,7 +182,15 @@
     <!-- DNS Prefetch -->
     <link rel="dns-prefetch" href="https://kaebtbcufbpkhyrhuson.supabase.co" />
     
-    <!-- Preload critical fonts with display=swap -->
+    <!-- Critical CSS inline for faster FCP -->
+    <style>
+      body{margin:0;font-family:system-ui,-apple-system,sans-serif;background:#f8fafc}
+      #root{min-height:100vh}
+      .loading-skeleton{background:linear-gradient(90deg,#f1f5f9 0%,#e2e8f0 50%,#f1f5f9 100%);background-size:200% 100%;animation:shimmer 1.5s infinite}
+      @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+    </style>
+    
+    <!-- Defer non-critical fonts -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" /></noscript>
   </head>
