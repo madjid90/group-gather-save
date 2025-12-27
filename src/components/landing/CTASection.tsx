@@ -94,10 +94,6 @@ export function CTASection() {
                 </Link>
               </Button>
             </div>
-            
-            <p className="text-sm text-primary-foreground/70 mt-6">
-              ✓ Inscription en 30 secondes • ✓ Sans engagement • ✓ 100% gratuit
-            </p>
           </div>
         </motion.div>
       </div>
