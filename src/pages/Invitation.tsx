@@ -24,7 +24,8 @@ import {
   HelpCircle,
   Wifi,
   Gift,
-  Sparkles
+  Sparkles,
+  Flame
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -248,14 +249,18 @@ export default function Invitation() {
               <span className="gradient-text">l'achat groupé</span>
             </h1>
             <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
-              "Je viens de m'inscrire à un achat groupé d'électricité et de box internet. Rejoins-moi pour économiser jusqu'à 400€/an !"
+              "Je viens de m'inscrire à un achat groupé d'électricité, gaz et box internet. Rejoins-moi pour économiser jusqu'à 400€/an !"
             </p>
 
             {/* Trust badges */}
-            <div className="flex items-center justify-center gap-3 flex-wrap">
+            <div className="flex items-center justify-center gap-2 sm:gap-3 flex-wrap">
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary">
                 <Zap className="w-4 h-4" />
                 <span className="text-sm font-medium">Électricité</span>
+              </div>
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-orange-500/10 text-orange-600">
+                <Flame className="w-4 h-4" />
+                <span className="text-sm font-medium">Gaz</span>
               </div>
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary/10 text-secondary">
                 <Wifi className="w-4 h-4" />

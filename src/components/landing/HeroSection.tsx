@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { AnimatedCounter, useAnimatedSocialProof } from "@/components/ui/AnimatedCounter";
-import { CheckCircle, MessageSquare, Gift, Zap, Wifi } from "lucide-react";
+import { CheckCircle, MessageSquare, Gift, Zap, Wifi, Flame } from "lucide-react";
 import { trackClick } from "@/hooks/useClickTracking";
 
 // Memoize static elements
@@ -81,7 +81,7 @@ export const HeroSection = memo(function HeroSection() {
             {/* Title */}
             <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground leading-tight">
               Économisez jusqu'à <span className="gradient-text">400€</span> par an sur vos factures{" "}
-              <span className="gradient-text">d'énergie et d'internet</span>
+              <span className="gradient-text">d'électricité, gaz et internet</span>
             </h1>
 
             {/* Description */}
@@ -193,23 +193,33 @@ export const HeroSection = memo(function HeroSection() {
                 transition={{ delay: 0.8, duration: 0.5 }}
               >
                 {/* Electricity savings */}
-                <div className="flex-1 bg-card rounded-2xl p-5 shadow-switchly border border-border text-center">
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    <Zap className="w-5 h-5 text-primary" />
-                    <span className="text-sm font-medium text-muted-foreground">Électricité</span>
+                <div className="flex-1 bg-card rounded-2xl p-4 shadow-switchly border border-border text-center">
+                  <div className="flex items-center justify-center gap-1.5 mb-1">
+                    <Zap className="w-4 h-4 text-primary" />
+                    <span className="text-xs font-medium text-muted-foreground">Électricité</span>
                   </div>
-                  <p className="text-3xl font-bold text-foreground">250 €</p>
-                  <p className="text-sm text-secondary font-medium">jusqu'à /an estimés</p>
+                  <p className="text-2xl font-bold text-foreground">200 €</p>
+                  <p className="text-xs text-secondary font-medium">/an estimés</p>
+                </div>
+
+                {/* Gas savings */}
+                <div className="flex-1 bg-card rounded-2xl p-4 shadow-switchly border border-border text-center">
+                  <div className="flex items-center justify-center gap-1.5 mb-1">
+                    <Flame className="w-4 h-4 text-orange-500" />
+                    <span className="text-xs font-medium text-muted-foreground">Gaz</span>
+                  </div>
+                  <p className="text-2xl font-bold text-foreground">120 €</p>
+                  <p className="text-xs text-secondary font-medium">/an estimés</p>
                 </div>
 
                 {/* Internet savings */}
-                <div className="flex-1 bg-card rounded-2xl p-5 shadow-switchly border border-border text-center">
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    <Wifi className="w-5 h-5 text-secondary" />
-                    <span className="text-sm font-medium text-muted-foreground">Internet</span>
+                <div className="flex-1 bg-card rounded-2xl p-4 shadow-switchly border border-border text-center">
+                  <div className="flex items-center justify-center gap-1.5 mb-1">
+                    <Wifi className="w-4 h-4 text-secondary" />
+                    <span className="text-xs font-medium text-muted-foreground">Internet</span>
                   </div>
-                  <p className="text-3xl font-bold text-foreground">150 €</p>
-                  <p className="text-sm text-secondary font-medium">jusqu'à /an estimés</p>
+                  <p className="text-2xl font-bold text-foreground">80 €</p>
+                  <p className="text-xs text-secondary font-medium">/an estimés</p>
                 </div>
               </motion.div>
 

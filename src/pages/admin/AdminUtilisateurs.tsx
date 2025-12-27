@@ -723,9 +723,10 @@ export default function AdminUtilisateurs() {
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="electricite">Énergie</SelectItem>
+                            <SelectItem value="electricite">Électricité</SelectItem>
+                            <SelectItem value="gaz">Gaz</SelectItem>
                             <SelectItem value="internet">Internet</SelectItem>
-                            <SelectItem value="les_deux">Les deux</SelectItem>
+                            <SelectItem value="les_deux">Tous</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
