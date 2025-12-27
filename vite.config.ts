@@ -15,4 +15,24 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    // Optimize chunk splitting for better caching
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-ui': ['framer-motion', '@radix-ui/react-accordion', '@radix-ui/react-dialog'],
+          'vendor-supabase': ['@supabase/supabase-js'],
+        },
+      },
+    },
+    // Reduce bundle size
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: mode === 'production',
+        drop_debugger: true,
+      },
+    },
+  },
 }));

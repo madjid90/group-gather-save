@@ -113,13 +113,15 @@
 
   html {
     scroll-behavior: smooth;
-    scroll-snap-type: y proximity;
   }
   
-  /* Smooth sections for optimal reading */
-  section {
-    scroll-snap-align: start;
-    scroll-snap-stop: normal;
+  /* Reduce motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 
   body {

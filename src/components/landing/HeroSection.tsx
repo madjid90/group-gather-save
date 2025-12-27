@@ -1,22 +1,38 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { memo, useMemo } from "react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { AnimatedCounter, useAnimatedSocialProof } from "@/components/ui/AnimatedCounter";
 import { CheckCircle, MessageSquare, Gift, Zap, Wifi } from "lucide-react";
 import { trackClick } from "@/hooks/useClickTracking";
 
-export function HeroSection() {
-  const { count, notification, showNotification } = useAnimatedSocialProof(2547, 12000);
+// Memoize static elements
+const TrustBadges = memo(() => (
+  <div className="flex items-center gap-3 flex-wrap">
+    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card border border-border shadow-sm">
+      <MessageSquare className="w-4 h-4 text-primary" />
+      <span className="text-sm font-medium text-foreground">100% digital</span>
+    </div>
+    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card border border-border shadow-sm">
+      <Gift className="w-4 h-4 text-secondary" />
+      <span className="text-sm font-medium text-foreground">100% gratuit</span>
+    </div>
+  </div>
+));
+TrustBadges.displayName = "TrustBadges";
+
+export const HeroSection = memo(function HeroSection() {
+  const { count, notification } = useAnimatedSocialProof(2547, 12000);
 
   return (
     <section className="relative min-h-[80svh] lg:min-h-[100svh] flex items-center overflow-hidden py-8 sm:py-10 lg:py-0">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-subtle" />
       
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
+      {/* Animated background elements - hidden on mobile for performance */}
+      <div className="absolute inset-0 overflow-hidden hidden md:block">
         <motion.div
-          className="absolute top-20 left-10 w-72 h-72 rounded-full bg-primary/5 blur-3xl"
+          className="absolute top-20 left-10 w-72 h-72 rounded-full bg-primary/5 blur-3xl will-change-transform"
           animate={{ 
             scale: [1, 1.2, 1],
             opacity: [0.3, 0.5, 0.3]
@@ -24,7 +40,7 @@ export function HeroSection() {
           transition={{ duration: 8, repeat: Infinity }}
         />
         <motion.div
-          className="absolute bottom-20 right-10 w-96 h-96 rounded-full bg-secondary/5 blur-3xl"
+          className="absolute bottom-20 right-10 w-96 h-96 rounded-full bg-secondary/5 blur-3xl will-change-transform"
           animate={{ 
             scale: [1.2, 1, 1.2],
             opacity: [0.3, 0.5, 0.3]
@@ -110,28 +126,12 @@ export function HeroSection() {
                 </Button>
               </motion.div>
               {/* Trust badges below CTA */}
-              <div className="flex items-center gap-3 flex-wrap">
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card border border-border shadow-sm">
-                  <MessageSquare className="w-4 h-4 text-primary" />
-                  <span className="text-sm font-medium text-foreground">100% digital</span>
-                </div>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card border border-border shadow-sm">
-                  <Gift className="w-4 h-4 text-secondary" />
-                  <span className="text-sm font-medium text-foreground">100% gratuit</span>
-                </div>
-              </div>
+              <TrustBadges />
             </div>
             
             {/* Trust badges - Mobile only */}
             <div className="lg:hidden flex items-center justify-center gap-2 flex-wrap">
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card border border-border shadow-sm">
-                <MessageSquare className="w-4 h-4 text-primary" />
-                <span className="text-sm font-medium text-foreground">100% digital</span>
-              </div>
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card border border-border shadow-sm">
-                <Gift className="w-4 h-4 text-secondary" />
-                <span className="text-sm font-medium text-foreground">100% gratuit</span>
-              </div>
+              <TrustBadges />
             </div>
             
             {/* Scroll indicator - Mobile/Tablet only */}
@@ -258,4 +258,4 @@ export function HeroSection() {
       </div>
     </section>
   );
-}
+});
