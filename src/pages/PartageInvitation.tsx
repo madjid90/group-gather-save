@@ -9,7 +9,7 @@ export default function PartageInvitation() {
   const [copied, setCopied] = useState(false);
 
   const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/invitation` : "";
-  const shareText = "🎉 Je viens de m'inscrire à l'achat groupé Switchly pour économiser sur mes factures d'électricité et d'internet ! Rejoins-moi vite, plus on est nombreux, plus les prix baissent.";
+  const shareText = "🎉 Je viens de m'inscrire à l'achat groupé Switchly pour économiser sur mes factures d'électricité, gaz et internet ! Rejoins-moi vite, plus on est nombreux, plus les prix baissent.";
 
   const handleCopyLink = async () => {
     try {

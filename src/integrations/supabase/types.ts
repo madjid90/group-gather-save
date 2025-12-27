@@ -935,7 +935,7 @@ export type Database = {
         | "archivee"
       compteur_type: "linky" | "ancien"
       connexion_type: "fibre" | "adsl" | "4g_box"
-      contract_type: "electricite" | "internet" | "les_deux"
+      contract_type: "electricite" | "internet" | "les_deux" | "gaz"
       groupement_status:
         | "en_attente"
         | "negociation"
@@ -949,7 +949,7 @@ export type Database = {
         | "offres_envoyees"
         | "terminee"
       offer_target: "energie" | "internet" | "tous"
-      offer_type: "electricite" | "internet" | "combo"
+      offer_type: "electricite" | "internet" | "combo" | "gaz"
       sms_status: "envoye" | "delivre" | "echec"
       subscription_status: "en_attente" | "validee" | "annulee"
       user_status: "inscrit" | "offre_envoyee" | "clic" | "souscription"
@@ -1090,7 +1090,7 @@ export const Constants = {
       ],
       compteur_type: ["linky", "ancien"],
       connexion_type: ["fibre", "adsl", "4g_box"],
-      contract_type: ["electricite", "internet", "les_deux"],
+      contract_type: ["electricite", "internet", "les_deux", "gaz"],
       groupement_status: [
         "en_attente",
         "negociation",
@@ -1106,7 +1106,7 @@ export const Constants = {
         "terminee",
       ],
       offer_target: ["energie", "internet", "tous"],
-      offer_type: ["electricite", "internet", "combo"],
+      offer_type: ["electricite", "internet", "combo", "gaz"],
       sms_status: ["envoye", "delivre", "echec"],
       subscription_status: ["en_attente", "validee", "annulee"],
       user_status: ["inscrit", "offre_envoyee", "clic", "souscription"],

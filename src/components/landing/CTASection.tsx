@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, Zap, Wifi, Clock } from "lucide-react";
+import { ArrowRight, Zap, Wifi, Clock, Flame } from "lucide-react";
 import { trackClick } from "@/hooks/useClickTracking";
 
 export function CTASection() {
@@ -61,10 +61,14 @@ export function CTASection() {
               </div>
             </div>
 
-            <div className="flex items-center justify-center gap-3 mb-6">
+            <div className="flex items-center justify-center gap-2 sm:gap-3 mb-6 flex-wrap">
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary-foreground/20 text-primary-foreground">
                 <Zap className="w-4 h-4" />
                 <span className="text-sm font-medium">Électricité</span>
+              </div>
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary-foreground/20 text-primary-foreground">
+                <Flame className="w-4 h-4" />
+                <span className="text-sm font-medium">Gaz</span>
               </div>
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary-foreground/20 text-primary-foreground">
                 <Wifi className="w-4 h-4" />
