@@ -274,7 +274,7 @@ export default function DashboardClient() {
                 </Badge>
               ) : (
                 <Button variant="hero" size="lg" className="w-full py-3 text-sm" asChild>
-                  <Link to={`/mon-offre?token=${currentOffer.offer_token}`}>
+                  <Link to={`/mon-offre/${currentOffer.offer_token}`}>
                     Voir mon offre
                   </Link>
                 </Button>
