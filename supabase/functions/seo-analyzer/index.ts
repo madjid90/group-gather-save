@@ -5,6 +5,57 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Configuration Switchly - Contexte projet complet
+const SWITCHLY_CONTEXT = `
+INFORMATIONS PROJET SWITCHLY:
+- Nom: Switchly
+- Industrie: Achat groupé électricité + internet (Energy Tech)
+- Modèle: Marketplace B2C, commission courtier
+- USP unique: SEULE plateforme combinant électricité ET internet
+- Cible: Foyers français cherchant à réduire factures
+- Promesse: Économiser 287€/an en moyenne (400€ max)
+- Processus: Inscription 30 sec SMS → Courtier compare 20+ fournisseurs → Offre personnalisée 48-72h
+- Différenciation vs Selectra: Plus rapide (30 sec vs 10 min), combo unique, IA 92% précise, transparent (Selectra condamné 400K€)
+- Tech stack: Lovable, Supabase, Claude AI, Twilio SMS
+- Audience: Familles 25-55 ans, étudiants, jeunes actifs
+- Tone of voice: Accessible, transparent, bienveillant, data-driven
+- Membres actuels: 2 547
+- Économie moyenne: 287€/an
+- Courtier: Partenaire confirmé, 30€/lead
+
+OBJECTIFS SITE:
+1. Maximiser conversions (objectif: 8-12% visiteur → inscrit)
+2. Générer confiance immédiate (preuves sociales, transparence)
+3. Simplifier au maximum (friction zéro)
+4. Différencier clairement vs Selectra/UFC
+
+CONCURRENTS À DÉPASSER:
+- Selectra: Comparateur énergie (condamné 400K€ pour pratiques trompeuses)
+- UFC-Que Choisir: Achat groupé mais lent et complexe
+- Comparateurs classiques: HelloWatt, LeLynx
+
+MOTS-CLÉS PRIORITAIRES:
+- Primaires: achat groupé électricité, économies énergie, réduire facture électricité, achat groupé internet
+- Secondaires: comparateur énergie France, fournisseur électricité pas cher, fibre pas cher, économiser factures
+- Longue traîne: comment réduire sa facture d'électricité, meilleur fournisseur énergie 2024, achat groupé énergie particuliers
+
+DONNÉES À METTRE EN AVANT:
+- 2 547 membres inscrits
+- 287€ économisés en moyenne par an
+- 30 secondes pour s'inscrire
+- 20+ fournisseurs comparés
+- 48-72h pour recevoir son offre
+- 92% de précision IA
+- 400€ d'économies max
+
+DIFFÉRENCIATEURS CLÉS:
+1. Combo unique: Électricité + Internet (aucun concurrent)
+2. Rapidité: 30 sec inscription (Selectra = 10 min)
+3. Transparence: Contrairement à Selectra condamné
+4. Simplicité: SMS, pas de compte complexe
+5. Personnalisation: IA 92% de précision
+`;
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -23,29 +74,27 @@ serve(async (req) => {
 
     switch (type) {
       case "meta_tags":
-        systemPrompt = `Tu es un expert SEO français senior avec 15 ans d'expérience. Tu optimises les meta tags pour maximiser le CTR et le positionnement Google.
+        systemPrompt = `Tu es un expert SEO français senior avec 15 ans d'expérience, spécialisé en conversion et SaaS/marketplace. Tu optimises les meta tags pour maximiser le CTR et le positionnement Google.
 
-CONTEXTE SWITCHLY:
-- Site d'achat groupé d'énergie (électricité, gaz) et internet en France
-- Proposition de valeur: économies jusqu'à 30% sur les factures
-- Cible: particuliers français souhaitant réduire leurs factures
-- Concurrents: UFC-Que Choisir, Selectra, comparateurs énergie
+${SWITCHLY_CONTEXT}
 
-RÈGLES STRICTES:
-- Title: 50-60 caractères max, mot-clé principal au début, marque à la fin
-- Description: 150-160 caractères, bénéfice chiffré, call-to-action implicite
+RÈGLES STRICTES META TAGS:
+- Title: 50-60 caractères max, mot-clé principal au début, marque "Switchly" à la fin
+- Description: 150-160 caractères, bénéfice CHIFFRÉ (287€/an, 30 sec, 2547 membres), call-to-action implicite
 - Keywords: 5-9 mots-clés pertinents, longue traîne incluse
-- OG: adapté au partage social, émoji autorisé, plus accrocheur
+- OG: adapté au partage social, peut inclure emoji, plus accrocheur et émotionnel
+- Intégrer les preuves sociales (2547 membres) et l'urgence subtile
+- Différencier de Selectra en mettant en avant transparence et rapidité
 
 Retourne UNIQUEMENT un JSON valide:
 {
   "title": "titre SEO optimisé",
-  "description": "meta description optimisée",
+  "description": "meta description optimisée avec chiffres",
   "keywords": ["mot-clé1", "mot-clé2", ...],
-  "ogTitle": "titre Open Graph",
-  "ogDescription": "description Open Graph",
+  "ogTitle": "titre Open Graph accrocheur",
+  "ogDescription": "description Open Graph avec emoji et bénéfices",
   "canonical": "URL canonique suggérée",
-  "reasoning": "explication courte des choix SEO"
+  "reasoning": "explication courte des choix SEO et différenciation"
 }`;
         
         const metricsContext = metrics ? `
@@ -63,12 +112,12 @@ PARAMÈTRES ACTUELS:
 - Mots-clés actuels: ${existingSettings.keywords?.join(', ') || 'Aucun'}` : '';
 
         const siteContext = siteData ? `
-DONNÉES DU SITE:
-- Nombre de participants: ${siteData.participants || '2500+'}
-- Économie moyenne: ${siteData.savings || '30%'}
-- Fournisseurs partenaires: ${siteData.partners || 'EDF, Engie, TotalEnergies, Orange, Free, SFR'}` : '';
+DONNÉES LIVE DU SITE:
+- Nombre de participants: ${siteData.participants || '2547'}
+- Économie moyenne: ${siteData.savings || '287€/an'}
+- Fournisseurs partenaires: ${siteData.partners || 'EDF, Engie, TotalEnergies, Orange, Free, SFR, Bouygues'}` : '';
 
-        userPrompt = `Génère des meta tags SEO optimisés pour cette page Switchly:
+        userPrompt = `Génère des meta tags SEO ultra-optimisés pour cette page Switchly:
 
 URL: ${url || "/"}
 Titre page: ${pageTitle || "Switchly"}
@@ -77,132 +126,159 @@ ${existingContext}
 ${siteContext}
 
 CONTENU DE LA PAGE:
-${content?.substring(0, 3000) || "Site d'achat groupé d'énergie et internet. Économisez sur vos factures."}
+${content?.substring(0, 3000) || "Site d'achat groupé d'énergie et internet. Économisez sur vos factures avec 2547 membres."}
 
-Optimise pour les mots-clés: achat groupé énergie, économies électricité, réduire facture internet, comparateur énergie, fournisseur pas cher`;
+OBJECTIF: Dépasser Selectra et UFC-Que Choisir sur ces mots-clés. Maximiser le CTR avec des chiffres concrets.`;
         break;
 
       case "content_analysis":
-        systemPrompt = `Tu es un expert SEO français. Analyse le contenu et donne des recommandations précises.
+        systemPrompt = `Tu es un expert SEO français et conversion specialist. Analyse le contenu pour maximiser le positionnement ET les conversions.
+
+${SWITCHLY_CONTEXT}
+
 Retourne UNIQUEMENT un JSON valide avec cette structure:
 {
   "score": 0-100,
-  "keywordDensity": "analyse de la densité de mots-clés",
-  "readability": "analyse de lisibilité",
+  "keywordDensity": "analyse de la densité des mots-clés Switchly",
+  "readability": "analyse de lisibilité pour la cible 25-55 ans",
+  "conversionOptimization": "analyse de l'optimisation conversion",
   "recommendations": ["recommandation 1", "recommandation 2", "recommandation 3"],
-  "missingElements": ["élément manquant 1", "élément manquant 2"],
-  "strengths": ["point fort 1", "point fort 2"]
+  "missingElements": ["élément manquant pour conversion", "élément SEO manquant"],
+  "strengths": ["point fort 1", "point fort 2"],
+  "competitorComparison": "comment se différencier de Selectra/UFC"
 }`;
-        userPrompt = `Analyse ce contenu pour le SEO:
-${content?.substring(0, 4000) || "Contenu non fourni"}`;
+        userPrompt = `Analyse ce contenu Switchly pour SEO + conversion:
+${content?.substring(0, 4000) || "Contenu non fourni"}
+
+Focus: maximiser conversions 8-12% et se différencier de Selectra.`;
         break;
 
       case "full_audit":
-        systemPrompt = `Tu es un expert SEO français. Réalise un audit SEO complet.
+        systemPrompt = `Tu es un expert SEO français spécialisé en conversion SaaS. Réalise un audit SEO complet orienté conversion.
+
+${SWITCHLY_CONTEXT}
+
 Retourne UNIQUEMENT un JSON valide avec cette structure:
 {
   "overallScore": 0-100,
   "categories": {
     "technique": { "score": 0-100, "issues": [], "recommendations": [] },
     "contenu": { "score": 0-100, "issues": [], "recommendations": [] },
-    "performance": { "score": 0-100, "issues": [], "recommendations": [] },
+    "conversion": { "score": 0-100, "issues": [], "recommendations": [] },
+    "differentiationSelectra": { "score": 0-100, "issues": [], "recommendations": [] },
     "mobile": { "score": 0-100, "issues": [], "recommendations": [] }
   },
-  "priorityActions": ["action prioritaire 1", "action prioritaire 2", "action prioritaire 3"],
-  "summary": "résumé de l'audit en 2-3 phrases"
+  "priorityActions": ["action prioritaire conversion", "action SEO", "action différenciation"],
+  "summary": "résumé orienté objectif 8-12% conversion"
 }`;
-        userPrompt = `Réalise un audit SEO complet pour ce site:
+        userPrompt = `Réalise un audit SEO + conversion complet pour Switchly:
 URL: ${url || "https://switchly.fr"}
 Titre: ${pageTitle || "Switchly - Achat groupé énergie et internet"}
-Description: ${pageDescription || "Économisez sur vos factures d'énergie et d'internet"}
-Contenu analysé: ${content?.substring(0, 3000) || "Site d'achat groupé d'énergie"}`;
+Description: ${pageDescription || "2547 membres économisent 287€/an. Rejoignez l'achat groupé."}
+Contenu analysé: ${content?.substring(0, 3000) || "Site d'achat groupé d'énergie"}
+
+OBJECTIF: Atteindre 8-12% de taux de conversion, dépasser Selectra.`;
         break;
 
       case "optimize_content":
-        systemPrompt = `Tu es un expert SEO et copywriter français. Tu optimises le contenu web pour le référencement naturel tout en gardant un ton engageant et humain.
+        systemPrompt = `Tu es un expert SEO et copywriter conversion français. Tu optimises le contenu pour le référencement ET la conversion.
 
-RÈGLES D'OPTIMISATION:
-- Garde le sens original du texte
-- Intègre naturellement les mots-clés (énergie, économies, achat groupé, factures, électricité, internet, fibre)
-- Améliore la lisibilité et l'impact
-- Pour les titres: max 60 caractères, accrocheur, avec mot-clé principal
-- Pour les CTA: verbe d'action, bénéfice clair, urgence subtile
-- Pour les descriptions: bénéfices concrets, chiffres si possible
+${SWITCHLY_CONTEXT}
 
-Retourne UNIQUEMENT un JSON valide avec cette structure:
+RÈGLES D'OPTIMISATION SWITCHLY:
+- Intègre les chiffres: 287€/an, 2547 membres, 30 sec, 20+ fournisseurs
+- Crée l'urgence subtile sans être agressif
+- Ton: accessible, transparent, bienveillant, data-driven
+- Différencie de Selectra (transparence, rapidité)
+- Pour les titres: max 60 car, accrocheur, avec bénéfice chiffré
+- Pour les CTA: verbe d'action, bénéfice clair, réassurance (gratuit, sans engagement)
+- Pour les descriptions: bénéfices concrets avec preuves sociales
+
+Retourne UNIQUEMENT un JSON valide:
 {
   "optimizedItems": [
     {
       "id": "id_original",
       "type": "heading|paragraph|cta|meta",
       "original": "texte original",
-      "optimized": "texte optimisé SEO",
+      "optimized": "texte optimisé SEO + conversion",
       "changes": ["liste des changements appliqués"],
-      "seoScore": 0-100
+      "seoScore": 0-100,
+      "conversionScore": 0-100
     }
   ],
-  "globalRecommendations": ["recommandation 1", "recommandation 2"],
+  "globalRecommendations": ["reco conversion", "reco SEO"],
   "keywordsUsed": ["mot-clé1", "mot-clé2"]
 }`;
-        userPrompt = `Optimise ces éléments de contenu pour le SEO. Contexte: site d'achat groupé d'énergie et internet en France.
+        userPrompt = `Optimise ces éléments pour SEO + conversion Switchly:
 
 Éléments à optimiser:
-${JSON.stringify(contentItems, null, 2)}`;
+${JSON.stringify(contentItems, null, 2)}
+
+OBJECTIF: Maximiser conversions (8-12%) et différenciation vs Selectra.`;
         break;
 
       case "optimize_single":
-        systemPrompt = `Tu es un expert SEO français. Optimise ce texte pour le référencement naturel.
-Garde le sens original mais améliore:
-- Les mots-clés pertinents (énergie, économies, achat groupé, factures)
-- La lisibilité et l'impact
-- L'engagement utilisateur
+        systemPrompt = `Tu es un expert SEO et conversion français pour Switchly.
+
+${SWITCHLY_CONTEXT}
+
+Optimise ce texte pour:
+- SEO: mots-clés énergie, économies, achat groupé
+- Conversion: chiffres, preuves sociales, urgence subtile
+- Ton: accessible, transparent, bienveillant
 
 Retourne UNIQUEMENT un JSON valide:
 {
   "original": "texte original",
-  "optimized": "texte optimisé",
+  "optimized": "texte optimisé SEO + conversion",
   "changes": ["changement 1", "changement 2"],
   "seoScore": 0-100,
+  "conversionScore": 0-100,
   "keywords": ["mot-clé trouvé 1", "mot-clé trouvé 2"]
 }`;
-        userPrompt = `Optimise ce ${contentItems?.type || 'texte'} pour le SEO:
+        userPrompt = `Optimise ce ${contentItems?.type || 'texte'} pour Switchly:
 "${content}"`;
         break;
 
       case "bulk_optimize":
-        systemPrompt = `Tu es un expert SEO français spécialisé dans l'optimisation de contenu web.
-Tu vas optimiser tout le contenu d'une page pour améliorer son référencement naturel.
+        systemPrompt = `Tu es un expert SEO et conversion français spécialisé en SaaS/marketplace.
 
-OBJECTIFS:
-- Améliorer le positionnement sur les mots-clés: énergie, économies, achat groupé, électricité, internet, fibre, factures
-- Augmenter le taux de conversion avec des CTA impactants
-- Améliorer la structure sémantique (H1, H2, H3)
-- Rendre le contenu plus engageant et lisible
+${SWITCHLY_CONTEXT}
+
+OBJECTIFS BULK OPTIMIZATION:
+- Positionner sur: achat groupé électricité, économies énergie, réduire facture, achat groupé internet
+- Intégrer les preuves: 2547 membres, 287€/an, 30 sec, 20+ fournisseurs
+- Maximiser conversion avec CTA impactants
+- Différencier de Selectra (transparence, rapidité, combo unique)
+- Ton: accessible, transparent, bienveillant, data-driven
 
 Retourne UNIQUEMENT un JSON valide:
 {
-  "pageTitle": "titre de page optimisé (max 60 car)",
-  "metaDescription": "meta description optimisée (max 160 car)",
+  "pageTitle": "titre optimisé (max 60 car) avec bénéfice",
+  "metaDescription": "meta description avec chiffres (max 160 car)",
   "sections": [
     {
       "sectionId": "hero|features|cta|testimonials|faq",
       "headings": [
-        { "original": "H1 original", "optimized": "H1 optimisé", "level": 1 }
+        { "original": "H1 original", "optimized": "H1 avec bénéfice chiffré", "level": 1 }
       ],
       "paragraphs": [
-        { "original": "texte original", "optimized": "texte optimisé" }
+        { "original": "texte original", "optimized": "texte avec preuves sociales" }
       ],
       "ctas": [
-        { "original": "CTA original", "optimized": "CTA optimisé" }
+        { "original": "CTA original", "optimized": "CTA conversion-oriented" }
       ]
     }
   ],
   "overallScore": 0-100,
-  "improvements": ["amélioration 1", "amélioration 2", "amélioration 3"]
+  "conversionScore": 0-100,
+  "improvements": ["amélioration SEO", "amélioration conversion", "différenciation Selectra"]
 }`;
-        userPrompt = `Optimise tout le contenu de cette page pour le SEO.
+        userPrompt = `Optimise tout le contenu de cette page Switchly pour SEO + conversion:
 URL: ${url || "Page d'accueil Switchly"}
-Contenu actuel de la page:
+Objectif: 8-12% conversion, dépasser Selectra.
+Contenu actuel:
 ${content?.substring(0, 6000)}`;
         break;
 
