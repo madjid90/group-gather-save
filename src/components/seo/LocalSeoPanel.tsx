@@ -12,6 +12,39 @@ import { useLocalSeoPages, GeneratedContent } from '@/hooks/useLocalSeoPages';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuLabel } from '@/components/ui/dropdown-menu';
+
+// 100 plus grandes villes de France par population
+const TOP_100_VILLES_FRANCE = [
+  "Paris", "Marseille", "Lyon", "Toulouse", "Nice", "Nantes", "Montpellier", "Strasbourg", "Bordeaux", "Lille",
+  "Rennes", "Reims", "Saint-Étienne", "Le Havre", "Toulon", "Grenoble", "Dijon", "Angers", "Nîmes", "Villeurbanne",
+  "Saint-Denis", "Clermont-Ferrand", "Le Mans", "Aix-en-Provence", "Brest", "Tours", "Amiens", "Limoges", "Annecy", "Perpignan",
+  "Boulogne-Billancourt", "Metz", "Besançon", "Orléans", "Saint-Denis", "Argenteuil", "Rouen", "Montreuil", "Mulhouse", "Caen",
+  "Nancy", "Tourcoing", "Roubaix", "Nanterre", "Vitry-sur-Seine", "Avignon", "Créteil", "Dunkerque", "Poitiers", "Aubervilliers",
+  "Asnières-sur-Seine", "Colombes", "Versailles", "Aulnay-sous-Bois", "Saint-Pierre", "Courbevoie", "Le Tampon", "Cherbourg-en-Cotentin", "Rueil-Malmaison", "Béziers",
+  "Champigny-sur-Marne", "Fort-de-France", "Pau", "Calais", "Saint-Maur-des-Fossés", "Cannes", "Antibes", "Mamoudzou", "Drancy", "Mérignac",
+  "Colmar", "Ajaccio", "Issy-les-Moulineaux", "Saint-Nazaire", "Noisy-le-Grand", "Bourges", "La Rochelle", "Vénissieux", "Levallois-Perret", "Évry-Courcouronnes",
+  "Cergy", "Valence", "Pessac", "Ivry-sur-Seine", "Quimper", "Cayenne", "Troyes", "Antony", "La Seyne-sur-Mer", "Villeneuve-d'Ascq",
+  "Neuilly-sur-Seine", "Sarcelles", "Clichy", "Chambéry", "Lorient", "Montauban", "Niort", "Saint-Quentin", "Hyères", "Beauvais"
+];
+
+// Groupes régionaux pour une meilleure organisation
+const VILLES_PAR_REGION = {
+  "Île-de-France": ["Paris", "Boulogne-Billancourt", "Saint-Denis", "Argenteuil", "Montreuil", "Nanterre", "Vitry-sur-Seine", "Créteil", "Aubervilliers", "Asnières-sur-Seine", "Colombes", "Versailles", "Aulnay-sous-Bois", "Courbevoie", "Rueil-Malmaison", "Champigny-sur-Marne", "Saint-Maur-des-Fossés", "Drancy", "Issy-les-Moulineaux", "Noisy-le-Grand", "Levallois-Perret", "Évry-Courcouronnes", "Cergy", "Ivry-sur-Seine", "Antony", "Neuilly-sur-Seine", "Sarcelles", "Clichy"],
+  "Auvergne-Rhône-Alpes": ["Lyon", "Grenoble", "Saint-Étienne", "Villeurbanne", "Clermont-Ferrand", "Annecy", "Valence", "Vénissieux", "Chambéry"],
+  "Provence-Alpes-Côte d'Azur": ["Marseille", "Nice", "Toulon", "Aix-en-Provence", "Avignon", "Cannes", "Antibes", "La Seyne-sur-Mer", "Hyères"],
+  "Occitanie": ["Toulouse", "Montpellier", "Nîmes", "Perpignan", "Béziers", "Montauban"],
+  "Nouvelle-Aquitaine": ["Bordeaux", "Limoges", "Poitiers", "Pau", "Mérignac", "La Rochelle", "Pessac", "Niort"],
+  "Hauts-de-France": ["Lille", "Reims", "Amiens", "Tourcoing", "Roubaix", "Dunkerque", "Calais", "Villeneuve-d'Ascq", "Saint-Quentin", "Beauvais"],
+  "Grand Est": ["Strasbourg", "Metz", "Mulhouse", "Nancy", "Colmar", "Troyes"],
+  "Pays de la Loire": ["Nantes", "Angers", "Le Mans", "Saint-Nazaire"],
+  "Bretagne": ["Rennes", "Brest", "Quimper", "Lorient"],
+  "Normandie": ["Le Havre", "Rouen", "Caen", "Cherbourg-en-Cotentin"],
+  "Bourgogne-Franche-Comté": ["Dijon", "Besançon", "Bourges"],
+  "Centre-Val de Loire": ["Tours", "Orléans"],
+  "Corse": ["Ajaccio"],
+  "Outre-mer": ["Saint-Denis", "Saint-Pierre", "Le Tampon", "Fort-de-France", "Mamoudzou", "Cayenne"]
+};
 
 export const LocalSeoPanel = () => {
   const [ville, setVille] = useState('');
@@ -172,7 +205,48 @@ export const LocalSeoPanel = () => {
               {bulkProgress.status === 'idle' ? (
                 <>
                   <div className="space-y-2">
-                    <Label htmlFor="bulkCities">Liste des villes (une par ligne)</Label>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="bulkCities">Liste des villes (une par ligne)</Label>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="outline" size="sm">
+                            <ListPlus className="h-4 w-4 mr-2" />
+                            Charger une liste
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-64 max-h-80 overflow-y-auto">
+                          <DropdownMenuLabel>Listes prédéfinies</DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem onClick={() => setBulkCities(TOP_100_VILLES_FRANCE.join('\n'))}>
+                            <span className="font-medium">Top 100 villes de France</span>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => setBulkCities(TOP_100_VILLES_FRANCE.slice(0, 50).join('\n'))}>
+                            <span>Top 50 villes</span>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => setBulkCities(TOP_100_VILLES_FRANCE.slice(0, 20).join('\n'))}>
+                            <span>Top 20 villes</span>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => setBulkCities(TOP_100_VILLES_FRANCE.slice(0, 10).join('\n'))}>
+                            <span>Top 10 villes</span>
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuLabel>Par région</DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          {Object.entries(VILLES_PAR_REGION).map(([region, villes]) => (
+                            <DropdownMenuItem 
+                              key={region} 
+                              onClick={() => setBulkCities(prev => {
+                                const existing = prev.split('\n').filter(c => c.trim());
+                                const merged = [...new Set([...existing, ...villes])];
+                                return merged.join('\n');
+                              })}
+                            >
+                              <span>{region} ({villes.length})</span>
+                            </DropdownMenuItem>
+                          ))}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
                     <Textarea
                       id="bulkCities"
                       placeholder="Paris&#10;Lyon&#10;Marseille&#10;Toulouse&#10;Nice&#10;Nantes&#10;Bordeaux..."
@@ -181,9 +255,14 @@ export const LocalSeoPanel = () => {
                       rows={8}
                       className="font-mono"
                     />
-                    <p className="text-xs text-muted-foreground">
-                      {bulkCities.split('\n').filter(c => c.trim()).length} ville(s) détectée(s)
-                    </p>
+                    <div className="flex items-center justify-between text-xs text-muted-foreground">
+                      <span>{bulkCities.split('\n').filter(c => c.trim()).length} ville(s) détectée(s)</span>
+                      {bulkCities.trim() && (
+                        <Button variant="ghost" size="sm" className="h-6 text-xs" onClick={() => setBulkCities('')}>
+                          Effacer
+                        </Button>
+                      )}
+                    </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
