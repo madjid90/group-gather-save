@@ -3,6 +3,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Progress } from '@/components/ui/progress';
 import { 
   Loader2, 
   Target, 
@@ -10,7 +12,6 @@ import {
   AlertTriangle, 
   CheckCircle, 
   Zap, 
-  Search, 
   Globe, 
   Copy, 
   RefreshCw,
@@ -20,9 +21,12 @@ import {
   FileText,
   Lightbulb,
   ArrowRight,
-  Sparkles
+  Sparkles,
+  Check,
+  Save
 } from 'lucide-react';
 import { useCompetitorAnalysis, FullCompetitorAnalysis } from '@/hooks/useCompetitorAnalysis';
+import { useSEOPageSettings } from '@/hooks/useSEOPageSettings';
 import { useToast } from '@/hooks/use-toast';
 
 interface AcquisitionBestPractices {
@@ -42,6 +46,23 @@ interface ExtendedAnalysis extends FullCompetitorAnalysis {
   acquisitionBestPractices?: AcquisitionBestPractices;
 }
 
+interface RecommendationItem {
+  id: string;
+  field: string;
+  label: string;
+  value: string;
+  pageUrl: string;
+  selected: boolean;
+}
+
+const AVAILABLE_PAGES = [
+  { url: '/', label: 'Accueil' },
+  { url: '/inscription', label: 'Inscription' },
+  { url: '/faq', label: 'FAQ' },
+  { url: '/contact', label: 'Contact' },
+  { url: '/organiser-achat-groupe', label: 'Organiser un achat groupé' },
+];
+
 export const UnifiedSEOPanel = () => {
   const { 
     isLoading, 
@@ -51,8 +72,13 @@ export const UnifiedSEOPanel = () => {
     analyzeAllCompetitors,
     clearAnalysis 
   } = useCompetitorAnalysis();
+  const { updateSettings, isLoading: isApplying } = useSEOPageSettings();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState('overview');
+  const [selectedPage, setSelectedPage] = useState('/');
+  const [recommendations, setRecommendations] = useState<RecommendationItem[]>([]);
+  const [applyProgress, setApplyProgress] = useState(0);
+  const [isApplyingRecs, setIsApplyingRecs] = useState(false);
 
   const analysis = baseAnalysis as ExtendedAnalysis | null;
 
@@ -60,10 +86,129 @@ export const UnifiedSEOPanel = () => {
     fetchCompetitors();
   }, [fetchCompetitors]);
 
+  // Générer les recommandations à partir de l'analyse
+  useEffect(() => {
+    if (analysis?.switchlyRecommendations?.metaTagsOptimizations) {
+      const meta = analysis.switchlyRecommendations.metaTagsOptimizations;
+      const keywords = analysis.switchlyRecommendations.keywordsToTarget || [];
+      
+      const newRecs: RecommendationItem[] = [
+        {
+          id: 'meta_title',
+          field: 'meta_title',
+          label: 'Titre SEO',
+          value: meta.title,
+          pageUrl: selectedPage,
+          selected: true,
+        },
+        {
+          id: 'meta_description',
+          field: 'meta_description',
+          label: 'Meta Description',
+          value: meta.description,
+          pageUrl: selectedPage,
+          selected: true,
+        },
+        {
+          id: 'og_title',
+          field: 'og_title',
+          label: 'Open Graph Title',
+          value: meta.title,
+          pageUrl: selectedPage,
+          selected: true,
+        },
+        {
+          id: 'og_description',
+          field: 'og_description',
+          label: 'Open Graph Description',
+          value: meta.description,
+          pageUrl: selectedPage,
+          selected: true,
+        },
+      ];
+      
+      if (keywords.length > 0) {
+        newRecs.push({
+          id: 'keywords',
+          field: 'keywords',
+          label: 'Mots-clés',
+          value: keywords.slice(0, 10).join(', '),
+          pageUrl: selectedPage,
+          selected: true,
+        });
+      }
+      
+      setRecommendations(newRecs);
+    }
+  }, [analysis, selectedPage]);
+
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     toast({ title: "Copié", description: "Texte copié dans le presse-papiers" });
   };
+
+  const toggleRecommendation = (id: string) => {
+    setRecommendations(prev => 
+      prev.map(rec => rec.id === id ? { ...rec, selected: !rec.selected } : rec)
+    );
+  };
+
+  const selectAllRecommendations = () => {
+    setRecommendations(prev => prev.map(rec => ({ ...rec, selected: true })));
+  };
+
+  const applySelectedRecommendations = async () => {
+    const selectedRecs = recommendations.filter(r => r.selected);
+    if (selectedRecs.length === 0) {
+      toast({
+        title: "Aucune recommandation sélectionnée",
+        description: "Veuillez sélectionner au moins une recommandation à appliquer",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsApplyingRecs(true);
+    setApplyProgress(0);
+
+    try {
+      const updates: Record<string, any> = {};
+      
+      for (let i = 0; i < selectedRecs.length; i++) {
+        const rec = selectedRecs[i];
+        
+        if (rec.field === 'keywords') {
+          updates[rec.field] = rec.value.split(',').map(k => k.trim());
+        } else {
+          updates[rec.field] = rec.value;
+        }
+        
+        setApplyProgress(Math.round(((i + 1) / selectedRecs.length) * 100));
+        await new Promise(resolve => setTimeout(resolve, 150));
+      }
+
+      const success = await updateSettings(selectedPage, updates);
+      
+      if (success) {
+        toast({
+          title: "Recommandations appliquées",
+          description: `${selectedRecs.length} paramètres SEO mis à jour pour ${selectedPage}`,
+        });
+      }
+    } catch (error) {
+      console.error('Error applying recommendations:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible d'appliquer les recommandations",
+        variant: "destructive",
+      });
+    } finally {
+      setIsApplyingRecs(false);
+      setApplyProgress(0);
+    }
+  };
+
+  const selectedCount = recommendations.filter(r => r.selected).length;
 
   return (
     <div className="space-y-6">
@@ -110,7 +255,7 @@ export const UnifiedSEOPanel = () => {
           {!analysis && !isLoading && (
             <div className="mt-4 p-4 bg-muted/50 rounded-lg">
               <p className="text-sm text-muted-foreground">
-                L'analyse va scraper vos {Object.keys(competitors).length} concurrents et générer des recommandations basées sur les meilleures pratiques d'acquisition (Airbnb, Booking, Amazon...).
+                L'analyse va scraper vos {Object.keys(competitors).length} concurrents et générer des recommandations basées sur les meilleures pratiques d'acquisition.
               </p>
             </div>
           )}
@@ -137,10 +282,14 @@ export const UnifiedSEOPanel = () => {
       {/* Résultats de l'analyse */}
       {analysis && !('parseError' in analysis) && (
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid grid-cols-4 w-full">
+          <TabsList className="grid grid-cols-5 w-full">
             <TabsTrigger value="overview" className="gap-2">
               <Zap className="w-4 h-4" />
               Vue d'ensemble
+            </TabsTrigger>
+            <TabsTrigger value="apply" className="gap-2">
+              <Save className="w-4 h-4" />
+              Appliquer
             </TabsTrigger>
             <TabsTrigger value="competitors" className="gap-2">
               <Target className="w-4 h-4" />
@@ -191,14 +340,20 @@ export const UnifiedSEOPanel = () => {
               </CardContent>
             </Card>
 
-            {/* Meta tags optimisés */}
+            {/* Meta tags preview */}
             {analysis.switchlyRecommendations?.metaTagsOptimizations && (
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <FileText className="w-5 h-5 text-primary" />
-                    Meta tags optimisés (à appliquer)
-                  </CardTitle>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="flex items-center gap-2">
+                      <FileText className="w-5 h-5 text-primary" />
+                      Meta tags optimisés
+                    </CardTitle>
+                    <Button onClick={() => setActiveTab('apply')} className="gap-2">
+                      <Save className="w-4 h-4" />
+                      Appliquer ces recommandations
+                    </Button>
+                  </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="p-4 bg-muted rounded-lg">
@@ -238,6 +393,123 @@ export const UnifiedSEOPanel = () => {
                 </CardContent>
               </Card>
             )}
+          </TabsContent>
+
+          {/* Tab: Appliquer les recommandations */}
+          <TabsContent value="apply" className="space-y-6">
+            <Card className="border-primary/50">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Save className="w-5 h-5 text-primary" />
+                  Appliquer les recommandations SEO
+                </CardTitle>
+                <CardDescription>
+                  Sélectionnez les recommandations à appliquer et la page cible
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Sélection de la page */}
+                <div>
+                  <label className="text-sm font-medium mb-3 block">Page à optimiser</label>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    {AVAILABLE_PAGES.map(page => (
+                      <button
+                        key={page.url}
+                        onClick={() => setSelectedPage(page.url)}
+                        className={`p-3 rounded-lg border-2 text-left transition-all text-sm ${
+                          selectedPage === page.url 
+                            ? "border-primary bg-primary/10"
+                            : "border-border hover:border-primary/50"
+                        }`}
+                      >
+                        <span className="font-medium">{page.label}</span>
+                        <p className="text-xs text-muted-foreground mt-0.5">{page.url}</p>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Liste des recommandations */}
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <label className="text-sm font-medium">
+                      Recommandations ({selectedCount}/{recommendations.length} sélectionnées)
+                    </label>
+                    <Button variant="ghost" size="sm" onClick={selectAllRecommendations}>
+                      Tout sélectionner
+                    </Button>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    {recommendations.map(rec => (
+                      <div 
+                        key={rec.id}
+                        className={`p-4 rounded-lg border transition-all ${
+                          rec.selected ? 'border-primary bg-primary/5' : 'border-border'
+                        }`}
+                      >
+                        <div className="flex items-start gap-3">
+                          <Checkbox
+                            id={rec.id}
+                            checked={rec.selected}
+                            onCheckedChange={() => toggleRecommendation(rec.id)}
+                            className="mt-1"
+                          />
+                          <div className="flex-1">
+                            <label 
+                              htmlFor={rec.id}
+                              className="text-sm font-medium cursor-pointer flex items-center gap-2"
+                            >
+                              {rec.label}
+                              {rec.selected && <Check className="w-4 h-4 text-primary" />}
+                            </label>
+                            <p className="text-sm text-muted-foreground mt-1 break-all">
+                              {rec.value}
+                            </p>
+                          </div>
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={() => copyToClipboard(rec.value)}
+                          >
+                            <Copy className="w-3 h-3" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Bouton appliquer */}
+                {isApplyingRecs && (
+                  <div className="space-y-2">
+                    <Progress value={applyProgress} />
+                    <p className="text-sm text-center text-muted-foreground">
+                      Application en cours... {applyProgress}%
+                    </p>
+                  </div>
+                )}
+
+                <Button 
+                  size="lg" 
+                  className="w-full gap-2"
+                  onClick={applySelectedRecommendations}
+                  disabled={isApplyingRecs || selectedCount === 0}
+                >
+                  {isApplyingRecs ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Application en cours...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="w-4 h-4" />
+                      Appliquer {selectedCount} recommandation{selectedCount > 1 ? 's' : ''} à {selectedPage}
+                    </>
+                  )}
+                </Button>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           {/* Tab: Concurrents */}
