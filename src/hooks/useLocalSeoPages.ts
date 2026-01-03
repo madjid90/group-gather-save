@@ -20,6 +20,7 @@ export interface LocalSeoPage {
 }
 
 export interface GeneratedContent {
+  id?: string; // Optional for editing existing pages
   ville: string;
   code_postal: string | null;
   slug: string;
@@ -134,6 +135,40 @@ export const useLocalSeoPages = () => {
   const savePage = async (content: GeneratedContent, publish: boolean = false) => {
     setIsLoading(true);
     try {
+      // If content has an id, update existing page
+      if (content.id) {
+        const { data, error } = await supabase
+          .from('local_seo_pages')
+          .update({
+            ville: content.ville,
+            code_postal: content.code_postal,
+            slug: content.slug,
+            titre: content.titre,
+            meta_description: content.meta_description,
+            contenu_hero: content.contenu_hero,
+            contenu_principal: content.contenu_principal,
+            contenu_avantages: content.contenu_avantages,
+            contenu_cta: content.contenu_cta,
+            mots_cles: content.mots_cles,
+            publie: publish
+          })
+          .eq('id', content.id)
+          .select()
+          .single();
+
+        if (error) throw error;
+
+        toast({
+          title: "Page mise à jour",
+          description: `Page SEO pour ${content.ville} mise à jour avec succès`
+        });
+
+        setGeneratedContent(null);
+        await fetchPages();
+        return data;
+      }
+
+      // Otherwise, insert new page
       const { data, error } = await supabase
         .from('local_seo_pages')
         .insert({
@@ -173,6 +208,22 @@ export const useLocalSeoPages = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const loadPageForEdit = (page: LocalSeoPage): GeneratedContent => {
+    return {
+      id: page.id,
+      ville: page.ville,
+      code_postal: page.code_postal,
+      slug: page.slug,
+      titre: page.titre,
+      meta_description: page.meta_description || '',
+      contenu_hero: page.contenu_hero || '',
+      contenu_principal: page.contenu_principal || '',
+      contenu_avantages: page.contenu_avantages || '',
+      contenu_cta: page.contenu_cta || '',
+      mots_cles: page.mots_cles || []
+    };
   };
 
   const savePageSilent = async (content: GeneratedContent, publish: boolean = false): Promise<boolean> => {
@@ -356,8 +407,10 @@ export const useLocalSeoPages = () => {
     generateBulk,
     resetBulkProgress,
     savePage,
+    loadPageForEdit,
     togglePublish,
     deletePage,
-    clearGeneratedContent
+    clearGeneratedContent,
+    setGeneratedContent
   };
 };

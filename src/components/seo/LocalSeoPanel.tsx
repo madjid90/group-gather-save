@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
-import { Loader2, Sparkles, Save, Globe, Trash2, Eye, EyeOff, ExternalLink, Copy, ListPlus, CheckCircle2, XCircle } from 'lucide-react';
+import { Loader2, Sparkles, Save, Globe, Trash2, Eye, EyeOff, ExternalLink, Copy, ListPlus, CheckCircle2, XCircle, Pencil } from 'lucide-react';
 import { useLocalSeoPages, GeneratedContent } from '@/hooks/useLocalSeoPages';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Textarea } from '@/components/ui/textarea';
@@ -68,32 +68,49 @@ export const LocalSeoPanel = () => {
     generateBulk,
     resetBulkProgress,
     savePage,
+    loadPageForEdit,
     togglePublish,
     deletePage,
     clearGeneratedContent
   } = useLocalSeoPages();
+
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     fetchPages();
   }, []);
 
   useEffect(() => {
-    if (generatedContent) {
+    if (generatedContent && !isEditing) {
       setEditedContent(generatedContent);
     }
-  }, [generatedContent]);
+  }, [generatedContent, isEditing]);
 
   const handleGenerate = async () => {
     if (!ville.trim()) return;
+    setIsEditing(false);
     await generateContent(ville.trim(), codePostal.trim() || undefined, serviceType);
+  };
+
+  const handleEdit = (page: typeof pages[0]) => {
+    const content = loadPageForEdit(page);
+    setEditedContent(content);
+    setIsEditing(true);
   };
 
   const handleSave = async (publish: boolean) => {
     if (!editedContent) return;
     await savePage(editedContent, publish);
     setEditedContent(null);
+    setIsEditing(false);
     setVille('');
     setCodePostal('');
+  };
+
+  const handleCancelEdit = () => {
+    setEditedContent(null);
+    setIsEditing(false);
+    clearGeneratedContent();
   };
 
   const handleBulkGenerate = async () => {
@@ -381,15 +398,15 @@ export const LocalSeoPanel = () => {
         <Card className="border-primary">
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
-              <span>Contenu généré pour {editedContent.ville}</span>
+              <span>
+                {isEditing ? 'Édition de' : 'Contenu généré pour'} {editedContent.ville}
+                {isEditing && <Badge variant="secondary" className="ml-2">Mode édition</Badge>}
+              </span>
               <div className="flex gap-2">
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => {
-                    clearGeneratedContent();
-                    setEditedContent(null);
-                  }}
+                  onClick={handleCancelEdit}
                 >
                   Annuler
                 </Button>
@@ -400,7 +417,7 @@ export const LocalSeoPanel = () => {
                   disabled={isLoading}
                 >
                   <Save className="h-4 w-4 mr-2" />
-                  Brouillon
+                  {isEditing ? 'Sauvegarder' : 'Brouillon'}
                 </Button>
                 <Button
                   size="sm"
@@ -536,12 +553,21 @@ export const LocalSeoPanel = () => {
                         </Button>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleEdit(page)}
+                        title="Éditer"
+                      >
+                        <Pencil className="h-4 w-4" />
+                      </Button>
                       {page.publie && (
                         <Button
                           variant="ghost"
                           size="icon"
                           asChild
+                          title="Voir la page"
                         >
                           <a href={`/ville/${page.slug}`} target="_blank" rel="noopener noreferrer">
                             <ExternalLink className="h-4 w-4" />
@@ -552,6 +578,7 @@ export const LocalSeoPanel = () => {
                         variant="ghost"
                         size="icon"
                         onClick={() => togglePublish(page.id, !page.publie)}
+                        title={page.publie ? 'Dépublier' : 'Publier'}
                       >
                         {page.publie ? (
                           <EyeOff className="h-4 w-4" />
@@ -564,6 +591,7 @@ export const LocalSeoPanel = () => {
                         size="icon"
                         className="text-destructive hover:text-destructive"
                         onClick={() => deletePage(page.id)}
+                        title="Supprimer"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
