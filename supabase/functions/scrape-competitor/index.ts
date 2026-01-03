@@ -150,17 +150,7 @@ serve(async (req) => {
       );
     }
 
-    const competitorAnalysisPrompt = `Tu es un expert SEO senior spécialisé en acquisition digitale et achat groupé énergie. Tu dois générer des recommandations ULTRA CONCRÈTES et IMMÉDIATEMENT APPLICABLES pour Switchly.
-
-PROFIL SWITCHLY (à garder en tête):
-- Proposition unique: SEUL acteur combinant électricité + internet en achat groupé
-- Métriques actuelles: 2 547 membres, 287€/an économisés en moyenne
-- UX différenciante: inscription 30 sec par SMS (vs 10 min chez concurrents)
-- Objectif: conversion 8-12%, dépasser Selectra en trafic SEO
-- Tonalité: simple, transparent, zéro jargon
-
-CONCURRENTS ANALYSÉS (données scrapées):
-${successfulScrapes.map(s => `
+    const competitorsText = successfulScrapes.map(s => `
 === ${s.name} (${s.type}) ===
 Faiblesse identifiée: ${s.weakness}
 URL: ${s.url}
@@ -169,45 +159,84 @@ Meta description: ${s.metadata?.description || 'N/A'}
 Contenu principal:
 ${s.content?.substring(0, 3000) || 'N/A'}
 ---
-`).join('\n')}
+`).join('\n');
 
-MISSION: Analyse comparative approfondie et recommandations SEO pour BATTRE ces concurrents.
+    const competitorAnalysisPrompt = `Tu es un EXPERT SENIOR en SEO, acquisition digitale et optimisation de conversion (CRO). Tu analyses les meilleurs sites mondiaux d'acquisition pour appliquer leurs stratégies à Switchly.
+
+PROFIL SWITCHLY:
+- Proposition unique: SEUL acteur combinant électricité + internet en achat groupé
+- Métriques: 2 547 membres, 287€/an économisés en moyenne
+- UX différenciante: inscription 30 sec par SMS (vs 10 min chez concurrents)
+- Objectif: conversion 8-12%, dépasser concurrents en trafic SEO
+- Tonalité: simple, transparent, zéro jargon
+
+CONCURRENTS ANALYSÉS (données scrapées):
+${competitorsText}
+
+MISSION: Analyse concurrentielle + Application des MEILLEURES PRATIQUES d'acquisition et conversion.
 
 RÈGLES CRITIQUES:
-1. Chaque recommandation doit être SPÉCIFIQUE à Switchly (pas de conseils génériques)
-2. Les mots-clés suggérés doivent être des termes que les concurrents ciblent OU des opportunités qu'ils ratent
-3. Les actions urgentes doivent être réalisables en moins de 2h
-4. Les meta tags suggérés doivent intégrer les différenciateurs Switchly
-5. Analyse les VRAIS contenus des concurrents, pas des suppositions
+1. Recommandations SPÉCIFIQUES à Switchly (pas de conseils génériques)
+2. Mots-clés = termes des concurrents OU opportunités manquées
+3. Actions urgentes réalisables en moins de 2h
+4. Inclure les MEILLEURES PRATIQUES des leaders de l'acquisition web (Airbnb, Booking, Netflix, Amazon)
+5. Focus sur CONVERSION: chaque recommandation doit améliorer le taux de conversion
 
-Génère un JSON avec cette structure EXACTE:
+STRUCTURE JSON EXACTE:
 {
   "competitorAnalysis": [
     {
       "name": "Nom du concurrent",
-      "seoStrengths": ["Ce qu'ils font BIEN en SEO - sois précis"],
-      "seoWeaknesses": ["Leurs failles SEO exploitables"],
-      "keywordsTheyRank": ["vrais mots-clés de leur contenu"],
-      "contentStrategy": "Leur approche contenu (longueur, ton, sujets)",
-      "howToBeat": "Stratégie PRÉCISE pour les dépasser sur Google"
+      "seoStrengths": ["Forces SEO spécifiques"],
+      "seoWeaknesses": ["Faiblesses exploitables"],
+      "keywordsTheyRank": ["mots-clés ciblés"],
+      "contentStrategy": "Leur approche contenu",
+      "howToBeat": "Stratégie pour les dépasser"
     }
   ],
   "switchlyRecommendations": {
-    "keywordsToTarget": ["5-10 mots-clés PRIORITAIRES à cibler immédiatement"],
-    "contentGaps": ["Contenus que Switchly DOIT créer pour combler les lacunes"],
-    "differentiators": ["Arguments différenciants à mettre en avant dans le contenu"],
+    "keywordsToTarget": ["5-10 mots-clés PRIORITAIRES"],
+    "contentGaps": ["Contenus à créer"],
+    "differentiators": ["Arguments différenciants à exploiter"],
     "metaTagsOptimizations": {
-      "title": "Titre optimisé pour la homepage (max 60 car, inclure différenciateur)",
-      "description": "Meta description percutante (max 155 car, CTA inclus)"
+      "title": "Titre SEO optimisé (max 60 car)",
+      "description": "Meta description (max 155 car)"
     },
-    "urgentActions": ["3-5 actions SEO faisables CETTE SEMAINE"]
+    "urgentActions": ["3-5 actions SEO cette semaine"]
+  },
+  "acquisitionBestPractices": {
+    "heroSection": {
+      "headline": "Titre hero accrocheur basé sur les meilleures pratiques (douleur + solution)",
+      "subheadline": "Sous-titre avec bénéfice concret et chiffre",
+      "ctaText": "Texte CTA optimisé pour conversion",
+      "socialProof": "Élément de preuve sociale à afficher"
+    },
+    "trustElements": [
+      "Élément de confiance #1 à ajouter (format: conseil + exemple concret)",
+      "Élément de confiance #2",
+      "Élément de confiance #3"
+    ],
+    "urgencyTactics": [
+      "Technique d'urgence #1 éthique et efficace",
+      "Technique d'urgence #2"
+    ],
+    "copywritingTips": [
+      "Amélioration copywriting #1 (avant → après)",
+      "Amélioration copywriting #2",
+      "Amélioration copywriting #3"
+    ],
+    "conversionOptimizations": [
+      "Optimisation conversion #1 avec impact estimé",
+      "Optimisation conversion #2",
+      "Optimisation conversion #3"
+    ]
   },
   "competitiveAdvantages": [
-    "Avantage #1 de Switchly vs TOUS les concurrents analysés",
-    "Avantage #2...",
-    "Avantage #3..."
+    "Avantage #1 vs tous concurrents",
+    "Avantage #2",
+    "Avantage #3"
   ],
-  "summary": "Résumé stratégique en 2 phrases: situation concurrentielle + opportunité principale"
+  "summary": "Résumé stratégique en 2 phrases: situation + opportunité principale"
 }`;
 
     console.log('Analyzing competitor data with AI...');
