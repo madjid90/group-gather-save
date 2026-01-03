@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
-import { Loader2, Sparkles, Save, Globe, Trash2, Eye, EyeOff, ExternalLink, Copy, ListPlus, CheckCircle2, XCircle, Pencil } from 'lucide-react';
+import { Loader2, Sparkles, Save, Globe, Trash2, Eye, EyeOff, ExternalLink, Copy, ListPlus, CheckCircle2, XCircle, Pencil, RefreshCw } from 'lucide-react';
 import { useLocalSeoPages, GeneratedContent } from '@/hooks/useLocalSeoPages';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Textarea } from '@/components/ui/textarea';
@@ -65,6 +65,7 @@ export const LocalSeoPanel = () => {
     bulkProgress,
     fetchPages,
     generateContent,
+    regenerateContent,
     generateBulk,
     resetBulkProgress,
     savePage,
@@ -75,6 +76,7 @@ export const LocalSeoPanel = () => {
   } = useLocalSeoPages();
 
   const [isEditing, setIsEditing] = useState(false);
+  const [editingPage, setEditingPage] = useState<typeof pages[0] | null>(null);
 
   useEffect(() => {
     fetchPages();
@@ -95,7 +97,16 @@ export const LocalSeoPanel = () => {
   const handleEdit = (page: typeof pages[0]) => {
     const content = loadPageForEdit(page);
     setEditedContent(content);
+    setEditingPage(page);
     setIsEditing(true);
+  };
+
+  const handleRegenerate = async () => {
+    if (!editingPage) return;
+    const regenerated = await regenerateContent(editingPage, serviceType);
+    if (regenerated) {
+      setEditedContent(regenerated);
+    }
   };
 
   const handleSave = async (publish: boolean) => {
@@ -109,6 +120,7 @@ export const LocalSeoPanel = () => {
 
   const handleCancelEdit = () => {
     setEditedContent(null);
+    setEditingPage(null);
     setIsEditing(false);
     clearGeneratedContent();
   };
@@ -403,6 +415,22 @@ export const LocalSeoPanel = () => {
                 {isEditing && <Badge variant="secondary" className="ml-2">Mode édition</Badge>}
               </span>
               <div className="flex gap-2">
+                {isEditing && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleRegenerate}
+                    disabled={isGenerating || isLoading}
+                    title="Régénérer le contenu avec l'IA"
+                  >
+                    {isGenerating ? (
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    ) : (
+                      <RefreshCw className="h-4 w-4 mr-2" />
+                    )}
+                    Régénérer
+                  </Button>
+                )}
                 <Button
                   variant="outline"
                   size="sm"

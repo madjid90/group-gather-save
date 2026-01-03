@@ -226,6 +226,45 @@ export const useLocalSeoPages = () => {
     };
   };
 
+  const regenerateContent = async (page: LocalSeoPage, serviceType?: string): Promise<GeneratedContent | null> => {
+    setIsGenerating(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('generate-local-seo', {
+        body: { 
+          ville: page.ville, 
+          code_postal: page.code_postal,
+          service_type: serviceType || 'tous'
+        }
+      });
+
+      if (error) throw error;
+      if (!data.success) throw new Error(data.error);
+
+      // Preserve the original page ID so we update instead of create
+      const regenerated: GeneratedContent = {
+        ...data.data,
+        id: page.id
+      };
+
+      setGeneratedContent(regenerated);
+      toast({
+        title: "Contenu régénéré",
+        description: `Nouveau contenu généré pour ${page.ville}`
+      });
+      return regenerated;
+    } catch (error) {
+      console.error('Erreur régénération:', error);
+      toast({
+        title: "Erreur",
+        description: error instanceof Error ? error.message : "Erreur lors de la régénération",
+        variant: "destructive"
+      });
+      return null;
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
   const savePageSilent = async (content: GeneratedContent, publish: boolean = false): Promise<boolean> => {
     try {
       const { error } = await supabase
@@ -404,6 +443,7 @@ export const useLocalSeoPages = () => {
     bulkProgress,
     fetchPages,
     generateContent,
+    regenerateContent,
     generateBulk,
     resetBulkProgress,
     savePage,
