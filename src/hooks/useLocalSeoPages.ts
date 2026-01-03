@@ -32,11 +32,28 @@ export interface GeneratedContent {
   mots_cles: string[];
 }
 
+export interface BulkGenerationProgress {
+  total: number;
+  current: number;
+  currentCity: string;
+  completed: string[];
+  failed: string[];
+  status: 'idle' | 'generating' | 'saving' | 'done';
+}
+
 export const useLocalSeoPages = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [pages, setPages] = useState<LocalSeoPage[]>([]);
   const [generatedContent, setGeneratedContent] = useState<GeneratedContent | null>(null);
+  const [bulkProgress, setBulkProgress] = useState<BulkGenerationProgress>({
+    total: 0,
+    current: 0,
+    currentCity: '',
+    completed: [],
+    failed: [],
+    status: 'idle'
+  });
   const { toast } = useToast();
 
   const fetchPages = async () => {
@@ -95,6 +112,25 @@ export const useLocalSeoPages = () => {
     }
   };
 
+  const generateSingleContent = async (ville: string, serviceType?: string): Promise<GeneratedContent | null> => {
+    try {
+      const { data, error } = await supabase.functions.invoke('generate-local-seo', {
+        body: { 
+          ville, 
+          service_type: serviceType || 'tous'
+        }
+      });
+
+      if (error) throw error;
+      if (!data.success) throw new Error(data.error);
+
+      return data.data;
+    } catch (error) {
+      console.error(`Erreur génération pour ${ville}:`, error);
+      return null;
+    }
+  };
+
   const savePage = async (content: GeneratedContent, publish: boolean = false) => {
     setIsLoading(true);
     try {
@@ -137,6 +173,122 @@ export const useLocalSeoPages = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const savePageSilent = async (content: GeneratedContent, publish: boolean = false): Promise<boolean> => {
+    try {
+      const { error } = await supabase
+        .from('local_seo_pages')
+        .insert({
+          ville: content.ville,
+          code_postal: content.code_postal,
+          slug: content.slug,
+          titre: content.titre,
+          meta_description: content.meta_description,
+          contenu_hero: content.contenu_hero,
+          contenu_principal: content.contenu_principal,
+          contenu_avantages: content.contenu_avantages,
+          contenu_cta: content.contenu_cta,
+          mots_cles: content.mots_cles,
+          publie: publish
+        });
+
+      if (error) throw error;
+      return true;
+    } catch (error) {
+      console.error(`Erreur sauvegarde pour ${content.ville}:`, error);
+      return false;
+    }
+  };
+
+  const generateBulk = async (cities: string[], serviceType: string, publish: boolean) => {
+    if (cities.length === 0) return;
+
+    setBulkProgress({
+      total: cities.length,
+      current: 0,
+      currentCity: '',
+      completed: [],
+      failed: [],
+      status: 'generating'
+    });
+
+    const completed: string[] = [];
+    const failed: string[] = [];
+
+    for (let i = 0; i < cities.length; i++) {
+      const city = cities[i].trim();
+      if (!city) continue;
+
+      setBulkProgress(prev => ({
+        ...prev,
+        current: i + 1,
+        currentCity: city,
+        status: 'generating'
+      }));
+
+      // Generate content
+      const content = await generateSingleContent(city, serviceType);
+      
+      if (!content) {
+        failed.push(city);
+        setBulkProgress(prev => ({
+          ...prev,
+          failed: [...prev.failed, city]
+        }));
+        continue;
+      }
+
+      // Save page
+      setBulkProgress(prev => ({
+        ...prev,
+        status: 'saving'
+      }));
+
+      const saved = await savePageSilent(content, publish);
+      
+      if (saved) {
+        completed.push(city);
+        setBulkProgress(prev => ({
+          ...prev,
+          completed: [...prev.completed, city]
+        }));
+      } else {
+        failed.push(city);
+        setBulkProgress(prev => ({
+          ...prev,
+          failed: [...prev.failed, city]
+        }));
+      }
+
+      // Small delay to avoid rate limiting
+      if (i < cities.length - 1) {
+        await new Promise(resolve => setTimeout(resolve, 1500));
+      }
+    }
+
+    setBulkProgress(prev => ({
+      ...prev,
+      status: 'done'
+    }));
+
+    toast({
+      title: "Génération en lot terminée",
+      description: `${completed.length} pages créées, ${failed.length} échecs`
+    });
+
+    await fetchPages();
+  };
+
+  const resetBulkProgress = () => {
+    setBulkProgress({
+      total: 0,
+      current: 0,
+      currentCity: '',
+      completed: [],
+      failed: [],
+      status: 'idle'
+    });
   };
 
   const togglePublish = async (id: string, publie: boolean) => {
@@ -198,8 +350,11 @@ export const useLocalSeoPages = () => {
     isLoading,
     isGenerating,
     generatedContent,
+    bulkProgress,
     fetchPages,
     generateContent,
+    generateBulk,
+    resetBulkProgress,
     savePage,
     togglePublish,
     deletePage,
