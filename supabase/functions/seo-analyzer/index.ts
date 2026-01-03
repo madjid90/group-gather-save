@@ -11,7 +11,7 @@ serve(async (req) => {
   }
 
   try {
-    const { type, content, url, pageTitle, pageDescription, contentItems } = await req.json();
+    const { type, content, url, pageTitle, pageDescription, contentItems, metrics, existingSettings, siteData } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     
     if (!LOVABLE_API_KEY) {
@@ -23,20 +23,63 @@ serve(async (req) => {
 
     switch (type) {
       case "meta_tags":
-        systemPrompt = `Tu es un expert SEO français. Génère des meta tags optimisés pour le référencement.
-Retourne UNIQUEMENT un JSON valide avec cette structure exacte:
+        systemPrompt = `Tu es un expert SEO français senior avec 15 ans d'expérience. Tu optimises les meta tags pour maximiser le CTR et le positionnement Google.
+
+CONTEXTE SWITCHLY:
+- Site d'achat groupé d'énergie (électricité, gaz) et internet en France
+- Proposition de valeur: économies jusqu'à 30% sur les factures
+- Cible: particuliers français souhaitant réduire leurs factures
+- Concurrents: UFC-Que Choisir, Selectra, comparateurs énergie
+
+RÈGLES STRICTES:
+- Title: 50-60 caractères max, mot-clé principal au début, marque à la fin
+- Description: 150-160 caractères, bénéfice chiffré, call-to-action implicite
+- Keywords: 5-9 mots-clés pertinents, longue traîne incluse
+- OG: adapté au partage social, émoji autorisé, plus accrocheur
+
+Retourne UNIQUEMENT un JSON valide:
 {
-  "title": "titre optimisé (max 60 caractères)",
-  "description": "meta description (max 160 caractères)",
-  "keywords": ["mot-clé1", "mot-clé2", "mot-clé3"],
-  "ogTitle": "titre pour réseaux sociaux",
-  "ogDescription": "description pour réseaux sociaux"
+  "title": "titre SEO optimisé",
+  "description": "meta description optimisée",
+  "keywords": ["mot-clé1", "mot-clé2", ...],
+  "ogTitle": "titre Open Graph",
+  "ogDescription": "description Open Graph",
+  "canonical": "URL canonique suggérée",
+  "reasoning": "explication courte des choix SEO"
 }`;
-        userPrompt = `Génère des meta tags SEO optimisés pour cette page:
-URL: ${url || "Page d'accueil"}
-Titre actuel: ${pageTitle || "Non défini"}
-Description actuelle: ${pageDescription || "Non définie"}
-Contenu principal: ${content?.substring(0, 2000) || "Switchly - Achat groupé d'énergie et internet"}`;
+        
+        const metricsContext = metrics ? `
+MÉTRIQUES ACTUELLES:
+- Score global: ${metrics.overall_score}/100
+- Score titre: ${metrics.title_score}/100
+- Score meta: ${metrics.meta_score}/100
+- Problèmes identifiés: ${metrics.issues?.join(', ') || 'Aucun'}
+- Recommandations existantes: ${metrics.recommendations?.join(', ') || 'Aucune'}` : '';
+
+        const existingContext = existingSettings ? `
+PARAMÈTRES ACTUELS:
+- Titre actuel: ${existingSettings.meta_title || 'Non défini'}
+- Description actuelle: ${existingSettings.meta_description || 'Non définie'}
+- Mots-clés actuels: ${existingSettings.keywords?.join(', ') || 'Aucun'}` : '';
+
+        const siteContext = siteData ? `
+DONNÉES DU SITE:
+- Nombre de participants: ${siteData.participants || '2500+'}
+- Économie moyenne: ${siteData.savings || '30%'}
+- Fournisseurs partenaires: ${siteData.partners || 'EDF, Engie, TotalEnergies, Orange, Free, SFR'}` : '';
+
+        userPrompt = `Génère des meta tags SEO optimisés pour cette page Switchly:
+
+URL: ${url || "/"}
+Titre page: ${pageTitle || "Switchly"}
+${metricsContext}
+${existingContext}
+${siteContext}
+
+CONTENU DE LA PAGE:
+${content?.substring(0, 3000) || "Site d'achat groupé d'énergie et internet. Économisez sur vos factures."}
+
+Optimise pour les mots-clés: achat groupé énergie, économies électricité, réduire facture internet, comparateur énergie, fournisseur pas cher`;
         break;
 
       case "content_analysis":

@@ -29,12 +29,17 @@ import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 interface GeneratedRecommendation {
-  type: 'meta_title' | 'meta_description' | 'og_title' | 'og_description' | 'keywords';
+  type: 'meta_title' | 'meta_description' | 'og_title' | 'og_description' | 'keywords' | 'canonical';
   field: string;
   label: string;
   icon: React.ReactNode;
   suggestedValue: string;
   priority: 'high' | 'medium' | 'low';
+}
+
+interface AIReasoning {
+  reasoning?: string;
+  canonical?: string;
 }
 
 export function SEORecommendationsPanel() {
@@ -49,6 +54,8 @@ export function SEORecommendationsPanel() {
   const [editingField, setEditingField] = useState<string | null>(null);
   const [editValue, setEditValue] = useState<string>('');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [aiReasoning, setAiReasoning] = useState<AIReasoning | null>(null);
+  const [autoGenerate, setAutoGenerate] = useState(false);
 
   // Get unique page URLs from metrics
   const pageUrls = [...new Set(metrics.map(m => m.page_url))];
@@ -72,27 +79,55 @@ export function SEORecommendationsPanel() {
   // Get page content based on selected page
   const getPageContent = (url: string): string => {
     const pageContents: Record<string, string> = {
-      '/': 'Switchly - Achat groupé énergie et internet. Rejoignez des milliers de Français pour économiser sur vos factures d\'électricité, gaz et internet. 100% gratuit, sans engagement. Plus de 2500 participants. Économies jusqu\'à 30%. Fournisseurs partenaires: EDF, Engie, TotalEnergies, Orange, Free, SFR, Bouygues. Achat groupé pour réduire vos factures. Négociation collective des tarifs énergie et télécoms.',
-      '/inscription': 'Inscription gratuite à Switchly. Rejoignez l\'achat groupé énergie et internet. Formulaire simple et rapide. Économisez sur vos factures sans engagement.',
-      '/faq': 'Questions fréquentes sur Switchly. Comment fonctionne l\'achat groupé? Quels sont les fournisseurs partenaires? Combien puis-je économiser? Réponses à toutes vos questions.',
-      '/contact': 'Contactez l\'équipe Switchly. Formulaire de contact, assistance et support. Réponse sous 24h garantie.',
-      '/organiser-achat-groupe': 'Organisez un achat groupé dans votre commune ou entreprise. Devenez partenaire Switchly et faites économiser votre communauté.'
+      '/': 'Switchly - Achat groupé énergie et internet. Rejoignez des milliers de Français pour économiser sur vos factures d\'électricité, gaz et internet. 100% gratuit, sans engagement. Plus de 2500 participants. Économies jusqu\'à 30%. Fournisseurs partenaires: EDF, Engie, TotalEnergies, Orange, Free, SFR, Bouygues. Achat groupé pour réduire vos factures. Négociation collective des tarifs énergie et télécoms. Service 100% digital et transparent. Inscription en 2 minutes. Comparateur indépendant.',
+      '/inscription': 'Inscription gratuite à Switchly. Rejoignez l\'achat groupé énergie et internet. Formulaire simple et rapide. Économisez sur vos factures sans engagement. Créez votre compte en quelques clics.',
+      '/faq': 'Questions fréquentes sur Switchly. Comment fonctionne l\'achat groupé? Quels sont les fournisseurs partenaires? Combien puis-je économiser? Est-ce vraiment gratuit? Réponses à toutes vos questions sur l\'achat groupé énergie internet.',
+      '/contact': 'Contactez l\'équipe Switchly. Formulaire de contact, assistance et support. Réponse sous 24h garantie. Questions sur l\'achat groupé énergie internet.',
+      '/organiser-achat-groupe': 'Organisez un achat groupé dans votre commune, copropriété ou entreprise. Devenez partenaire Switchly et faites économiser votre communauté. Programme partenaires collectivités.'
     };
     return pageContents[url] || `Page ${url} - Switchly achat groupé énergie internet`;
+  };
+
+  // Get metrics for selected page
+  const getPageMetrics = () => {
+    return metrics.find(m => m.page_url === selectedPage);
+  };
+
+  // Get existing settings for selected page
+  const getPageSettings = () => {
+    return settings.find(s => s.page_url === selectedPage);
   };
 
   const generateRecommendationsForPage = async () => {
     setIsGenerating(true);
     try {
       const pageContent = getPageContent(selectedPage);
+      const pageMetrics = getPageMetrics();
+      const existingSettings = getPageSettings();
+      
+      // Site-wide data for context
+      const siteData = {
+        participants: '2500+',
+        savings: '30%',
+        partners: 'EDF, Engie, TotalEnergies, Orange, Free, SFR, Bouygues'
+      };
       
       const result = await generateMetaTags({
         url: selectedPage,
         pageTitle: selectedPage === '/' ? 'Switchly - Achat Groupé Énergie & Internet' : `Switchly - ${selectedPage.replace('/', '').replace(/-/g, ' ')}`,
         content: pageContent,
+        metrics: pageMetrics,
+        existingSettings: existingSettings,
+        siteData: siteData,
       });
 
       if (result) {
+        // Store AI reasoning
+        setAiReasoning({
+          reasoning: result.reasoning,
+          canonical: result.canonical,
+        });
+
         const newRecommendations: GeneratedRecommendation[] = [
           {
             type: 'meta_title',
@@ -136,10 +171,22 @@ export function SEORecommendationsPanel() {
           },
         ];
 
+        // Add canonical if provided
+        if (result.canonical) {
+          newRecommendations.push({
+            type: 'canonical',
+            field: 'canonical_url',
+            label: 'URL Canonique',
+            icon: <Globe className="w-4 h-4" />,
+            suggestedValue: result.canonical,
+            priority: 'low',
+          });
+        }
+
         setRecommendations(newRecommendations);
         toast({
-          title: "Recommandations générées",
-          description: `${newRecommendations.length} suggestions SEO pour ${selectedPage}`,
+          title: "Recommandations générées par l'IA",
+          description: `${newRecommendations.length} suggestions SEO optimisées pour ${selectedPage}`,
         });
       }
     } catch (error) {
@@ -285,6 +332,21 @@ export function SEORecommendationsPanel() {
           </div>
         </CardContent>
       </Card>
+
+      {/* AI Reasoning */}
+      {aiReasoning?.reasoning && recommendations.length > 0 && (
+        <Card className="border-primary/30 bg-primary/5">
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2">
+              <Wand2 className="w-5 h-5 text-primary" />
+              <CardTitle className="text-lg">Analyse IA</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground">{aiReasoning.reasoning}</p>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Recommendations List */}
       {recommendations.length > 0 && (
