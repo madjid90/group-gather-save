@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
@@ -26,9 +26,11 @@ import {
   AlertCircle,
   LogOut,
   Zap,
-  ArrowLeft,
+  Wifi,
+  WifiOff,
 } from "lucide-react";
 import { toast } from "sonner";
+import { useRealtimeNotifications } from "@/hooks/useRealtimeNotifications";
 
 interface Profile {
   id: string;
@@ -79,6 +81,20 @@ export default function DashboardClient() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [hasHousingProfile, setHasHousingProfile] = useState(false);
   const [currentOffer, setCurrentOffer] = useState<UserOffer | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
+
+  // Callback to refresh data when realtime updates arrive
+  const handleRealtimeUpdate = useCallback(() => {
+    console.log('[Dashboard] Realtime update received, refreshing data...');
+    fetchClientData();
+  }, []);
+
+  // Setup realtime notifications
+  useRealtimeNotifications({
+    userId,
+    onOfferUpdate: handleRealtimeUpdate,
+    onProfileUpdate: handleRealtimeUpdate,
+  });
 
   useEffect(() => {
     fetchClientData();
@@ -92,6 +108,8 @@ export default function DashboardClient() {
         navigate("/connexion");
         return;
       }
+
+      setUserId(user.id);
 
       const { data: profileData, error: profileError } = await supabase
         .from("profiles")
