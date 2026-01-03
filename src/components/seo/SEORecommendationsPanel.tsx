@@ -69,12 +69,27 @@ export function SEORecommendationsPanel() {
     }
   }, [selectedPage, settings]);
 
+  // Get page content based on selected page
+  const getPageContent = (url: string): string => {
+    const pageContents: Record<string, string> = {
+      '/': 'Switchly - Achat groupé énergie et internet. Rejoignez des milliers de Français pour économiser sur vos factures d\'électricité, gaz et internet. 100% gratuit, sans engagement. Plus de 2500 participants. Économies jusqu\'à 30%. Fournisseurs partenaires: EDF, Engie, TotalEnergies, Orange, Free, SFR, Bouygues. Achat groupé pour réduire vos factures. Négociation collective des tarifs énergie et télécoms.',
+      '/inscription': 'Inscription gratuite à Switchly. Rejoignez l\'achat groupé énergie et internet. Formulaire simple et rapide. Économisez sur vos factures sans engagement.',
+      '/faq': 'Questions fréquentes sur Switchly. Comment fonctionne l\'achat groupé? Quels sont les fournisseurs partenaires? Combien puis-je économiser? Réponses à toutes vos questions.',
+      '/contact': 'Contactez l\'équipe Switchly. Formulaire de contact, assistance et support. Réponse sous 24h garantie.',
+      '/organiser-achat-groupe': 'Organisez un achat groupé dans votre commune ou entreprise. Devenez partenaire Switchly et faites économiser votre communauté.'
+    };
+    return pageContents[url] || `Page ${url} - Switchly achat groupé énergie internet`;
+  };
+
   const generateRecommendationsForPage = async () => {
     setIsGenerating(true);
     try {
+      const pageContent = getPageContent(selectedPage);
+      
       const result = await generateMetaTags({
         url: selectedPage,
-        pageTitle: document.title,
+        pageTitle: selectedPage === '/' ? 'Switchly - Achat Groupé Énergie & Internet' : `Switchly - ${selectedPage.replace('/', '').replace(/-/g, ' ')}`,
+        content: pageContent,
       });
 
       if (result) {
