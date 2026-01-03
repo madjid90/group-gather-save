@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Zap, User, LogOut, ArrowRight } from "lucide-react";
+import { Menu, X, Zap, User, LogOut, ArrowRight, Calculator } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { trackClick } from "@/hooks/useClickTracking";
 
 const navLinks = [
   { href: "/", label: "Accueil" },
+  { href: "/#estimateur", label: "Voir mes économies", isScroll: true },
   { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact" },
 ];
@@ -21,6 +22,7 @@ const legalLinks = [
 // All links for desktop hamburger menu
 const allDesktopLinks = [
   { href: "/", label: "Accueil" },
+  { href: "/#estimateur", label: "Voir mes économies", isScroll: true },
   { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact" },
   { href: "/mentions-legales", label: "Mentions légales" },
@@ -91,6 +93,21 @@ export function Navbar() {
     await supabase.auth.signOut();
     setUser(null);
     navigate("/");
+  };
+
+  const handleScrollToEstimateur = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsMobileOpen(false);
+    setIsDesktopOpen(false);
+    
+    if (location.pathname !== "/") {
+      navigate("/#estimateur");
+    } else {
+      const element = document.getElementById("estimateur");
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
   };
 
   return (
@@ -185,14 +202,27 @@ export function Navbar() {
           >
             <div className="py-3">
               {allDesktopLinks.map((link, index) => (
-                <Link
-                  key={link.href}
-                  to={link.href}
-                  onClick={() => setIsDesktopOpen(false)}
-                  className={`block text-sm md:text-base font-medium py-3 px-5 transition-colors hover:bg-muted text-foreground ${index === 2 ? "border-b border-border mb-1 pb-4" : ""}`}
-                >
-                  {link.label}
-                </Link>
+                link.isScroll ? (
+                  <button
+                    key={link.href}
+                    onClick={handleScrollToEstimateur}
+                    className={`block w-full text-left text-sm md:text-base font-medium py-3 px-5 transition-colors hover:bg-muted text-foreground ${index === 3 ? "border-b border-border mb-1 pb-4" : ""}`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <Calculator className="w-4 h-4 text-primary" />
+                      {link.label}
+                    </span>
+                  </button>
+                ) : (
+                  <Link
+                    key={link.href}
+                    to={link.href}
+                    onClick={() => setIsDesktopOpen(false)}
+                    className={`block text-sm md:text-base font-medium py-3 px-5 transition-colors hover:bg-muted text-foreground ${index === 3 ? "border-b border-border mb-1 pb-4" : ""}`}
+                  >
+                    {link.label}
+                  </Link>
+                )
               ))}
             </div>
           </motion.div>
@@ -225,14 +255,25 @@ export function Navbar() {
                 {/* Navigation Links */}
                 <div className="flex flex-col gap-1">
                   {navLinks.map((link) => (
-                    <Link
-                      key={link.href}
-                      to={link.href}
-                      onClick={() => setIsMobileOpen(false)}
-                      className="text-sm font-medium py-4 px-4 rounded-xl transition-colors hover:bg-muted active:bg-muted leading-relaxed text-foreground"
-                    >
-                      {link.label}
-                    </Link>
+                    link.isScroll ? (
+                      <button
+                        key={link.href}
+                        onClick={handleScrollToEstimateur}
+                        className="text-sm font-medium py-4 px-4 rounded-xl transition-colors hover:bg-muted active:bg-muted leading-relaxed text-foreground text-left flex items-center gap-2"
+                      >
+                        <Calculator className="w-4 h-4 text-primary" />
+                        {link.label}
+                      </button>
+                    ) : (
+                      <Link
+                        key={link.href}
+                        to={link.href}
+                        onClick={() => setIsMobileOpen(false)}
+                        className="text-sm font-medium py-4 px-4 rounded-xl transition-colors hover:bg-muted active:bg-muted leading-relaxed text-foreground"
+                      >
+                        {link.label}
+                      </Link>
+                    )
                   ))}
                 </div>
                 

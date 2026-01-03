@@ -62,3 +62,6 @@ verify_jwt = false
 
 [functions.scheduled-seo-analysis]
 verify_jwt = false
+
+[functions.estimate-savings]
+verify_jwt = false

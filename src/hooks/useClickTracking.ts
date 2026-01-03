@@ -1,7 +1,7 @@
 import { supabase } from "@/integrations/supabase/client";
 
-type EventType = 'cta_inscription' | 'offre_acceptee' | 'offre_refusee';
-type SourceType = 'hero' | 'cta_section' | 'mobile_cta' | 'navbar' | 'mon_offre' | 'partage';
+type EventType = 'cta_inscription' | 'offre_acceptee' | 'offre_refusee' | 'calculator_started' | 'calculator_completed' | 'calculator_result_viewed' | 'calculator_cta_inscription';
+type SourceType = 'hero' | 'cta_section' | 'mobile_cta' | 'navbar' | 'mon_offre' | 'partage' | 'savings_calculator';
 
 interface TrackClickOptions {
   eventType: EventType;
