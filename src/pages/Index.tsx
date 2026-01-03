@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import { HeroSection } from "@/components/landing/HeroSection";
+import { SavingsCalculator } from "@/components/landing/SavingsCalculator";
 import { SocialProofNotifications } from "@/components/landing/SocialProofNotifications";
 import { MobileFixedCTA } from "@/components/landing/MobileFixedCTA";
 import { FloatingShareButton } from "@/components/landing/FloatingShareButton";
@@ -39,49 +40,52 @@ const Index = () => {
       {/* 1. Hero - Always loaded immediately for LCP */}
       <HeroSection />
       
-      {/* 2. Comment ça marche */}
+      {/* 2. Calculateur d'économies */}
+      <SavingsCalculator />
+      
+      {/* 3. Comment ça marche */}
       <LazySection>
         <Suspense fallback={<SectionSkeleton />}>
           <HowItWorksSection />
         </Suspense>
       </LazySection>
       
-      {/* 3. Pourquoi Switchly */}
+      {/* 4. Pourquoi Switchly */}
       <LazySection>
         <Suspense fallback={<SectionSkeleton />}>
           <AdvantagesSection />
         </Suspense>
       </LazySection>
       
-      {/* 4. Témoignages */}
+      {/* 5. Témoignages */}
       <LazySection>
         <Suspense fallback={<SectionSkeleton />}>
           <TestimonialsSection />
         </Suspense>
       </LazySection>
       
-      {/* 5. Fournisseurs partenaires */}
+      {/* 6. Fournisseurs partenaires */}
       <LazySection>
         <Suspense fallback={<SectionSkeleton />}>
           <PartnersSection />
         </Suspense>
       </LazySection>
       
-      {/* 6. FAQ */}
+      {/* 7. FAQ */}
       <LazySection>
         <Suspense fallback={<SectionSkeleton />}>
           <FAQSection />
         </Suspense>
       </LazySection>
       
-      {/* 7. CTA final */}
+      {/* 8. CTA final */}
       <LazySection>
         <Suspense fallback={<SectionSkeleton />}>
           <CTASection />
         </Suspense>
       </LazySection>
       
-      {/* 8. Collectivités */}
+      {/* 9. Collectivités */}
       <LazySection>
         <Suspense fallback={<SectionSkeleton />}>
           <CollectivitesSection />

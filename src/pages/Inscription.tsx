@@ -32,6 +32,17 @@ function getPasswordStrength(password: string): { score: number; label: string; 
   return { score: 4, label: "Excellent", color: "bg-secondary" };
 }
 
+interface CalculatorProfile {
+  logement: string;
+  surface: string;
+  chauffage: string;
+  facture: string;
+  estimation?: {
+    minEconomie: number;
+    maxEconomie: number;
+  };
+}
+
 export default function Inscription() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -46,9 +57,22 @@ export default function Inscription() {
   const [showPassword, setShowPassword] = useState(false);
   const [copied, setCopied] = useState(false);
   const [liveCount, setLiveCount] = useState(2547);
+  const [calculatorProfile, setCalculatorProfile] = useState<CalculatorProfile | null>(null);
 
   const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/inscription` : "";
   const shareText = "Je viens de m'inscrire à l'achat groupé Switchly pour économiser sur mes factures ! Rejoins-moi :";
+
+  // Load calculator profile from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('switchly_calculator_profile');
+    if (saved) {
+      try {
+        setCalculatorProfile(JSON.parse(saved));
+      } catch {
+        console.log('Could not parse calculator profile');
+      }
+    }
+  }, []);
 
   // Simulate live counter
   useEffect(() => {
@@ -276,6 +300,37 @@ export default function Inscription() {
             <Users className="w-4 h-4 text-secondary" />
           </div>
         </motion.div>
+
+        {/* Calculator Profile Recap */}
+        {calculatorProfile && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="mb-4 p-4 rounded-xl bg-primary/5 border border-primary/20"
+          >
+            <p className="text-xs text-muted-foreground mb-2">Votre profil :</p>
+            <div className="flex flex-wrap gap-2">
+              <span className="px-2 py-1 rounded-md bg-background text-xs font-medium text-foreground">
+                {calculatorProfile.logement}
+              </span>
+              <span className="px-2 py-1 rounded-md bg-background text-xs font-medium text-foreground">
+                {calculatorProfile.surface}
+              </span>
+              <span className="px-2 py-1 rounded-md bg-background text-xs font-medium text-foreground">
+                {calculatorProfile.chauffage}
+              </span>
+              <span className="px-2 py-1 rounded-md bg-background text-xs font-medium text-foreground">
+                {calculatorProfile.facture}
+              </span>
+            </div>
+            {calculatorProfile.estimation && (
+              <p className="text-xs text-primary mt-2 font-medium">
+                Économies estimées : {calculatorProfile.estimation.minEconomie}€ - {calculatorProfile.estimation.maxEconomie}€ / an
+              </p>
+            )}
+          </motion.div>
+        )}
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
