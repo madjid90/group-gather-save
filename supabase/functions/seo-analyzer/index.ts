@@ -11,7 +11,7 @@ serve(async (req) => {
   }
 
   try {
-    const { type, content, url, pageTitle, pageDescription } = await req.json();
+    const { type, content, url, pageTitle, pageDescription, contentItems } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     
     if (!LOVABLE_API_KEY) {
@@ -73,6 +73,94 @@ URL: ${url || "https://switchly.fr"}
 Titre: ${pageTitle || "Switchly - Achat groupé énergie et internet"}
 Description: ${pageDescription || "Économisez sur vos factures d'énergie et d'internet"}
 Contenu analysé: ${content?.substring(0, 3000) || "Site d'achat groupé d'énergie"}`;
+        break;
+
+      case "optimize_content":
+        systemPrompt = `Tu es un expert SEO et copywriter français. Tu optimises le contenu web pour le référencement naturel tout en gardant un ton engageant et humain.
+
+RÈGLES D'OPTIMISATION:
+- Garde le sens original du texte
+- Intègre naturellement les mots-clés (énergie, économies, achat groupé, factures, électricité, internet, fibre)
+- Améliore la lisibilité et l'impact
+- Pour les titres: max 60 caractères, accrocheur, avec mot-clé principal
+- Pour les CTA: verbe d'action, bénéfice clair, urgence subtile
+- Pour les descriptions: bénéfices concrets, chiffres si possible
+
+Retourne UNIQUEMENT un JSON valide avec cette structure:
+{
+  "optimizedItems": [
+    {
+      "id": "id_original",
+      "type": "heading|paragraph|cta|meta",
+      "original": "texte original",
+      "optimized": "texte optimisé SEO",
+      "changes": ["liste des changements appliqués"],
+      "seoScore": 0-100
+    }
+  ],
+  "globalRecommendations": ["recommandation 1", "recommandation 2"],
+  "keywordsUsed": ["mot-clé1", "mot-clé2"]
+}`;
+        userPrompt = `Optimise ces éléments de contenu pour le SEO. Contexte: site d'achat groupé d'énergie et internet en France.
+
+Éléments à optimiser:
+${JSON.stringify(contentItems, null, 2)}`;
+        break;
+
+      case "optimize_single":
+        systemPrompt = `Tu es un expert SEO français. Optimise ce texte pour le référencement naturel.
+Garde le sens original mais améliore:
+- Les mots-clés pertinents (énergie, économies, achat groupé, factures)
+- La lisibilité et l'impact
+- L'engagement utilisateur
+
+Retourne UNIQUEMENT un JSON valide:
+{
+  "original": "texte original",
+  "optimized": "texte optimisé",
+  "changes": ["changement 1", "changement 2"],
+  "seoScore": 0-100,
+  "keywords": ["mot-clé trouvé 1", "mot-clé trouvé 2"]
+}`;
+        userPrompt = `Optimise ce ${contentItems?.type || 'texte'} pour le SEO:
+"${content}"`;
+        break;
+
+      case "bulk_optimize":
+        systemPrompt = `Tu es un expert SEO français spécialisé dans l'optimisation de contenu web.
+Tu vas optimiser tout le contenu d'une page pour améliorer son référencement naturel.
+
+OBJECTIFS:
+- Améliorer le positionnement sur les mots-clés: énergie, économies, achat groupé, électricité, internet, fibre, factures
+- Augmenter le taux de conversion avec des CTA impactants
+- Améliorer la structure sémantique (H1, H2, H3)
+- Rendre le contenu plus engageant et lisible
+
+Retourne UNIQUEMENT un JSON valide:
+{
+  "pageTitle": "titre de page optimisé (max 60 car)",
+  "metaDescription": "meta description optimisée (max 160 car)",
+  "sections": [
+    {
+      "sectionId": "hero|features|cta|testimonials|faq",
+      "headings": [
+        { "original": "H1 original", "optimized": "H1 optimisé", "level": 1 }
+      ],
+      "paragraphs": [
+        { "original": "texte original", "optimized": "texte optimisé" }
+      ],
+      "ctas": [
+        { "original": "CTA original", "optimized": "CTA optimisé" }
+      ]
+    }
+  ],
+  "overallScore": 0-100,
+  "improvements": ["amélioration 1", "amélioration 2", "amélioration 3"]
+}`;
+        userPrompt = `Optimise tout le contenu de cette page pour le SEO.
+URL: ${url || "Page d'accueil Switchly"}
+Contenu actuel de la page:
+${content?.substring(0, 6000)}`;
         break;
 
       default:
