@@ -7,35 +7,23 @@ const corsHeaders = {
 
 // Concurrents Switchly à analyser
 const COMPETITORS = {
-  selectra: {
-    name: 'Selectra',
-    url: 'https://selectra.info/',
-    type: 'Comparateur énergie',
-    weakness: 'Condamné 400K€ pratiques trompeuses, processus long (10 min)'
+  ecodigo: {
+    name: 'Ecodigo',
+    url: 'https://www.ecodigo.fr/',
+    type: 'Achat groupé énergie',
+    weakness: 'Pas de combo électricité + internet'
   },
   hellowatt: {
     name: 'HelloWatt',
-    url: 'https://www.hellowatt.fr/',
-    type: 'Comparateur énergie',
-    weakness: 'Pas de combo électricité + internet'
+    url: 'https://www.hellowatt.fr/achats-groupes/energie-classique/',
+    type: 'Achats groupés énergie classique',
+    weakness: 'Pas de combo électricité + internet, processus plus long'
   },
-  ufcquechoisir: {
-    name: 'UFC-Que Choisir',
-    url: 'https://www.quechoisir.org/nos-actions-groupe-energie/',
-    type: 'Achat groupé',
-    weakness: 'Processus lent et complexe'
-  },
-  lelynx: {
-    name: 'LeLynx',
-    url: 'https://www.lelynx.fr/energie/',
-    type: 'Comparateur multi-assurance',
-    weakness: 'Focus assurance, énergie secondaire'
-  },
-  jechange: {
-    name: 'JeChange',
-    url: 'https://www.jechange.fr/',
-    type: 'Comparateur énergie',
-    weakness: 'Pas de combo unique'
+  selectra: {
+    name: 'Selectra',
+    url: 'https://selectra.info/achat-groupe/energie',
+    type: 'Achat groupe énergie',
+    weakness: 'Condamné 400K€ pratiques trompeuses, processus long (10 min)'
   }
 };
 
