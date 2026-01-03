@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -43,6 +44,12 @@ interface SitemapUrl {
   priority?: number;
 }
 
+interface LocalSeoPage {
+  slug: string;
+  updated_at: string;
+  ville: string;
+}
+
 function generateSitemapXml(urls: SitemapUrl[]): string {
   const urlEntries = urls.map(url => `
   <url>
@@ -61,10 +68,12 @@ ${urlEntries}
 </urlset>`;
 }
 
-function generateSitemapJson(urls: SitemapUrl[]): object {
+function generateSitemapJson(urls: SitemapUrl[], localSeoCount: number): object {
   return {
     generated_at: new Date().toISOString(),
     total_urls: urls.length,
+    static_pages: STATIC_PAGES.length,
+    local_seo_pages: localSeoCount,
     site_url: SITE_URL,
     urls: urls.map(url => ({
       ...url,
@@ -85,7 +94,25 @@ serve(async (req) => {
 
     console.log(`Generating sitemap - Format: ${format}`);
 
-    // Générer les URLs du sitemap
+    // Créer le client Supabase
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+    // Récupérer les pages SEO locales publiées
+    const { data: localSeoPages, error: seoError } = await supabase
+      .from('local_seo_pages')
+      .select('slug, updated_at, ville')
+      .eq('publie', true)
+      .order('ville', { ascending: true });
+
+    if (seoError) {
+      console.error('Error fetching local SEO pages:', seoError);
+    }
+
+    console.log(`Found ${localSeoPages?.length || 0} published local SEO pages`);
+
+    // Générer les URLs du sitemap - Pages statiques
     const sitemapUrls: SitemapUrl[] = STATIC_PAGES.map(page => ({
       loc: `${SITE_URL}${page.path}`,
       lastmod: today,
@@ -93,9 +120,24 @@ serve(async (req) => {
       priority: page.priority
     }));
 
+    // Ajouter les pages SEO locales publiées
+    if (localSeoPages && localSeoPages.length > 0) {
+      for (const page of localSeoPages as LocalSeoPage[]) {
+        const lastmod = page.updated_at ? page.updated_at.split('T')[0] : today;
+        sitemapUrls.push({
+          loc: `${SITE_URL}/ville/${page.slug}`,
+          lastmod: lastmod,
+          changefreq: 'weekly',
+          priority: 0.7
+        });
+      }
+    }
+
+    console.log(`Total sitemap URLs: ${sitemapUrls.length}`);
+
     // Retourner selon le format demandé
     if (format === 'json') {
-      return new Response(JSON.stringify(generateSitemapJson(sitemapUrls), null, 2), {
+      return new Response(JSON.stringify(generateSitemapJson(sitemapUrls, localSeoPages?.length || 0), null, 2), {
         headers: { 
           ...corsHeaders, 
           'Content-Type': 'application/json',
