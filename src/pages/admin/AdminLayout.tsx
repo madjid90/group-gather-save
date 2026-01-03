@@ -14,6 +14,7 @@ import {
   X,
   Loader2,
   BarChart3,
+  Search,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -25,6 +26,7 @@ const adminLinks = [
   { href: "/admin/offres", label: "Offres Clients", icon: Gift },
   { href: "/admin/clics", label: "Statistiques clics", icon: BarChart3 },
   { href: "/admin/reactivation", label: "Réactivation", icon: RefreshCw },
+  { href: "/admin/seo", label: "SEO", icon: Search },
 ];
 
 export default function AdminLayout() {
