@@ -5,13 +5,28 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, AreaChart, Area } from 'recharts';
-import { TrendingUp, TrendingDown, Minus, RefreshCw, BarChart3, Target, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import { TrendingUp, TrendingDown, Minus, RefreshCw, BarChart3, Target, AlertTriangle, CheckCircle2, Globe } from 'lucide-react';
 import { useSEOMetrics, SEOMetric } from '@/hooks/useSEOMetrics';
 import { useSEOAnalyzer } from '@/hooks/useSEOAnalyzer';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import { useToast } from '@/hooks/use-toast';
+
+// Pages publiques à analyser (pas les pages admin)
+const PUBLIC_PAGES = [
+  { url: '/', title: 'Accueil', description: 'Page d\'accueil Switchly - Achat groupé énergie et internet' },
+  { url: '/inscription', title: 'Inscription', description: 'Inscription à l\'achat groupé' },
+  { url: '/connexion', title: 'Connexion', description: 'Connexion utilisateur' },
+  { url: '/faq', title: 'FAQ', description: 'Questions fréquentes' },
+  { url: '/contact', title: 'Contact', description: 'Page de contact' },
+  { url: '/cgu', title: 'CGU', description: 'Conditions générales d\'utilisation' },
+  { url: '/mentions-legales', title: 'Mentions légales', description: 'Mentions légales' },
+  { url: '/politique-confidentialite', title: 'Politique de confidentialité', description: 'Politique de confidentialité' },
+  { url: '/organiser-achat-groupe', title: 'Organiser un achat groupé', description: 'Guide pour organiser un achat groupé' },
+];
 
 export function SEOMetricsPanel() {
+  const { toast } = useToast();
   const { 
     isLoading, 
     metrics, 
@@ -27,31 +42,77 @@ export function SEOMetricsPanel() {
   const { runFullAudit, isLoading: isAnalyzing } = useSEOAnalyzer();
   const [pageUrls, setPageUrls] = useState<string[]>([]);
   const [selectedUrl, setSelectedUrl] = useState<string>('all');
+  const [selectedPageToAnalyze, setSelectedPageToAnalyze] = useState<string>('/');
+  const [isAnalyzingAll, setIsAnalyzingAll] = useState(false);
 
   useEffect(() => {
     getPageUrls().then(setPageUrls);
   }, [getPageUrls]);
 
-  const handleRunAudit = async () => {
+  // Analyser une page spécifique
+  const handleRunAudit = async (pageUrl: string, pageTitle: string) => {
+    const pageInfo = PUBLIC_PAGES.find(p => p.url === pageUrl);
+    
     const result = await runFullAudit({
-      url: window.location.origin,
-      content: document.body.innerText,
+      url: `${window.location.origin}${pageUrl}`,
+      content: pageInfo?.description || `Page ${pageTitle} de Switchly`,
+      pageTitle: pageTitle,
     });
 
     if (result) {
       await saveMetric({
-        page_url: window.location.pathname,
-        page_title: document.title,
+        page_url: pageUrl,
+        page_title: pageTitle,
         overall_score: result.overallScore,
         title_score: result.categories?.contenu?.score || 0,
         meta_score: result.categories?.technique?.score || 0,
         content_score: result.categories?.contenu?.score || 0,
-        performance_score: result.categories?.performance?.score || 0,
+        performance_score: result.categories?.conversion?.score || 0,
         mobile_score: result.categories?.mobile?.score || 0,
         keywords: [],
         issues: result.priorityActions || [],
         recommendations: Object.values(result.categories || {}).flatMap((c: any) => c.recommendations || []),
       });
+      return true;
+    }
+    return false;
+  };
+
+  // Analyser toutes les pages publiques
+  const handleAnalyzeAllPages = async () => {
+    setIsAnalyzingAll(true);
+    let successCount = 0;
+    
+    toast({
+      title: "Analyse en cours",
+      description: `Analyse de ${PUBLIC_PAGES.length} pages publiques...`,
+    });
+
+    for (const page of PUBLIC_PAGES) {
+      try {
+        const success = await handleRunAudit(page.url, page.title);
+        if (success) successCount++;
+        // Petit délai entre chaque requête
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      } catch (error) {
+        console.error(`Erreur analyse ${page.url}:`, error);
+      }
+    }
+
+    setIsAnalyzingAll(false);
+    toast({
+      title: "Analyse terminée",
+      description: `${successCount}/${PUBLIC_PAGES.length} pages analysées avec succès`,
+    });
+    
+    fetchMetrics();
+  };
+
+  const handleSinglePageAudit = async () => {
+    const page = PUBLIC_PAGES.find(p => p.url === selectedPageToAnalyze);
+    if (page) {
+      await handleRunAudit(page.url, page.title);
+      fetchMetrics();
     }
   };
 
@@ -95,9 +156,9 @@ export function SEOMetricsPanel() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h2 className="text-2xl font-bold">Métriques SEO</h2>
-          <p className="text-muted-foreground">Suivi des performances SEO dans le temps</p>
+          <p className="text-muted-foreground">Suivi des performances SEO des pages publiques</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <Select value={selectedUrl} onValueChange={handleFilterChange}>
             <SelectTrigger className="w-48">
               <SelectValue placeholder="Filtrer par page" />
@@ -109,12 +170,51 @@ export function SEOMetricsPanel() {
               ))}
             </SelectContent>
           </Select>
-          <Button onClick={handleRunAudit} disabled={isAnalyzing}>
-            <RefreshCw className={`w-4 h-4 mr-2 ${isAnalyzing ? 'animate-spin' : ''}`} />
-            Analyser
-          </Button>
         </div>
       </div>
+
+      {/* Actions d'analyse */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg flex items-center gap-2">
+            <Globe className="w-5 h-5" />
+            Analyser les pages publiques
+          </CardTitle>
+          <CardDescription>
+            Lancez une analyse SEO sur les pages du site (hors pages admin)
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex gap-2 flex-1">
+              <Select value={selectedPageToAnalyze} onValueChange={setSelectedPageToAnalyze}>
+                <SelectTrigger className="flex-1">
+                  <SelectValue placeholder="Choisir une page" />
+                </SelectTrigger>
+                <SelectContent>
+                  {PUBLIC_PAGES.map(page => (
+                    <SelectItem key={page.url} value={page.url}>
+                      {page.title} ({page.url})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Button onClick={handleSinglePageAudit} disabled={isAnalyzing}>
+                <RefreshCw className={`w-4 h-4 mr-2 ${isAnalyzing ? 'animate-spin' : ''}`} />
+                Analyser
+              </Button>
+            </div>
+            <Button 
+              onClick={handleAnalyzeAllPages} 
+              disabled={isAnalyzingAll || isAnalyzing}
+              variant="outline"
+            >
+              <Globe className={`w-4 h-4 mr-2 ${isAnalyzingAll ? 'animate-spin' : ''}`} />
+              Analyser toutes les pages ({PUBLIC_PAGES.length})
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
