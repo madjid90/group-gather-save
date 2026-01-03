@@ -150,55 +150,64 @@ serve(async (req) => {
       );
     }
 
-    const competitorAnalysisPrompt = `Tu es un expert SEO et stratégie digitale. Analyse ces sites concurrents de Switchly et génère des recommandations SEO actionables.
+    const competitorAnalysisPrompt = `Tu es un expert SEO senior spécialisé en acquisition digitale et achat groupé énergie. Tu dois générer des recommandations ULTRA CONCRÈTES et IMMÉDIATEMENT APPLICABLES pour Switchly.
 
-CONTEXTE SWITCHLY:
-- Achat groupé électricité + internet (combo UNIQUE sur le marché)
-- 2 547 membres, 287€/an économisés en moyenne
-- Inscription 30 sec par SMS
-- Objectif: 8-12% conversion, dépasser Selectra
+PROFIL SWITCHLY (à garder en tête):
+- Proposition unique: SEUL acteur combinant électricité + internet en achat groupé
+- Métriques actuelles: 2 547 membres, 287€/an économisés en moyenne
+- UX différenciante: inscription 30 sec par SMS (vs 10 min chez concurrents)
+- Objectif: conversion 8-12%, dépasser Selectra en trafic SEO
+- Tonalité: simple, transparent, zéro jargon
 
-SITES CONCURRENTS ANALYSÉS:
+CONCURRENTS ANALYSÉS (données scrapées):
 ${successfulScrapes.map(s => `
 === ${s.name} (${s.type}) ===
-Faiblesse connue: ${s.weakness}
+Faiblesse identifiée: ${s.weakness}
 URL: ${s.url}
-Titre: ${s.metadata?.title || 'N/A'}
-Description: ${s.metadata?.description || 'N/A'}
-Contenu (extrait):
-${s.content?.substring(0, 2000) || 'N/A'}
+Titre page: ${s.metadata?.title || 'N/A'}
+Meta description: ${s.metadata?.description || 'N/A'}
+Contenu principal:
+${s.content?.substring(0, 3000) || 'N/A'}
+---
 `).join('\n')}
 
-Génère une analyse comparative et des recommandations SEO pour battre ces concurrents.
+MISSION: Analyse comparative approfondie et recommandations SEO pour BATTRE ces concurrents.
 
-Retourne UNIQUEMENT un JSON valide:
+RÈGLES CRITIQUES:
+1. Chaque recommandation doit être SPÉCIFIQUE à Switchly (pas de conseils génériques)
+2. Les mots-clés suggérés doivent être des termes que les concurrents ciblent OU des opportunités qu'ils ratent
+3. Les actions urgentes doivent être réalisables en moins de 2h
+4. Les meta tags suggérés doivent intégrer les différenciateurs Switchly
+5. Analyse les VRAIS contenus des concurrents, pas des suppositions
+
+Génère un JSON avec cette structure EXACTE:
 {
   "competitorAnalysis": [
     {
-      "name": "Nom concurrent",
-      "seoStrengths": ["force SEO 1", "force SEO 2"],
-      "seoWeaknesses": ["faiblesse SEO 1", "faiblesse SEO 2"],
-      "keywordsTheyRank": ["mot-clé 1", "mot-clé 2"],
-      "contentStrategy": "description de leur stratégie contenu",
-      "howToBeat": "stratégie spécifique pour les dépasser"
+      "name": "Nom du concurrent",
+      "seoStrengths": ["Ce qu'ils font BIEN en SEO - sois précis"],
+      "seoWeaknesses": ["Leurs failles SEO exploitables"],
+      "keywordsTheyRank": ["vrais mots-clés de leur contenu"],
+      "contentStrategy": "Leur approche contenu (longueur, ton, sujets)",
+      "howToBeat": "Stratégie PRÉCISE pour les dépasser sur Google"
     }
   ],
   "switchlyRecommendations": {
-    "keywordsToTarget": ["mot-clé prioritaire 1", "mot-clé 2", "mot-clé 3"],
-    "contentGaps": ["contenu manquant 1", "contenu à créer 2"],
-    "differentiators": ["différenciateur 1 à mettre en avant", "différenciateur 2"],
+    "keywordsToTarget": ["5-10 mots-clés PRIORITAIRES à cibler immédiatement"],
+    "contentGaps": ["Contenus que Switchly DOIT créer pour combler les lacunes"],
+    "differentiators": ["Arguments différenciants à mettre en avant dans le contenu"],
     "metaTagsOptimizations": {
-      "title": "Titre optimisé suggéré",
-      "description": "Meta description suggérée"
+      "title": "Titre optimisé pour la homepage (max 60 car, inclure différenciateur)",
+      "description": "Meta description percutante (max 155 car, CTA inclus)"
     },
-    "urgentActions": ["action urgente 1", "action urgente 2", "action urgente 3"]
+    "urgentActions": ["3-5 actions SEO faisables CETTE SEMAINE"]
   },
   "competitiveAdvantages": [
-    "Avantage Switchly #1 à exploiter",
-    "Avantage Switchly #2",
-    "Avantage Switchly #3"
+    "Avantage #1 de Switchly vs TOUS les concurrents analysés",
+    "Avantage #2...",
+    "Avantage #3..."
   ],
-  "summary": "Résumé exécutif de l'analyse en 2-3 phrases"
+  "summary": "Résumé stratégique en 2 phrases: situation concurrentielle + opportunité principale"
 }`;
 
     console.log('Analyzing competitor data with AI...');

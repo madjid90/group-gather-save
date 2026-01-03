@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -9,7 +9,7 @@ import { Progress } from '@/components/ui/progress';
 import { Skeleton } from '@/components/ui/skeleton';
 import { 
   Check, 
-  X, 
+  X,
   Wand2, 
   ChevronRight,
   ChevronLeft,
@@ -21,7 +21,6 @@ import {
   Loader2,
   Sparkles
 } from 'lucide-react';
-import { useSEOMetrics } from '@/hooks/useSEOMetrics';
 import { useSEOPageSettings } from '@/hooks/useSEOPageSettings';
 import { useSEOAnalyzer } from '@/hooks/useSEOAnalyzer';
 import { useToast } from '@/hooks/use-toast';
@@ -58,7 +57,6 @@ const AVAILABLE_PAGES = [
 
 export function SEORecommendationsPanel() {
   const { toast } = useToast();
-  const { metrics, isLoading: metricsLoading } = useSEOMetrics();
   const { settings, updateSettings, isLoading: settingsLoading } = useSEOPageSettings();
   const { generateMetaTags, isLoading: aiLoading } = useSEOAnalyzer();
   
@@ -88,11 +86,6 @@ export function SEORecommendationsPanel() {
     return pageContents[url] || `Page ${url} - Switchly achat groupé énergie internet`;
   };
 
-  // Get metrics for selected page
-  const getPageMetrics = () => {
-    return metrics.find(m => m.page_url === selectedPage);
-  };
-
   // Get existing settings for selected page
   const getPageSettings = () => {
     return settings.find(s => s.page_url === selectedPage);
@@ -105,7 +98,6 @@ export function SEORecommendationsPanel() {
     setIsGenerating(true);
     try {
       const pageContent = getPageContent(selectedPage);
-      const pageMetrics = getPageMetrics();
       const existingSettings = getPageSettings();
       
       const siteData = {
@@ -118,7 +110,6 @@ export function SEORecommendationsPanel() {
         url: selectedPage,
         pageTitle: selectedPage === '/' ? 'Switchly - Achat Groupé Énergie & Internet' : `Switchly - ${selectedPage.replace('/', '').replace(/-/g, ' ')}`,
         content: pageContent,
-        metrics: pageMetrics,
         existingSettings: existingSettings,
         siteData: siteData,
       });
@@ -319,9 +310,9 @@ export function SEORecommendationsPanel() {
   // Count validated recommendations
   const validatedCount = recommendations.filter(r => r.validated).length;
 
-  const isLoading = metricsLoading || settingsLoading;
+  const isLoading = settingsLoading;
 
-  if (isLoading && metrics.length === 0) {
+  if (isLoading && settings.length === 0) {
     return (
       <div className="space-y-4">
         <Skeleton className="h-20 w-full" />

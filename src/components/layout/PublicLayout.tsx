@@ -4,7 +4,6 @@ import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
 import { CookieBanner } from "@/components/CookieBanner";
 import { SocialProofNotifications } from "@/components/landing/SocialProofNotifications";
-import { SEOAutoOptimizer } from "@/components/seo/SEOAutoOptimizer";
 
 export function PublicLayout() {
   const location = useLocation();
@@ -23,7 +22,6 @@ export function PublicLayout() {
       <Footer />
       <CookieBanner />
       <SocialProofNotifications />
-      <SEOAutoOptimizer autoAnalyze={true} debounceMs={10000} />
     </div>
   );
 }
