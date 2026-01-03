@@ -790,6 +790,54 @@ export type Database = {
         }
         Relationships: []
       }
+      seo_metrics: {
+        Row: {
+          content_score: number | null
+          created_at: string
+          id: string
+          issues: string[] | null
+          keywords: string[] | null
+          meta_score: number | null
+          mobile_score: number | null
+          overall_score: number
+          page_title: string | null
+          page_url: string
+          performance_score: number | null
+          recommendations: string[] | null
+          title_score: number | null
+        }
+        Insert: {
+          content_score?: number | null
+          created_at?: string
+          id?: string
+          issues?: string[] | null
+          keywords?: string[] | null
+          meta_score?: number | null
+          mobile_score?: number | null
+          overall_score?: number
+          page_title?: string | null
+          page_url: string
+          performance_score?: number | null
+          recommendations?: string[] | null
+          title_score?: number | null
+        }
+        Update: {
+          content_score?: number | null
+          created_at?: string
+          id?: string
+          issues?: string[] | null
+          keywords?: string[] | null
+          meta_score?: number | null
+          mobile_score?: number | null
+          overall_score?: number
+          page_title?: string | null
+          page_url?: string
+          performance_score?: number | null
+          recommendations?: string[] | null
+          title_score?: number | null
+        }
+        Relationships: []
+      }
       sms_logs: {
         Row: {
           date: string | null

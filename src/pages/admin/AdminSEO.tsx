@@ -5,13 +5,18 @@ import { TrackingConfigPanel } from "@/components/seo/TrackingConfigPanel";
 import { SchemaConfigPanel } from "@/components/seo/SchemaConfigPanel";
 import { SitemapPanel } from "@/components/seo/SitemapPanel";
 import { LocalSeoPanel } from "@/components/seo/LocalSeoPanel";
-import { BarChart3, Wand2, Settings2, Code, Map, MapPin } from "lucide-react";
+import { SEOMetricsPanel } from "@/components/seo/SEOMetricsPanel";
+import { BarChart3, Wand2, Settings2, Code, Map, MapPin, TrendingUp } from "lucide-react";
 
 const AdminSEO = () => {
   return (
     <div className="container mx-auto py-6">
-      <Tabs defaultValue="local" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-6 max-w-4xl">
+      <Tabs defaultValue="metrics" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-7 max-w-5xl">
+          <TabsTrigger value="metrics" className="flex items-center gap-2">
+            <TrendingUp className="w-4 h-4" />
+            Métriques
+          </TabsTrigger>
           <TabsTrigger value="local" className="flex items-center gap-2">
             <MapPin className="w-4 h-4" />
             Pages locales
@@ -37,6 +42,10 @@ const AdminSEO = () => {
             Sitemap
           </TabsTrigger>
         </TabsList>
+
+        <TabsContent value="metrics">
+          <SEOMetricsPanel />
+        </TabsContent>
 
         <TabsContent value="local">
           <LocalSeoPanel />
