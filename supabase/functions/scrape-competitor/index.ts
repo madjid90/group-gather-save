@@ -24,6 +24,18 @@ const COMPETITORS = {
     url: 'https://selectra.info/achat-groupe/energie',
     type: 'Achat groupe énergie',
     weakness: 'Condamné 400K€ pratiques trompeuses, processus long (10 min)'
+  },
+  quechoisirensemble: {
+    name: 'Que Choisir Ensemble',
+    url: 'https://www.quechoisirensemble.fr/energie-moins-chere-ensemble-bilan/',
+    type: 'Achat groupé associatif',
+    weakness: 'Processus lent, pas de combo internet'
+  },
+  alpiq: {
+    name: 'Alpiq',
+    url: 'https://particuliers.alpiq.fr/guide-energie/marche-energie/fonctionnement-achat-groupe-electricite',
+    type: 'Fournisseur énergie',
+    weakness: 'Fournisseur direct, pas de comparaison multi-fournisseurs'
   }
 };
 
