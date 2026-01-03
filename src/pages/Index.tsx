@@ -6,6 +6,7 @@ import { FloatingShareButton } from "@/components/landing/FloatingShareButton";
 import { PageTransition } from "@/components/PageTransition";
 import { LazySection } from "@/components/ui/LazySection";
 import { JsonLdSchema } from "@/components/seo/JsonLdSchema";
+import { DynamicSEOHead } from "@/components/seo/DynamicSEOHead";
 
 // Lazy load heavy sections for better initial load
 const HowItWorksSection = lazy(() => import("@/components/landing/HowItWorksSection").then(m => ({ default: m.HowItWorksSection })));
@@ -26,6 +27,12 @@ const SectionSkeleton = () => (
 const Index = () => {
   return (
     <PageTransition>
+      {/* Dynamic SEO Head from database */}
+      <DynamicSEOHead 
+        defaultTitle="Switchly - Achat groupé énergie et internet | Économisez ensemble"
+        defaultDescription="Rejoignez l'achat groupé Switchly pour économiser sur vos contrats énergie et internet. Négociation collective, tarifs avantageux, démarches simplifiées."
+      />
+      
       {/* JSON-LD Structured Data */}
       <JsonLdSchema type="auto" />
       
