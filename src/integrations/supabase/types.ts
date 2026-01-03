@@ -676,6 +676,33 @@ export type Database = {
         }
         Relationships: []
       }
+      seo_config: {
+        Row: {
+          config_key: string
+          config_value: string | null
+          created_at: string
+          id: string
+          is_active: boolean | null
+          updated_at: string
+        }
+        Insert: {
+          config_key: string
+          config_value?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          updated_at?: string
+        }
+        Update: {
+          config_key?: string
+          config_value?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       sms_logs: {
         Row: {
           date: string | null
