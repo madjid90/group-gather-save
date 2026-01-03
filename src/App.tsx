@@ -35,6 +35,7 @@ import PartageInvitation from "./pages/PartageInvitation";
 import PartageAccueil from "./pages/PartageAccueil";
 import Invitation from "./pages/Invitation";
 import NotFound from "./pages/NotFound";
+import VilleSeoPage from "./pages/VilleSeoPage";
 
 const queryClient = new QueryClient();
 
@@ -77,6 +78,9 @@ const App = () => (
           <Route path="/politique-rgpd" element={<PolitiqueRGPD />} />
           <Route path="/cgu" element={<CGU />} />
           <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
+
+          {/* SEO local pages */}
+          <Route path="/ville/:slug" element={<VilleSeoPage />} />
 
           {/* Admin pages */}
           <Route path="/admin" element={<AdminLayout />}>

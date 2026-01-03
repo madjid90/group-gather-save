@@ -496,6 +496,57 @@ export type Database = {
         }
         Relationships: []
       }
+      local_seo_pages: {
+        Row: {
+          code_postal: string | null
+          contenu_avantages: string | null
+          contenu_cta: string | null
+          contenu_hero: string | null
+          contenu_principal: string | null
+          created_at: string
+          id: string
+          meta_description: string | null
+          mots_cles: string[] | null
+          publie: boolean | null
+          slug: string
+          titre: string
+          updated_at: string
+          ville: string
+        }
+        Insert: {
+          code_postal?: string | null
+          contenu_avantages?: string | null
+          contenu_cta?: string | null
+          contenu_hero?: string | null
+          contenu_principal?: string | null
+          created_at?: string
+          id?: string
+          meta_description?: string | null
+          mots_cles?: string[] | null
+          publie?: boolean | null
+          slug: string
+          titre: string
+          updated_at?: string
+          ville: string
+        }
+        Update: {
+          code_postal?: string | null
+          contenu_avantages?: string | null
+          contenu_cta?: string | null
+          contenu_hero?: string | null
+          contenu_principal?: string | null
+          created_at?: string
+          id?: string
+          meta_description?: string | null
+          mots_cles?: string[] | null
+          publie?: boolean | null
+          slug?: string
+          titre?: string
+          updated_at?: string
+          ville?: string
+        }
+        Relationships: []
+      }
       offres: {
         Row: {
           actif: boolean | null
