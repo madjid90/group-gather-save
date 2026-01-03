@@ -153,24 +153,9 @@ export function SEOMetricsPanel() {
   return (
     <div className="space-y-6">
       {/* Header avec actions */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h2 className="text-2xl font-bold">Métriques SEO</h2>
-          <p className="text-muted-foreground">Suivi des performances SEO des pages publiques</p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <Select value={selectedUrl} onValueChange={handleFilterChange}>
-            <SelectTrigger className="w-48">
-              <SelectValue placeholder="Filtrer par page" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Toutes les pages</SelectItem>
-              {PUBLIC_PAGES.map(page => (
-                <SelectItem key={page.url} value={page.url}>{page.title} ({page.url})</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+      <div>
+        <h2 className="text-2xl font-bold">Métriques SEO</h2>
+        <p className="text-muted-foreground">Suivi des performances SEO des pages publiques</p>
       </div>
 
       {/* Actions d'analyse */}
