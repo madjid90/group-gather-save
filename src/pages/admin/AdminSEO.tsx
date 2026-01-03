@@ -2,13 +2,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SEODashboard } from "@/components/seo/SEODashboard";
 import { ContentOptimizerDashboard } from "@/components/seo/ContentOptimizerDashboard";
 import { TrackingConfigPanel } from "@/components/seo/TrackingConfigPanel";
-import { BarChart3, Wand2, Settings2 } from "lucide-react";
+import { SchemaConfigPanel } from "@/components/seo/SchemaConfigPanel";
+import { BarChart3, Wand2, Settings2, Code } from "lucide-react";
 
 const AdminSEO = () => {
   return (
     <div className="container mx-auto py-6">
       <Tabs defaultValue="optimizer" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3 max-w-lg">
+        <TabsList className="grid w-full grid-cols-4 max-w-2xl">
           <TabsTrigger value="optimizer" className="flex items-center gap-2">
             <Wand2 className="w-4 h-4" />
             Optimisation
@@ -20,6 +21,10 @@ const AdminSEO = () => {
           <TabsTrigger value="tracking" className="flex items-center gap-2">
             <Settings2 className="w-4 h-4" />
             Tracking
+          </TabsTrigger>
+          <TabsTrigger value="schema" className="flex items-center gap-2">
+            <Code className="w-4 h-4" />
+            Schema.org
           </TabsTrigger>
         </TabsList>
 
@@ -33,6 +38,10 @@ const AdminSEO = () => {
 
         <TabsContent value="tracking">
           <TrackingConfigPanel />
+        </TabsContent>
+
+        <TabsContent value="schema">
+          <SchemaConfigPanel />
         </TabsContent>
       </Tabs>
     </div>

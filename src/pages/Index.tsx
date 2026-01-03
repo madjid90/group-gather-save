@@ -5,6 +5,7 @@ import { MobileFixedCTA } from "@/components/landing/MobileFixedCTA";
 import { FloatingShareButton } from "@/components/landing/FloatingShareButton";
 import { PageTransition } from "@/components/PageTransition";
 import { LazySection } from "@/components/ui/LazySection";
+import { JsonLdSchema } from "@/components/seo/JsonLdSchema";
 
 // Lazy load heavy sections for better initial load
 const HowItWorksSection = lazy(() => import("@/components/landing/HowItWorksSection").then(m => ({ default: m.HowItWorksSection })));
@@ -25,6 +26,9 @@ const SectionSkeleton = () => (
 const Index = () => {
   return (
     <PageTransition>
+      {/* JSON-LD Structured Data */}
+      <JsonLdSchema type="auto" />
+      
       {/* 1. Hero - Always loaded immediately for LCP */}
       <HeroSection />
       
