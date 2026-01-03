@@ -25,6 +25,7 @@ import AdminCampagneDetail from "./pages/admin/AdminCampagneDetail";
 import AdminOffresClients from "./pages/admin/AdminOffresClients";
 import AdminReactivation from "./pages/admin/AdminReactivation";
 import AdminClicsStats from "./pages/admin/AdminClicsStats";
+import AdminSEO from "./pages/admin/AdminSEO";
 import FormulaireLogement from "./pages/FormulaireLogement";
 import MonOffre from "./pages/MonOffre";
 import OffreConfirmation from "./pages/OffreConfirmation";
@@ -84,6 +85,7 @@ const App = () => (
             <Route path="offres" element={<AdminOffresClients />} />
             <Route path="clics" element={<AdminClicsStats />} />
             <Route path="reactivation" element={<AdminReactivation />} />
+            <Route path="seo" element={<AdminSEO />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
