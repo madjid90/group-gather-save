@@ -51,6 +51,9 @@ export function useSEOAnalyzer() {
       url?: string;
       pageTitle?: string;
       pageDescription?: string;
+      metrics?: any;
+      existingSettings?: any;
+      siteData?: any;
     }
   ) => {
     setIsLoading(true);
@@ -127,8 +130,15 @@ export function useSEOAnalyzer() {
     fullAudit,
     analyze,
     autoAnalyze,
-    generateMetaTags: (options?: { content?: string; url?: string; pageTitle?: string; pageDescription?: string }) =>
-      analyze('meta_tags', options),
+    generateMetaTags: (options?: { 
+      content?: string; 
+      url?: string; 
+      pageTitle?: string; 
+      pageDescription?: string;
+      metrics?: any;
+      existingSettings?: any;
+      siteData?: any;
+    }) => analyze('meta_tags', options),
     analyzeContent: (content: string) =>
       analyze('content_analysis', { content }),
     runFullAudit: (options?: { url?: string; pageTitle?: string; pageDescription?: string; content?: string }) =>
