@@ -22,6 +22,7 @@ import {
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { toast } from "sonner";
+import CSVImportPreview from "@/components/admin/CSVImportPreview";
 
 type CampaignStatus =
   | "inscriptions_ouvertes"
@@ -72,6 +73,10 @@ export default function AdminCampagneDetail() {
   const [clientsCount, setClientsCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+  
+  // CSV Preview state
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [showCSVPreview, setShowCSVPreview] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -216,14 +221,26 @@ export default function AdminCampagneDetail() {
     }
   };
 
-  // ACTION 3: Importer les offres
+  // ACTION 3: Importer les offres - Show preview
   const handleImportClick = () => {
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (!file || !campaign) return;
+    if (!file) return;
+    
+    setSelectedFile(file);
+    setShowCSVPreview(true);
+    
+    // Reset input so same file can be selected again
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const handleConfirmImport = async () => {
+    if (!selectedFile || !campaign) return;
 
     setActionLoading("import");
     try {
@@ -241,7 +258,7 @@ export default function AdminCampagneDetail() {
       }
 
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", selectedFile);
       formData.append("campaign_id", campaign.id);
       
       // Add export_id if we found one
@@ -279,14 +296,14 @@ export default function AdminCampagneDetail() {
         message += ` Client(s) non trouvé(s) : ${result.notFoundClientIds.join(", ")}`;
       }
       toast.success(message);
+      
+      setShowCSVPreview(false);
+      setSelectedFile(null);
     } catch (error) {
       console.error("Error importing offers:", error);
       toast.error(error instanceof Error ? error.message : "Erreur lors de l'import");
     } finally {
       setActionLoading(null);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
     }
   };
 
@@ -619,6 +636,17 @@ export default function AdminCampagneDetail() {
         </CardContent>
       </Card>
 
+      {/* CSV Import Preview Modal */}
+      <CSVImportPreview
+        open={showCSVPreview}
+        onOpenChange={(open) => {
+          setShowCSVPreview(open);
+          if (!open) setSelectedFile(null);
+        }}
+        file={selectedFile}
+        onConfirmImport={handleConfirmImport}
+        isImporting={actionLoading === "import"}
+      />
     </div>
   );
 }
