@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { z } from "zod";
 import { PageTransition } from "@/components/PageTransition";
+import { DynamicSEOHead } from "@/components/seo/DynamicSEOHead";
 
 const inscriptionSchema = z.object({
   nom: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
@@ -244,8 +245,12 @@ export default function Inscription() {
 
   return (
     <PageTransition className="min-h-screen flex items-center justify-center px-5 sm:px-6 py-10 sm:py-12 bg-gradient-subtle relative">
+      <DynamicSEOHead 
+        defaultTitle="Inscription - Switchly | Rejoignez l'achat groupé"
+        defaultDescription="Inscrivez-vous gratuitement à Switchly pour économiser sur vos factures d'énergie et internet grâce à l'achat groupé."
+      />
       {/* Fixed Back Button */}
-      <Link 
+      <Link
         to="/" 
         className="fixed top-4 left-4 z-50 inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-card/80 backdrop-blur border border-border text-sm text-muted-foreground hover:text-foreground hover:bg-card transition-all shadow-sm"
       >

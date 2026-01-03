@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { PageTransition } from "@/components/PageTransition";
+import { DynamicSEOHead } from "@/components/seo/DynamicSEOHead";
 
 const contactSchema = z.object({
   nom: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
@@ -86,6 +87,10 @@ export default function Contact() {
 
   return (
     <PageTransition className="min-h-screen py-10 md:py-20 bg-gradient-subtle">
+      <DynamicSEOHead 
+        defaultTitle="Contact - Switchly | Contactez notre équipe"
+        defaultDescription="Contactez l'équipe Switchly pour toute question sur l'achat groupé d'énergie et internet. Réponse sous 24h garantie."
+      />
       <div className="container mx-auto px-5 sm:px-6">
         {/* Back button */}
         <Link 
