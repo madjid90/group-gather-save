@@ -235,6 +235,11 @@ export default function CSVImportPreview({
 }: CSVImportPreviewProps) {
   const [fileContent, setFileContent] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
+  
+  // Filters state
+  const [showValid, setShowValid] = useState(true);
+  const [showWarnings, setShowWarnings] = useState(true);
+  const [showErrors, setShowErrors] = useState(true);
 
   // Read file when it changes
   useMemo(() => {
@@ -259,6 +264,22 @@ export default function CSVImportPreview({
     if (!fileContent) return null;
     return parseCSVContent(fileContent);
   }, [fileContent]);
+
+  // Filtered rows based on visibility toggles
+  const filteredRows = useMemo(() => {
+    if (!validation) return [];
+    return validation.rows.filter((row) => {
+      const hasError = row.errors.length > 0;
+      const hasWarning = row.warnings.length > 0 && !hasError;
+      const isValid = row.errors.length === 0 && row.warnings.length === 0;
+
+      if (hasError && !showErrors) return false;
+      if (hasWarning && !showWarnings) return false;
+      if (isValid && !showValid) return false;
+
+      return true;
+    });
+  }, [validation, showValid, showWarnings, showErrors]);
 
   if (isLoading) {
     return (
@@ -290,34 +311,81 @@ export default function CSVImportPreview({
 
         {validation && (
           <>
-            {/* Summary */}
+            {/* Summary with clickable filters */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div className="rounded-lg border bg-card p-3">
                 <p className="text-xs text-muted-foreground">Total lignes</p>
                 <p className="text-xl font-bold">{validation.totalRows}</p>
               </div>
-              <div className="rounded-lg border bg-card p-3">
+              <button
+                type="button"
+                onClick={() => setShowValid(!showValid)}
+                className={`rounded-lg border p-3 text-left transition-all ${
+                  showValid 
+                    ? "bg-card ring-2 ring-green-500/50" 
+                    : "bg-muted/50 opacity-60"
+                }`}
+              >
                 <p className="text-xs text-muted-foreground flex items-center gap-1">
                   <CheckCircle2 className="h-3 w-3 text-green-500" />
                   Valides
+                  {!showValid && <span className="ml-1 text-[10px]">(masquées)</span>}
                 </p>
                 <p className="text-xl font-bold text-green-600">{validation.validRows}</p>
-              </div>
-              <div className="rounded-lg border bg-card p-3">
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowWarnings(!showWarnings)}
+                className={`rounded-lg border p-3 text-left transition-all ${
+                  showWarnings 
+                    ? "bg-card ring-2 ring-yellow-500/50" 
+                    : "bg-muted/50 opacity-60"
+                }`}
+              >
                 <p className="text-xs text-muted-foreground flex items-center gap-1">
                   <AlertTriangle className="h-3 w-3 text-yellow-500" />
                   Alertes
+                  {!showWarnings && <span className="ml-1 text-[10px]">(masquées)</span>}
                 </p>
                 <p className="text-xl font-bold text-yellow-600">{validation.warningRows}</p>
-              </div>
-              <div className="rounded-lg border bg-card p-3">
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowErrors(!showErrors)}
+                className={`rounded-lg border p-3 text-left transition-all ${
+                  showErrors 
+                    ? "bg-card ring-2 ring-red-500/50" 
+                    : "bg-muted/50 opacity-60"
+                }`}
+              >
                 <p className="text-xs text-muted-foreground flex items-center gap-1">
                   <XCircle className="h-3 w-3 text-red-500" />
                   Erreurs
+                  {!showErrors && <span className="ml-1 text-[10px]">(masquées)</span>}
                 </p>
                 <p className="text-xl font-bold text-red-600">{validation.errorRows}</p>
-              </div>
+              </button>
             </div>
+
+            {/* Filter info */}
+            {(!showValid || !showWarnings || !showErrors) && (
+              <div className="flex items-center justify-between text-xs text-muted-foreground bg-muted/50 rounded-md px-3 py-2">
+                <span>
+                  Affichage: {filteredRows.length} / {validation.totalRows} lignes
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowValid(true);
+                    setShowWarnings(true);
+                    setShowErrors(true);
+                  }}
+                  className="text-primary hover:underline"
+                >
+                  Afficher tout
+                </button>
+              </div>
+            )}
 
             {/* Missing headers alert */}
             {validation.missingHeaders.length > 0 && (
@@ -336,7 +404,7 @@ export default function CSVImportPreview({
             </div>
 
             {/* Data preview table */}
-            {validation.rows.length > 0 && (
+            {filteredRows.length > 0 && (
               <ScrollArea className="flex-1 rounded-md border max-h-[400px]">
                 <Table>
                   <TableHeader className="sticky top-0 bg-background">
@@ -352,7 +420,7 @@ export default function CSVImportPreview({
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {validation.rows.slice(0, 100).map((row) => (
+                    {filteredRows.slice(0, 100).map((row) => (
                       <TableRow
                         key={row.lineNumber}
                         className={
@@ -406,12 +474,30 @@ export default function CSVImportPreview({
                     ))}
                   </TableBody>
                 </Table>
-                {validation.rows.length > 100 && (
+                {filteredRows.length > 100 && (
                   <div className="p-2 text-center text-xs text-muted-foreground border-t">
-                    Affichage limité à 100 lignes sur {validation.rows.length}
+                    Affichage limité à 100 lignes sur {filteredRows.length}
                   </div>
                 )}
               </ScrollArea>
+            )}
+            
+            {/* Empty state when all filtered out */}
+            {filteredRows.length === 0 && validation.rows.length > 0 && (
+              <div className="rounded-md border p-8 text-center text-muted-foreground">
+                <p className="text-sm">Aucune ligne à afficher avec les filtres actuels</p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowValid(true);
+                    setShowWarnings(true);
+                    setShowErrors(true);
+                  }}
+                  className="text-primary hover:underline text-sm mt-2"
+                >
+                  Réinitialiser les filtres
+                </button>
+              </div>
             )}
 
             {/* Validation summary */}
