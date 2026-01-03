@@ -65,3 +65,6 @@ verify_jwt = false
 
 [functions.estimate-savings]
 verify_jwt = false
+
+[functions.scheduled-relances]
+verify_jwt = false
