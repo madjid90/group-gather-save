@@ -4,13 +4,18 @@ import { ContentOptimizerDashboard } from "@/components/seo/ContentOptimizerDash
 import { TrackingConfigPanel } from "@/components/seo/TrackingConfigPanel";
 import { SchemaConfigPanel } from "@/components/seo/SchemaConfigPanel";
 import { SitemapPanel } from "@/components/seo/SitemapPanel";
-import { BarChart3, Wand2, Settings2, Code, Map } from "lucide-react";
+import { LocalSeoPanel } from "@/components/seo/LocalSeoPanel";
+import { BarChart3, Wand2, Settings2, Code, Map, MapPin } from "lucide-react";
 
 const AdminSEO = () => {
   return (
     <div className="container mx-auto py-6">
-      <Tabs defaultValue="optimizer" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5 max-w-3xl">
+      <Tabs defaultValue="local" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-6 max-w-4xl">
+          <TabsTrigger value="local" className="flex items-center gap-2">
+            <MapPin className="w-4 h-4" />
+            Pages locales
+          </TabsTrigger>
           <TabsTrigger value="optimizer" className="flex items-center gap-2">
             <Wand2 className="w-4 h-4" />
             Optimisation
@@ -32,6 +37,10 @@ const AdminSEO = () => {
             Sitemap
           </TabsTrigger>
         </TabsList>
+
+        <TabsContent value="local">
+          <LocalSeoPanel />
+        </TabsContent>
 
         <TabsContent value="optimizer">
           <ContentOptimizerDashboard />
