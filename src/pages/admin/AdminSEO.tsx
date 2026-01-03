@@ -6,16 +6,21 @@ import { SchemaConfigPanel } from "@/components/seo/SchemaConfigPanel";
 import { SitemapPanel } from "@/components/seo/SitemapPanel";
 import { LocalSeoPanel } from "@/components/seo/LocalSeoPanel";
 import { SEOMetricsPanel } from "@/components/seo/SEOMetricsPanel";
-import { BarChart3, Wand2, Settings2, Code, Map, MapPin, TrendingUp } from "lucide-react";
+import { SEORecommendationsPanel } from "@/components/seo/SEORecommendationsPanel";
+import { BarChart3, Wand2, Settings2, Code, Map, MapPin, TrendingUp, Lightbulb } from "lucide-react";
 
 const AdminSEO = () => {
   return (
     <div className="container mx-auto py-6">
       <Tabs defaultValue="metrics" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-7 max-w-5xl">
+        <TabsList className="grid w-full grid-cols-8 max-w-6xl">
           <TabsTrigger value="metrics" className="flex items-center gap-2">
             <TrendingUp className="w-4 h-4" />
             Métriques
+          </TabsTrigger>
+          <TabsTrigger value="recommendations" className="flex items-center gap-2">
+            <Lightbulb className="w-4 h-4" />
+            Appliquer
           </TabsTrigger>
           <TabsTrigger value="local" className="flex items-center gap-2">
             <MapPin className="w-4 h-4" />
@@ -45,6 +50,10 @@ const AdminSEO = () => {
 
         <TabsContent value="metrics">
           <SEOMetricsPanel />
+        </TabsContent>
+
+        <TabsContent value="recommendations">
+          <SEORecommendationsPanel />
         </TabsContent>
 
         <TabsContent value="local">
