@@ -165,8 +165,8 @@ export function SEOMetricsPanel() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Toutes les pages</SelectItem>
-              {pageUrls.map(url => (
-                <SelectItem key={url} value={url}>{url}</SelectItem>
+              {PUBLIC_PAGES.map(page => (
+                <SelectItem key={page.url} value={page.url}>{page.title} ({page.url})</SelectItem>
               ))}
             </SelectContent>
           </Select>
