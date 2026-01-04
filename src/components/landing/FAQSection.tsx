@@ -32,23 +32,23 @@ const faqItems = [
 
 export function FAQSection() {
   return (
-    <section className="py-12 sm:py-14 lg:py-20 bg-background">
-      <div className="container mx-auto px-5 sm:px-6">
+    <section className="py-8 sm:py-10 lg:py-16 bg-background min-h-[85svh] lg:min-h-auto flex items-center">
+      <div className="container mx-auto px-4 sm:px-6 w-full">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-8 lg:mb-12"
+          className="text-center mb-6 lg:mb-10"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-4">
-            <HelpCircle className="w-4 h-4" />
-            <span className="text-sm font-medium">FAQ</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary mb-2">
+            <HelpCircle className="w-3.5 h-3.5" />
+            <span className="text-xs font-medium">FAQ</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-3 lg:mb-4">
+          <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold text-foreground mb-2 lg:mb-4">
             Questions fréquentes
           </h2>
-          <p className="text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-sm lg:text-lg text-muted-foreground max-w-2xl mx-auto">
             Tout ce que vous devez savoir sur l'achat groupé d'électricité, gaz et internet avec Switchly.
           </p>
         </motion.div>
@@ -60,18 +60,18 @@ export function FAQSection() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="max-w-3xl mx-auto"
         >
-          <div className="bg-card rounded-xl md:rounded-2xl p-4 sm:p-5 md:p-8 border border-border shadow-switchly-lg">
-            <Accordion type="single" collapsible className="space-y-2 md:space-y-4">
+          <div className="bg-card rounded-lg md:rounded-2xl p-3 sm:p-4 md:p-8 border border-border shadow-switchly-lg">
+            <Accordion type="single" collapsible className="space-y-1.5 md:space-y-4">
               {faqItems.map((item, index) => (
                 <AccordionItem
                   key={index}
                   value={`item-${index}`}
-                  className="border border-border rounded-lg md:rounded-xl px-4 md:px-6 data-[state=open]:bg-muted/50"
+                  className="border border-border rounded-md md:rounded-xl px-3 md:px-6 data-[state=open]:bg-muted/50"
                 >
-                  <AccordionTrigger className="text-left text-sm md:text-lg font-medium hover:no-underline py-3 md:py-5">
+                  <AccordionTrigger className="text-left text-xs md:text-lg font-medium hover:no-underline py-2.5 md:py-5">
                     {item.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-sm md:text-lg text-muted-foreground pb-3 md:pb-5">
+                  <AccordionContent className="text-xs md:text-lg text-muted-foreground pb-2.5 md:pb-5">
                     {item.answer}
                   </AccordionContent>
                 </AccordionItem>

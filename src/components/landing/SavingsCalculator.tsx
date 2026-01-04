@@ -476,24 +476,24 @@ export const SavingsCalculator = memo(function SavingsCalculator() {
   const totalSteps = 5;
 
   return (
-    <section id="estimateur" className="py-12 md:py-16 bg-gradient-to-b from-muted/30 to-background">
-      <div className="container mx-auto px-4 md:px-6">
+    <section id="estimateur" className="py-8 md:py-14 bg-gradient-to-b from-muted/30 to-background min-h-[90svh] md:min-h-auto flex items-center">
+      <div className="container mx-auto px-4 md:px-6 w-full">
         <div className="max-w-2xl mx-auto">
           {/* Header */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-6"
+            className="text-center mb-4"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-              <Calculator className="w-4 h-4" />
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-medium mb-2">
+              <Calculator className="w-3.5 h-3.5" />
               Estimateur d'économies
             </div>
-            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
+            <h2 className="text-xl md:text-3xl font-bold text-foreground mb-1">
               Combien pouvez-vous économiser ?
             </h2>
-            <p className="text-muted-foreground">
+            <p className="text-sm text-muted-foreground">
               Répondez à quelques questions pour découvrir votre potentiel d'économies
             </p>
           </motion.div>
@@ -504,11 +504,11 @@ export const SavingsCalculator = memo(function SavingsCalculator() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="bg-card border border-border rounded-2xl md:rounded-3xl shadow-switchly-lg overflow-hidden"
+            className="bg-card border border-border rounded-xl md:rounded-3xl shadow-switchly-lg overflow-hidden"
           >
             {/* Progress Bar */}
             {step !== "result" && (
-              <div className="px-6 pt-6">
+              <div className="px-4 pt-4">
                 <div className="flex items-center justify-between text-sm text-muted-foreground mb-2">
                   <span>Étape {currentStep}/{totalSteps}</span>
                   {currentStep > 1 && (
@@ -533,7 +533,7 @@ export const SavingsCalculator = memo(function SavingsCalculator() {
             )}
 
             {/* Content */}
-            <div className="p-6 md:p-8">
+            <div className="p-4 md:p-8">
               <AnimatePresence mode="wait">
                 {isLoading ? (
                   <motion.div
@@ -561,25 +561,25 @@ export const SavingsCalculator = memo(function SavingsCalculator() {
                     exit={{ opacity: 0, x: -20 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <h3 className="text-lg md:text-xl font-semibold text-foreground mb-6 text-center">
+                    <h3 className="text-base md:text-xl font-semibold text-foreground mb-4 text-center">
                       {stepTitles[step as keyof typeof stepTitles]}
                     </h3>
 
-                    <div className="space-y-3">
+                    <div className="space-y-2">
                       {stepOptions[step as keyof typeof stepOptions].map((option) => {
                         const Icon = 'icon' in option ? option.icon : null;
                         return (
                           <button
                             key={String(option.value)}
                             onClick={() => handleSelect(option.value)}
-                            className="w-full flex items-center gap-4 p-4 md:p-5 rounded-xl border border-border bg-background hover:bg-muted hover:border-primary/50 transition-all text-left group"
+                            className="w-full flex items-center gap-3 p-3 md:p-5 rounded-lg border border-border bg-background hover:bg-muted hover:border-primary/50 transition-all text-left group"
                           >
                             {Icon && (
-                              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                              <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                                 <Icon className="w-5 h-5 text-primary" />
                               </div>
                             )}
-                            <span className="text-base md:text-lg font-medium text-foreground flex-1">
+                            <span className="text-sm md:text-lg font-medium text-foreground flex-1">
                               {option.label}
                             </span>
                             <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />

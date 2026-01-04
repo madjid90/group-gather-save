@@ -53,23 +53,23 @@ export function PartnersSection() {
   const duplicatedPartners = [...partners, ...partners];
 
   return (
-    <section className="py-12 sm:py-14 lg:py-20 bg-muted/30 overflow-hidden">
-      <div className="container mx-auto px-5 sm:px-6">
+    <section className="py-8 sm:py-10 lg:py-16 bg-muted/30 overflow-hidden min-h-[60svh] lg:min-h-auto flex items-center">
+      <div className="container mx-auto px-4 sm:px-6 w-full">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-8 lg:mb-12"
+          className="text-center mb-6 lg:mb-10"
         >
-          <span className="inline-block text-primary font-semibold text-sm uppercase tracking-wide mb-3">
+          <span className="inline-block text-primary font-semibold text-xs uppercase tracking-wide mb-2">
             Nos partenaires
           </span>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-3 lg:mb-4">
+          <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold text-foreground mb-2 lg:mb-4">
             Fournisseurs de confiance
           </h2>
-          <p className="text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-sm lg:text-lg text-muted-foreground max-w-2xl mx-auto">
             Nous négocions avec des fournisseurs d'énergie et d'internet reconnus pour vous garantir les meilleurs tarifs.
           </p>
         </motion.div>

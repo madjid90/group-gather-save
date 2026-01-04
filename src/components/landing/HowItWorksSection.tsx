@@ -40,27 +40,27 @@ const steps = [
 
 export function HowItWorksSection() {
   return (
-    <section id="comment-ca-marche" className="py-12 sm:py-14 lg:py-20 bg-background">
-      <div className="container mx-auto px-5 sm:px-6">
+    <section id="comment-ca-marche" className="py-8 sm:py-10 lg:py-16 bg-background min-h-[85svh] lg:min-h-auto flex items-center">
+      <div className="container mx-auto px-4 sm:px-6 w-full">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-8 lg:mb-12"
+          className="text-center mb-6 lg:mb-10"
         >
-          <span className="inline-block text-primary font-semibold text-sm uppercase tracking-wide mb-3">
+          <span className="inline-block text-primary font-semibold text-xs uppercase tracking-wide mb-2">
             Comment ça marche
           </span>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-3 lg:mb-4">
+          <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold text-foreground mb-2 lg:mb-4">
             Rejoignez l'achat groupé en 4 étapes
           </h2>
-          <p className="text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-sm lg:text-lg text-muted-foreground max-w-2xl mx-auto">
             Un processus simple et transparent pour économiser sur vos factures d'électricité, gaz et internet sans effort.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8 lg:mb-10">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-6 mb-6 lg:mb-10">
           {steps.map((step, index) => (
             <motion.div
               key={index}
@@ -70,23 +70,23 @@ export function HowItWorksSection() {
               transition={{ duration: 0.5, delay: index * 0.15 }}
               className="relative"
             >
-              <div className="bg-card rounded-xl lg:rounded-2xl p-5 lg:p-8 h-full border border-border card-hover">
+              <div className="bg-card rounded-lg lg:rounded-2xl p-3 lg:p-8 h-full border border-border card-hover">
                 {/* Number badge */}
-                <div className="absolute -top-2 lg:-top-4 left-5 lg:left-8 bg-gradient-hero text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
+                <div className="absolute -top-2 lg:-top-4 left-3 lg:left-8 bg-gradient-hero text-primary-foreground text-[10px] lg:text-xs font-bold px-2 lg:px-3 py-0.5 lg:py-1 rounded-full">
                   Étape {step.number}
                 </div>
 
                 {/* Icon */}
-                <div className="w-14 h-14 lg:w-16 lg:h-16 rounded-xl lg:rounded-2xl bg-primary/10 flex items-center justify-center mb-4 lg:mb-6 mt-2 mx-auto lg:mx-0">
-                  <step.icon className="w-7 h-7 lg:w-8 lg:h-8 text-primary" />
+                <div className="w-10 h-10 lg:w-16 lg:h-16 rounded-lg lg:rounded-2xl bg-primary/10 flex items-center justify-center mb-2 lg:mb-6 mt-1 mx-auto lg:mx-0">
+                  <step.icon className="w-5 h-5 lg:w-8 lg:h-8 text-primary" />
                 </div>
 
                 {/* Content */}
-                <h3 className="text-base lg:text-xl font-semibold text-foreground mb-2 lg:mb-4">
+                <h3 className="text-xs lg:text-xl font-semibold text-foreground mb-1 lg:mb-4 text-center lg:text-left">
                   <span className="hidden lg:inline">{step.title}</span>
                   <span className="lg:hidden">{step.titleMobile}</span>
                 </h3>
-                <p className="text-sm lg:text-lg text-muted-foreground">
+                <p className="text-[10px] lg:text-lg text-muted-foreground text-center lg:text-left leading-tight">
                   <span className="hidden lg:inline">{step.description}</span>
                   <span className="lg:hidden">{step.descriptionMobile}</span>
                 </p>
