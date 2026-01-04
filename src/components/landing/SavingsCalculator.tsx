@@ -476,7 +476,7 @@ export const SavingsCalculator = memo(function SavingsCalculator() {
   const totalSteps = 5;
 
   return (
-    <section id="estimateur" className="py-16 md:py-24 bg-gradient-to-b from-muted/30 to-background">
+    <section id="estimateur" className="py-12 md:py-16 bg-gradient-to-b from-muted/30 to-background">
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-2xl mx-auto">
           {/* Header */}
@@ -484,7 +484,7 @@ export const SavingsCalculator = memo(function SavingsCalculator() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-8"
+            className="text-center mb-6"
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
               <Calculator className="w-4 h-4" />

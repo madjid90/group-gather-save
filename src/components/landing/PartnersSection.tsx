@@ -53,7 +53,7 @@ export function PartnersSection() {
   const duplicatedPartners = [...partners, ...partners];
 
   return (
-    <section className="py-16 sm:py-20 lg:py-28 bg-muted/30 overflow-hidden">
+    <section className="py-12 sm:py-14 lg:py-20 bg-muted/30 overflow-hidden">
       <div className="container mx-auto px-5 sm:px-6">
         {/* Header */}
         <motion.div
@@ -61,12 +61,12 @@ export function PartnersSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-10 lg:mb-16"
+          className="text-center mb-8 lg:mb-12"
         >
           <span className="inline-block text-primary font-semibold text-sm uppercase tracking-wide mb-3">
             Nos partenaires
           </span>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4 lg:mb-6">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-3 lg:mb-4">
             Fournisseurs de confiance
           </h2>
           <p className="text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
