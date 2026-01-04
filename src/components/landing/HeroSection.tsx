@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { AnimatedCounter, useAnimatedSocialProof } from "@/components/ui/AnimatedCounter";
-import { CheckCircle, MessageSquare, Gift, Zap, Wifi, Flame } from "lucide-react";
+import { CheckCircle, MessageSquare, Gift, Zap, Wifi, Flame, Bell, TrendingUp, Calendar, Clock } from "lucide-react";
 import { trackClick } from "@/hooks/useClickTracking";
 
 // Memoize static elements
@@ -20,6 +20,161 @@ const TrustBadges = memo(() => (
   </div>
 ));
 TrustBadges.displayName = "TrustBadges";
+
+// Dashboard-style hero visual
+const HeroDashboard = memo(({ count, notification }: { count: number; notification: { name: string; city: string; time: string } | null }) => {
+  const recentMembers = [
+    { time: "10:00", name: "Marie D.", type: "Électricité + Gaz", status: "inscrit" },
+    { time: "11:30", name: "Sophie L.", type: "Électricité", status: "inscrit" },
+    { time: "14:00", name: "Emma R.", type: "Internet + Énergie", status: "en_attente" },
+  ];
+
+  return (
+    <div className="relative">
+      {/* Floating notification - top right */}
+      <motion.div
+        className="absolute -top-4 -right-4 bg-card border border-border rounded-2xl px-4 py-3 shadow-switchly-lg flex items-center gap-3 z-10"
+        initial={{ opacity: 0, y: -20, scale: 0.9 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ delay: 0.8, duration: 0.4 }}
+      >
+        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+          <Bell className="w-5 h-5 text-primary" />
+        </div>
+        <div className="text-left">
+          <p className="text-xs text-muted-foreground">Nouvelle inscription</p>
+          <p className="text-sm font-semibold text-foreground flex items-center gap-1.5">
+            {notification?.name || "Maxime"} confirmé
+            <CheckCircle className="w-4 h-4 text-secondary" />
+          </p>
+        </div>
+      </motion.div>
+
+      {/* Calendar icon - decorative */}
+      <motion.div
+        className="absolute top-16 -right-2 w-10 h-10 rounded-xl bg-destructive/10 flex items-center justify-center z-10"
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 1, duration: 0.3 }}
+      >
+        <Calendar className="w-5 h-5 text-destructive" />
+      </motion.div>
+
+      {/* Main dashboard card */}
+      <motion.div
+        className="bg-card rounded-3xl p-6 shadow-switchly-xl border border-border"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.5, duration: 0.5 }}
+      >
+        {/* Header */}
+        <div className="mb-6">
+          <p className="text-sm text-muted-foreground">Aujourd'hui</p>
+          <h3 className="text-2xl font-bold text-foreground">
+            <AnimatedCounter 
+              target={count}
+              externalValue={count}
+              duration={2}
+              showLiveIndicator={false}
+            /> inscrits
+          </h3>
+        </div>
+
+        {/* Stats row */}
+        <div className="grid grid-cols-3 gap-3 mb-6">
+          <motion.div
+            className="bg-muted/50 rounded-xl p-3 text-center"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+          >
+            <p className="text-xl font-bold text-foreground">312€</p>
+            <p className="text-xs text-muted-foreground">Économie moy.</p>
+            <p className="text-xs font-semibold text-secondary">+15%</p>
+          </motion.div>
+          <motion.div
+            className="bg-muted/50 rounded-xl p-3 text-center"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+          >
+            <p className="text-xl font-bold text-foreground">98%</p>
+            <p className="text-xs text-muted-foreground">Satisfaits</p>
+            <p className="text-xs font-semibold text-secondary">+12%</p>
+          </motion.div>
+          <motion.div
+            className="bg-muted/50 rounded-xl p-3 text-center"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9 }}
+          >
+            <p className="text-xl font-bold text-foreground">3</p>
+            <p className="text-xs text-muted-foreground">Offres</p>
+            <div className="flex items-center justify-center gap-1 mt-0.5">
+              <Zap className="w-3 h-3 text-primary" />
+              <Flame className="w-3 h-3 text-orange-500" />
+              <Wifi className="w-3 h-3 text-secondary" />
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Recent members list */}
+        <div className="space-y-3">
+          {recentMembers.map((member, index) => (
+            <motion.div
+              key={member.name}
+              className="bg-background rounded-xl p-3 flex items-center gap-4"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 1 + index * 0.1 }}
+            >
+              <div className="flex items-center gap-2">
+                <Clock className="w-4 h-4 text-muted-foreground" />
+                <span className="text-sm font-mono text-muted-foreground w-12">{member.time}</span>
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-semibold text-foreground">{member.name}</p>
+                <p className="text-xs text-muted-foreground">{member.type}</p>
+              </div>
+              <span className={`text-xs font-medium px-3 py-1 rounded-full ${
+                member.status === "inscrit" 
+                  ? "bg-secondary/20 text-secondary" 
+                  : "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
+              }`}>
+                {member.status === "inscrit" ? "Confirmé" : "En attente"}
+              </span>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Bottom floating stat */}
+      <motion.div
+        className="absolute -bottom-8 -left-4 bg-card border border-border rounded-2xl px-4 py-3 shadow-switchly-lg flex items-center gap-3"
+        initial={{ opacity: 0, y: 20, scale: 0.9 }}
+        animate={{ 
+          opacity: 1, 
+          y: [0, -4, 0], 
+          scale: 1 
+        }}
+        transition={{ 
+          opacity: { delay: 1.2, duration: 0.3 },
+          scale: { delay: 1.2, duration: 0.3 },
+          y: { delay: 1.5, duration: 3, repeat: Infinity, ease: "easeInOut" }
+        }}
+      >
+        <div className="w-10 h-10 rounded-full bg-destructive/10 flex items-center justify-center">
+          <TrendingUp className="w-5 h-5 text-destructive" />
+        </div>
+        <div className="text-left">
+          <p className="text-xs text-muted-foreground">Cette semaine</p>
+          <p className="text-sm font-bold text-foreground">+23% d'inscriptions</p>
+        </div>
+      </motion.div>
+    </div>
+  );
+});
+HeroDashboard.displayName = "HeroDashboard";
 
 export const HeroSection = memo(function HeroSection() {
   const { count, notification } = useAnimatedSocialProof(2547, 12000);
@@ -136,119 +291,14 @@ export const HeroSection = memo(function HeroSection() {
             </motion.div>
           </motion.div>
 
-          {/* Visual - desktop only */}
+          {/* Visual - desktop only - Dashboard style */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
             className="relative hidden lg:block"
           >
-            <div className="relative">
-              {/* Floating counter card */}
-              <motion.div 
-                className="relative bg-card rounded-2xl p-8 shadow-switchly-xl border border-border text-center"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.6 }}
-              >
-                {/* Live indicator - top left */}
-                <motion.div 
-                  className="absolute -top-2 -left-2 flex items-center gap-1.5 bg-secondary text-secondary-foreground px-3 py-1.5 rounded-full shadow-lg"
-                  animate={{ 
-                    scale: [1, 1.05, 1],
-                    boxShadow: [
-                      "0 0 0 0 rgba(34, 197, 94, 0.4)",
-                      "0 0 0 8px rgba(34, 197, 94, 0)",
-                      "0 0 0 0 rgba(34, 197, 94, 0)"
-                    ]
-                  }}
-                  transition={{ 
-                    duration: 2, 
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                >
-                  <span className="w-2 h-2 rounded-full bg-secondary-foreground animate-pulse" />
-                  <span className="text-xs font-semibold">en direct</span>
-                </motion.div>
-
-                <div className="text-5xl font-bold text-foreground">
-                  <AnimatedCounter 
-                    target={2547}
-                    externalValue={count}
-                    duration={2.5}
-                    showLiveIndicator={false}
-                  />
-                </div>
-                <p className="text-lg text-muted-foreground mt-2">
-                  foyers inscrits
-                </p>
-              </motion.div>
-
-              {/* Savings cards */}
-              <motion.div 
-                className="flex gap-4 mt-6"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8, duration: 0.5 }}
-              >
-                {/* Electricity savings */}
-                <div className="flex-1 bg-card rounded-2xl p-4 shadow-switchly border border-border text-center">
-                  <div className="flex items-center justify-center gap-1.5 mb-1">
-                    <Zap className="w-4 h-4 text-primary" />
-                    <span className="text-xs font-medium text-muted-foreground">Électricité</span>
-                  </div>
-                  <p className="text-2xl font-bold text-foreground">200 €</p>
-                  <p className="text-xs text-secondary font-medium">/an estimés</p>
-                </div>
-
-                {/* Gas savings */}
-                <div className="flex-1 bg-card rounded-2xl p-4 shadow-switchly border border-border text-center">
-                  <div className="flex items-center justify-center gap-1.5 mb-1">
-                    <Flame className="w-4 h-4 text-orange-500" />
-                    <span className="text-xs font-medium text-muted-foreground">Gaz</span>
-                  </div>
-                  <p className="text-2xl font-bold text-foreground">120 €</p>
-                  <p className="text-xs text-secondary font-medium">/an estimés</p>
-                </div>
-
-                {/* Internet savings */}
-                <div className="flex-1 bg-card rounded-2xl p-4 shadow-switchly border border-border text-center">
-                  <div className="flex items-center justify-center gap-1.5 mb-1">
-                    <Wifi className="w-4 h-4 text-secondary" />
-                    <span className="text-xs font-medium text-muted-foreground">Internet</span>
-                  </div>
-                  <p className="text-2xl font-bold text-foreground">80 €</p>
-                  <p className="text-xs text-secondary font-medium">/an estimés</p>
-                </div>
-              </motion.div>
-
-              {/* Social proof notification - always visible with subtle animation */}
-              <motion.div
-                className="absolute -bottom-16 -left-4 bg-card border border-border rounded-2xl p-3 pr-5 shadow-switchly-lg"
-                initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                animate={{ 
-                  opacity: 1, 
-                  y: [0, -4, 0], 
-                  scale: 1 
-                }}
-                transition={{ 
-                  opacity: { delay: 0.9, duration: 0.3 },
-                  scale: { delay: 0.9, duration: 0.3 },
-                  y: { delay: 1.2, duration: 3, repeat: Infinity, ease: "easeInOut" }
-                }}
-              >
-                <div className="text-left">
-                  <p className="text-sm font-medium text-foreground flex items-center gap-1.5">
-                    <CheckCircle className="w-4 h-4 text-secondary" />
-                    {notification?.name || "Maxime"} vient de s'inscrire
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {notification?.city || "Amiens"} • {notification?.time || "il y a 2 min"}
-                  </p>
-                </div>
-              </motion.div>
-            </div>
+            <HeroDashboard count={count} notification={notification} />
           </motion.div>
         </div>
       </div>
