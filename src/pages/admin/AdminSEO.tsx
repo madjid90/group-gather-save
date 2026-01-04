@@ -1,27 +1,34 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LocalSeoPanel } from "@/components/seo/LocalSeoPanel";
-import { UnifiedSEOPanel } from "@/components/seo/UnifiedSEOPanel";
-import { Sparkles, MapPin } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { PageByPageAnalysis } from '@/components/seo/PageByPageAnalysis';
+import { LocalSeoPanel } from '@/components/seo/LocalSeoPanel';
+import { Globe, Search } from 'lucide-react';
 
 const AdminSEO = () => {
   return (
-    <div className="container mx-auto py-6">
-      <Tabs defaultValue="intelligence" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2 max-w-xl">
-          <TabsTrigger value="intelligence" className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4" />
-            Intelligence SEO & Conversion
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold mb-2">SEO & Acquisition</h1>
+        <p className="text-muted-foreground">
+          Analyse page par page avec scraping et recommandations IA section par section
+        </p>
+      </div>
+      
+      <Tabs defaultValue="pages" className="space-y-6">
+        <TabsList>
+          <TabsTrigger value="pages" className="gap-2">
+            <Search className="w-4 h-4" />
+            Analyse par page
           </TabsTrigger>
-          <TabsTrigger value="local" className="flex items-center gap-2">
-            <MapPin className="w-4 h-4" />
+          <TabsTrigger value="local" className="gap-2">
+            <Globe className="w-4 h-4" />
             Pages locales
           </TabsTrigger>
         </TabsList>
-
-        <TabsContent value="intelligence">
-          <UnifiedSEOPanel />
+        
+        <TabsContent value="pages">
+          <PageByPageAnalysis />
         </TabsContent>
-
+        
         <TabsContent value="local">
           <LocalSeoPanel />
         </TabsContent>
