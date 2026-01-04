@@ -1,6 +1,6 @@
-import { useState, memo } from "react";
+import { useState, memo, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Home, Building2, Flame, Zap, Wifi, ChevronLeft, Calculator } from "lucide-react";
+import { ArrowRight, Home, Building2, Flame, Zap, Wifi, ChevronLeft, Calculator, TrendingDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { trackClick } from "@/hooks/useClickTracking";
@@ -56,6 +56,85 @@ const stepTitles = {
   4: "Estimez votre facture mensuelle d'énergie (électricité/gaz)",
   5: "Souhaitez-vous aussi estimer vos économies Internet ?",
 };
+
+// Comparison Chart Component
+const ComparisonChart = memo(function ComparisonChart({ 
+  profile, 
+  savings 
+}: { 
+  profile: CalculatorProfile; 
+  savings: number;
+}) {
+  // Estimate annual bill based on profile
+  const estimatedAnnualBill = useMemo(() => {
+    let bill = 1200; // Base annual bill
+    
+    if (profile.logement === "maison") bill += 400;
+    if (profile.surface === "60_100") bill += 300;
+    else if (profile.surface === "plus_100") bill += 600;
+    if (profile.chauffage === "electrique") bill += 200;
+    else if (profile.chauffage === "gaz") bill += 350;
+    if (profile.facture === "80_120") bill = Math.max(bill, 1200);
+    else if (profile.facture === "plus_120") bill = Math.max(bill, 1800);
+    if (profile.internet) bill += 480; // ~40€/month
+    
+    return bill;
+  }, [profile]);
+
+  const afterBill = estimatedAnnualBill - savings;
+  const savingsPercent = Math.round((savings / estimatedAnnualBill) * 100);
+  const maxBill = estimatedAnnualBill;
+
+  return (
+    <div className="bg-muted/50 rounded-xl p-4 md:p-6 mb-6">
+      <div className="flex items-center justify-center gap-2 text-sm font-medium text-foreground mb-4">
+        <TrendingDown className="w-4 h-4 text-primary" />
+        Comparaison avant / après
+      </div>
+      
+      <div className="space-y-4">
+        {/* Before */}
+        <div className="space-y-2">
+          <div className="flex justify-between items-center text-sm">
+            <span className="text-muted-foreground">Aujourd'hui (estimé)</span>
+            <span className="font-semibold text-foreground">{estimatedAnnualBill.toLocaleString()}€/an</span>
+          </div>
+          <div className="h-3 bg-muted rounded-full overflow-hidden">
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: "100%" }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="h-full bg-destructive/60 rounded-full"
+            />
+          </div>
+        </div>
+        
+        {/* After */}
+        <div className="space-y-2">
+          <div className="flex justify-between items-center text-sm">
+            <span className="text-muted-foreground">Avec Switchly</span>
+            <span className="font-semibold text-primary">{afterBill.toLocaleString()}€/an</span>
+          </div>
+          <div className="h-3 bg-muted rounded-full overflow-hidden">
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: `${(afterBill / maxBill) * 100}%` }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="h-full bg-primary rounded-full"
+            />
+          </div>
+        </div>
+      </div>
+      
+      {/* Savings highlight */}
+      <div className="mt-4 pt-4 border-t border-border/50 flex items-center justify-center gap-2">
+        <span className="text-sm text-muted-foreground">Soit</span>
+        <span className="text-lg font-bold text-primary">-{savingsPercent}%</span>
+        <span className="text-sm text-muted-foreground">sur vos factures</span>
+      </div>
+    </div>
+  );
+});
 
 export const SavingsCalculator = memo(function SavingsCalculator() {
   const [step, setStep] = useState<Step>(1);
@@ -316,6 +395,12 @@ export const SavingsCalculator = memo(function SavingsCalculator() {
                         </span>
                       </div>
                     </div>
+
+                    {/* Before/After Comparison Chart */}
+                    <ComparisonChart 
+                      profile={profile} 
+                      savings={(estimation.minEconomie + estimation.maxEconomie) / 2} 
+                    />
 
                     {/* Explanation */}
                     <p className="text-muted-foreground text-sm md:text-base mb-4">
