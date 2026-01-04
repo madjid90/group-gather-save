@@ -1,10 +1,11 @@
-import { useState, memo, useMemo } from "react";
+import { useState, memo, useMemo, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Home, Building2, Flame, Zap, Wifi, ChevronLeft, Calculator, TrendingDown } from "lucide-react";
+import { ArrowRight, Home, Building2, Flame, Zap, Wifi, ChevronLeft, Calculator, TrendingDown, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { trackClick } from "@/hooks/useClickTracking";
 import { supabase } from "@/integrations/supabase/client";
+import confetti from "canvas-confetti";
 
 type Step = 1 | 2 | 3 | 4 | 5 | "result";
 
@@ -133,6 +134,156 @@ const ComparisonChart = memo(function ComparisonChart({
         <span className="text-sm text-muted-foreground">sur vos factures</span>
       </div>
     </div>
+  );
+});
+
+// Result View Component with Confetti
+const ResultView = memo(function ResultView({
+  estimation,
+  profile,
+  onCTAClick,
+  onReset
+}: {
+  estimation: EstimationResult;
+  profile: CalculatorProfile;
+  onCTAClick: () => void;
+  onReset: () => void;
+}) {
+  // Trigger confetti on mount
+  useEffect(() => {
+    const duration = 2000;
+    const animationEnd = Date.now() + duration;
+    const colors = ['#22c55e', '#3b82f6', '#f59e0b', '#ec4899'];
+
+    const frame = () => {
+      confetti({
+        particleCount: 3,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0, y: 0.7 },
+        colors: colors
+      });
+      confetti({
+        particleCount: 3,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1, y: 0.7 },
+        colors: colors
+      });
+
+      if (Date.now() < animationEnd) {
+        requestAnimationFrame(frame);
+      }
+    };
+
+    // Initial burst
+    confetti({
+      particleCount: 80,
+      spread: 100,
+      origin: { y: 0.6 },
+      colors: colors
+    });
+
+    frame();
+  }, []);
+
+  return (
+    <motion.div
+      key="result"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className="text-center"
+    >
+      {/* Celebration Badge */}
+      <motion.div
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4"
+      >
+        <Sparkles className="w-4 h-4" />
+        Félicitations ! Voici vos économies potentielles
+      </motion.div>
+
+      <h3 className="text-xl md:text-2xl font-bold text-foreground mb-6">
+        Votre estimation d'économies
+      </h3>
+      
+      {/* Savings Range */}
+      <motion.div 
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ delay: 0.3 }}
+        className="bg-gradient-hero rounded-2xl p-6 md:p-8 mb-4"
+      >
+        <p className="text-primary-foreground/80 text-sm mb-2">Économies estimées par an</p>
+        <div className="flex items-baseline justify-center gap-2">
+          <span className="text-4xl md:text-5xl font-bold text-primary-foreground">
+            {estimation.minEconomie}€
+          </span>
+          <span className="text-2xl text-primary-foreground/70">à</span>
+          <span className="text-4xl md:text-5xl font-bold text-primary-foreground">
+            {estimation.maxEconomie}€
+          </span>
+        </div>
+      </motion.div>
+
+      {/* Immediate CTA - Above the fold */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+        className="mb-6"
+      >
+        <Button 
+          variant="hero" 
+          size="lg" 
+          className="w-full md:w-auto px-8 shadow-lg"
+          onClick={onCTAClick}
+        >
+          <Sparkles className="w-5 h-5 mr-2" />
+          Rejoindre l'achat groupé
+          <ArrowRight className="w-5 h-5 ml-2" />
+        </Button>
+        <p className="text-sm text-muted-foreground mt-2">
+          Gratuit • Sans engagement • 30 secondes
+        </p>
+      </motion.div>
+
+      {/* Before/After Comparison Chart */}
+      <ComparisonChart 
+        profile={profile} 
+        savings={(estimation.minEconomie + estimation.maxEconomie) / 2} 
+      />
+
+      {/* Explanation */}
+      <p className="text-muted-foreground text-sm md:text-base mb-4">
+        {estimation.explication}
+      </p>
+
+      <p className="text-xs text-muted-foreground/70 mb-6">
+        Estimation indicative basée sur des profils comparables. Aucune action sans votre accord.
+      </p>
+
+      {/* Secondary CTA */}
+      <Button 
+        variant="outline" 
+        size="lg" 
+        className="w-full md:w-auto px-8 mb-4"
+        onClick={onCTAClick}
+      >
+        Recevoir mon offre personnalisée
+        <ArrowRight className="w-5 h-5 ml-2" />
+      </Button>
+
+      <button 
+        onClick={onReset}
+        className="block mx-auto text-sm text-muted-foreground hover:text-foreground transition-colors underline"
+      >
+        Refaire le calcul
+      </button>
+    </motion.div>
   );
 });
 
@@ -371,67 +522,12 @@ export const SavingsCalculator = memo(function SavingsCalculator() {
                     <p className="text-muted-foreground">Calcul de votre estimation...</p>
                   </motion.div>
                 ) : step === "result" && estimation ? (
-                  <motion.div
-                    key="result"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    className="text-center"
-                  >
-                    <h3 className="text-xl md:text-2xl font-bold text-foreground mb-6">
-                      Votre estimation d'économies
-                    </h3>
-                    
-                    {/* Savings Range */}
-                    <div className="bg-gradient-hero rounded-2xl p-6 md:p-8 mb-6">
-                      <p className="text-primary-foreground/80 text-sm mb-2">Économies estimées par an</p>
-                      <div className="flex items-baseline justify-center gap-2">
-                        <span className="text-4xl md:text-5xl font-bold text-primary-foreground">
-                          {estimation.minEconomie}€
-                        </span>
-                        <span className="text-2xl text-primary-foreground/70">à</span>
-                        <span className="text-4xl md:text-5xl font-bold text-primary-foreground">
-                          {estimation.maxEconomie}€
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Before/After Comparison Chart */}
-                    <ComparisonChart 
-                      profile={profile} 
-                      savings={(estimation.minEconomie + estimation.maxEconomie) / 2} 
-                    />
-
-                    {/* Explanation */}
-                    <p className="text-muted-foreground text-sm md:text-base mb-4">
-                      {estimation.explication}
-                    </p>
-
-                    <p className="text-xs text-muted-foreground/70 mb-8">
-                      Estimation indicative basée sur des profils comparables et des données publiques. Aucune action ne sera effectuée sans votre accord.
-                    </p>
-
-                    {/* CTA */}
-                    <Button 
-                      variant="hero" 
-                      size="lg" 
-                      className="w-full md:w-auto px-8"
-                      onClick={handleCTAClick}
-                    >
-                      Recevoir mon offre personnalisée
-                      <ArrowRight className="w-5 h-5 ml-2" />
-                    </Button>
-                    <p className="text-sm text-muted-foreground mt-3">
-                      Gratuit • Sans engagement • 30 secondes
-                    </p>
-
-                    <button 
-                      onClick={resetCalculator}
-                      className="mt-6 text-sm text-muted-foreground hover:text-foreground transition-colors underline"
-                    >
-                      Refaire le calcul
-                    </button>
-                  </motion.div>
+                  <ResultView 
+                    estimation={estimation}
+                    profile={profile}
+                    onCTAClick={handleCTAClick}
+                    onReset={resetCalculator}
+                  />
                 ) : (
                   <motion.div
                     key={`step-${step}`}
