@@ -14,9 +14,9 @@ export function PublicLayout() {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-svh flex flex-col">
       <Navbar />
-      <main className="flex-1 pt-16">
+      <main className="flex-1 pt-16 md:pt-16">
         <Outlet />
       </main>
       <Footer />

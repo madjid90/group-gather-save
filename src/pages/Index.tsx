@@ -37,60 +37,84 @@ const Index = () => {
       {/* JSON-LD Structured Data */}
       <JsonLdSchema type="auto" />
       
-      {/* 1. Hero - Always loaded immediately for LCP */}
-      <HeroSection />
-      
-      {/* 2. Calculateur d'économies */}
-      <SavingsCalculator />
-      
-      {/* 3. Comment ça marche */}
-      <LazySection>
-        <Suspense fallback={<SectionSkeleton />}>
-          <HowItWorksSection />
-        </Suspense>
-      </LazySection>
-      
-      {/* 4. Pourquoi Switchly */}
-      <LazySection>
-        <Suspense fallback={<SectionSkeleton />}>
-          <AdvantagesSection />
-        </Suspense>
-      </LazySection>
-      
-      {/* 5. Témoignages */}
-      <LazySection>
-        <Suspense fallback={<SectionSkeleton />}>
-          <TestimonialsSection />
-        </Suspense>
-      </LazySection>
-      
-      {/* 6. Fournisseurs partenaires */}
-      <LazySection>
-        <Suspense fallback={<SectionSkeleton />}>
-          <PartnersSection />
-        </Suspense>
-      </LazySection>
-      
-      {/* 7. FAQ */}
-      <LazySection>
-        <Suspense fallback={<SectionSkeleton />}>
-          <FAQSection />
-        </Suspense>
-      </LazySection>
-      
-      {/* 8. CTA final */}
-      <LazySection>
-        <Suspense fallback={<SectionSkeleton />}>
-          <CTASection />
-        </Suspense>
-      </LazySection>
-      
-      {/* 9. Collectivités */}
-      <LazySection>
-        <Suspense fallback={<SectionSkeleton />}>
-          <CollectivitesSection />
-        </Suspense>
-      </LazySection>
+      {/* Snap scroll container for mobile */}
+      <div className="md:block md:snap-none snap-y snap-mandatory overflow-y-auto h-[calc(100svh-4rem)] md:h-auto md:overflow-visible">
+        {/* 1. Hero - Always loaded immediately for LCP */}
+        <section className="snap-start snap-always md:snap-align-none">
+          <HeroSection />
+        </section>
+        
+        {/* 2. Calculateur d'économies */}
+        <section className="snap-start snap-always md:snap-align-none">
+          <SavingsCalculator />
+        </section>
+        
+        {/* 3. Comment ça marche */}
+        <section className="snap-start snap-always md:snap-align-none">
+          <LazySection>
+            <Suspense fallback={<SectionSkeleton />}>
+              <HowItWorksSection />
+            </Suspense>
+          </LazySection>
+        </section>
+        
+        {/* 4. Pourquoi Switchly */}
+        <section className="snap-start snap-always md:snap-align-none">
+          <LazySection>
+            <Suspense fallback={<SectionSkeleton />}>
+              <AdvantagesSection />
+            </Suspense>
+          </LazySection>
+        </section>
+        
+        {/* 5. Témoignages */}
+        <section className="snap-start snap-always md:snap-align-none">
+          <LazySection>
+            <Suspense fallback={<SectionSkeleton />}>
+              <TestimonialsSection />
+            </Suspense>
+          </LazySection>
+        </section>
+        
+        {/* 6. Fournisseurs partenaires */}
+        <section className="snap-start snap-always md:snap-align-none">
+          <LazySection>
+            <Suspense fallback={<SectionSkeleton />}>
+              <PartnersSection />
+            </Suspense>
+          </LazySection>
+        </section>
+        
+        {/* 7. FAQ */}
+        <section className="snap-start snap-always md:snap-align-none">
+          <LazySection>
+            <Suspense fallback={<SectionSkeleton />}>
+              <FAQSection />
+            </Suspense>
+          </LazySection>
+        </section>
+        
+        {/* 8. CTA final */}
+        <section className="snap-start snap-always md:snap-align-none">
+          <LazySection>
+            <Suspense fallback={<SectionSkeleton />}>
+              <CTASection />
+            </Suspense>
+          </LazySection>
+        </section>
+        
+        {/* 9. Collectivités */}
+        <section className="snap-start snap-always md:snap-align-none">
+          <LazySection>
+            <Suspense fallback={<SectionSkeleton />}>
+              <CollectivitesSection />
+            </Suspense>
+          </LazySection>
+        </section>
+        
+        {/* Spacer for fixed CTA on mobile */}
+        <div className="h-20 md:hidden" />
+      </div>
       
       {/* Fixed CTA for mobile only */}
       <MobileFixedCTA />
@@ -100,9 +124,6 @@ const Index = () => {
       
       {/* Floating share button */}
       <FloatingShareButton />
-      
-      {/* Spacer for fixed CTA on mobile */}
-      <div className="h-20 md:hidden" />
     </PageTransition>
   );
 };
