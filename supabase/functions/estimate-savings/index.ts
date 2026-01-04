@@ -8,7 +8,7 @@ const corsHeaders = {
 interface CalculatorProfile {
   logement: "appartement" | "maison" | null;
   surface: "moins_60" | "60_100" | "plus_100" | null;
-  chauffage: "electrique" | "gaz" | "autre" | null;
+  chauffage: "electrique" | "gaz" | "pompe_chaleur" | "fioul" | "collectif" | "autre" | null;
   facture: "moins_80" | "80_120" | "plus_120" | "inconnu" | null;
   internet: boolean;
 }
@@ -163,7 +163,10 @@ function buildPrompt(profile: CalculatorProfile): string {
   const surface = profile.surface === "moins_60" ? "moins de 60 m²" : 
                   profile.surface === "60_100" ? "60 à 100 m²" : "plus de 100 m²";
   const chauffage = profile.chauffage === "electrique" ? "électrique" :
-                    profile.chauffage === "gaz" ? "au gaz" : "autre type de chauffage";
+                    profile.chauffage === "gaz" ? "au gaz" : 
+                    profile.chauffage === "pompe_chaleur" ? "par pompe à chaleur" :
+                    profile.chauffage === "fioul" ? "au fioul" :
+                    profile.chauffage === "collectif" ? "collectif" : "autre type de chauffage";
   const facture = profile.facture === "moins_80" ? "moins de 80€/mois" :
                   profile.facture === "80_120" ? "80 à 120€/mois" :
                   profile.facture === "plus_120" ? "plus de 120€/mois" : "montant inconnu";
@@ -173,7 +176,7 @@ function buildPrompt(profile: CalculatorProfile): string {
 - Logement: ${logement}
 - Surface: ${surface}
 - Chauffage: ${chauffage}
-- Facture électricité: ${facture}
+- Facture énergie: ${facture}
 ${internet}
 
 Donne une estimation réaliste sous forme de fourchette.`;
@@ -198,13 +201,22 @@ function calculateFallbackEstimation(profile: CalculatorProfile) {
     max += 180;
   }
 
-  // Adjust based on heating - gaz adds savings, not reduces them
+  // Adjust based on heating type
   if (profile.chauffage === "electrique") {
     min += 30;
     max += 50;
   } else if (profile.chauffage === "gaz") {
     min += 80;
     max += 150;
+  } else if (profile.chauffage === "pompe_chaleur") {
+    min += 40;
+    max += 70;
+  } else if (profile.chauffage === "fioul") {
+    min += 100;
+    max += 180;
+  } else if (profile.chauffage === "collectif") {
+    min -= 30;
+    max -= 20;
   }
 
   // Adjust based on bill
@@ -223,13 +235,21 @@ function calculateFallbackEstimation(profile: CalculatorProfile) {
   }
 
   const logementLabel = profile.logement === "maison" ? "une maison" : "un appartement";
-  const chauffageLabel = profile.chauffage === "electrique" ? "l'électricité" : 
-                         profile.chauffage === "gaz" ? "l'électricité et le gaz" : "l'énergie";
+  const getChauffageLabel = () => {
+    switch (profile.chauffage) {
+      case "electrique": return "l'électricité";
+      case "gaz": return "l'électricité et le gaz";
+      case "pompe_chaleur": return "l'électricité (pompe à chaleur)";
+      case "fioul": return "l'énergie (fioul)";
+      case "collectif": return "vos charges de chauffage collectif";
+      default: return "l'énergie";
+    }
+  };
   const internetLabel = profile.internet ? " et votre box internet" : "";
 
   return {
     minEconomie: Math.round(min / 10) * 10,
     maxEconomie: Math.round(max / 10) * 10,
-    explication: `Pour ${logementLabel} avec votre profil, vous pouvez économiser sur ${chauffageLabel}${internetLabel} grâce à l'achat groupé Switchly. Cette estimation est basée sur les économies réalisées par des foyers similaires.`
+    explication: `Pour ${logementLabel} avec votre profil, vous pouvez économiser sur ${getChauffageLabel()}${internetLabel} grâce à l'achat groupé Switchly. Cette estimation est basée sur les économies réalisées par des foyers similaires.`
   };
 }
