@@ -45,7 +45,7 @@ const stepOptions = {
   ],
   5: [
     { value: true, label: "Oui, estimer aussi Internet", icon: Wifi },
-    { value: false, label: "Non, uniquement électricité" },
+    { value: false, label: "Non, uniquement énergie" },
   ],
 };
 
@@ -53,7 +53,7 @@ const stepTitles = {
   1: "Quel est votre type de logement ?",
   2: "Quelle est la surface de votre logement ?",
   3: "Quel est votre mode de chauffage principal ?",
-  4: "Estimez votre facture mensuelle d'électricité",
+  4: "Estimez votre facture mensuelle d'énergie (électricité/gaz)",
   5: "Souhaitez-vous aussi estimer vos économies Internet ?",
 };
 
@@ -128,40 +128,40 @@ export const SavingsCalculator = memo(function SavingsCalculator() {
   };
 
   const getFallbackEstimation = (p: CalculatorProfile): EstimationResult => {
-    let min = 150;
+    let min = 180;
     let max = 280;
 
     // Adjust based on housing type
     if (p.logement === "maison") {
-      min += 50;
-      max += 100;
+      min += 70;
+      max += 120;
     }
 
     // Adjust based on surface
     if (p.surface === "60_100") {
-      min += 40;
-      max += 60;
+      min += 50;
+      max += 80;
     } else if (p.surface === "plus_100") {
-      min += 100;
-      max += 150;
+      min += 120;
+      max += 180;
     }
 
-    // Adjust based on heating
+    // Adjust based on heating - gaz adds savings, not reduces them
     if (p.chauffage === "electrique") {
       min += 30;
       max += 50;
     } else if (p.chauffage === "gaz") {
-      min -= 20;
-      max -= 30;
+      min += 80;
+      max += 150;
     }
 
     // Adjust based on bill
     if (p.facture === "80_120") {
-      min += 30;
-      max += 40;
+      min += 40;
+      max += 60;
     } else if (p.facture === "plus_120") {
-      min += 60;
-      max += 80;
+      min += 80;
+      max += 120;
     }
 
     // Add internet savings
@@ -171,12 +171,14 @@ export const SavingsCalculator = memo(function SavingsCalculator() {
     }
 
     const logementLabel = p.logement === "maison" ? "une maison" : "un appartement";
-    const chauffageLabel = p.chauffage === "electrique" ? "électrique" : p.chauffage === "gaz" ? "au gaz" : "";
+    const chauffageLabel = p.chauffage === "electrique" ? "l'électricité" : 
+                           p.chauffage === "gaz" ? "l'électricité et le gaz" : "l'énergie";
+    const internetLabel = p.internet ? " et votre box internet" : "";
 
     return {
       minEconomie: Math.round(min / 10) * 10,
       maxEconomie: Math.round(max / 10) * 10,
-      explication: `Pour ${logementLabel} ${chauffageLabel ? `avec chauffage ${chauffageLabel}` : ""}, les foyers similaires économisent généralement entre ${min}€ et ${max}€ par an grâce à l'achat groupé.${p.internet ? " L'estimation inclut également les économies Internet potentielles." : ""}`
+      explication: `Pour ${logementLabel} avec votre profil, vous pouvez économiser sur ${chauffageLabel}${internetLabel} grâce à l'achat groupé Switchly. Cette estimation est basée sur les économies réalisées par des foyers similaires.`
     };
   };
 

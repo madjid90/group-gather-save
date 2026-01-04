@@ -43,7 +43,13 @@ serve(async (req) => {
         messages: [
           { 
             role: "system", 
-            content: `Tu es un expert en énergie et économies domestiques en France. Tu dois estimer les économies potentielles qu'un foyer peut réaliser en participant à un achat groupé d'énergie.
+            content: `Tu es un expert en énergie et économies domestiques en France pour Switchly, plateforme d'achat groupé d'électricité, gaz et internet. Tu dois estimer les économies potentielles qu'un foyer peut réaliser en participant à un achat groupé.
+
+CONTEXTE SWITCHLY:
+- Switchly négocie des tarifs groupés auprès de fournisseurs d'énergie (électricité ET gaz) et box internet
+- Économie moyenne constatée: 312€/an pour les foyers participants
+- 100% gratuit et sans engagement pour les participants
+- Démarches simplifiées par Switchly
 
 RÈGLES IMPORTANTES:
 - Donne TOUJOURS une fourchette (min et max), jamais un montant unique
@@ -52,19 +58,21 @@ RÈGLES IMPORTANTES:
 - Arrondis les montants à la dizaine
 - Base tes estimations sur les tarifs réglementés français et les retours d'achats groupés
 - Adapte ton explication au profil spécifique du logement
+- Mentionne explicitement électricité ET/OU gaz selon le chauffage
 
 FOURCHETTES DE RÉFÉRENCE (par an):
-- Petit appartement électrique: 150-280€
-- Appartement moyen électrique: 220-360€
-- Grande maison électrique: 300-480€
-- Chauffage gaz: réduire de 15-20%
+- Petit appartement (< 60 m²): 180-280€
+- Appartement moyen (60-100 m²): 250-380€
+- Grande maison (> 100 m²): 350-520€
+- Chauffage électrique: utiliser la fourchette haute
+- Chauffage gaz: ajouter 80-150€ pour les économies gaz
 - Avec Internet: ajouter 60-120€
 
 Réponds UNIQUEMENT en JSON valide avec ce format exact:
 {
   "minEconomie": number,
   "maxEconomie": number,
-  "explication": "string (1-2 phrases max expliquant l'estimation)"
+  "explication": "string (1-2 phrases max expliquant l'estimation, mentionner les types d'économies: électricité, gaz, internet)"
 }`
           },
           { role: "user", content: prompt }
@@ -172,48 +180,56 @@ Donne une estimation réaliste sous forme de fourchette.`;
 }
 
 function calculateFallbackEstimation(profile: CalculatorProfile) {
-  let min = 150;
+  let min = 180;
   let max = 280;
 
+  // Adjust based on housing type
   if (profile.logement === "maison") {
-    min += 50;
-    max += 100;
+    min += 70;
+    max += 120;
   }
 
+  // Adjust based on surface
   if (profile.surface === "60_100") {
-    min += 40;
-    max += 60;
+    min += 50;
+    max += 80;
   } else if (profile.surface === "plus_100") {
-    min += 100;
-    max += 150;
+    min += 120;
+    max += 180;
   }
 
+  // Adjust based on heating - gaz adds savings, not reduces them
   if (profile.chauffage === "electrique") {
     min += 30;
     max += 50;
   } else if (profile.chauffage === "gaz") {
-    min -= 20;
-    max -= 30;
+    min += 80;
+    max += 150;
   }
 
+  // Adjust based on bill
   if (profile.facture === "80_120") {
-    min += 30;
-    max += 40;
+    min += 40;
+    max += 60;
   } else if (profile.facture === "plus_120") {
-    min += 60;
-    max += 80;
+    min += 80;
+    max += 120;
   }
 
+  // Add internet savings
   if (profile.internet) {
     min += 60;
     max += 120;
   }
 
   const logementLabel = profile.logement === "maison" ? "une maison" : "un appartement";
+  const chauffageLabel = profile.chauffage === "electrique" ? "l'électricité" : 
+                         profile.chauffage === "gaz" ? "l'électricité et le gaz" : "l'énergie";
+  const internetLabel = profile.internet ? " et votre box internet" : "";
 
   return {
     minEconomie: Math.round(min / 10) * 10,
     maxEconomie: Math.round(max / 10) * 10,
-    explication: `Pour ${logementLabel} avec votre profil, les foyers similaires économisent généralement cette fourchette grâce à l'achat groupé. L'estimation prend en compte le type de logement, la surface et le mode de chauffage.`
+    explication: `Pour ${logementLabel} avec votre profil, vous pouvez économiser sur ${chauffageLabel}${internetLabel} grâce à l'achat groupé Switchly. Cette estimation est basée sur les économies réalisées par des foyers similaires.`
   };
 }
