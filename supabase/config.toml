@@ -71,3 +71,6 @@ verify_jwt = false
 
 [functions.scrape-competitor]
 verify_jwt = false
+
+[functions.analyze-page-seo]
+verify_jwt = false
