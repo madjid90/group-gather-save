@@ -20,11 +20,11 @@ export const CollectivitesSection = () => {
           </div>
 
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4 lg:mb-6">
-            Organisez un achat groupé dans votre ville
+            Organisez un achat groupé d'énergie dans votre ville
           </h2>
           
           <p className="text-base lg:text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Switchly accompagne les mairies et collectivités dans l'organisation d'achats groupés pour leurs habitants.
+            Switchly accompagne les mairies et collectivités dans l'organisation d'achats groupés d'électricité, gaz et internet pour leurs habitants.
           </p>
 
           <Button

@@ -67,7 +67,7 @@ export function TestimonialsSection() {
             Ils ont économisé avec Switchly
           </h2>
           <p className="text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Découvrez les économies réelles réalisées par nos membres sur leurs factures d'électricité et d'internet.
+            Découvrez les économies réelles réalisées par nos membres sur leurs factures d'électricité, gaz et internet.
           </p>
         </motion.div>
 

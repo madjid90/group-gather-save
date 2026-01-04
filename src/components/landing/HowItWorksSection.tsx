@@ -56,7 +56,7 @@ export function HowItWorksSection() {
             Rejoignez l'achat groupé en 4 étapes
           </h2>
           <p className="text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Un processus simple et transparent pour économiser sur vos factures d'énergie et d'internet sans effort.
+            Un processus simple et transparent pour économiser sur vos factures d'électricité, gaz et internet sans effort.
           </p>
         </motion.div>
 

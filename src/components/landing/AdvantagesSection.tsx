@@ -51,10 +51,13 @@ export function AdvantagesSection() {
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4 lg:mb-6">
             Pourquoi choisir Switchly ?
           </h2>
-          <div className="flex items-center justify-center gap-3 mb-4">
+          <div className="flex items-center justify-center gap-3 flex-wrap mb-4">
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary">
               <Zap className="w-4 h-4" />
               <span className="text-sm font-medium">Électricité</span>
+            </div>
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-orange-500/10 text-orange-500">
+              <span className="text-sm font-medium">Gaz</span>
             </div>
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary/10 text-secondary">
               <Wifi className="w-4 h-4" />
