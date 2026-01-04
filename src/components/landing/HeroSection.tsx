@@ -80,8 +80,8 @@ export const HeroSection = memo(function HeroSection() {
           >
             {/* Title */}
             <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground leading-tight">
-              Économisez jusqu'à <span className="gradient-text">400€</span> par an sur vos factures{" "}
-              <span className="gradient-text">d'électricité, gaz et internet</span>
+              Économisez jusqu'à <span className="gradient-text">312€</span> par an sur vos factures{" "}
+              <span className="gradient-text">d'énergie et internet</span>
             </h1>
 
             {/* Description */}

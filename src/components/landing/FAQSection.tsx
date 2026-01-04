@@ -9,8 +9,8 @@ import { HelpCircle } from "lucide-react";
 
 const faqItems = [
   {
-    question: "Comment économiser sur ma facture d'électricité et de gaz ?",
-    answer: "Grâce à l'achat groupé, nous négocions des tarifs préférentiels. Nos membres économisent en moyenne 312€/an.",
+    question: "Comment économiser sur mes factures d'énergie et d'internet ?",
+    answer: "Grâce à l'achat groupé, nous négocions des tarifs préférentiels auprès de fournisseurs reconnus. Nos membres économisent en moyenne 312€/an sur leurs factures d'électricité, gaz et internet.",
   },
   {
     question: "L'inscription est-elle vraiment gratuite ?",
@@ -49,7 +49,7 @@ export function FAQSection() {
             Questions fréquentes
           </h2>
           <p className="text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Tout ce que vous devez savoir sur l'achat groupé d'énergie et d'internet avec Switchly.
+            Tout ce que vous devez savoir sur l'achat groupé d'électricité, gaz et internet avec Switchly.
           </p>
         </motion.div>
 
