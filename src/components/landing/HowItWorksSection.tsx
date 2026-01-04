@@ -40,19 +40,19 @@ const steps = [
 
 export function HowItWorksSection() {
   return (
-    <section id="comment-ca-marche" className="py-16 sm:py-20 lg:py-28 bg-background">
+    <section id="comment-ca-marche" className="py-12 sm:py-14 lg:py-20 bg-background">
       <div className="container mx-auto px-5 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-10 lg:mb-16"
+          className="text-center mb-8 lg:mb-12"
         >
           <span className="inline-block text-primary font-semibold text-sm uppercase tracking-wide mb-3">
             Comment ça marche
           </span>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4 lg:mb-6">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-3 lg:mb-4">
             Rejoignez l'achat groupé en 4 étapes
           </h2>
           <p className="text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -60,7 +60,7 @@ export function HowItWorksSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-8 mb-10 lg:mb-14">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8 lg:mb-10">
           {steps.map((step, index) => (
             <motion.div
               key={index}

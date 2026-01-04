@@ -32,14 +32,14 @@ export function CTASection() {
   }, []);
 
   return (
-    <section className="py-16 sm:py-20 lg:py-28 bg-card">
+    <section className="py-12 sm:py-14 lg:py-20 bg-card">
       <div className="container mx-auto px-5 sm:px-6">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="relative overflow-hidden rounded-2xl lg:rounded-3xl bg-gradient-hero p-8 md:p-12 lg:p-16 text-center"
+          className="relative overflow-hidden rounded-2xl lg:rounded-3xl bg-gradient-hero p-6 md:p-10 lg:p-12 text-center"
         >
           {/* Background pattern */}
           <div className="absolute inset-0 opacity-10" aria-hidden="true">
@@ -61,7 +61,7 @@ export function CTASection() {
               </div>
             </div>
 
-            <div className="flex items-center justify-center gap-2 sm:gap-3 mb-6 flex-wrap">
+            <div className="flex items-center justify-center gap-2 sm:gap-3 mb-4 flex-wrap">
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary-foreground/20 text-primary-foreground">
                 <Zap className="w-4 h-4" />
                 <span className="text-sm font-medium">Électricité</span>
@@ -76,10 +76,10 @@ export function CTASection() {
               </div>
             </div>
             
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary-foreground mb-4 lg:mb-6">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary-foreground mb-3 lg:mb-4">
               Ne ratez pas cette opportunité
             </h2>
-            <p className="text-base lg:text-xl text-primary-foreground/90 mb-8 lg:mb-10 max-w-2xl mx-auto">
+            <p className="text-base lg:text-xl text-primary-foreground/90 mb-6 lg:mb-8 max-w-2xl mx-auto">
               <span className="font-semibold">Plus de 2 500 foyers</span> ont déjà rejoint l'achat groupé. Inscrivez-vous maintenant pour bénéficier des meilleurs tarifs négociés.
             </p>
             

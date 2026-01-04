@@ -36,19 +36,19 @@ const advantages = [
 
 export function AdvantagesSection() {
   return (
-    <section className="py-16 sm:py-20 lg:py-28 bg-card">
+    <section className="py-12 sm:py-14 lg:py-20 bg-card">
       <div className="container mx-auto px-5 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-10 lg:mb-16"
+          className="text-center mb-8 lg:mb-12"
         >
           <span className="inline-block text-secondary font-semibold text-sm uppercase tracking-wide mb-3">
             Nos avantages
           </span>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4 lg:mb-6">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-3 lg:mb-4">
             Pourquoi choisir Switchly ?
           </h2>
           <div className="flex items-center justify-center gap-3 flex-wrap mb-4">
@@ -69,7 +69,7 @@ export function AdvantagesSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8 mb-10 lg:mb-14">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-6 mb-8 lg:mb-10">
           {advantages.map((advantage, index) => (
             <motion.div
               key={index}

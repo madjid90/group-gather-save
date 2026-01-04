@@ -49,7 +49,7 @@ const testimonials = [
 export function TestimonialsSection() {
   // Force rebuild
   return (
-    <section className="py-16 sm:py-20 lg:py-28 relative overflow-hidden">
+    <section className="py-12 sm:py-14 lg:py-20 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-subtle" />
 
       <div className="container mx-auto px-5 sm:px-6 relative z-10">
@@ -58,12 +58,12 @@ export function TestimonialsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-10 lg:mb-16"
+          className="text-center mb-8 lg:mb-12"
         >
           <span className="inline-block text-primary font-semibold text-sm uppercase tracking-wide mb-3">
             Témoignages
           </span>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4 lg:mb-6">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-3 lg:mb-4">
             Ils ont économisé avec Switchly
           </h2>
           <p className="text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -72,7 +72,7 @@ export function TestimonialsSection() {
         </motion.div>
 
         {/* Desktop: Show all 5, Mobile: Show first 3 */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-5 mb-8 md:mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 mb-6 md:mb-10">
           {testimonials.map((testimonial, index) => (
             <motion.div
               key={index}

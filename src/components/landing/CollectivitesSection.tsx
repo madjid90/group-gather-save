@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 export const CollectivitesSection = () => {
   return (
-    <section className="py-16 sm:py-20 lg:py-28 bg-muted/30">
+    <section className="py-12 sm:py-14 lg:py-20 bg-muted/30">
       <div className="container mx-auto px-5 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -19,11 +19,11 @@ export const CollectivitesSection = () => {
             <span className="text-sm font-medium">Collectivités</span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4 lg:mb-6">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-3 lg:mb-4">
             Organisez un achat groupé d'énergie dans votre ville
           </h2>
           
-          <p className="text-base lg:text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+          <p className="text-base lg:text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
             Switchly accompagne les mairies et collectivités dans l'organisation d'achats groupés d'électricité, gaz et internet pour leurs habitants.
           </p>
 
