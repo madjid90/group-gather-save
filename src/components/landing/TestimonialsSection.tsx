@@ -49,30 +49,30 @@ const testimonials = [
 export function TestimonialsSection() {
   // Force rebuild
   return (
-    <section className="py-12 sm:py-14 lg:py-20 relative overflow-hidden">
+    <section className="py-8 sm:py-10 lg:py-16 relative overflow-hidden min-h-[85svh] lg:min-h-auto flex items-center">
       <div className="absolute inset-0 bg-gradient-subtle" />
 
-      <div className="container mx-auto px-5 sm:px-6 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10 w-full">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-8 lg:mb-12"
+          className="text-center mb-6 lg:mb-10"
         >
-          <span className="inline-block text-primary font-semibold text-sm uppercase tracking-wide mb-3">
+          <span className="inline-block text-primary font-semibold text-xs uppercase tracking-wide mb-2">
             Témoignages
           </span>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-3 lg:mb-4">
+          <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold text-foreground mb-2 lg:mb-4">
             Ils ont économisé avec Switchly
           </h2>
-          <p className="text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-sm lg:text-lg text-muted-foreground max-w-2xl mx-auto">
             Découvrez les économies réelles réalisées par nos membres sur leurs factures d'électricité, gaz et internet.
           </p>
         </motion.div>
 
         {/* Desktop: Show all 5, Mobile: Show first 3 */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 mb-6 md:mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-2 md:gap-4 mb-4 md:mb-10">
           {testimonials.map((testimonial, index) => (
             <motion.div
               key={index}
@@ -82,9 +82,9 @@ export function TestimonialsSection() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className={index >= 3 ? "hidden md:block" : ""}
             >
-              <div className="bg-card rounded-xl md:rounded-2xl p-4 md:p-5 h-full border border-border shadow-switchly">
+              <div className="bg-card rounded-lg md:rounded-2xl p-3 md:p-5 h-full border border-border shadow-switchly">
                 {/* Stars - smaller on mobile */}
-                <div className="flex gap-0.5 md:gap-1 mb-2 md:mb-3">
+                <div className="flex gap-0.5 md:gap-1 mb-1.5 md:mb-3">
                   {Array.from({ length: testimonial.rating }).map((_, i) => (
                     <Star
                       key={i}
@@ -94,18 +94,18 @@ export function TestimonialsSection() {
                 </div>
 
                 {/* Quote - smaller on mobile */}
-                <p className="text-foreground mb-3 md:mb-4 text-sm md:text-sm leading-relaxed">
+                <p className="text-foreground mb-2 md:mb-4 text-xs md:text-sm leading-relaxed">
                   "<span className="hidden md:inline">{testimonial.text}</span>
                   <span className="md:hidden">{testimonial.textMobile}</span>"
                 </p>
 
                 {/* Author - smaller on mobile */}
-                <div className="flex items-center gap-2 md:gap-2">
-                  <div className="w-8 h-8 md:w-8 md:h-8 rounded-full bg-gradient-hero flex items-center justify-center text-primary-foreground font-semibold text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-gradient-hero flex items-center justify-center text-primary-foreground font-semibold text-xs">
                     {testimonial.avatar}
                   </div>
                   <div>
-                    <p className="font-medium text-foreground text-sm">
+                    <p className="font-medium text-foreground text-xs">
                       {testimonial.name}
                     </p>
                     <p className="text-xs text-muted-foreground">
