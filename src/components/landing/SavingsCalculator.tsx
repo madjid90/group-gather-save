@@ -1,6 +1,6 @@
 import { useState, memo, useMemo, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Home, Building2, Flame, Zap, Wifi, ChevronLeft, Calculator, TrendingDown, Sparkles } from "lucide-react";
+import { ArrowRight, Home, Building2, Flame, Zap, Wifi, ChevronLeft, Calculator, TrendingDown, Sparkles, Snowflake, Droplets } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { trackClick } from "@/hooks/useClickTracking";
@@ -12,7 +12,7 @@ type Step = 1 | 2 | 3 | 4 | 5 | "result";
 interface CalculatorProfile {
   logement: "appartement" | "maison" | null;
   surface: "moins_60" | "60_100" | "plus_100" | null;
-  chauffage: "electrique" | "gaz" | "autre" | null;
+  chauffage: "electrique" | "gaz" | "pompe_chaleur" | "fioul" | "collectif" | "autre" | null;
   facture: "moins_80" | "80_120" | "plus_120" | "inconnu" | null;
   internet: boolean;
 }
@@ -23,6 +23,7 @@ interface EstimationResult {
   explication: string;
 }
 
+// Options alignées avec FormulaireLogement.tsx
 const stepOptions = {
   1: [
     { value: "appartement", label: "Appartement", icon: Building2 },
@@ -36,6 +37,9 @@ const stepOptions = {
   3: [
     { value: "electrique", label: "Électrique", icon: Zap },
     { value: "gaz", label: "Gaz", icon: Flame },
+    { value: "pompe_chaleur", label: "Pompe à chaleur", icon: Snowflake },
+    { value: "fioul", label: "Fioul", icon: Droplets },
+    { value: "collectif", label: "Chauffage collectif", icon: Building2 },
     { value: "autre", label: "Autre / Je ne sais pas" },
   ],
   4: [
@@ -54,7 +58,7 @@ const stepTitles = {
   1: "Quel est votre type de logement ?",
   2: "Quelle est la surface de votre logement ?",
   3: "Quel est votre mode de chauffage principal ?",
-  4: "Estimez votre facture mensuelle d'énergie (électricité/gaz)",
+  4: "Estimez votre facture mensuelle d'énergie",
   5: "Souhaitez-vous aussi estimer vos économies Internet ?",
 };
 
@@ -376,13 +380,22 @@ export const SavingsCalculator = memo(function SavingsCalculator() {
       max += 180;
     }
 
-    // Adjust based on heating - gaz adds savings, not reduces them
+    // Adjust based on heating type
     if (p.chauffage === "electrique") {
       min += 30;
       max += 50;
     } else if (p.chauffage === "gaz") {
       min += 80;
       max += 150;
+    } else if (p.chauffage === "pompe_chaleur") {
+      min += 40;
+      max += 70;
+    } else if (p.chauffage === "fioul") {
+      min += 100;
+      max += 180;
+    } else if (p.chauffage === "collectif") {
+      min -= 30;
+      max -= 20;
     }
 
     // Adjust based on bill
@@ -401,14 +414,22 @@ export const SavingsCalculator = memo(function SavingsCalculator() {
     }
 
     const logementLabel = p.logement === "maison" ? "une maison" : "un appartement";
-    const chauffageLabel = p.chauffage === "electrique" ? "l'électricité" : 
-                           p.chauffage === "gaz" ? "l'électricité et le gaz" : "l'énergie";
+    const getChauffageLabel = () => {
+      switch (p.chauffage) {
+        case "electrique": return "l'électricité";
+        case "gaz": return "l'électricité et le gaz";
+        case "pompe_chaleur": return "l'électricité (pompe à chaleur)";
+        case "fioul": return "l'énergie (fioul)";
+        case "collectif": return "vos charges de chauffage collectif";
+        default: return "l'énergie";
+      }
+    };
     const internetLabel = p.internet ? " et votre box internet" : "";
 
     return {
       minEconomie: Math.round(min / 10) * 10,
       maxEconomie: Math.round(max / 10) * 10,
-      explication: `Pour ${logementLabel} avec votre profil, vous pouvez économiser sur ${chauffageLabel}${internetLabel} grâce à l'achat groupé Switchly. Cette estimation est basée sur les économies réalisées par des foyers similaires.`
+      explication: `Pour ${logementLabel} avec votre profil, vous pouvez économiser sur ${getChauffageLabel()}${internetLabel} grâce à l'achat groupé Switchly. Cette estimation est basée sur les économies réalisées par des foyers similaires.`
     };
   };
 
@@ -419,7 +440,11 @@ export const SavingsCalculator = memo(function SavingsCalculator() {
     const profileSummary = {
       logement: profile.logement === "maison" ? "Maison" : "Appartement",
       surface: profile.surface === "moins_60" ? "< 60 m²" : profile.surface === "60_100" ? "60-100 m²" : "> 100 m²",
-      chauffage: profile.chauffage === "electrique" ? "Chauffage électrique" : profile.chauffage === "gaz" ? "Chauffage gaz" : "Autre chauffage",
+      chauffage: profile.chauffage === "electrique" ? "Électrique" : 
+                 profile.chauffage === "gaz" ? "Gaz" : 
+                 profile.chauffage === "pompe_chaleur" ? "Pompe à chaleur" : 
+                 profile.chauffage === "fioul" ? "Fioul" : 
+                 profile.chauffage === "collectif" ? "Collectif" : "Autre",
       facture: profile.facture === "moins_80" ? "< 80 €/mois" : profile.facture === "80_120" ? "80-120 €/mois" : profile.facture === "plus_120" ? "> 120 €/mois" : "Facture inconnue",
       estimation: estimation,
     };
