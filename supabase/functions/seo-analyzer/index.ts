@@ -5,56 +5,95 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Configuration Switchly - Contexte projet complet
+// Configuration Switchly - Contexte projet optimisé
 const SWITCHLY_CONTEXT = `
-INFORMATIONS PROJET SWITCHLY:
-- Nom: Switchly
-- Industrie: Achat groupé électricité + internet (Energy Tech)
-- Modèle: Marketplace B2C, commission courtier
-- USP unique: SEULE plateforme combinant électricité ET internet
-- Cible: Foyers français cherchant à réduire factures
-- Promesse: Économiser 287€/an en moyenne (400€ max)
-- Processus: Inscription 30 sec SMS → Courtier compare 20+ fournisseurs → Offre personnalisée 48-72h
-- Différenciation vs Selectra: Plus rapide (30 sec vs 10 min), combo unique, IA 92% précise, transparent (Selectra condamné 400K€)
-- Tech stack: Lovable, Supabase, Claude AI, Twilio SMS
-- Audience: Familles 25-55 ans, étudiants, jeunes actifs
-- Tone of voice: Accessible, transparent, bienveillant, data-driven
-- Membres actuels: 2 547
-- Économie moyenne: 287€/an
-- Courtier: Partenaire confirmé, 30€/lead
+=== SWITCHLY - CONTEXTE PROJET ===
+Industrie: Achat groupé électricité + internet (Energy Tech B2C)
+USP: SEULE plateforme combinant électricité ET internet en France
 
-OBJECTIFS SITE:
-1. Maximiser conversions (objectif: 8-12% visiteur → inscrit)
-2. Générer confiance immédiate (preuves sociales, transparence)
-3. Simplifier au maximum (friction zéro)
-4. Différencier clairement vs Selectra/UFC
+DONNÉES CLÉS:
+• 2 547 membres inscrits
+• 287€ économisés/an en moyenne (max 400€)
+• 30 secondes pour s'inscrire via SMS
+• 20+ fournisseurs comparés
+• 48-72h pour recevoir une offre personnalisée
+• IA 92% de précision
 
-CONCURRENTS À DÉPASSER:
-- Selectra: Comparateur énergie (condamné 400K€ pour pratiques trompeuses)
-- UFC-Que Choisir: Achat groupé mais lent et complexe
-- Comparateurs classiques: HelloWatt, LeLynx
+OBJECTIFS:
+• Conversion cible: 8-12% visiteur → inscrit
+• Dépasser Selectra et UFC-Que Choisir
+
+DIFFÉRENCIATEURS VS SELECTRA:
+• Rapidité: 30 sec vs 10 min
+• Combo unique: électricité + internet
+• Transparence: Selectra condamné 400K€
 
 MOTS-CLÉS PRIORITAIRES:
-- Primaires: achat groupé électricité, économies énergie, réduire facture électricité, achat groupé internet
-- Secondaires: comparateur énergie France, fournisseur électricité pas cher, fibre pas cher, économiser factures
-- Longue traîne: comment réduire sa facture d'électricité, meilleur fournisseur énergie 2024, achat groupé énergie particuliers
+• Primaires: achat groupé électricité, économies énergie, réduire facture électricité
+• Secondaires: comparateur énergie France, fournisseur électricité pas cher
+• Longue traîne: comment réduire sa facture électricité 2024
 
-DONNÉES À METTRE EN AVANT:
-- 2 547 membres inscrits
-- 287€ économisés en moyenne par an
-- 30 secondes pour s'inscrire
-- 20+ fournisseurs comparés
-- 48-72h pour recevoir son offre
-- 92% de précision IA
-- 400€ d'économies max
-
-DIFFÉRENCIATEURS CLÉS:
-1. Combo unique: Électricité + Internet (aucun concurrent)
-2. Rapidité: 30 sec inscription (Selectra = 10 min)
-3. Transparence: Contrairement à Selectra condamné
-4. Simplicité: SMS, pas de compte complexe
-5. Personnalisation: IA 92% de précision
+TON: Accessible, transparent, bienveillant, data-driven
+CIBLE: Foyers français 25-55 ans, étudiants, jeunes actifs
 `;
+
+// Fonction utilitaire pour extraire le JSON d'une réponse IA
+function extractJSON(response: string): any {
+  // Essayer d'abord d'extraire du markdown code block
+  const codeBlockMatch = response.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if (codeBlockMatch) {
+    try {
+      return JSON.parse(codeBlockMatch[1].trim());
+    } catch { /* continue */ }
+  }
+
+  // Essayer de parser directement
+  try {
+    return JSON.parse(response.trim());
+  } catch { /* continue */ }
+
+  // Chercher un objet JSON dans le texte
+  const jsonMatch = response.match(/\{[\s\S]*\}/);
+  if (jsonMatch) {
+    try {
+      return JSON.parse(jsonMatch[0]);
+    } catch { /* continue */ }
+  }
+
+  return { raw: response, parseError: true };
+}
+
+// Validation et nettoyage des résultats
+function validateSEOResult(result: any, type: string): any {
+  if (result.parseError) return result;
+
+  // Validation par type
+  switch (type) {
+    case "meta_tags":
+      return {
+        title: result.title?.substring(0, 60) || "",
+        description: result.description?.substring(0, 160) || "",
+        keywords: Array.isArray(result.keywords) ? result.keywords.slice(0, 10) : [],
+        ogTitle: result.ogTitle?.substring(0, 60) || result.title?.substring(0, 60) || "",
+        ogDescription: result.ogDescription?.substring(0, 160) || result.description?.substring(0, 160) || "",
+        canonical: result.canonical || "",
+        reasoning: result.reasoning || ""
+      };
+    case "content_analysis":
+      return {
+        score: Math.min(100, Math.max(0, result.score || 0)),
+        keywordDensity: result.keywordDensity || "",
+        readability: result.readability || "",
+        conversionOptimization: result.conversionOptimization || "",
+        recommendations: Array.isArray(result.recommendations) ? result.recommendations : [],
+        missingElements: Array.isArray(result.missingElements) ? result.missingElements : [],
+        strengths: Array.isArray(result.strengths) ? result.strengths : [],
+        competitorComparison: result.competitorComparison || ""
+      };
+    default:
+      return result;
+  }
+}
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -62,12 +101,22 @@ serve(async (req) => {
   }
 
   try {
-    const { type, content, url, pageTitle, pageDescription, contentItems, metrics, existingSettings, siteData } = await req.json();
+    const body = await req.json();
+    const { type, content, url, pageTitle, pageDescription, contentItems, metrics, existingSettings, siteData } = body;
+    
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     
     if (!LOVABLE_API_KEY) {
-      throw new Error("LOVABLE_API_KEY is not configured");
+      console.error("LOVABLE_API_KEY missing");
+      return new Response(
+        JSON.stringify({ success: false, error: "Configuration IA manquante" }),
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
     }
+
+    console.log(`[SEO-Analyzer] Request type: ${type}, URL: ${url || 'N/A'}`);
+
+    const startTime = Date.now();
 
     let systemPrompt = "";
     let userPrompt = "";
@@ -286,70 +335,83 @@ ${content?.substring(0, 6000)}`;
         throw new Error("Type d'analyse non reconnu");
     }
 
-    console.log(`SEO Analysis request - Type: ${type}`);
+    // Appel à l'IA avec retry
+    let aiResponse: string | null = null;
+    let lastError: Error | null = null;
+    
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${LOVABLE_API_KEY}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model: "google/gemini-2.5-flash",
+            messages: [
+              { role: "system", content: systemPrompt },
+              { role: "user", content: userPrompt }
+            ],
+            temperature: 0.3, // Plus déterministe pour des résultats cohérents
+          }),
+        });
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userPrompt }
-        ],
-      }),
-    });
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error(`[SEO-Analyzer] AI error (attempt ${attempt + 1}):`, response.status, errorText);
+          
+          if (response.status === 429) {
+            return new Response(
+              JSON.stringify({ success: false, error: "Limite de requêtes atteinte. Réessayez dans quelques instants." }),
+              { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+          }
+          if (response.status === 402) {
+            return new Response(
+              JSON.stringify({ success: false, error: "Crédits IA insuffisants. Rechargez votre compte Lovable." }),
+              { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+          }
+          
+          lastError = new Error(`AI request failed: ${response.status}`);
+          continue;
+        }
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("AI Gateway error:", response.status, errorText);
-      
-      if (response.status === 429) {
-        return new Response(
-          JSON.stringify({ error: "Limite de requêtes atteinte. Réessayez dans quelques instants." }),
-          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
+        const data = await response.json();
+        aiResponse = data.choices?.[0]?.message?.content;
+        
+        if (aiResponse) break;
+        
+      } catch (fetchError) {
+        lastError = fetchError instanceof Error ? fetchError : new Error("Fetch error");
+        console.error(`[SEO-Analyzer] Fetch error (attempt ${attempt + 1}):`, fetchError);
       }
-      if (response.status === 402) {
-        return new Response(
-          JSON.stringify({ error: "Crédits insuffisants. Veuillez recharger votre compte." }),
-          { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
-      throw new Error(`AI request failed: ${response.status}`);
     }
-
-    const data = await response.json();
-    const aiResponse = data.choices?.[0]?.message?.content;
 
     if (!aiResponse) {
-      throw new Error("Réponse AI vide");
+      throw lastError || new Error("Impossible d'obtenir une réponse IA");
     }
 
-    // Parse JSON from AI response
-    let parsedResult;
-    try {
-      // Extract JSON from response (handle markdown code blocks)
-      const jsonMatch = aiResponse.match(/```(?:json)?\s*([\s\S]*?)```/) || [null, aiResponse];
-      const jsonStr = jsonMatch[1]?.trim() || aiResponse.trim();
-      parsedResult = JSON.parse(jsonStr);
-    } catch (parseError) {
-      console.error("JSON parse error:", parseError, "Response:", aiResponse);
-      parsedResult = { raw: aiResponse, parseError: true };
-    }
-
-    console.log(`SEO Analysis completed - Type: ${type}`);
+    // Parser et valider le résultat
+    const parsedResult = extractJSON(aiResponse);
+    const validatedResult = validateSEOResult(parsedResult, type);
+    
+    const duration = Date.now() - startTime;
+    console.log(`[SEO-Analyzer] Completed in ${duration}ms - Type: ${type}`);
 
     return new Response(
-      JSON.stringify({ success: true, result: parsedResult, type }),
+      JSON.stringify({ 
+        success: true, 
+        result: validatedResult, 
+        type,
+        duration
+      }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
 
   } catch (error: unknown) {
-    console.error("SEO Analyzer error:", error);
+    console.error("[SEO-Analyzer] Error:", error);
     const errorMessage = error instanceof Error ? error.message : "Erreur inconnue";
     return new Response(
       JSON.stringify({ success: false, error: errorMessage }),
