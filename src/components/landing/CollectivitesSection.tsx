@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 export const CollectivitesSection = () => {
   return (
-    <section className="py-8 sm:py-10 lg:py-16 bg-muted/30 min-h-[60svh] lg:min-h-auto flex items-center">
+    <section className="py-10 sm:py-12 lg:py-16 bg-muted/30">
       <div className="container mx-auto px-4 sm:px-6 w-full">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -14,17 +14,17 @@ export const CollectivitesSection = () => {
           viewport={{ once: true }}
           className="max-w-3xl mx-auto text-center"
         >
-          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary mb-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary mb-3">
             <Building2 className="w-3.5 h-3.5" />
             <span className="text-xs font-medium">Collectivités</span>
           </div>
 
-          <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold text-foreground mb-2 lg:mb-4">
-            Organisez un achat groupé d'énergie dans votre ville
+          <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold text-foreground mb-3 lg:mb-4">
+            Organisez un achat groupé dans votre ville
           </h2>
           
-          <p className="text-sm lg:text-lg text-muted-foreground mb-5 max-w-2xl mx-auto">
-            Switchly accompagne les mairies et collectivités dans l'organisation d'achats groupés d'électricité, gaz et internet pour leurs habitants.
+          <p className="text-[13px] leading-relaxed lg:text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
+            Switchly accompagne les mairies et collectivités dans l'organisation d'achats groupés pour leurs habitants.
           </p>
 
           <Button

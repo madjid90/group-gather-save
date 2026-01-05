@@ -113,6 +113,12 @@
 
   html {
     scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Mobile-first viewport height */
+  :root {
+    --vh: 1vh;
   }
   
   /* Reduce motion for users who prefer it */
@@ -127,6 +133,9 @@
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior-y: none;
   }
 
   /* Prevent zoom on input focus for iOS */
@@ -137,6 +146,27 @@
   @media screen and (max-width: 768px) {
     input, select, textarea {
       font-size: 16px !important;
+    }
+  }
+  
+  /* Smooth snap scroll for mobile */
+  .snap-section {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+  
+  /* Disable snap on desktop */
+  @media (min-width: 1024px) {
+    .snap-section {
+      scroll-snap-align: unset;
+      scroll-snap-stop: unset;
+    }
+  }
+  
+  /* Touch-friendly tap targets */
+  @media (max-width: 768px) {
+    button, a, [role="button"] {
+      min-height: 44px;
     }
   }
 }

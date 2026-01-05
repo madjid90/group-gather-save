@@ -476,7 +476,7 @@ export const SavingsCalculator = memo(function SavingsCalculator() {
   const totalSteps = 5;
 
   return (
-    <section id="estimateur" className="py-8 md:py-14 bg-gradient-to-b from-muted/30 to-background min-h-[90svh] md:min-h-auto flex items-center">
+    <section id="estimateur" className="py-10 md:py-14 bg-gradient-to-b from-muted/30 to-background">
       <div className="container mx-auto px-4 md:px-6 w-full">
         <div className="max-w-2xl mx-auto">
           {/* Header */}
@@ -484,13 +484,13 @@ export const SavingsCalculator = memo(function SavingsCalculator() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-4"
+            className="text-center mb-5"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-medium mb-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-medium mb-3">
               <Calculator className="w-3.5 h-3.5" />
               Estimateur d'économies
             </div>
-            <h2 className="text-xl md:text-3xl font-bold text-foreground mb-1">
+            <h2 className="text-xl md:text-3xl font-bold text-foreground mb-2">
               Combien pouvez-vous économiser ?
             </h2>
             <p className="text-sm text-muted-foreground">

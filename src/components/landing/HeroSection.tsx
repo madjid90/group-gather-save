@@ -180,7 +180,7 @@ export const HeroSection = memo(function HeroSection() {
   const { count, notification } = useAnimatedSocialProof(2547, 12000);
 
   return (
-    <section className="relative min-h-[85svh] lg:min-h-[90svh] flex items-center overflow-hidden py-4 lg:py-0">
+    <section className="relative min-h-[calc(100svh-4rem)] lg:min-h-[90svh] flex items-center overflow-hidden py-6 lg:py-0">
       {/* Background gradient - simplified for performance */}
       <div className="absolute inset-0 bg-gradient-subtle" aria-hidden="true" />
       
@@ -191,30 +191,24 @@ export const HeroSection = memo(function HeroSection() {
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-4 lg:gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-6 lg:gap-12 items-center">
           {/* Mobile counter - top */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="lg:hidden flex items-center justify-center mb-2"
+            className="lg:hidden flex items-center justify-center"
           >
-            <div className="flex items-center gap-2 bg-card/80 backdrop-blur-sm border border-border rounded-full px-4 py-2.5 shadow-lg">
+            <div className="flex items-center gap-2 bg-card/80 backdrop-blur-sm border border-border rounded-full px-3 py-2 shadow-lg">
               <motion.span 
-                className="flex items-center gap-1.5 bg-secondary text-secondary-foreground px-2.5 py-1 rounded-full text-xs font-semibold"
-                animate={{ 
-                  scale: [1, 1.05, 1],
-                }}
-                transition={{ 
-                  duration: 2, 
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
+                className="flex items-center gap-1 bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full text-[11px] font-semibold"
+                animate={{ scale: [1, 1.05, 1] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-secondary-foreground animate-pulse" />
                 en direct
               </motion.span>
-              <span className="text-xl font-bold text-foreground">
+              <span className="text-lg font-bold text-foreground">
                 <AnimatedCounter 
                   target={2547}
                   externalValue={count}
@@ -222,7 +216,7 @@ export const HeroSection = memo(function HeroSection() {
                   showLiveIndicator={false}
                 />
               </span>
-              <span className="text-sm text-muted-foreground">inscrits</span>
+              <span className="text-xs text-muted-foreground">inscrits</span>
             </div>
           </motion.div>
 
@@ -231,16 +225,16 @@ export const HeroSection = memo(function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="space-y-3 lg:space-y-6 text-center lg:text-left"
+            className="space-y-4 lg:space-y-6 text-center lg:text-left"
           >
             {/* Title */}
-            <h1 className="text-2xl sm:text-3xl lg:text-5xl xl:text-6xl font-bold text-foreground leading-tight">
+            <h1 className="text-[22px] leading-tight sm:text-3xl lg:text-5xl xl:text-6xl font-bold text-foreground">
               Économisez jusqu'à <span className="gradient-text">312€</span> par an sur vos factures{" "}
               <span className="gradient-text">d'énergie et internet</span>
             </h1>
 
             {/* Description */}
-            <p className="text-sm sm:text-base lg:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0">
+            <p className="text-[15px] leading-relaxed sm:text-base lg:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0">
               Achat groupé sans engagement. Plus on est nombreux, plus les prix baissent.
             </p>
 
@@ -248,11 +242,7 @@ export const HeroSection = memo(function HeroSection() {
             <div className="hidden lg:flex flex-col items-start gap-4 pt-2">
               <motion.div
                 animate={{ scale: [1, 1.02, 1] }}
-                transition={{ 
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
               >
                 <Button 
                   variant="hero" 
@@ -266,7 +256,6 @@ export const HeroSection = memo(function HeroSection() {
                   </Link>
                 </Button>
               </motion.div>
-              {/* Trust badges below CTA */}
               <TrustBadges />
             </div>
             
@@ -277,14 +266,14 @@ export const HeroSection = memo(function HeroSection() {
             
             {/* Scroll indicator - Mobile/Tablet only */}
             <motion.div 
-              className="lg:hidden pt-2 flex justify-center"
-              animate={{ y: [0, 8, 0] }}
+              className="lg:hidden pt-4 flex justify-center"
+              animate={{ y: [0, 6, 0] }}
               transition={{ duration: 2, repeat: Infinity }}
             >
-              <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 flex items-start justify-center p-1">
+              <div className="w-5 h-8 rounded-full border-2 border-muted-foreground/30 flex items-start justify-center p-1">
                 <motion.div 
-                  className="w-1.5 h-2.5 bg-muted-foreground/50 rounded-full"
-                  animate={{ y: [0, 12, 0] }}
+                  className="w-1 h-2 bg-muted-foreground/50 rounded-full"
+                  animate={{ y: [0, 10, 0] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 />
               </div>
