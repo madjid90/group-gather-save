@@ -6,26 +6,51 @@ const corsHeaders = {
 };
 
 // Pages Switchly à analyser
-const SWITCHLY_PAGES = {
-  home: { url: '/', label: 'Accueil', fullUrl: '' },
-  inscription: { url: '/inscription', label: 'Inscription', fullUrl: '' },
-  faq: { url: '/faq', label: 'FAQ', fullUrl: '' },
-  contact: { url: '/contact', label: 'Contact', fullUrl: '' },
-  organiser: { url: '/organiser-achat-groupe', label: 'Organiser un achat groupé', fullUrl: '' },
-  invitation: { url: '/invitation', label: 'Invitation', fullUrl: '' },
+const SWITCHLY_PAGES: Record<string, { url: string; label: string; priority: 'high' | 'medium' | 'low' }> = {
+  home: { url: '/', label: 'Accueil', priority: 'high' },
+  inscription: { url: '/inscription', label: 'Inscription', priority: 'high' },
+  faq: { url: '/faq', label: 'FAQ', priority: 'medium' },
+  contact: { url: '/contact', label: 'Contact', priority: 'medium' },
+  organiser: { url: '/organiser-achat-groupe', label: 'Organiser un achat groupé', priority: 'high' },
+  invitation: { url: '/invitation', label: 'Invitation', priority: 'low' },
 };
 
-// Concurrents pour comparaison
-const COMPETITORS = {
-  ecodigo: { name: 'Ecodigo', url: 'https://www.ecodigo.fr/' },
-  hellowatt: { name: 'HelloWatt', url: 'https://www.hellowatt.fr/achats-groupes/energie-classique/' },
-  selectra: { name: 'Selectra', url: 'https://selectra.info/achat-groupe/energie' },
+// Concurrents pour comparaison (limité à 2 pour réduire le temps)
+const COMPETITORS: Record<string, { name: string; url: string; focus: string }> = {
+  selectra: { name: 'Selectra', url: 'https://selectra.info/achat-groupe/energie', focus: 'comparateur principal' },
+  hellowatt: { name: 'HelloWatt', url: 'https://www.hellowatt.fr/achats-groupes/energie-classique/', focus: 'achat groupé' },
 };
+
+// Extraction JSON robuste
+function extractJSON(response: string): any {
+  const patterns = [
+    /```json\s*([\s\S]*?)```/,
+    /```\s*([\s\S]*?)```/,
+    /(\{[\s\S]*\})/
+  ];
+
+  for (const pattern of patterns) {
+    const match = response.match(pattern);
+    if (match) {
+      try {
+        return JSON.parse(match[1].trim());
+      } catch { continue; }
+    }
+  }
+
+  try {
+    return JSON.parse(response.trim());
+  } catch {
+    return { raw: response, parseError: true };
+  }
+}
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
+
+  const startTime = Date.now();
 
   try {
     const { pageKey, siteUrl, analyzeType } = await req.json();
@@ -34,15 +59,17 @@ serve(async (req) => {
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     
     if (!FIRECRAWL_API_KEY) {
+      console.error('[Analyze-SEO] Firecrawl API key missing');
       return new Response(
-        JSON.stringify({ success: false, error: 'Firecrawl connector not configured' }),
+        JSON.stringify({ success: false, error: 'Connecteur Firecrawl non configuré. Configurez-le dans les settings.' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
     if (!LOVABLE_API_KEY) {
+      console.error('[Analyze-SEO] Lovable API key missing');
       return new Response(
-        JSON.stringify({ success: false, error: 'LOVABLE_API_KEY not configured' }),
+        JSON.stringify({ success: false, error: 'Configuration IA manquante' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -56,104 +83,111 @@ serve(async (req) => {
     }
 
     const baseUrl = siteUrl || 'https://switchly.fr';
-    const page = SWITCHLY_PAGES[pageKey as keyof typeof SWITCHLY_PAGES];
+    const page = SWITCHLY_PAGES[pageKey];
     
     if (!page) {
       return new Response(
-        JSON.stringify({ success: false, error: 'Page non trouvée' }),
+        JSON.stringify({ success: false, error: `Page "${pageKey}" non trouvée` }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
     const pageUrl = `${baseUrl}${page.url}`;
-    console.log(`Analyzing page: ${pageUrl}`);
+    console.log(`[Analyze-SEO] Starting analysis: ${pageUrl}`);
 
-    // Scraper la page Switchly
+    // Scraper la page Switchly (prioritaire)
     const switchlyScrape = await scrapePage(pageUrl, FIRECRAWL_API_KEY);
     
     if (!switchlyScrape.success) {
+      console.error(`[Analyze-SEO] Scrape failed for ${pageUrl}:`, switchlyScrape.error);
       return new Response(
-        JSON.stringify({ success: false, error: `Impossible de scraper ${pageUrl}: ${switchlyScrape.error}` }),
+        JSON.stringify({ success: false, error: `Impossible de récupérer ${page.label}: ${switchlyScrape.error}` }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    // Scraper 1-2 pages concurrentes pour comparaison
-    const competitorScrapes: any[] = [];
-    const competitorUrls = Object.values(COMPETITORS).slice(0, 2);
-    
-    for (const comp of competitorUrls) {
+    // Scraper les concurrents en parallèle (max 2 pour la vitesse)
+    const competitorEntries = Object.entries(COMPETITORS);
+    const competitorPromises = competitorEntries.map(async ([key, comp]) => {
       const scrape = await scrapePage(comp.url, FIRECRAWL_API_KEY);
       if (scrape.success) {
-        competitorScrapes.push({
-          name: comp.name,
-          url: comp.url,
-          ...scrape
-        });
+        return { key, name: comp.name, url: comp.url, focus: comp.focus, ...scrape };
       }
-    }
-
-    console.log(`Scraped Switchly page + ${competitorScrapes.length} competitors`);
-
-    // Construire le prompt d'analyse section par section
-    const analysisPrompt = buildPageAnalysisPrompt(
-      page.label,
-      page.url,
-      switchlyScrape,
-      competitorScrapes
-    );
-
-    // Appeler l'IA pour analyse
-    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          { 
-            role: 'system', 
-            content: 'Tu es un expert SEO et CRO français. Tu analyses les pages web section par section et fournis des recommandations ultra-précises et actionnables. Format JSON uniquement.' 
-          },
-          { role: 'user', content: analysisPrompt }
-        ],
-      }),
+      return null;
     });
 
-    if (!aiResponse.ok) {
-      const errorText = await aiResponse.text();
-      console.error('AI error:', aiResponse.status, errorText);
-      
-      if (aiResponse.status === 429) {
-        return new Response(
-          JSON.stringify({ error: 'Rate limit atteint. Réessayez.' }),
-          { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-      throw new Error(`AI failed: ${aiResponse.status}`);
-    }
+    const competitorResults = await Promise.all(competitorPromises);
+    const competitorScrapes = competitorResults.filter(Boolean);
 
-    const aiData = await aiResponse.json();
-    const aiContent = aiData.choices?.[0]?.message?.content;
+    console.log(`[Analyze-SEO] Scraped Switchly + ${competitorScrapes.length} competitors in ${Date.now() - startTime}ms`);
+
+    // Construire le prompt optimisé
+    const analysisPrompt = buildPageAnalysisPrompt(page.label, page.url, switchlyScrape, competitorScrapes);
+
+    // Appeler l'IA avec retry
+    let aiContent: string | null = null;
+    
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: 'google/gemini-2.5-flash',
+            messages: [
+              { 
+                role: 'system', 
+                content: `Tu es un expert SEO et CRO français senior avec 15 ans d'expérience.
+Tu analyses les pages web section par section et fournis des recommandations ULTRA-PRÉCISES et ACTIONNABLES.
+Tu dois TOUJOURS répondre en JSON valide uniquement, sans texte avant ou après.
+Sois concis mais précis. Chaque recommandation doit avoir un impact mesurable.` 
+              },
+              { role: 'user', content: analysisPrompt }
+            ],
+            temperature: 0.2, // Très déterministe pour des analyses cohérentes
+          }),
+        });
+
+        if (!aiResponse.ok) {
+          const errorText = await aiResponse.text();
+          console.error(`[Analyze-SEO] AI error (attempt ${attempt + 1}):`, aiResponse.status);
+          
+          if (aiResponse.status === 429) {
+            return new Response(
+              JSON.stringify({ success: false, error: 'Limite IA atteinte. Réessayez dans 1 minute.' }),
+              { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+            );
+          }
+          if (aiResponse.status === 402) {
+            return new Response(
+              JSON.stringify({ success: false, error: 'Crédits IA insuffisants.' }),
+              { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+            );
+          }
+          continue;
+        }
+
+        const aiData = await aiResponse.json();
+        aiContent = aiData.choices?.[0]?.message?.content;
+        if (aiContent) break;
+        
+      } catch (err) {
+        console.error(`[Analyze-SEO] Fetch error (attempt ${attempt + 1}):`, err);
+      }
+    }
 
     if (!aiContent) {
-      throw new Error('Réponse IA vide');
+      throw new Error('Impossible d\'obtenir une analyse IA');
     }
 
-    // Parser le JSON
-    let analysis;
-    try {
-      const jsonMatch = aiContent.match(/```(?:json)?\s*([\s\S]*?)```/) || [null, aiContent];
-      const jsonStr = jsonMatch[1]?.trim() || aiContent.trim();
-      analysis = JSON.parse(jsonStr);
-    } catch {
-      console.error('JSON parse error');
-      analysis = { raw: aiContent, parseError: true };
-    }
-
-    console.log('Page analysis completed');
+    // Parser le JSON avec la fonction robuste
+    const analysis = extractJSON(aiContent);
+    
+    const totalDuration = Date.now() - startTime;
+    console.log(`[Analyze-SEO] Completed in ${totalDuration}ms`);
 
     return new Response(
       JSON.stringify({ 
@@ -162,29 +196,40 @@ serve(async (req) => {
           key: pageKey,
           label: page.label,
           url: page.url,
-          fullUrl: pageUrl
+          fullUrl: pageUrl,
+          priority: page.priority
         },
         scrapeData: {
-          title: switchlyScrape.metadata?.title,
-          description: switchlyScrape.metadata?.description,
+          title: switchlyScrape.metadata?.title || 'N/A',
+          description: switchlyScrape.metadata?.description || 'N/A',
           contentLength: switchlyScrape.content?.length || 0
         },
         competitorsAnalyzed: competitorScrapes.length,
-        analysis
+        analysis,
+        duration: totalDuration
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
   } catch (error) {
-    console.error('Page analysis error:', error);
+    console.error('[Analyze-SEO] Error:', error);
     return new Response(
-      JSON.stringify({ success: false, error: error instanceof Error ? error.message : 'Erreur' }),
+      JSON.stringify({ success: false, error: error instanceof Error ? error.message : 'Erreur inattendue' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
 });
 
-async function scrapePage(url: string, apiKey: string) {
+async function scrapePage(url: string, apiKey: string, timeout = 15000): Promise<{
+  success: boolean;
+  content?: string;
+  html?: string;
+  metadata?: Record<string, any>;
+  error?: string;
+}> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeout);
+
   try {
     const response = await fetch('https://api.firecrawl.dev/v1/scrape', {
       method: 'POST',
@@ -194,25 +239,32 @@ async function scrapePage(url: string, apiKey: string) {
       },
       body: JSON.stringify({
         url,
-        formats: ['markdown', 'html'],
+        formats: ['markdown'],
         onlyMainContent: true,
+        waitFor: 2000, // Attendre que la page soit chargée
       }),
+      signal: controller.signal,
     });
 
+    clearTimeout(timeoutId);
     const data = await response.json();
     
     if (response.ok && data.success) {
+      const content = data.data?.markdown || data.markdown || '';
       return {
         success: true,
-        content: data.data?.markdown || data.markdown || '',
-        html: data.data?.html || data.html || '',
+        content: content.substring(0, 8000), // Limiter pour réduire les tokens
         metadata: data.data?.metadata || data.metadata || {},
       };
     }
     
-    return { success: false, error: data.error || 'Scrape failed' };
+    return { success: false, error: data.error || 'Scrape échoué' };
   } catch (e) {
-    return { success: false, error: e instanceof Error ? e.message : 'Error' };
+    clearTimeout(timeoutId);
+    if (e instanceof Error && e.name === 'AbortError') {
+      return { success: false, error: 'Timeout: la page met trop de temps à répondre' };
+    }
+    return { success: false, error: e instanceof Error ? e.message : 'Erreur réseau' };
   }
 }
 
@@ -221,152 +273,80 @@ function buildPageAnalysisPrompt(
   pageUrl: string,
   switchlyData: any,
   competitors: any[]
-) {
+): string {
   const competitorsText = competitors.map(c => `
---- ${c.name} ---
-URL: ${c.url}
+[${c.name}] ${c.focus || ''}
 Titre: ${c.metadata?.title || 'N/A'}
 Description: ${c.metadata?.description || 'N/A'}
-Contenu (extrait): ${c.content?.substring(0, 1500) || 'N/A'}
-`).join('\n');
+Extrait: ${c.content?.substring(0, 1200) || 'N/A'}
+`).join('\n---\n');
 
-  return `ANALYSE DÉTAILLÉE PAGE PAR PAGE - "${pageLabel}" (${pageUrl})
+  return `ANALYSE SEO + CRO: "${pageLabel}" (${pageUrl})
 
-=== DONNÉES SCRAPÉES DE LA PAGE SWITCHLY ===
-Titre actuel: ${switchlyData.metadata?.title || 'Non défini'}
-Meta description actuelle: ${switchlyData.metadata?.description || 'Non définie'}
-Contenu de la page:
-${switchlyData.content?.substring(0, 4000) || 'Contenu non disponible'}
+## PAGE SWITCHLY
+Titre: ${switchlyData.metadata?.title || 'Non défini'}
+Description: ${switchlyData.metadata?.description || 'Non définie'}
+Contenu:
+${switchlyData.content?.substring(0, 5000) || 'N/A'}
 
-=== CONCURRENTS POUR COMPARAISON ===
+## CONCURRENTS
 ${competitorsText}
 
-=== CONTEXTE SWITCHLY ===
-- Proposition unique: SEUL à combiner électricité + internet en achat groupé
-- Stats: 2547 membres, 287€/an économisés
-- UX: inscription 30 sec par SMS
-- Objectif: conversion 8-12%
+## CONTEXTE
+- USP: Seul combo électricité + internet
+- Stats: 2547 membres, 287€/an économisés, inscription 30 sec
+- Objectif: 8-12% conversion
 
-=== MISSION ===
-Analyse COMPLÈTE de cette page avec recommandations SECTION PAR SECTION.
-Chaque recommandation doit être:
-1. SPÉCIFIQUE à cette page
-2. ACTIONNABLE immédiatement
-3. Basée sur ce que font les concurrents ET les meilleures pratiques
-
-FOURNIS UN JSON avec cette structure EXACTE:
+## CONSIGNES
+Analyse section par section. Recommandations ACTIONNABLES uniquement.
+Réponds en JSON valide:
 
 {
-  "pageScore": {
-    "global": 75,
-    "seo": 70,
-    "conversion": 80,
-    "ux": 75
-  },
+  "pageScore": { "global": 75, "seo": 70, "conversion": 80, "ux": 75 },
   "currentState": {
-    "title": "Titre actuel analysé",
+    "title": "titre analysé",
     "titleScore": 60,
-    "titleIssues": ["Problème 1", "Problème 2"],
-    "description": "Description actuelle",
+    "titleIssues": ["problème"],
+    "description": "description",
     "descriptionScore": 55,
-    "descriptionIssues": ["Problème 1"]
+    "descriptionIssues": ["problème"]
   },
-  "sections": [
-    {
-      "name": "Hero Section",
-      "currentContent": "Description du contenu actuel",
-      "score": 65,
-      "issues": ["Problème identifié 1", "Problème 2"],
-      "recommendations": [
-        {
-          "type": "headline",
-          "priority": "haute",
-          "current": "Texte actuel si applicable",
-          "suggested": "Nouveau texte recommandé",
-          "reason": "Pourquoi ce changement améliore la conversion",
-          "impact": "Impact estimé: +15% clics CTA"
-        }
-      ],
-      "competitorInsight": "Ce que font les concurrents pour cette section"
-    },
-    {
-      "name": "Section avantages/bénéfices",
-      "currentContent": "...",
-      "score": 70,
-      "issues": [],
-      "recommendations": [],
-      "competitorInsight": "..."
-    }
-  ],
+  "sections": [{
+    "name": "Hero",
+    "currentContent": "résumé",
+    "score": 65,
+    "issues": ["problème"],
+    "recommendations": [{
+      "type": "headline|cta|paragraph",
+      "priority": "haute|moyenne|basse",
+      "current": "texte actuel",
+      "suggested": "texte amélioré",
+      "reason": "pourquoi",
+      "impact": "+X% métrique"
+    }],
+    "competitorInsight": "ce que font les concurrents"
+  }],
   "seoRecommendations": {
-    "title": {
-      "current": "Titre actuel",
-      "suggested": "Nouveau titre optimisé (max 60 car)",
-      "keywords": ["mot-clé 1", "mot-clé 2"]
-    },
-    "description": {
-      "current": "Description actuelle",
-      "suggested": "Nouvelle description (max 155 car)",
-      "keywords": ["mot-clé inclus"]
-    },
-    "h1": {
-      "current": "H1 actuel",
-      "suggested": "H1 optimisé",
-      "reason": "Explication"
-    },
-    "keywords": {
-      "primary": "mot-clé principal",
-      "secondary": ["mot-clé 2", "mot-clé 3"],
-      "longTail": ["phrase longue traîne 1", "phrase 2"]
-    },
-    "internalLinks": ["Suggestion lien interne 1", "Lien 2"],
-    "structuredData": "Type de schema.org recommandé"
+    "title": { "current": "", "suggested": "", "keywords": [] },
+    "description": { "current": "", "suggested": "", "keywords": [] },
+    "h1": { "current": "", "suggested": "", "reason": "" },
+    "keywords": { "primary": "", "secondary": [], "longTail": [] },
+    "internalLinks": [],
+    "structuredData": "Organization ou FAQ"
   },
   "conversionRecommendations": {
-    "cta": {
-      "current": "Texte CTA actuel",
-      "suggested": "Nouveau CTA optimisé",
-      "placement": "Recommandation placement",
-      "design": "Recommandation design"
-    },
-    "socialProof": {
-      "current": "Élément actuel",
-      "suggested": "Amélioration recommandée",
-      "examples": ["Exemple 1", "Exemple 2"]
-    },
-    "urgency": {
-      "tactics": ["Tactique 1", "Tactique 2"],
-      "implementation": "Comment implémenter"
-    },
-    "trustSignals": ["Signal confiance à ajouter 1", "Signal 2"]
+    "cta": { "current": "", "suggested": "", "placement": "", "design": "" },
+    "socialProof": { "current": "", "suggested": "", "examples": [] },
+    "urgency": { "tactics": [], "implementation": "" },
+    "trustSignals": []
   },
-  "copywritingFixes": [
-    {
-      "location": "Où dans la page",
-      "current": "Texte actuel",
-      "suggested": "Texte amélioré",
-      "technique": "Technique utilisée (ex: pouvoir du 'vous', bénéfice client)"
-    }
-  ],
-  "technicalIssues": [
-    {
-      "issue": "Problème technique",
-      "severity": "haute|moyenne|basse",
-      "fix": "Comment corriger"
-    }
-  ],
-  "priorityActions": [
-    {
-      "action": "Action à faire",
-      "timeEstimate": "15 min",
-      "impact": "Impact élevé sur conversion",
-      "difficulty": "facile|moyen|difficile"
-    }
-  ],
+  "copywritingFixes": [{ "location": "", "current": "", "suggested": "", "technique": "" }],
+  "technicalIssues": [{ "issue": "", "severity": "haute|moyenne|basse", "fix": "" }],
+  "priorityActions": [{ "action": "", "timeEstimate": "", "impact": "", "difficulty": "facile|moyen|difficile" }],
   "competitorComparison": {
-    "switchlyStrengths": ["Force 1 vs concurrents", "Force 2"],
-    "switchlyWeaknesses": ["Point à améliorer 1"],
-    "opportunities": ["Opportunité 1 identifiée chez concurrents"]
+    "switchlyStrengths": [],
+    "switchlyWeaknesses": [],
+    "opportunities": []
   }
 }`;
 }
