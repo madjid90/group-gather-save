@@ -36,7 +36,7 @@ const advantages = [
 
 export function AdvantagesSection() {
   return (
-    <section className="py-8 sm:py-10 lg:py-16 bg-card min-h-[85svh] lg:min-h-auto flex items-center">
+    <section className="py-10 sm:py-12 lg:py-16 bg-card">
       <div className="container mx-auto px-4 sm:px-6 w-full">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -64,8 +64,8 @@ export function AdvantagesSection() {
               <span className="text-xs font-medium">Internet</span>
             </div>
           </div>
-          <p className="text-sm lg:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Des économies réelles, sans risque et sans engagement. Découvrez les avantages de l'achat groupé.
+          <p className="text-[13px] leading-relaxed lg:text-lg text-muted-foreground max-w-2xl mx-auto">
+            Des économies réelles, sans risque et sans engagement.
           </p>
         </motion.div>
 

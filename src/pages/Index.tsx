@@ -37,83 +37,65 @@ const Index = () => {
       {/* JSON-LD Structured Data */}
       <JsonLdSchema type="auto" />
       
-      {/* Snap scroll container for mobile */}
-      <div className="md:block md:snap-none snap-y snap-mandatory overflow-y-auto h-[calc(100svh-4rem)] md:h-auto md:overflow-visible">
-        {/* 1. Hero - Always loaded immediately for LCP */}
-        <section className="snap-start snap-always md:snap-align-none">
-          <HeroSection />
-        </section>
+      {/* Main content - no snap scroll, natural scrolling */}
+      <div className="w-full">
+        {/* 1. Hero */}
+        <HeroSection />
         
         {/* 2. Calculateur d'économies */}
-        <section className="snap-start snap-always md:snap-align-none">
-          <SavingsCalculator />
-        </section>
+        <SavingsCalculator />
         
         {/* 3. Comment ça marche */}
-        <section className="snap-start snap-always md:snap-align-none">
-          <LazySection>
-            <Suspense fallback={<SectionSkeleton />}>
-              <HowItWorksSection />
-            </Suspense>
-          </LazySection>
-        </section>
+        <LazySection>
+          <Suspense fallback={<SectionSkeleton />}>
+            <HowItWorksSection />
+          </Suspense>
+        </LazySection>
         
         {/* 4. Pourquoi Switchly */}
-        <section className="snap-start snap-always md:snap-align-none">
-          <LazySection>
-            <Suspense fallback={<SectionSkeleton />}>
-              <AdvantagesSection />
-            </Suspense>
-          </LazySection>
-        </section>
+        <LazySection>
+          <Suspense fallback={<SectionSkeleton />}>
+            <AdvantagesSection />
+          </Suspense>
+        </LazySection>
         
         {/* 5. Témoignages */}
-        <section className="snap-start snap-always md:snap-align-none">
-          <LazySection>
-            <Suspense fallback={<SectionSkeleton />}>
-              <TestimonialsSection />
-            </Suspense>
-          </LazySection>
-        </section>
+        <LazySection>
+          <Suspense fallback={<SectionSkeleton />}>
+            <TestimonialsSection />
+          </Suspense>
+        </LazySection>
         
         {/* 6. Fournisseurs partenaires */}
-        <section className="snap-start snap-always md:snap-align-none">
-          <LazySection>
-            <Suspense fallback={<SectionSkeleton />}>
-              <PartnersSection />
-            </Suspense>
-          </LazySection>
-        </section>
+        <LazySection>
+          <Suspense fallback={<SectionSkeleton />}>
+            <PartnersSection />
+          </Suspense>
+        </LazySection>
         
         {/* 7. FAQ */}
-        <section className="snap-start snap-always md:snap-align-none">
-          <LazySection>
-            <Suspense fallback={<SectionSkeleton />}>
-              <FAQSection />
-            </Suspense>
-          </LazySection>
-        </section>
+        <LazySection>
+          <Suspense fallback={<SectionSkeleton />}>
+            <FAQSection />
+          </Suspense>
+        </LazySection>
         
         {/* 8. CTA final */}
-        <section className="snap-start snap-always md:snap-align-none">
-          <LazySection>
-            <Suspense fallback={<SectionSkeleton />}>
-              <CTASection />
-            </Suspense>
-          </LazySection>
-        </section>
+        <LazySection>
+          <Suspense fallback={<SectionSkeleton />}>
+            <CTASection />
+          </Suspense>
+        </LazySection>
         
         {/* 9. Collectivités */}
-        <section className="snap-start snap-always md:snap-align-none">
-          <LazySection>
-            <Suspense fallback={<SectionSkeleton />}>
-              <CollectivitesSection />
-            </Suspense>
-          </LazySection>
-        </section>
+        <LazySection>
+          <Suspense fallback={<SectionSkeleton />}>
+            <CollectivitesSection />
+          </Suspense>
+        </LazySection>
         
         {/* Spacer for fixed CTA on mobile */}
-        <div className="h-20 md:hidden" />
+        <div className="h-24 md:hidden" />
       </div>
       
       {/* Fixed CTA for mobile only */}
