@@ -246,7 +246,7 @@ export default function Invitation() {
             {/* Main message */}
             <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground leading-tight mb-4">
               Un ami vous invite à rejoindre{" "}
-              <span className="gradient-text">l'achat groupé</span>
+              <span className="gradient-text">le comparateur gratuit</span>
             </h1>
             <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
               "Je viens de m'inscrire à un achat groupé d'électricité, gaz et box internet. Rejoins-moi pour économiser jusqu'à 400€/an !"
