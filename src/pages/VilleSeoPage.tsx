@@ -276,8 +276,8 @@ const VilleSeoPage = () => {
                 </p>
               )}
               <Button size="lg" variant="secondary" asChild>
-                <Link to="/inscription">
-                  S'inscrire gratuitement
+                <Link to={`/comparer?cp=${page.code_postal || ''}`}>
+                  Comparer gratuitement →
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
