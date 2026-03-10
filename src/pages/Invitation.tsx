@@ -249,7 +249,7 @@ export default function Invitation() {
               <span className="gradient-text">le comparateur gratuit</span>
             </h1>
             <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
-              "Je viens de m'inscrire à un achat groupé d'électricité, gaz et box internet. Rejoins-moi pour économiser jusqu'à 400€/an !"
+              "J'ai comparé mes offres énergie et internet sur Switchly et j'économise jusqu'à 400€/an ! C'est gratuit en 30 secondes."
             </p>
 
             {/* Trust badges */}
