@@ -98,7 +98,7 @@ export default function PolitiqueRGPD() {
                 5. Partage des données
               </h2>
               <p className="text-base text-muted-foreground leading-relaxed">
-                Vos données sont partagées de manière <strong className="text-foreground">anonymisée</strong> avec les fournisseurs d'énergie et d'internet pour la négociation des offres. 
+                Vos données sont partagées de manière <strong className="text-foreground">anonymisée</strong> avec les fournisseurs d'énergie et d'internet pour vous présenter des offres personnalisées. 
                 Aucune information permettant de vous identifier (nom, téléphone, email) n'est transmise aux fournisseurs.
               </p>
             </section>

@@ -53,7 +53,7 @@ export function FAQSection() {
             Questions fréquentes
           </h2>
           <p className="text-[13px] leading-relaxed lg:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Tout ce que vous devez savoir sur l'achat groupé Switchly.
+            Tout ce que vous devez savoir sur Switchly.
           </p>
         </motion.div>
 

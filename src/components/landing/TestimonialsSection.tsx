@@ -7,7 +7,7 @@ const testimonials = [
   { name: "Julie M.", location: "Lyon (69)", rating: 5, saving: "840€/an", type: "Électricité", text: "Inscription rapide, aucun appel, tout par SMS. J'économise 70€/mois sur l'électricité depuis 6 mois.", textMobile: "70€/mois économisés, tout par SMS.", avatar: "J" },
   { name: "Thomas D.", location: "Bordeaux (33)", rating: 5, saving: "340€/an", type: "Électricité + Gaz", text: "J'étais sceptique mais zéro démarchage, juste un SMS avec l'offre. Résultat : 340€ économisés cette année.", textMobile: "340€/an, zéro démarchage.", avatar: "T" },
   { name: "Camille P.", location: "Nantes (44)", rating: 5, saving: "276€/an", type: "Électricité", text: "30 secondes d'inscription, offre reçue par SMS le lendemain. 23% moins cher avec EDF, je recommande.", textMobile: "23% moins cher avec EDF.", avatar: "C" },
-  { name: "Nadia K.", location: "Marseille (13)", rating: 5, saving: "192€/an", type: "Internet", text: "Ma box internet est passée de 45€ à 29€/mois grâce à l'achat groupé. Démarche 100% en ligne.", textMobile: "Internet : 45€ → 29€/mois.", avatar: "N" },
+  { name: "Nadia K.", location: "Marseille (13)", rating: 5, saving: "192€/an", type: "Internet", text: "Ma box internet est passée de 45€ à 29€/mois grâce à Switchly. Démarche 100% en ligne.", textMobile: "Internet : 45€ → 29€/mois.", avatar: "N" },
   { name: "Karim B.", location: "Toulouse (31)", rating: 5, saving: "412€/an", type: "Énergie + Internet", text: "Électricité + internet combinés : 412€ économisés en un an. Et jamais un seul coup de fil commercial.", textMobile: "412€/an, zéro appel.", avatar: "K" },
 ];
 

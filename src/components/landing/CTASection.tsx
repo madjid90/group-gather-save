@@ -92,8 +92,8 @@ export function CTASection() {
                 asChild
                 onClick={() => trackClick({ eventType: 'cta_inscription', source: 'cta_section' })}
               >
-                <Link to="/inscription">
-                  Rejoindre maintenant
+                <Link to="/comparer">
+                  Comparer gratuitement →
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Button>

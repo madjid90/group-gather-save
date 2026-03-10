@@ -20,11 +20,11 @@ export const CollectivitesSection = () => {
           </div>
 
           <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold text-foreground mb-3 lg:mb-4">
-            Organisez un achat groupé dans votre ville
+            Vous êtes une collectivité ou un bailleur social ?
           </h2>
           
           <p className="text-[13px] leading-relaxed lg:text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
-            Switchly accompagne les mairies et collectivités dans l'organisation d'achats groupés pour leurs habitants.
+            Switchly accompagne les mairies et bailleurs dans la mise en place d'un service de comparaison d'énergie et d'internet pour leurs habitants.
           </p>
 
           <Button
@@ -33,8 +33,8 @@ export const CollectivitesSection = () => {
             size="lg"
             className="w-full sm:w-auto"
           >
-            <Link to="/organiser-achat-groupe">
-              En savoir plus
+            <Link to="/demande-partenaire">
+              Devenir partenaire →
             </Link>
           </Button>
         </motion.div>

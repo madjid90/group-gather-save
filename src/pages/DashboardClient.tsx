@@ -334,7 +334,7 @@ export default function DashboardClient() {
 
         {/* Footer */}
         <p className="text-center text-xs text-muted-foreground pt-2">
-          Switchly - Achat groupé d'énergie et internet
+          Switchly — Mon espace comparateur
         </p>
       </div>
     </div>

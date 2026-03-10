@@ -450,7 +450,7 @@ export const SavingsCalculator = memo(function SavingsCalculator() {
     };
     localStorage.setItem('switchly_calculator_profile', JSON.stringify(profileSummary));
     
-    navigate("/inscription");
+    navigate("/comparer");
   };
 
   const goBack = () => {

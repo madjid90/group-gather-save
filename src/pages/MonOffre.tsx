@@ -318,7 +318,7 @@ export default function MonOffre() {
 
         {/* Footer */}
         <p className="text-center text-xs text-muted-foreground pt-2">
-          Switchly - Achat groupé d'énergie et internet
+          Switchly — Comparateur énergie et internet
         </p>
       </div>
     </div>

@@ -63,7 +63,7 @@ export default function OffreConfirmation() {
 
         {/* Footer */}
         <p className="text-xs text-muted-foreground pt-4">
-          Switchly - Achat groupé d'énergie et internet
+          Switchly — Comparateur énergie et internet
         </p>
       </motion.div>
     </div>

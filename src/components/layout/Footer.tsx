@@ -61,8 +61,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/inscription" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Achat groupé
+                <Link to="/comparer" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Comparer
                 </Link>
               </li>
             </ul>

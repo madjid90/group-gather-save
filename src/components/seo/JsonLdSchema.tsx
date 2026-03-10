@@ -139,8 +139,8 @@ export const JsonLdSchema = ({ type = "auto", customData, faqItems, breadcrumbs 
       generatedSchemas.push({
         "@context": "https://schema.org",
         "@type": "Service",
-        name: "Achat groupé d'énergie",
-        description: "Service d'achat groupé pour négocier les meilleurs tarifs d'électricité et d'internet",
+        name: "Comparateur énergie et internet",
+        description: "Comparateur gratuit pour trouver les meilleures offres d'électricité, gaz et internet en France.",
         provider: {
           "@type": "Organization",
           name: SITE_CONFIG.name

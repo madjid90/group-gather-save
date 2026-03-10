@@ -200,12 +200,12 @@ export default function ResultatsPage() {
             </p>
 
             <div className="mt-8 bg-muted/30 border border-border rounded-2xl p-5 text-center">
-              <p className="text-sm font-semibold mb-1">Vous voulez un prix encore meilleur ?</p>
+              <p className="text-sm font-semibold mb-1">Vous n'avez pas trouvé ce que vous cherchez ?</p>
               <p className="text-xs text-muted-foreground mb-3">
-                Rejoignez l'achat groupé — on négocie collectivement pour des tarifs exclusifs.
+                Affinez votre recherche ou contactez-nous.
               </p>
               <Button variant="outline" size="sm" asChild>
-                <Link to="/inscription">Rejoindre l'achat groupé →</Link>
+                <Link to="/contact">Nous contacter →</Link>
               </Button>
             </div>
           </div>

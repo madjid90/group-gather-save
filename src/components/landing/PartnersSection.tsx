@@ -70,7 +70,7 @@ export function PartnersSection() {
             Fournisseurs de confiance
           </h2>
           <p className="text-[13px] leading-relaxed lg:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Nous négocions avec des fournisseurs reconnus pour vous garantir les meilleurs tarifs.
+            Nous comparons les offres de fournisseurs reconnus pour vous garantir les meilleurs tarifs.
           </p>
         </motion.div>
 

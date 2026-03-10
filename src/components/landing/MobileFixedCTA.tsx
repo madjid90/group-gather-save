@@ -23,8 +23,8 @@ export function MobileFixedCTA() {
           asChild
           onClick={() => trackClick({ eventType: 'cta_inscription', source: 'mobile_cta' })}
         >
-          <Link to="/inscription">
-            Rejoindre gratuitement — C'est parti !
+          <Link to="/comparer">
+            Comparer gratuitement
             <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
           </Link>
         </Button>

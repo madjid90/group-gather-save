@@ -102,7 +102,7 @@ export default function PartageAccueil() {
 
           <div className="flex flex-col gap-2">
             <Button variant="default" asChild className="w-full">
-              <Link to="/inscription">
+              <Link to="/comparer">
                 Je m'inscris aussi
                 <ChevronRight className="w-4 h-4 ml-1" />
               </Link>
