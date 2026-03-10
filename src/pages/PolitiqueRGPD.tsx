@@ -77,9 +77,9 @@ export default function PolitiqueRGPD() {
                 Vos données sont utilisées pour :
               </p>
               <ul className="list-disc pl-5 text-base text-muted-foreground space-y-2">
-                <li>Négocier des offres groupées avec les fournisseurs d'énergie et d'internet</li>
+                <li>Comparer et présenter les meilleures offres des fournisseurs d'énergie et d'internet</li>
                 <li>Vous envoyer votre offre personnalisée par SMS</li>
-                <li>Vous informer sur l'avancement des négociations</li>
+                <li>Vous informer sur les offres disponibles et leur évolution</li>
                 <li>Améliorer nos services</li>
               </ul>
             </section>
@@ -89,7 +89,7 @@ export default function PolitiqueRGPD() {
                 4. Base légale
               </h2>
               <p className="text-base text-muted-foreground leading-relaxed">
-                Le traitement de vos données est basé sur votre <strong className="text-foreground">consentement</strong> donné lors de votre inscription.
+                Le traitement de vos données est basé sur votre <strong className="text-foreground">consentement</strong> donné lors de votre comparaison.
               </p>
             </section>
 
@@ -98,7 +98,7 @@ export default function PolitiqueRGPD() {
                 5. Partage des données
               </h2>
               <p className="text-base text-muted-foreground leading-relaxed">
-                Vos données sont partagées de manière <strong className="text-foreground">anonymisée</strong> avec les fournisseurs d'énergie et d'internet pour la négociation des offres. 
+                Vos données sont partagées de manière <strong className="text-foreground">anonymisée</strong> avec les fournisseurs d'énergie et d'internet pour vous présenter des offres personnalisées. 
                 Aucune information permettant de vous identifier (nom, téléphone, email) n'est transmise aux fournisseurs.
               </p>
             </section>

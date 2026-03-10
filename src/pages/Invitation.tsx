@@ -54,8 +54,8 @@ const steps = [
   {
     icon: Users,
     number: "2",
-    title: "On négocie pour vous",
-    description: "Pouvoir collectif = meilleurs prix.",
+    title: "On compare pour vous",
+    description: "Toutes les offres du marché en 30 secondes.",
   },
   {
     icon: MessageSquare,
@@ -246,10 +246,10 @@ export default function Invitation() {
             {/* Main message */}
             <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground leading-tight mb-4">
               Un ami vous invite à rejoindre{" "}
-              <span className="gradient-text">l'achat groupé</span>
+              <span className="gradient-text">le comparateur gratuit</span>
             </h1>
             <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
-              "Je viens de m'inscrire à un achat groupé d'électricité, gaz et box internet. Rejoins-moi pour économiser jusqu'à 400€/an !"
+              "J'ai comparé mes offres énergie et internet sur Switchly et j'économise jusqu'à 400€/an ! C'est gratuit en 30 secondes."
             </p>
 
             {/* Trust badges */}
@@ -386,7 +386,7 @@ export default function Invitation() {
                     </>
                   ) : (
                     <>
-                      Rejoindre l'achat groupé
+                      Comparer gratuitement →
                       <ArrowRight className="w-5 h-5 ml-2" />
                     </>
                   )}
@@ -567,7 +567,7 @@ export default function Invitation() {
                 Prêt à économiser avec votre ami ?
               </h2>
               <p className="text-base lg:text-xl text-primary-foreground/90 mb-8 max-w-2xl mx-auto">
-                Rejoignez l'achat groupé et économisez ensemble sur vos factures d'électricité et d'internet.
+                Rejoignez le comparateur et économisez ensemble sur vos factures d'électricité et d'internet.
               </p>
               <Button
                 variant="secondary"

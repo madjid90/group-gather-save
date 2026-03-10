@@ -89,7 +89,7 @@ export default function Contact() {
     <PageTransition className="min-h-screen py-10 md:py-20 bg-gradient-subtle">
       <DynamicSEOHead 
         defaultTitle="Contact - Switchly | Contactez notre équipe"
-        defaultDescription="Contactez l'équipe Switchly pour toute question sur l'achat groupé d'énergie et internet. Réponse sous 24h garantie."
+        defaultDescription="Contactez l'équipe Switchly pour toute question sur notre comparateur énergie et internet. Réponse sous 24h garantie."
       />
       <div className="container mx-auto px-5 sm:px-6">
         {/* Back button */}
@@ -116,7 +116,7 @@ export default function Contact() {
             Contactez notre équipe
           </h1>
           <p className="text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Une question sur l'achat groupé ? Notre équipe vous répond sous 24h.
+            Une question sur Switchly ? Notre équipe vous répond sous 24h.
           </p>
         </motion.div>
 
@@ -233,7 +233,7 @@ export default function Contact() {
                       name="sujet"
                       value={formData.sujet}
                       onChange={handleChange}
-                      placeholder="Question sur l'achat groupé"
+                      placeholder="Votre question"
                       className={`h-12 text-base ${errors.sujet ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
                     />
                     {errors.sujet && (

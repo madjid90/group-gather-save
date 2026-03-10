@@ -247,7 +247,7 @@ const ResultView = memo(function ResultView({
           onClick={onCTAClick}
         >
           <Sparkles className="w-5 h-5 mr-2" />
-          Rejoindre l'achat groupé
+          Voir les offres disponibles →
           <ArrowRight className="w-5 h-5 ml-2" />
         </Button>
         <p className="text-sm text-muted-foreground mt-2">
@@ -429,7 +429,7 @@ export const SavingsCalculator = memo(function SavingsCalculator() {
     return {
       minEconomie: Math.round(min / 10) * 10,
       maxEconomie: Math.round(max / 10) * 10,
-      explication: `Pour ${logementLabel} avec votre profil, vous pouvez économiser sur ${getChauffageLabel()}${internetLabel} grâce à l'achat groupé Switchly. Cette estimation est basée sur les économies réalisées par des foyers similaires.`
+      explication: `Pour ${logementLabel} avec votre profil, vous pouvez économiser sur ${getChauffageLabel()}${internetLabel} en changeant de fournisseur avec Switchly. Cette estimation est basée sur les économies réalisées par des foyers similaires.`
     };
   };
 
@@ -450,7 +450,7 @@ export const SavingsCalculator = memo(function SavingsCalculator() {
     };
     localStorage.setItem('switchly_calculator_profile', JSON.stringify(profileSummary));
     
-    navigate("/inscription");
+    navigate("/comparer");
   };
 
   const goBack = () => {

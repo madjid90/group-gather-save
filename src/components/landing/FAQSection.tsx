@@ -9,24 +9,28 @@ import { HelpCircle } from "lucide-react";
 
 const faqItems = [
   {
-    question: "Comment économiser sur mes factures d'énergie et d'internet ?",
-    answer: "Grâce à l'achat groupé, nous négocions des tarifs préférentiels auprès de fournisseurs reconnus. Nos membres économisent en moyenne 312€/an sur leurs factures d'électricité, gaz et internet.",
+    question: "Comment fonctionne Switchly ?",
+    answer: "Switchly est un comparateur gratuit. Entrez votre code postal, indiquez vos contrats actuels, et comparez en 30 secondes toutes les offres électricité, gaz et internet disponibles chez vous. Vous choisissez librement l'offre qui vous convient et souscrivez directement. Switchly est rémunéré par une commission du fournisseur — jamais par vous.",
   },
   {
-    question: "L'inscription est-elle vraiment gratuite ?",
-    answer: "Oui, 100% gratuite et sans engagement. Vous recevez une offre par SMS et décidez librement.",
+    question: "La comparaison est-elle vraiment gratuite ?",
+    answer: "Oui, 100% gratuit. Comparer ne vous coûte rien. Si vous souscrivez à une offre, c'est le fournisseur qui verse une commission à Switchly. Cette commission n'impacte pas votre tarif, qui reste le meilleur disponible sur le marché.",
   },
   {
-    question: "Puis-je aussi économiser sur ma box internet ?",
-    answer: "Oui ! Économisez jusqu'à 16€/mois sur votre abonnement internet grâce à nos négociations groupées.",
+    question: "Y a-t-il une coupure lors du changement de fournisseur ?",
+    answer: "Aucune coupure. Le réseau de distribution (Enedis pour l'électricité, GRDF pour le gaz) ne change pas. Seul votre fournisseur change. La transition est transparente et se fait en quelques jours ouvrés.",
   },
   {
-    question: "Quels sont les fournisseurs partenaires ?",
-    answer: "EDF, Engie, TotalEnergies, Orange, SFR, Bouygues, Free. Uniquement des acteurs majeurs de confiance.",
+    question: "Puis-je comparer l'internet aussi ?",
+    answer: "Oui. Switchly compare aussi les offres fibre et ADSL. Selon votre éligibilité, vous pouvez économiser jusqu'à 16€/mois sur votre box, soit près de 200€/an. Combinez économies énergie et internet pour atteindre 400€/an.",
   },
   {
-    question: "Comment fonctionne la démarche 100% digitale ?",
-    answer: "Tout par SMS et en ligne. Aucun démarchage téléphonique, aucun commercial ne vous appellera.",
+    question: "Je suis locataire, puis-je changer de fournisseur ?",
+    answer: "Oui. Propriétaire ou locataire, vous êtes libre de choisir votre fournisseur d'énergie. Le changement se fait sans intervention du propriétaire et sans modification du logement.",
+  },
+  {
+    question: "Combien de temps prend la souscription ?",
+    answer: "La comparaison prend 30 secondes. La souscription en ligne prend 5 minutes supplémentaires. Le changement de fournisseur est ensuite effectif sous 1 à 5 jours ouvrés.",
   },
 ];
 
@@ -49,7 +53,7 @@ export function FAQSection() {
             Questions fréquentes
           </h2>
           <p className="text-[13px] leading-relaxed lg:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Tout ce que vous devez savoir sur l'achat groupé Switchly.
+            Tout ce que vous devez savoir sur Switchly.
           </p>
         </motion.div>
 

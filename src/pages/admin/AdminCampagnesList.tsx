@@ -160,7 +160,7 @@ export default function AdminCampagnesList() {
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-foreground">Campagnes</h1>
           <p className="text-sm text-muted-foreground">
-            Gérez vos campagnes d'achat groupé
+            Gérez vos campagnes de leads comparateur
           </p>
         </div>
         <Button size="sm" onClick={openCreateDialog}>

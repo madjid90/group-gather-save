@@ -86,9 +86,9 @@ export default function PolitiqueConfidentialite() {
                 Protection et anonymisation
               </h2>
               <p className="text-base text-muted-foreground leading-relaxed">
-                Lorsque nous négocions avec les fournisseurs, vos données sont <strong className="text-foreground">totalement anonymisées</strong>. 
+                Lorsque nous comparons les offres pour vous, vos données sont <strong className="text-foreground">totalement anonymisées</strong>. 
                 Aucune information permettant de vous identifier n'est partagée : ni votre nom, ni votre téléphone, ni votre adresse.
-                Seules les caractéristiques de votre logement et de vos contrats sont transmises pour permettre la négociation.
+                Seules les caractéristiques de votre logement et de vos contrats sont transmises pour vous présenter des offres adaptées.
               </p>
             </section>
 

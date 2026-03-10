@@ -220,7 +220,7 @@ export default function DashboardClient() {
               Bienvenue, {profile.prenom} 👋
             </h1>
             <p className="text-sm text-muted-foreground">
-              Membre de l'achat groupé
+              Mon espace Switchly
             </p>
           </CardContent>
         </Card>
@@ -267,7 +267,7 @@ export default function DashboardClient() {
               <div className="mt-3 p-3 bg-blue-50 rounded-xl flex items-start gap-2.5">
                 <Clock className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
                 <p className="text-xs text-foreground">
-                  Votre profil est complet ! Nous négocions les meilleures réductions — jusqu'à -30 %.
+                  Votre comparaison est en cours — nous cherchons les meilleures offres pour votre profil.
                   Vous recevrez un SMS dès que votre offre sera disponible.
                 </p>
               </div>
@@ -282,7 +282,7 @@ export default function DashboardClient() {
               <Gift className="w-10 h-10 text-primary mx-auto mb-3" />
               <h2 className="text-base font-semibold mb-1 text-foreground">Votre offre est prête !</h2>
               <p className="text-xs text-muted-foreground mb-3">
-                Consultez votre offre personnalisée négociée grâce au groupe.
+                Consultez votre offre personnalisée sélectionnée par Switchly.
               </p>
               
               {currentOffer.statut === "acceptee" ? (
@@ -334,7 +334,7 @@ export default function DashboardClient() {
 
         {/* Footer */}
         <p className="text-center text-xs text-muted-foreground pt-2">
-          Switchly - Achat groupé d'énergie et internet
+          Switchly — Mon espace comparateur
         </p>
       </div>
     </div>

@@ -264,7 +264,7 @@ const QUESTIONS: Question[] = [
     step: 2,
     field: "fournisseurElectricite",
     label: "Fournisseur d'électricité actuel",
-    microText: "Nous comparons votre contrat actuel avec les offres négociées.",
+    microText: "Nous comparons votre contrat actuel avec toutes les offres du marché.",
     icon: Zap,
     type: "select",
     options: FOURNISSEURS_ENERGIE,
@@ -657,8 +657,7 @@ export default function FormulaireLogement() {
           </div>
           <h1 className="text-2xl font-bold text-foreground mb-3">Merci ! 🚀</h1>
           <p className="text-muted-foreground mb-6">
-            Vous faites officiellement partie de l'achat groupé. Nous négocions
-            une réduction pouvant atteindre -30 % selon votre profil.
+            Votre profil est complet. Nous cherchons les meilleures offres disponibles pour vous.
           </p>
           <Button variant="hero" asChild>
             <Link to="/dashboard-client">Accéder à mon espace</Link>
@@ -974,7 +973,7 @@ export default function FormulaireLogement() {
               <Shield className="w-3.5 h-3.5" />
               <span>
                 Vos données sont sécurisées et utilisées uniquement pour
-                négocier votre offre.
+                vous présenter les meilleures offres.
               </span>
             </div>
           )}

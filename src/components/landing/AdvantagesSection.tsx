@@ -119,7 +119,7 @@ export function AdvantagesSection() {
           className="hidden lg:flex justify-center"
         >
           <Button variant="hero" size="xl" className="py-6 px-10 text-lg" asChild>
-            <Link to="/inscription">Rejoindre l'achat groupé gratuitement</Link>
+            <Link to="/comparer">Comparer gratuitement →</Link>
           </Button>
         </motion.div>
       </div>

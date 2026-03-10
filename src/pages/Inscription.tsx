@@ -60,7 +60,7 @@ export default function Inscription() {
   const [calculatorProfile, setCalculatorProfile] = useState<CalculatorProfile | null>(null);
 
   const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/inscription` : "";
-  const shareText = "Je viens de m'inscrire à l'achat groupé Switchly pour économiser sur mes factures ! Rejoins-moi :";
+  const shareText = "J'ai comparé mes offres énergie et internet sur Switchly et j'économise jusqu'à 400€/an ! C'est gratuit :";
 
   // Load calculator profile from localStorage
   useEffect(() => {
@@ -148,7 +148,7 @@ export default function Inscription() {
   };
 
   const handleEmailShare = () => {
-    const subject = "Rejoins l'achat groupé Switchly !";
+    const subject = "Découvre Switchly, le comparateur gratuit !";
     const body = `${shareText}\n\n${shareUrl}`;
     const url = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     window.location.href = url;
@@ -270,8 +270,8 @@ export default function Inscription() {
   return (
     <PageTransition className="min-h-screen flex items-center justify-center px-5 sm:px-6 py-10 sm:py-12 bg-gradient-subtle relative">
       <DynamicSEOHead 
-        defaultTitle="Inscription - Switchly | Rejoignez l'achat groupé"
-        defaultDescription="Inscrivez-vous gratuitement à Switchly pour économiser sur vos factures d'énergie et internet grâce à l'achat groupé."
+        defaultTitle="Comparer - Switchly | Trouvez les meilleures offres énergie et internet"
+        defaultDescription="Comparez gratuitement les offres électricité, gaz et internet. Économisez jusqu'à 400€/an. Sans engagement, sans coupure."
       />
       {/* Fixed Back Button */}
       <Link
@@ -347,7 +347,7 @@ export default function Inscription() {
               <span className="text-2xl font-bold text-foreground">Switchly</span>
             </Link>
             <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
-              Rejoindre l'achat groupé
+              Comparer les offres gratuitement
             </h1>
             <p className="text-base text-muted-foreground">
               <Clock className="w-4 h-4 inline mr-1" />

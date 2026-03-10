@@ -78,15 +78,15 @@ interface JsonLdSchemaProps {
 const SITE_CONFIG = {
   name: "Switchly",
   url: "https://switchly.fr",
-  description: "Plateforme d'achat groupé d'énergie pour économiser sur vos factures d'électricité et d'internet",
+  description: "Comparateur gratuit d'énergie et d'internet. Comparez les meilleures offres en 30 secondes et économisez jusqu'à 400€/an.",
   logo: "https://switchly.fr/favicon.png",
 };
 
 const PAGE_SCHEMAS: Record<string, { type: string; title: string; description: string }> = {
-  "/": { type: "webpage", title: "Accueil", description: "Rejoignez l'achat groupé d'énergie et économisez sur vos factures" },
-  "/faq": { type: "faq", title: "FAQ", description: "Questions fréquentes sur l'achat groupé d'énergie" },
+  "/": { type: "webpage", title: "Accueil", description: "Comparez gratuitement les offres énergie et internet. Économisez jusqu'à 400€/an." },
+  "/faq": { type: "faq", title: "FAQ", description: "Questions fréquentes sur le comparateur énergie et internet Switchly" },
   "/contact": { type: "webpage", title: "Contact", description: "Contactez l'équipe Switchly" },
-  "/inscription": { type: "webpage", title: "Inscription", description: "Inscrivez-vous à l'achat groupé" },
+  "/comparer": { type: "webpage", title: "Comparateur", description: "Comparez les offres énergie et internet gratuitement" },
   "/mentions-legales": { type: "webpage", title: "Mentions légales", description: "Mentions légales de Switchly" },
   "/politique-rgpd": { type: "webpage", title: "Politique RGPD", description: "Politique de protection des données" },
   "/cgu": { type: "webpage", title: "CGU", description: "Conditions générales d'utilisation" },
@@ -139,8 +139,8 @@ export const JsonLdSchema = ({ type = "auto", customData, faqItems, breadcrumbs 
       generatedSchemas.push({
         "@context": "https://schema.org",
         "@type": "Service",
-        name: "Achat groupé d'énergie",
-        description: "Service d'achat groupé pour négocier les meilleurs tarifs d'électricité et d'internet",
+        name: "Comparateur énergie et internet",
+        description: "Comparateur gratuit pour trouver les meilleures offres d'électricité, gaz et internet en France.",
         provider: {
           "@type": "Organization",
           name: SITE_CONFIG.name

@@ -46,7 +46,7 @@ export default function CGU() {
                 1. Objet
               </h2>
               <p className="text-base text-muted-foreground leading-relaxed">
-                Les présentes Conditions Générales d'Utilisation (CGU) régissent l'utilisation du service Switchly, plateforme d'achat groupé d'énergie et d'internet.
+                Les présentes Conditions Générales d'Utilisation (CGU) régissent l'utilisation du service Switchly, comparateur d'énergie et d'internet.
               </p>
             </section>
 
@@ -55,7 +55,7 @@ export default function CGU() {
                 2. Description du service
               </h2>
               <p className="text-base text-muted-foreground leading-relaxed">
-                Switchly est un service gratuit qui permet aux utilisateurs de bénéficier de tarifs négociés collectivement auprès de fournisseurs d'énergie et d'internet. 
+                Switchly est un comparateur gratuit qui permet aux utilisateurs de trouver et comparer les meilleures offres d'électricité, gaz et internet disponibles chez eux. 
                 Switchly agit en tant qu'intermédiaire entre les utilisateurs et les fournisseurs.
               </p>
             </section>
@@ -83,7 +83,7 @@ export default function CGU() {
               </p>
               <ul className="list-disc pl-5 text-base text-muted-foreground space-y-2">
                 <li><strong className="text-foreground">Phase d'inscription</strong> : vous vous inscrivez et complétez votre profil</li>
-                <li><strong className="text-foreground">Phase de négociation</strong> : nous négocions avec les fournisseurs en votre nom</li>
+                <li><strong className="text-foreground">Phase de sélection</strong> : nous sélectionnons les meilleures offres disponibles pour votre profil</li>
                 <li><strong className="text-foreground">Phase d'offre</strong> : vous recevez une offre personnalisée par SMS</li>
                 <li><strong className="text-foreground">Choix libre</strong> : vous acceptez ou refusez l'offre sans obligation</li>
               </ul>
@@ -108,7 +108,7 @@ export default function CGU() {
                 6. Responsabilité
               </h2>
               <p className="text-base text-muted-foreground leading-relaxed">
-                Switchly s'engage à négocier les meilleures offres possibles mais ne garantit pas un niveau d'économies spécifique. 
+                Switchly s'engage à présenter les meilleures offres disponibles mais ne garantit pas un niveau d'économies spécifique. 
                 Les offres présentées sont indicatives et peuvent varier selon votre situation réelle.
                 Switchly n'est pas responsable des services fournis directement par les fournisseurs d'énergie ou d'internet.
               </p>

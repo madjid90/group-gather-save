@@ -124,19 +124,6 @@ export const HeroSection = memo(function HeroSection() {
             <span>✓ Résultat immédiat</span>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="mt-8 pt-6 border-t border-border"
-          >
-            <p className="text-xs text-muted-foreground">
-              Vous préférez des prix négociés collectivement ?{' '}
-              <Link to="/inscription" className="text-primary hover:underline font-medium">
-                Rejoindre l'achat groupé →
-              </Link>
-            </p>
-          </motion.div>
         </div>
       </div>
     </section>

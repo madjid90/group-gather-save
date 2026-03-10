@@ -99,7 +99,7 @@ export default function MentionsLegales() {
                 4. Conditions Générales d'Utilisation
               </h2>
               <p className="text-base text-muted-foreground leading-relaxed">
-                L'inscription au groupement est gratuite et sans engagement.
+                L'utilisation du comparateur est gratuite et sans engagement.
                 Switchly agit en tant qu'intermédiaire entre les utilisateurs et les fournisseurs.
               </p>
             </section>
