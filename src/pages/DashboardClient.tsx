@@ -59,7 +59,7 @@ const STATUS_MAP: Record<string, { label: string; icon: React.ElementType; color
     color: "bg-primary/10 text-primary" 
   },
   profil_ok: { 
-    label: "Profil complet - En négociation", 
+    label: "Comparaison en cours", 
     icon: FileCheck, 
     color: "bg-muted text-muted-foreground" 
   },
