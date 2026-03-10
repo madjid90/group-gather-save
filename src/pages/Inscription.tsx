@@ -148,7 +148,7 @@ export default function Inscription() {
   };
 
   const handleEmailShare = () => {
-    const subject = "Rejoins l'achat groupé Switchly !";
+    const subject = "Découvre Switchly, le comparateur gratuit !";
     const body = `${shareText}\n\n${shareUrl}`;
     const url = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     window.location.href = url;
