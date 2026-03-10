@@ -47,6 +47,13 @@ export function TestimonialsSection() {
               className={index >= 3 ? "hidden md:block" : ""}
             >
               <div className="bg-card rounded-lg md:rounded-2xl p-3 md:p-5 h-full border border-border shadow-switchly">
+                {/* Savings badge */}
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-semibold bg-secondary/20 text-secondary px-2 py-1 rounded-full">
+                    💰 {testimonial.saving}
+                  </span>
+                  <span className="text-xs text-muted-foreground">{testimonial.type}</span>
+                </div>
                 {/* Stars - smaller on mobile */}
                 <div className="flex gap-0.5 md:gap-1 mb-1.5 md:mb-3">
                   {Array.from({ length: testimonial.rating }).map((_, i) => (
