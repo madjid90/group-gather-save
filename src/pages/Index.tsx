@@ -1,4 +1,6 @@
 import { lazy, Suspense } from "react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { SavingsCalculator } from "@/components/landing/SavingsCalculator";
 import { SocialProofNotifications } from "@/components/landing/SocialProofNotifications";
