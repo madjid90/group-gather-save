@@ -56,8 +56,8 @@ export default function FAQ() {
   return (
     <PageTransition className="min-h-screen py-10 md:py-20 bg-gradient-subtle">
       <DynamicSEOHead 
-        defaultTitle="FAQ - Switchly | Questions fréquentes sur l'achat groupé"
-        defaultDescription="Trouvez les réponses à toutes vos questions sur l'achat groupé d'énergie et internet Switchly. Fonctionnement, économies, fournisseurs partenaires."
+        defaultTitle="FAQ - Switchly | Questions fréquentes sur le comparateur énergie et internet"
+        defaultDescription="Toutes vos questions sur Switchly, comparateur gratuit d'électricité, gaz et internet. Fonctionnement, économies, fournisseurs partenaires."
       />
       <div className="container mx-auto px-5 sm:px-6">
         {/* Back button */}
