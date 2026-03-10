@@ -80,7 +80,7 @@ export function CTASection() {
               Ne ratez pas cette opportunité
             </h2>
             <p className="text-[14px] leading-relaxed lg:text-xl text-primary-foreground/90 mb-6 lg:mb-8 max-w-2xl mx-auto">
-              <span className="font-semibold">Plus de 2 500 foyers</span> ont déjà rejoint l'achat groupé.
+              <span className="font-semibold">Plus de 2 500 foyers</span> ont déjà économisé grâce à Switchly.
             </p>
             
             {/* CTA */}
