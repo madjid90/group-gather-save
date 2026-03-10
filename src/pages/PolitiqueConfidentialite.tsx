@@ -75,7 +75,7 @@ export default function PolitiqueConfidentialite() {
                 Vos données sont utilisées exclusivement pour :
               </p>
               <ul className="list-disc pl-5 text-base text-muted-foreground space-y-2">
-                <li>Négocier des offres adaptées à votre profil</li>
+                <li>Comparer et sélectionner des offres adaptées à votre profil</li>
                 <li>Vous envoyer des communications par SMS</li>
                 <li>Améliorer notre service</li>
               </ul>

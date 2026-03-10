@@ -53,13 +53,20 @@ export default function OffreConfirmation() {
         <p className="text-sm text-muted-foreground mb-5">
           {isAccepted 
             ? "Votre acceptation a bien été enregistrée. Nous vous recontacterons très prochainement pour finaliser votre souscription." 
-            : "Vous avez refusé cette offre. Vous pouvez relancer une comparaison à tout moment."}
+            : "Vous avez refusé cette offre. Vous pouvez comparer à nouveau à tout moment."}
         </p>
 
         {/* CTA */}
-        <Button variant="hero" size="lg" className="w-full py-3 text-sm" asChild>
-          <Link to="/dashboard-client">Accéder à mon espace</Link>
-        </Button>
+        <div className="space-y-3">
+          <Button variant="hero" size="lg" className="w-full py-3 text-sm" asChild>
+            <Link to="/dashboard-client">Accéder à mon espace</Link>
+          </Button>
+          {!isAccepted && (
+            <Button variant="outline" size="lg" className="w-full py-3 text-sm" asChild>
+              <Link to="/comparer">Relancer une comparaison →</Link>
+            </Button>
+          )}
+        </div>
 
         {/* Footer */}
         <p className="text-xs text-muted-foreground pt-4">

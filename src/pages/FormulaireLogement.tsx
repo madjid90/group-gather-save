@@ -633,11 +633,10 @@ export default function FormulaireLogement() {
             Lien invalide
           </h1>
           <p className="text-muted-foreground mb-6">
-            Ce lien n'est pas valide ou a expiré. Veuillez vous inscrire pour
-            recevoir un nouveau lien.
+            Ce lien n'est pas valide ou a expiré.
           </p>
           <Button variant="hero" asChild>
-            <Link to="/inscription">S'inscrire</Link>
+            <Link to="/comparer">Comparer maintenant →</Link>
           </Button>
         </div>
       </div>
@@ -657,7 +656,7 @@ export default function FormulaireLogement() {
           </div>
           <h1 className="text-2xl font-bold text-foreground mb-3">Merci ! 🚀</h1>
           <p className="text-muted-foreground mb-6">
-            Votre profil est complet. Nous cherchons les meilleures offres disponibles pour vous.
+            Votre profil détaillé est enregistré. Nous comparons les meilleures offres disponibles pour vous.
           </p>
           <Button variant="hero" asChild>
             <Link to="/dashboard-client">Accéder à mon espace</Link>

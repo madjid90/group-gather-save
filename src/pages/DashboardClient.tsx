@@ -59,7 +59,7 @@ const STATUS_MAP: Record<string, { label: string; icon: React.ElementType; color
     color: "bg-primary/10 text-primary" 
   },
   profil_ok: { 
-    label: "Profil complet - En négociation", 
+    label: "Comparaison en cours", 
     icon: FileCheck, 
     color: "bg-muted text-muted-foreground" 
   },
@@ -236,11 +236,11 @@ export default function DashboardClient() {
               <div className="flex-1 min-w-0">
                 <p className="font-medium text-sm text-foreground">{displayStatus.label}</p>
                 <p className="text-xs text-muted-foreground truncate">
-                  {!hasHousingProfile && "Complétez votre profil pour recevoir une offre"}
-                  {hasHousingProfile && !currentOffer && "Négociation en cours"}
-                  {currentOffer?.statut === "envoyee" && "Consultez votre offre personnalisée"}
+                  {!hasHousingProfile && "Complétez votre profil pour affiner la comparaison"}
+                  {hasHousingProfile && !currentOffer && "Comparaison en cours"}
+                  {currentOffer?.statut === "envoyee" && "Consultez l'offre sélectionnée pour vous par Switchly"}
                   {currentOffer?.statut === "acceptee" && "Votre offre est validée"}
-                  {currentOffer?.statut === "refusee" && "Prochaine campagne à venir"}
+                  {currentOffer?.statut === "refusee" && "Vous pouvez relancer une comparaison à tout moment"}
                 </p>
               </div>
             </div>
@@ -250,8 +250,8 @@ export default function DashboardClient() {
               <div className="mt-3 p-3 bg-yellow-50 rounded-xl flex items-start gap-2.5">
                 <AlertCircle className="w-4 h-4 text-yellow-600 flex-shrink-0 mt-0.5" />
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs text-foreground mb-2">
-                    Complétez votre profil logement pour recevoir votre offre personnalisée.
+                   <p className="text-xs text-foreground mb-2">
+                    Complétez votre profil pour affiner la comparaison et recevoir une offre personnalisée.
                   </p>
                   <Button variant="hero" size="sm" className="text-xs py-2" asChild>
                     <Link to={`/formulaire-logement/${profile.housing_token}`}>
@@ -267,8 +267,8 @@ export default function DashboardClient() {
               <div className="mt-3 p-3 bg-blue-50 rounded-xl flex items-start gap-2.5">
                 <Clock className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
                 <p className="text-xs text-foreground">
-                  Votre comparaison est en cours — nous cherchons les meilleures offres pour votre profil.
-                  Vous recevrez un SMS dès que votre offre sera disponible.
+                   Votre comparaison est en cours — nous cherchons les meilleures offres pour votre profil.
+                   Vous recevrez un SMS dès que votre sélection d'offres sera prête.
                 </p>
               </div>
             )}
