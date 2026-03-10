@@ -79,7 +79,7 @@ export default function PolitiqueRGPD() {
               <ul className="list-disc pl-5 text-base text-muted-foreground space-y-2">
                 <li>Comparer et présenter les meilleures offres des fournisseurs d'énergie et d'internet</li>
                 <li>Vous envoyer votre offre personnalisée par SMS</li>
-                <li>Vous informer sur l'avancement des négociations</li>
+                <li>Vous informer sur les offres disponibles et leur évolution</li>
                 <li>Améliorer nos services</li>
               </ul>
             </section>
