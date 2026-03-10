@@ -146,23 +146,11 @@ const VilleSeoPage = () => {
           {/* Stats */}
           <section className="py-12 bg-muted/30">
             <div className="container mx-auto px-4">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                <div>
-                  <div className="text-3xl md:text-4xl font-bold text-primary">-15%</div>
-                  <div className="text-sm text-muted-foreground">d'économies moyennes</div>
-                </div>
-                <div>
-                  <div className="text-3xl md:text-4xl font-bold text-primary">1000+</div>
-                  <div className="text-sm text-muted-foreground">foyers participants</div>
-                </div>
-                <div>
-                  <div className="text-3xl md:text-4xl font-bold text-primary">100%</div>
-                  <div className="text-sm text-muted-foreground">gratuit</div>
-                </div>
-                <div>
-                  <div className="text-3xl md:text-4xl font-bold text-primary">5 min</div>
-                  <div className="text-sm text-muted-foreground">d'inscription</div>
-                </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center max-w-3xl mx-auto">
+                <div><div className="text-3xl md:text-4xl font-bold text-primary">400€</div><div className="text-sm text-muted-foreground">max d'économies/an</div></div>
+                <div><div className="text-3xl md:text-4xl font-bold text-primary">2 500+</div><div className="text-sm text-muted-foreground">foyers inscrits</div></div>
+                <div><div className="text-3xl md:text-4xl font-bold text-primary">100%</div><div className="text-sm text-muted-foreground">gratuit</div></div>
+                <div><div className="text-3xl md:text-4xl font-bold text-primary">0</div><div className="text-sm text-muted-foreground">coupure garantie</div></div>
               </div>
             </div>
           </section>
