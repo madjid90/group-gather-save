@@ -151,9 +151,9 @@ export function Navbar() {
                 size="sm" 
                 className="hidden sm:inline-flex text-sm px-4 sm:px-5 h-10" 
                 asChild
-                onClick={() => trackClick({ eventType: 'cta_inscription', source: 'navbar' })}
+                onClick={() => trackClick({ eventType: 'cta_comparateur', source: 'navbar' })}
               >
-                <Link to="/inscription">Rejoindre</Link>
+                <Link to="/comparer">Comparer gratuitement →</Link>
               </Button>
             </>
           )}
