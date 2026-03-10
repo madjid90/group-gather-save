@@ -200,12 +200,12 @@ export default function ResultatsPage() {
             </p>
 
             <div className="mt-8 bg-muted/30 border border-border rounded-2xl p-5 text-center">
-              <p className="text-sm font-semibold mb-1">Vous n'avez pas trouvé ce que vous cherchez ?</p>
+              <p className="text-sm font-semibold mb-1">Besoin d'aide pour choisir ?</p>
               <p className="text-xs text-muted-foreground mb-3">
-                Affinez votre recherche ou contactez-nous.
+                Nos conseillers vous guident gratuitement pour trouver l'offre idéale selon votre situation.
               </p>
               <Button variant="outline" size="sm" asChild>
-                <Link to="/contact">Nous contacter →</Link>
+                <Link to="/contact">Être rappelé gratuitement →</Link>
               </Button>
             </div>
           </div>
