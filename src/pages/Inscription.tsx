@@ -60,7 +60,7 @@ export default function Inscription() {
   const [calculatorProfile, setCalculatorProfile] = useState<CalculatorProfile | null>(null);
 
   const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/inscription` : "";
-  const shareText = "Je viens de m'inscrire à l'achat groupé Switchly pour économiser sur mes factures ! Rejoins-moi :";
+  const shareText = "J'ai comparé mes offres énergie et internet sur Switchly et j'économise jusqu'à 400€/an ! C'est gratuit :";
 
   // Load calculator profile from localStorage
   useEffect(() => {
