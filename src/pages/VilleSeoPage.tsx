@@ -99,6 +99,15 @@ const VilleSeoPage = () => {
           <meta name="keywords" content={page.mots_cles.join(', ')} />
         )}
         <link rel="canonical" href={`https://switchly.fr/ville/${page.slug}`} />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://switchly.fr" },
+            { "@type": "ListItem", "position": 2, "name": "Énergie", "item": "https://switchly.fr/energie" },
+            { "@type": "ListItem", "position": 3, "name": page.ville, "item": `https://switchly.fr/ville/${page.slug}` }
+          ]
+        })}</script>
       </Helmet>
 
       <JsonLdSchema type="service" />
