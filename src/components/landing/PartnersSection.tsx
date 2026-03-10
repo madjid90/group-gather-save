@@ -111,6 +111,10 @@ export function PartnersSection() {
             </motion.div>
           </div>
         </motion.div>
+
+        <p className="text-center text-xs text-muted-foreground mt-4">
+          Switchly est rémunéré par commission sur les souscriptions. Service 100% gratuit pour vous.
+        </p>
       </div>
     </section>
   );

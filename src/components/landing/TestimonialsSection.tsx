@@ -98,7 +98,7 @@ export function TestimonialsSection() {
           className="hidden md:block text-center"
         >
           <Button variant="hero" size="lg" asChild>
-            <Link to="/inscription">Rejoindre l'achat groupé gratuitement</Link>
+            <Link to="/comparer">Comparer gratuitement</Link>
           </Button>
         </motion.div>
       </div>

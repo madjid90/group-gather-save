@@ -287,12 +287,12 @@ export function Navbar() {
                       className="w-full py-4 text-sm font-semibold" 
                       asChild
                       onClick={() => {
-                        trackClick({ eventType: 'cta_inscription', source: 'navbar' });
+                        trackClick({ eventType: 'cta_comparateur', source: 'navbar' });
                         setIsMobileOpen(false);
                       }}
                     >
-                      <Link to="/inscription">
-                        Rejoindre l'achat groupé gratuitement
+                      <Link to="/comparer">
+                        Comparer gratuitement
                         <ArrowRight className="w-4 h-4 ml-2" />
                       </Link>
                     </Button>

@@ -21,31 +21,48 @@ export function Footer() {
           </div>
 
           {/* Navigation */}
-          <nav aria-label="Liens de navigation">
-            <h3 className="font-semibold text-foreground mb-4">Navigation</h3>
+          <nav aria-label="Nos services">
+            <h3 className="font-semibold text-foreground mb-4">Nos services</h3>
             <ul className="space-y-2">
               <li>
-                <Link
-                  to="/"
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                >
-                  Accueil
+                <Link to="/comparer?type=electricite" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Comparer l'électricité
                 </Link>
               </li>
               <li>
-                <Link
-                  to="/faq"
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                >
+                <Link to="/comparer?type=gaz" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Comparer le gaz
+                </Link>
+              </li>
+              <li>
+                <Link to="/comparer?type=internet" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Comparer internet
+                </Link>
+              </li>
+              <li>
+                <Link to="/energie" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Toutes les villes
+                </Link>
+              </li>
+            </ul>
+          </nav>
+
+          <nav aria-label="Guides et infos">
+            <h3 className="font-semibold text-foreground mb-4">Guides</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link to="/energie" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Comment changer de fournisseur
+                </Link>
+              </li>
+              <li>
+                <Link to="/faq" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   FAQ
                 </Link>
               </li>
               <li>
-                <Link
-                  to="/contact"
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                >
-                  Contact
+                <Link to="/inscription" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Achat groupé
                 </Link>
               </li>
             </ul>
