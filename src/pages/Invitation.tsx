@@ -386,7 +386,7 @@ export default function Invitation() {
                     </>
                   ) : (
                     <>
-                      Rejoindre l'achat groupé
+                      Comparer gratuitement →
                       <ArrowRight className="w-5 h-5 ml-2" />
                     </>
                   )}
