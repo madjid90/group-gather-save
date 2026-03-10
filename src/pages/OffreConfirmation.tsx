@@ -53,7 +53,7 @@ export default function OffreConfirmation() {
         <p className="text-sm text-muted-foreground mb-5">
           {isAccepted 
             ? "Votre acceptation a bien été enregistrée. Nous vous recontacterons très prochainement pour finaliser votre souscription." 
-            : "Vous avez refusé cette offre. Vous serez recontacté lors de la prochaine campagne de négociation."}
+            : "Vous avez refusé cette offre. Vous pouvez relancer une comparaison à tout moment."}
         </p>
 
         {/* CTA */}
