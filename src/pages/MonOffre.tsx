@@ -198,7 +198,7 @@ export default function MonOffre() {
         {/* Title */}
         <div className="text-center">
           <h1 className="text-[20px] sm:text-2xl font-bold text-foreground mb-1">
-            Votre réduction groupée est prête 🎉
+            Votre offre personnalisée est prête 🎉
           </h1>
         </div>
 
