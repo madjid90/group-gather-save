@@ -657,7 +657,7 @@ export default function FormulaireLogement() {
           </div>
           <h1 className="text-2xl font-bold text-foreground mb-3">Merci ! 🚀</h1>
           <p className="text-muted-foreground mb-6">
-            Vous faites officiellement partie de l'achat groupé. Nous négocions
+            Votre profil est complet. Nous cherchons les meilleures offres disponibles pour vous.
             une réduction pouvant atteindre -30 % selon votre profil.
           </p>
           <Button variant="hero" asChild>

@@ -567,7 +567,7 @@ export default function Invitation() {
                 Prêt à économiser avec votre ami ?
               </h2>
               <p className="text-base lg:text-xl text-primary-foreground/90 mb-8 max-w-2xl mx-auto">
-                Rejoignez l'achat groupé et économisez ensemble sur vos factures d'électricité et d'internet.
+                Rejoignez le comparateur et économisez ensemble sur vos factures d'électricité et d'internet.
               </p>
               <Button
                 variant="secondary"

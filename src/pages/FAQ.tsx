@@ -139,8 +139,8 @@ export default function FAQ() {
                 className="py-3 text-sm" 
                 asChild
               >
-                <Link to="/inscription">
-                  Rejoindre l'achat groupé gratuitement
+                <Link to="/comparer">
+                  Comparer gratuitement →
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Link>
               </Button>

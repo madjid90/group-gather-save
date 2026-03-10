@@ -347,7 +347,7 @@ export default function Inscription() {
               <span className="text-2xl font-bold text-foreground">Switchly</span>
             </Link>
             <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
-              Rejoindre l'achat groupé
+              Comparer les offres gratuitement
             </h1>
             <p className="text-base text-muted-foreground">
               <Clock className="w-4 h-4 inline mr-1" />
