@@ -241,9 +241,9 @@ const VilleSeoPage = () => {
                       <div className="h-12 w-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                         <Zap className="h-6 w-6 text-primary" />
                       </div>
-                      <h3 className="font-semibold mb-2">Meilleures offres</h3>
+                      <h3 className="font-semibold mb-2">Économies réelles</h3>
                       <p className="text-sm text-muted-foreground">
-                        Les meilleures offres du marché sélectionnées pour vous.
+                        Les foyers qui changent de fournisseur économisent en moyenne 200 à 400€/an.
                       </p>
                     </div>
                     <div className="bg-background p-6 rounded-xl shadow-sm">
