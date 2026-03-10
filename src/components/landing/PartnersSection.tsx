@@ -28,7 +28,7 @@ const partners: Partner[] = [
 ];
 
 function PartnerLogo({ partner }: { partner: Partner }) {
-  const defaultClass = "h-8 md:h-12 w-auto max-w-[80px] md:max-w-[100px] object-contain grayscale opacity-70";
+  const defaultClass = "h-8 md:h-12 w-auto max-w-[80px] md:max-w-[100px] object-contain transition-all duration-300 hover:scale-105";
   const logoClass = partner.className || defaultClass;
   
   return (
