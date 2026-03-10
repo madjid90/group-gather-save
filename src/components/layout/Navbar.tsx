@@ -203,27 +203,14 @@ export function Navbar() {
           >
             <div className="py-3">
               {allDesktopLinks.map((link, index) => (
-                link.isScroll ? (
-                  <button
-                    key={link.href}
-                    onClick={handleScrollToEstimateur}
-                    className={`block w-full text-left text-sm md:text-base font-medium py-3 px-5 transition-colors hover:bg-muted text-foreground ${index === 3 ? "border-b border-border mb-1 pb-4" : ""}`}
-                  >
-                    <span className="flex items-center gap-2">
-                      <Calculator className="w-4 h-4 text-primary" />
-                      {link.label}
-                    </span>
-                  </button>
-                ) : (
-                  <Link
-                    key={link.href}
-                    to={link.href}
-                    onClick={() => setIsDesktopOpen(false)}
-                    className={`block text-sm md:text-base font-medium py-3 px-5 transition-colors hover:bg-muted text-foreground ${index === 3 ? "border-b border-border mb-1 pb-4" : ""}`}
-                  >
-                    {link.label}
-                  </Link>
-                )
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  onClick={() => setIsDesktopOpen(false)}
+                  className={`block text-sm md:text-base font-medium py-3 px-5 transition-colors hover:bg-muted text-foreground ${index === 4 ? "border-b border-border mb-1 pb-4" : ""}`}
+                >
+                  {link.label}
+                </Link>
               ))}
             </div>
           </motion.div>
