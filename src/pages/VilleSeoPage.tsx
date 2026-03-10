@@ -232,9 +232,9 @@ const VilleSeoPage = () => {
                       <div className="h-12 w-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                         <Users className="h-6 w-6 text-primary" />
                       </div>
-                      <h3 className="font-semibold mb-2">Force collective</h3>
+                      <h3 className="font-semibold mb-2">Comparaison rapide</h3>
                       <p className="text-sm text-muted-foreground">
-                        Plus nous sommes nombreux, plus notre pouvoir de négociation augmente.
+                        Comparez toutes les offres disponibles à {page.ville} en 30 secondes.
                       </p>
                     </div>
                     <div className="bg-background p-6 rounded-xl shadow-sm">
