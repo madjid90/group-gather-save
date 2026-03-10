@@ -15,8 +15,8 @@ export function Footer() {
               <span className="text-xl font-bold text-foreground">Switchly</span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              Achat groupé d'énergie (électricité, gaz) et d'internet.
-              Économisez ensemble grâce à la force du groupe.
+              Comparateur d'énergie (électricité, gaz) et d'internet.
+              Trouvez les meilleures offres et économisez jusqu'à 400€/an.
             </p>
           </div>
 
