@@ -230,11 +230,11 @@ const VilleSeoPage = () => {
                   <div className="grid md:grid-cols-3 gap-8">
                     <div className="bg-background p-6 rounded-xl shadow-sm">
                       <div className="h-12 w-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                        <Users className="h-6 w-6 text-primary" />
+                        <Search className="h-6 w-6 text-primary" />
                       </div>
-                      <h3 className="font-semibold mb-2">Comparaison rapide</h3>
+                      <h3 className="font-semibold mb-2">Toutes les offres du marché</h3>
                       <p className="text-sm text-muted-foreground">
-                        Comparez toutes les offres disponibles à {page.ville} en 30 secondes.
+                        Switchly compare toutes les offres disponibles chez vous en 30 secondes.
                       </p>
                     </div>
                     <div className="bg-background p-6 rounded-xl shadow-sm">
