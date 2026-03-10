@@ -89,7 +89,7 @@ export default function PolitiqueRGPD() {
                 4. Base légale
               </h2>
               <p className="text-base text-muted-foreground leading-relaxed">
-                Le traitement de vos données est basé sur votre <strong className="text-foreground">consentement</strong> donné lors de votre inscription.
+                Le traitement de vos données est basé sur votre <strong className="text-foreground">consentement</strong> donné lors de votre comparaison.
               </p>
             </section>
 
