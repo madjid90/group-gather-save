@@ -78,7 +78,7 @@ interface JsonLdSchemaProps {
 const SITE_CONFIG = {
   name: "Switchly",
   url: "https://switchly.fr",
-  description: "Plateforme d'achat groupé d'énergie pour économiser sur vos factures d'électricité et d'internet",
+  description: "Comparateur gratuit d'énergie et d'internet. Comparez les meilleures offres en 30 secondes et économisez jusqu'à 400€/an.",
   logo: "https://switchly.fr/favicon.png",
 };
 
