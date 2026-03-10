@@ -20,6 +20,7 @@ interface LocalPage {
   contenu_avantages: string | null;
   contenu_cta: string | null;
   mots_cles: string[] | null;
+  updated_at: string | null;
 }
 
 const VilleSeoPage = () => {
