@@ -250,8 +250,8 @@ export default function DashboardClient() {
               <div className="mt-3 p-3 bg-yellow-50 rounded-xl flex items-start gap-2.5">
                 <AlertCircle className="w-4 h-4 text-yellow-600 flex-shrink-0 mt-0.5" />
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs text-foreground mb-2">
-                    Complétez votre profil logement pour recevoir votre offre personnalisée.
+                   <p className="text-xs text-foreground mb-2">
+                    Complétez votre profil pour affiner la comparaison et recevoir une offre personnalisée.
                   </p>
                   <Button variant="hero" size="sm" className="text-xs py-2" asChild>
                     <Link to={`/formulaire-logement/${profile.housing_token}`}>
