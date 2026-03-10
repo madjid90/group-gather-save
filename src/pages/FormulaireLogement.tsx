@@ -658,7 +658,6 @@ export default function FormulaireLogement() {
           <h1 className="text-2xl font-bold text-foreground mb-3">Merci ! 🚀</h1>
           <p className="text-muted-foreground mb-6">
             Votre profil est complet. Nous cherchons les meilleures offres disponibles pour vous.
-            une réduction pouvant atteindre -30 % selon votre profil.
           </p>
           <Button variant="hero" asChild>
             <Link to="/dashboard-client">Accéder à mon espace</Link>
