@@ -54,8 +54,8 @@ const steps = [
   {
     icon: Users,
     number: "2",
-    title: "On négocie pour vous",
-    description: "Pouvoir collectif = meilleurs prix.",
+    title: "On compare pour vous",
+    description: "Toutes les offres du marché en 30 secondes.",
   },
   {
     icon: MessageSquare,
