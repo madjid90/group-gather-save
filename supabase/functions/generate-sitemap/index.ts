@@ -12,11 +12,13 @@ const SITE_URL = "https://switchly.fr";
 // Pages statiques avec leurs priorités et fréquences de mise à jour
 const STATIC_PAGES = [
   { path: "/", priority: 1.0, changefreq: "daily" },
-  { path: "/inscription", priority: 0.9, changefreq: "weekly" },
+  { path: "/comparer", priority: 0.9, changefreq: "daily" },
+  { path: "/energie", priority: 0.9, changefreq: "weekly" },
+  { path: "/inscription", priority: 0.8, changefreq: "weekly" },
   { path: "/faq", priority: 0.8, changefreq: "weekly" },
   { path: "/contact", priority: 0.7, changefreq: "monthly" },
-  { path: "/organiser-achat-groupe", priority: 0.8, changefreq: "weekly" },
-  { path: "/demande-partenaire", priority: 0.7, changefreq: "monthly" },
+  { path: "/organiser-achat-groupe", priority: 0.7, changefreq: "weekly" },
+  { path: "/demande-partenaire", priority: 0.6, changefreq: "monthly" },
   { path: "/mentions-legales", priority: 0.3, changefreq: "yearly" },
   { path: "/politique-rgpd", priority: 0.3, changefreq: "yearly" },
   { path: "/cgu", priority: 0.3, changefreq: "yearly" },

@@ -20,6 +20,7 @@ interface LocalPage {
   contenu_avantages: string | null;
   contenu_cta: string | null;
   mots_cles: string[] | null;
+  updated_at: string | null;
 }
 
 const VilleSeoPage = () => {
@@ -99,6 +100,21 @@ const VilleSeoPage = () => {
           <meta name="keywords" content={page.mots_cles.join(', ')} />
         )}
         <link rel="canonical" href={`https://switchly.fr/ville/${page.slug}`} />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content={`${page.titre} | Switchly`} />
+        {page.meta_description && <meta property="og:description" content={page.meta_description} />}
+        <meta property="og:url" content={`https://switchly.fr/ville/${page.slug}`} />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://switchly.fr/og-image.png" />
+        <meta property="og:locale" content="fr_FR" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${page.titre} | Switchly`} />
+        {page.meta_description && <meta name="twitter:description" content={page.meta_description} />}
+
+        {/* BreadcrumbList */}
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
@@ -108,9 +124,46 @@ const VilleSeoPage = () => {
             { "@type": "ListItem", "position": 3, "name": page.ville, "item": `https://switchly.fr/ville/${page.slug}` }
           ]
         })}</script>
-      </Helmet>
 
-      <JsonLdSchema type="service" />
+        {/* LocalBusiness + Service */}
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "name": `Comparateur énergie ${page.ville}`,
+          "description": page.meta_description || `Comparez les offres d'électricité et d'internet à ${page.ville} et économisez jusqu'à 400€/an.`,
+          "provider": {
+            "@type": "Organization",
+            "name": "Switchly",
+            "url": "https://switchly.fr",
+            "logo": "https://switchly.fr/favicon.png"
+          },
+          "areaServed": {
+            "@type": "City",
+            "name": page.ville,
+            ...(page.code_postal && { "postalCode": page.code_postal }),
+            "addressCountry": "FR"
+          },
+          "serviceType": "Comparateur d'énergie",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR",
+            "description": "Service de comparaison gratuit"
+          }
+        })}</script>
+
+        {/* WebPage */}
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": page.titre,
+          "description": page.meta_description || `Comparateur énergie à ${page.ville}`,
+          "url": `https://switchly.fr/ville/${page.slug}`,
+          "isPartOf": { "@type": "WebSite", "name": "Switchly", "url": "https://switchly.fr" },
+          "inLanguage": "fr-FR",
+          "dateModified": page.updated_at || new Date().toISOString()
+        })}</script>
+      </Helmet>
 
       <div className="min-h-screen flex flex-col">
         <Navbar />

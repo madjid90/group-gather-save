@@ -20,6 +20,8 @@ Disallow: /dashboard-client
 Disallow: /formulaire-logement/
 Disallow: /mon-offre/
 Disallow: /offre-confirmation
+Disallow: /resultats
 
-# Sitemap
+# Sitemaps
 Sitemap: https://switchly.fr/sitemap.xml
+Sitemap: https://kaebtbcufbpkhyrhuson.supabase.co/functions/v1/generate-sitemap
