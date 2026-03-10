@@ -973,7 +973,7 @@ export default function FormulaireLogement() {
               <Shield className="w-3.5 h-3.5" />
               <span>
                 Vos données sont sécurisées et utilisées uniquement pour
-                négocier votre offre.
+                vous présenter les meilleures offres.
               </span>
             </div>
           )}
