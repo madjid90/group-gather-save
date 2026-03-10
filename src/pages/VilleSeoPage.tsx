@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Users, Zap, Wifi, Check, Loader2 } from 'lucide-react';
+import { ArrowRight, Search, Zap, Wifi, Check, Loader2 } from 'lucide-react';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { JsonLdSchema } from '@/components/seo/JsonLdSchema';
@@ -230,20 +230,20 @@ const VilleSeoPage = () => {
                   <div className="grid md:grid-cols-3 gap-8">
                     <div className="bg-background p-6 rounded-xl shadow-sm">
                       <div className="h-12 w-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                        <Users className="h-6 w-6 text-primary" />
+                        <Search className="h-6 w-6 text-primary" />
                       </div>
-                      <h3 className="font-semibold mb-2">Comparaison rapide</h3>
+                      <h3 className="font-semibold mb-2">Toutes les offres du marché</h3>
                       <p className="text-sm text-muted-foreground">
-                        Comparez toutes les offres disponibles à {page.ville} en 30 secondes.
+                        Switchly compare toutes les offres disponibles chez vous en 30 secondes.
                       </p>
                     </div>
                     <div className="bg-background p-6 rounded-xl shadow-sm">
                       <div className="h-12 w-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                         <Zap className="h-6 w-6 text-primary" />
                       </div>
-                      <h3 className="font-semibold mb-2">Meilleures offres</h3>
+                      <h3 className="font-semibold mb-2">Économies réelles</h3>
                       <p className="text-sm text-muted-foreground">
-                        Les meilleures offres du marché sélectionnées pour vous.
+                        Les foyers qui changent de fournisseur économisent en moyenne 200 à 400€/an.
                       </p>
                     </div>
                     <div className="bg-background p-6 rounded-xl shadow-sm">

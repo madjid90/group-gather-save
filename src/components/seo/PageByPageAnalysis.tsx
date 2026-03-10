@@ -99,10 +99,10 @@ interface PageAnalysis {
 
 const PAGES = [
   { key: 'home', label: 'Accueil', url: '/' },
-  { key: 'inscription', label: 'Inscription', url: '/inscription' },
+  { key: 'comparer', label: 'Comparateur', url: '/comparer' },
   { key: 'faq', label: 'FAQ', url: '/faq' },
   { key: 'contact', label: 'Contact', url: '/contact' },
-  { key: 'organiser', label: 'Organiser achat groupé', url: '/organiser-achat-groupe' },
+  { key: 'energie', label: 'Hub énergie', url: '/energie' },
 ];
 
 export const PageByPageAnalysis = () => {

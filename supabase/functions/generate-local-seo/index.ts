@@ -29,32 +29,36 @@ serve(async (req) => {
                          service_type === 'internet' ? "l'internet" : 
                          "l'énergie et l'internet";
 
-    const prompt = `Tu es un expert en rédaction SEO pour un service d'achat groupé d'énergie et d'internet en France.
+    const prompt = `Tu es un expert SEO spécialisé dans les comparateurs d'énergie et d'internet en France.
 
-Génère le contenu pour une page SEO locale pour la ville de ${ville}${code_postal ? ` (${code_postal})` : ''}.
+Génère le contenu SEO pour la ville de ${ville}${code_postal ? ` (${code_postal})` : ''}.
 
-Le service proposé est Switchly, une plateforme d'achat groupé qui permet aux habitants de ${ville} de réduire leurs factures de ${serviceLabel} en négociant collectivement avec les fournisseurs.
+Switchly est un COMPARATEUR GRATUIT d'électricité, gaz et internet. L'utilisateur entre son code postal, compare les offres en 30 secondes et choisit directement. Switchly est rémunéré par commission auprès des fournisseurs — totalement gratuit pour le consommateur.
 
-Génère un JSON avec la structure suivante:
+INTERDIT de mentionner : achat groupé, négociation collective, rejoindre un groupe, inscription à un groupement.
+OBLIGATOIRE de mentionner : comparer, comparateur, meilleures offres, changer de fournisseur, économiser, gratuit, sans engagement.
+
+Génère un JSON valide avec cette structure exacte :
 {
-  "titre": "Titre H1 optimisé SEO (max 60 caractères)",
-  "meta_description": "Meta description optimisée (max 155 caractères)",
-  "contenu_hero": "Texte accrocheur pour la section hero (2-3 phrases)",
-  "contenu_principal": "Contenu principal détaillé en HTML (3-4 paragraphes avec des <p>, <h2>, <h3>, <ul>, <li>)",
-  "contenu_avantages": "Liste des avantages locaux en HTML (utilise <ul><li>)",
-  "contenu_cta": "Texte d'appel à l'action personnalisé (1-2 phrases)",
-  "mots_cles": ["mot-clé 1", "mot-clé 2", "mot-clé 3", "mot-clé 4", "mot-clé 5"]
+  "titre": "Comparateur énergie et internet à ${ville} — Économisez jusqu'à 400€/an",
+  "meta_description": "Comparez gratuitement les offres électricité, gaz et internet à ${ville}${code_postal ? ` (${code_postal})` : ''}. Sans engagement, sans coupure. Économisez jusqu'à 400€/an en changeant de fournisseur.",
+  "contenu_hero": "2-3 phrases accrocheuses sur les économies possibles à ${ville} en comparant les offres énergie et internet. Insister sur : gratuit, 30 secondes, sans engagement, sans coupure.",
+  "contenu_principal": "HTML avec <p><h2><h3><ul><li>. 3-4 paragraphes expliquant : pourquoi comparer à ${ville}, comment fonctionne Switchly (gratuit, 30 secondes, sans coupure), économies possibles selon le type de logement. Mentionner Enedis pour l'électricité, GRDF pour le gaz.",
+  "contenu_avantages": "HTML <ul><li> avec 5-6 avantages de comparer avec Switchly : 100% gratuit, sans engagement, sans coupure, résultat en 30 secondes, toutes les offres du marché, accompagnement si besoin.",
+  "contenu_cta": "1-2 phrases d'appel à l'action pour comparer gratuitement les offres à ${ville} maintenant.",
+  "mots_cles": ["comparateur énergie ${ville}", "comparer électricité ${ville}", "meilleur fournisseur gaz ${ville}", "changer fournisseur énergie ${ville}", "économiser facture énergie ${ville}"]
 }
 
-Règles:
-- Utilise le nom de la ville naturellement dans le contenu
-- Mentionne des éléments locaux crédibles (région, département)
-- Optimise pour les recherches "achat groupé énergie ${ville}", "économie électricité ${ville}"
-- Ton professionnel mais accessible
-- Contenu unique et engageant
-- N'invente pas de statistiques locales spécifiques fausses
+Règles absolues :
+- Le titre DOIT commencer exactement par "Comparateur énergie et internet à ${ville}"
+- La meta_description DOIT mentionner "${ville}" et "gratuit"
+- Ne jamais utiliser les mots : achat groupé, négociation, rejoindre, s'inscrire au groupement
+- Utiliser le nom de la ville naturellement dans tout le contenu
+- Mentionner le département ou la région pour le contexte local
+- Ne pas inventer de statistiques locales précises fausses
+- Le JSON doit être valide et parseable directement
 
-Retourne UNIQUEMENT le JSON, sans texte avant ou après.`;
+Retourne UNIQUEMENT le JSON, sans texte avant ou après, sans backticks markdown.`;
 
     console.log('Génération de contenu SEO pour:', ville);
 
