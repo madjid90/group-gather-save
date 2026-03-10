@@ -77,7 +77,7 @@ export default function PolitiqueRGPD() {
                 Vos données sont utilisées pour :
               </p>
               <ul className="list-disc pl-5 text-base text-muted-foreground space-y-2">
-                <li>Négocier des offres groupées avec les fournisseurs d'énergie et d'internet</li>
+                <li>Comparer et présenter les meilleures offres des fournisseurs d'énergie et d'internet</li>
                 <li>Vous envoyer votre offre personnalisée par SMS</li>
                 <li>Vous informer sur l'avancement des négociations</li>
                 <li>Améliorer nos services</li>
