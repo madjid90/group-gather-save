@@ -116,7 +116,7 @@ export default function Contact() {
             Contactez notre équipe
           </h1>
           <p className="text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Une question sur l'achat groupé ? Notre équipe vous répond sous 24h.
+            Une question sur Switchly ? Notre équipe vous répond sous 24h.
           </p>
         </motion.div>
 
