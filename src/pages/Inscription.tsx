@@ -270,8 +270,8 @@ export default function Inscription() {
   return (
     <PageTransition className="min-h-screen flex items-center justify-center px-5 sm:px-6 py-10 sm:py-12 bg-gradient-subtle relative">
       <DynamicSEOHead 
-        defaultTitle="Inscription - Switchly | Rejoignez l'achat groupé"
-        defaultDescription="Inscrivez-vous gratuitement à Switchly pour économiser sur vos factures d'énergie et internet grâce à l'achat groupé."
+        defaultTitle="Comparer - Switchly | Trouvez les meilleures offres énergie et internet"
+        defaultDescription="Comparez gratuitement les offres électricité, gaz et internet. Économisez jusqu'à 400€/an. Sans engagement, sans coupure."
       />
       {/* Fixed Back Button */}
       <Link
