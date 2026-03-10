@@ -130,13 +130,13 @@ const VilleSeoPage = () => {
                 )}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button size="lg" asChild>
-                    <Link to="/inscription">
-                      Rejoindre le groupe
+                    <Link to={`/comparer?type=electricite`}>
+                      Comparer les offres à {page.ville}
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </Link>
                   </Button>
                   <Button size="lg" variant="outline" asChild>
-                    <Link to="/faq">En savoir plus</Link>
+                    <Link to="/energie">Voir toutes les villes</Link>
                   </Button>
                 </div>
               </div>
