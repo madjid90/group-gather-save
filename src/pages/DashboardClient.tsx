@@ -236,11 +236,11 @@ export default function DashboardClient() {
               <div className="flex-1 min-w-0">
                 <p className="font-medium text-sm text-foreground">{displayStatus.label}</p>
                 <p className="text-xs text-muted-foreground truncate">
-                  {!hasHousingProfile && "Complétez votre profil pour recevoir une offre"}
-                  {hasHousingProfile && !currentOffer && "Négociation en cours"}
-                  {currentOffer?.statut === "envoyee" && "Consultez votre offre personnalisée"}
+                  {!hasHousingProfile && "Complétez votre profil pour affiner la comparaison"}
+                  {hasHousingProfile && !currentOffer && "Comparaison en cours"}
+                  {currentOffer?.statut === "envoyee" && "Consultez l'offre sélectionnée pour vous par Switchly"}
                   {currentOffer?.statut === "acceptee" && "Votre offre est validée"}
-                  {currentOffer?.statut === "refusee" && "Prochaine campagne à venir"}
+                  {currentOffer?.statut === "refusee" && "Vous pouvez relancer une comparaison à tout moment"}
                 </p>
               </div>
             </div>
