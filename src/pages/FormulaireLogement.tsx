@@ -633,11 +633,10 @@ export default function FormulaireLogement() {
             Lien invalide
           </h1>
           <p className="text-muted-foreground mb-6">
-            Ce lien n'est pas valide ou a expiré. Veuillez vous inscrire pour
-            recevoir un nouveau lien.
+            Ce lien n'est pas valide ou a expiré.
           </p>
           <Button variant="hero" asChild>
-            <Link to="/inscription">S'inscrire</Link>
+            <Link to="/comparer">Comparer maintenant →</Link>
           </Button>
         </div>
       </div>
