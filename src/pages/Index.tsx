@@ -32,8 +32,8 @@ const Index = () => {
     <PageTransition>
       {/* Dynamic SEO Head from database */}
       <DynamicSEOHead 
-        defaultTitle="Switchly - Achat groupé énergie et internet | Économisez ensemble"
-        defaultDescription="Rejoignez l'achat groupé Switchly pour économiser sur vos contrats énergie et internet. Négociation collective, tarifs avantageux, démarches simplifiées."
+        defaultTitle="Switchly — Comparer énergie et internet | Économisez jusqu'à 400€/an"
+        defaultDescription="Comparateur d'électricité, gaz et internet gratuit. Trouvez les meilleures offres en 30 secondes. Sans engagement, sans coupure. 100% gratuit."
       />
       
       {/* JSON-LD Structured Data */}
