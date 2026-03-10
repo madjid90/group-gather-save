@@ -219,10 +219,10 @@ export default function ResultatsPage() {
               className="bg-card border border-border rounded-2xl p-6 w-full max-w-md"
             >
               <h3 className="font-bold text-lg mb-1">
-                Vous allez être redirigé vers {selected.fournisseur}
+                Excellent choix ! 🎉
               </h3>
               <p className="text-sm text-muted-foreground mb-4">
-                Laissez vos coordonnées pour un récapitulatif par SMS (optionnel)
+                Laissez votre prénom et téléphone pour recevoir un récapitulatif de votre offre par SMS. Facultatif — vous pouvez continuer sans.
               </p>
               <div className="space-y-3">
                 <input

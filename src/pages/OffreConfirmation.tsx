@@ -57,9 +57,16 @@ export default function OffreConfirmation() {
         </p>
 
         {/* CTA */}
-        <Button variant="hero" size="lg" className="w-full py-3 text-sm" asChild>
-          <Link to="/dashboard-client">Accéder à mon espace</Link>
-        </Button>
+        <div className="space-y-3">
+          <Button variant="hero" size="lg" className="w-full py-3 text-sm" asChild>
+            <Link to="/dashboard-client">Accéder à mon espace</Link>
+          </Button>
+          {!isAccepted && (
+            <Button variant="outline" size="lg" className="w-full py-3 text-sm" asChild>
+              <Link to="/comparer">Relancer une comparaison →</Link>
+            </Button>
+          )}
+        </div>
 
         {/* Footer */}
         <p className="text-xs text-muted-foreground pt-4">

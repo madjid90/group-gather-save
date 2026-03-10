@@ -267,8 +267,8 @@ export default function DashboardClient() {
               <div className="mt-3 p-3 bg-blue-50 rounded-xl flex items-start gap-2.5">
                 <Clock className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
                 <p className="text-xs text-foreground">
-                  Votre comparaison est en cours — nous cherchons les meilleures offres pour votre profil.
-                  Vous recevrez un SMS dès que votre offre sera disponible.
+                   Votre comparaison est en cours — nous cherchons les meilleures offres pour votre profil.
+                   Vous recevrez un SMS dès que votre sélection d'offres sera prête.
                 </p>
               </div>
             )}
