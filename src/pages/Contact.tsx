@@ -233,7 +233,7 @@ export default function Contact() {
                       name="sujet"
                       value={formData.sujet}
                       onChange={handleChange}
-                      placeholder="Question sur l'achat groupé"
+                      placeholder="Votre question"
                       className={`h-12 text-base ${errors.sujet ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
                     />
                     {errors.sujet && (
