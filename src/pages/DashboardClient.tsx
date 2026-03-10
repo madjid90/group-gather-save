@@ -220,7 +220,7 @@ export default function DashboardClient() {
               Bienvenue, {profile.prenom} 👋
             </h1>
             <p className="text-sm text-muted-foreground">
-              Membre de l'achat groupé
+              Mon espace Switchly
             </p>
           </CardContent>
         </Card>
