@@ -41,7 +41,7 @@ function PartnerLogo({ partner }: { partner: Partner }) {
           decoding="async"
           width={100}
           height={48}
-          className={`${logoClass} ${!partner.className ? '' : 'w-auto object-contain grayscale opacity-70'}`}
+          className={`${logoClass} ${!partner.className ? '' : 'w-auto object-contain'}`}
         />
       </div>
     </div>
