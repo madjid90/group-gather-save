@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Users, Zap, Wifi, Check, Loader2 } from 'lucide-react';
+import { ArrowRight, Search, Zap, Wifi, Check, Loader2 } from 'lucide-react';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { JsonLdSchema } from '@/components/seo/JsonLdSchema';
