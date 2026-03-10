@@ -239,29 +239,18 @@ export function Navbar() {
               transition={{ duration: 0.2, ease: "easeOut" }}
               className="absolute top-16 left-0 right-0 z-50 bg-card border-b border-border shadow-switchly-lg lg:hidden"
             >
-              <div className="container mx-auto px-4 py-5">
+               <div className="container mx-auto px-4 py-5">
                 {/* Navigation Links */}
                 <div className="flex flex-col gap-1">
                   {navLinks.map((link) => (
-                    link.isScroll ? (
-                      <button
-                        key={link.href}
-                        onClick={handleScrollToEstimateur}
-                        className="text-sm font-medium py-4 px-4 rounded-xl transition-colors hover:bg-muted active:bg-muted leading-relaxed text-foreground text-left flex items-center gap-2"
-                      >
-                        <Calculator className="w-4 h-4 text-primary" />
-                        {link.label}
-                      </button>
-                    ) : (
-                      <Link
-                        key={link.href}
-                        to={link.href}
-                        onClick={() => setIsMobileOpen(false)}
-                        className="text-sm font-medium py-4 px-4 rounded-xl transition-colors hover:bg-muted active:bg-muted leading-relaxed text-foreground"
-                      >
-                        {link.label}
-                      </Link>
-                    )
+                    <Link
+                      key={link.href}
+                      to={link.href}
+                      onClick={() => setIsMobileOpen(false)}
+                      className="text-sm font-medium py-4 px-4 rounded-xl transition-colors hover:bg-muted active:bg-muted leading-relaxed text-foreground"
+                    >
+                      {link.label}
+                    </Link>
                   ))}
                 </div>
                 
