@@ -84,7 +84,7 @@ export default function FAQ() {
             Questions fréquentes
           </h1>
           <p className="text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Tout ce que vous devez savoir sur Switchly et l'achat groupé
+            Tout ce que vous devez savoir sur Switchly
           </p>
         </motion.div>
 
