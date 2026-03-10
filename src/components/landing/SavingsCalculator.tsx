@@ -429,7 +429,7 @@ export const SavingsCalculator = memo(function SavingsCalculator() {
     return {
       minEconomie: Math.round(min / 10) * 10,
       maxEconomie: Math.round(max / 10) * 10,
-      explication: `Pour ${logementLabel} avec votre profil, vous pouvez économiser sur ${getChauffageLabel()}${internetLabel} grâce à l'achat groupé Switchly. Cette estimation est basée sur les économies réalisées par des foyers similaires.`
+      explication: `Pour ${logementLabel} avec votre profil, vous pouvez économiser sur ${getChauffageLabel()}${internetLabel} en changeant de fournisseur avec Switchly. Cette estimation est basée sur les économies réalisées par des foyers similaires.`
     };
   };
 
