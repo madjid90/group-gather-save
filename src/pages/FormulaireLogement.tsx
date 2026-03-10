@@ -264,7 +264,7 @@ const QUESTIONS: Question[] = [
     step: 2,
     field: "fournisseurElectricite",
     label: "Fournisseur d'électricité actuel",
-    microText: "Nous comparons votre contrat actuel avec les offres négociées.",
+    microText: "Nous comparons votre contrat actuel avec toutes les offres du marché.",
     icon: Zap,
     type: "select",
     options: FOURNISSEURS_ENERGIE,
