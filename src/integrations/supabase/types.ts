@@ -532,6 +532,57 @@ export type Database = {
         }
         Relationships: []
       }
+      leads: {
+        Row: {
+          code_postal: string | null
+          commission_eur: number | null
+          created_at: string | null
+          email: string | null
+          fournisseur_choisi: string | null
+          id: string
+          offre_choisie: string | null
+          prenom: string | null
+          source: string | null
+          statut: string | null
+          superficie: string | null
+          telephone: string | null
+          type_energie: string | null
+          url_affiliation: string | null
+        }
+        Insert: {
+          code_postal?: string | null
+          commission_eur?: number | null
+          created_at?: string | null
+          email?: string | null
+          fournisseur_choisi?: string | null
+          id?: string
+          offre_choisie?: string | null
+          prenom?: string | null
+          source?: string | null
+          statut?: string | null
+          superficie?: string | null
+          telephone?: string | null
+          type_energie?: string | null
+          url_affiliation?: string | null
+        }
+        Update: {
+          code_postal?: string | null
+          commission_eur?: number | null
+          created_at?: string | null
+          email?: string | null
+          fournisseur_choisi?: string | null
+          id?: string
+          offre_choisie?: string | null
+          prenom?: string | null
+          source?: string | null
+          statut?: string | null
+          superficie?: string | null
+          telephone?: string | null
+          type_energie?: string | null
+          url_affiliation?: string | null
+        }
+        Relationships: []
+      }
       local_seo_pages: {
         Row: {
           code_postal: string | null

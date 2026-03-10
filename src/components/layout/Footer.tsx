@@ -15,37 +15,54 @@ export function Footer() {
               <span className="text-xl font-bold text-foreground">Switchly</span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              Achat groupé d'énergie (électricité, gaz) et d'internet.
-              Économisez ensemble grâce à la force du groupe.
+              Comparateur d'énergie (électricité, gaz) et d'internet.
+              Trouvez les meilleures offres et économisez jusqu'à 400€/an.
             </p>
           </div>
 
           {/* Navigation */}
-          <nav aria-label="Liens de navigation">
-            <h3 className="font-semibold text-foreground mb-4">Navigation</h3>
+          <nav aria-label="Nos services">
+            <h3 className="font-semibold text-foreground mb-4">Nos services</h3>
             <ul className="space-y-2">
               <li>
-                <Link
-                  to="/"
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                >
-                  Accueil
+                <Link to="/comparer?type=electricite" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Comparer l'électricité
                 </Link>
               </li>
               <li>
-                <Link
-                  to="/faq"
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                >
+                <Link to="/comparer?type=gaz" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Comparer le gaz
+                </Link>
+              </li>
+              <li>
+                <Link to="/comparer?type=internet" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Comparer internet
+                </Link>
+              </li>
+              <li>
+                <Link to="/energie" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Toutes les villes
+                </Link>
+              </li>
+            </ul>
+          </nav>
+
+          <nav aria-label="Guides et infos">
+            <h3 className="font-semibold text-foreground mb-4">Guides</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link to="/energie" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Comment changer de fournisseur
+                </Link>
+              </li>
+              <li>
+                <Link to="/faq" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   FAQ
                 </Link>
               </li>
               <li>
-                <Link
-                  to="/contact"
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                >
-                  Contact
+                <Link to="/inscription" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Achat groupé
                 </Link>
               </li>
             </ul>

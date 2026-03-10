@@ -1,4 +1,6 @@
 import { lazy, Suspense } from "react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { SavingsCalculator } from "@/components/landing/SavingsCalculator";
 import { SocialProofNotifications } from "@/components/landing/SocialProofNotifications";
@@ -30,8 +32,8 @@ const Index = () => {
     <PageTransition>
       {/* Dynamic SEO Head from database */}
       <DynamicSEOHead 
-        defaultTitle="Switchly - Achat groupé énergie et internet | Économisez ensemble"
-        defaultDescription="Rejoignez l'achat groupé Switchly pour économiser sur vos contrats énergie et internet. Négociation collective, tarifs avantageux, démarches simplifiées."
+        defaultTitle="Switchly — Comparer énergie et internet | Économisez jusqu'à 400€/an"
+        defaultDescription="Comparateur d'électricité, gaz et internet gratuit. Trouvez les meilleures offres en 30 secondes. Sans engagement, sans coupure. 100% gratuit."
       />
       
       {/* JSON-LD Structured Data */}
@@ -51,6 +53,41 @@ const Index = () => {
             <HowItWorksSection />
           </Suspense>
         </LazySection>
+
+        {/* Tableau économies */}
+        <section className="py-12 bg-muted/20">
+          <div className="container mx-auto px-4 max-w-4xl">
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">Combien pouvez-vous économiser ?</h2>
+            <p className="text-center text-muted-foreground mb-8 text-sm">Estimations basées sur les tarifs moyens 2025 vs tarif réglementé EDF.</p>
+            <div className="overflow-x-auto rounded-xl border border-border">
+              <table className="w-full text-sm">
+                <thead className="bg-muted/50">
+                  <tr>
+                    <th className="text-left py-3 px-4">Votre logement</th>
+                    <th className="text-center py-3 px-4">EDF actuel</th>
+                    <th className="text-center py-3 px-4 text-primary">Meilleure offre</th>
+                    <th className="text-center py-3 px-4 text-secondary">Économie/an</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[['Studio 30m²','~720€','~500€','220€'],['Appart T2 50m²','~960€','~672€','288€'],['Appart T3 75m²','~1 320€','~924€','396€'],['Maison 100m²','~1 680€','~1 176€','504€'],['Maison 150m²+','~2 280€','~1 596€','684€']].map(([s,e,o,ec]) => (
+                    <tr key={s} className="border-t border-border hover:bg-muted/20 transition-colors">
+                      <td className="py-3 px-4 font-medium">{s}</td>
+                      <td className="py-3 px-4 text-center text-muted-foreground">{e}</td>
+                      <td className="py-3 px-4 text-center font-semibold text-primary">{o}</td>
+                      <td className="py-3 px-4 text-center font-bold text-secondary">-{ec}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="text-center mt-6">
+              <Button size="lg" asChild>
+                <Link to="/comparer">Calculer mes économies personnalisées →</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
         
         {/* 4. Pourquoi Switchly */}
         <LazySection>

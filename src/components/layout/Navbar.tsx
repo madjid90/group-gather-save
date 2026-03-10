@@ -7,10 +7,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { trackClick } from "@/hooks/useClickTracking";
 
 const navLinks = [
-  { href: "/", label: "Accueil" },
-  { href: "/#estimateur", label: "Voir mes économies", isScroll: true },
-  { href: "/faq", label: "FAQ" },
-  { href: "/contact", label: "Contact" },
+  { href: "/comparer?type=electricite", label: "Électricité" },
+  { href: "/comparer?type=gaz", label: "Gaz" },
+  { href: "/comparer?type=internet", label: "Internet" },
+  { href: "/energie", label: "Toutes les villes" },
 ];
 
 const legalLinks = [
@@ -22,12 +22,13 @@ const legalLinks = [
 // All links for desktop hamburger menu
 const allDesktopLinks = [
   { href: "/", label: "Accueil" },
-  { href: "/#estimateur", label: "Voir mes économies", isScroll: true },
+  { href: "/comparer?type=electricite", label: "Électricité" },
+  { href: "/comparer?type=gaz", label: "Gaz" },
+  { href: "/comparer?type=internet", label: "Internet" },
+  { href: "/energie", label: "Toutes les villes" },
   { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact" },
   { href: "/mentions-legales", label: "Mentions légales" },
-  { href: "/politique-rgpd", label: "Politique RGPD" },
-  { href: "/cgu", label: "CGU" },
 ];
 
 export function Navbar() {
@@ -150,9 +151,9 @@ export function Navbar() {
                 size="sm" 
                 className="hidden sm:inline-flex text-sm px-4 sm:px-5 h-10" 
                 asChild
-                onClick={() => trackClick({ eventType: 'cta_inscription', source: 'navbar' })}
+                onClick={() => trackClick({ eventType: 'cta_comparateur', source: 'navbar' })}
               >
-                <Link to="/inscription">Rejoindre</Link>
+                <Link to="/comparer">Comparer gratuitement →</Link>
               </Button>
             </>
           )}
@@ -202,27 +203,14 @@ export function Navbar() {
           >
             <div className="py-3">
               {allDesktopLinks.map((link, index) => (
-                link.isScroll ? (
-                  <button
-                    key={link.href}
-                    onClick={handleScrollToEstimateur}
-                    className={`block w-full text-left text-sm md:text-base font-medium py-3 px-5 transition-colors hover:bg-muted text-foreground ${index === 3 ? "border-b border-border mb-1 pb-4" : ""}`}
-                  >
-                    <span className="flex items-center gap-2">
-                      <Calculator className="w-4 h-4 text-primary" />
-                      {link.label}
-                    </span>
-                  </button>
-                ) : (
-                  <Link
-                    key={link.href}
-                    to={link.href}
-                    onClick={() => setIsDesktopOpen(false)}
-                    className={`block text-sm md:text-base font-medium py-3 px-5 transition-colors hover:bg-muted text-foreground ${index === 3 ? "border-b border-border mb-1 pb-4" : ""}`}
-                  >
-                    {link.label}
-                  </Link>
-                )
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  onClick={() => setIsDesktopOpen(false)}
+                  className={`block text-sm md:text-base font-medium py-3 px-5 transition-colors hover:bg-muted text-foreground ${index === 4 ? "border-b border-border mb-1 pb-4" : ""}`}
+                >
+                  {link.label}
+                </Link>
               ))}
             </div>
           </motion.div>
@@ -251,29 +239,18 @@ export function Navbar() {
               transition={{ duration: 0.2, ease: "easeOut" }}
               className="absolute top-16 left-0 right-0 z-50 bg-card border-b border-border shadow-switchly-lg lg:hidden"
             >
-              <div className="container mx-auto px-4 py-5">
+               <div className="container mx-auto px-4 py-5">
                 {/* Navigation Links */}
                 <div className="flex flex-col gap-1">
                   {navLinks.map((link) => (
-                    link.isScroll ? (
-                      <button
-                        key={link.href}
-                        onClick={handleScrollToEstimateur}
-                        className="text-sm font-medium py-4 px-4 rounded-xl transition-colors hover:bg-muted active:bg-muted leading-relaxed text-foreground text-left flex items-center gap-2"
-                      >
-                        <Calculator className="w-4 h-4 text-primary" />
-                        {link.label}
-                      </button>
-                    ) : (
-                      <Link
-                        key={link.href}
-                        to={link.href}
-                        onClick={() => setIsMobileOpen(false)}
-                        className="text-sm font-medium py-4 px-4 rounded-xl transition-colors hover:bg-muted active:bg-muted leading-relaxed text-foreground"
-                      >
-                        {link.label}
-                      </Link>
-                    )
+                    <Link
+                      key={link.href}
+                      to={link.href}
+                      onClick={() => setIsMobileOpen(false)}
+                      className="text-sm font-medium py-4 px-4 rounded-xl transition-colors hover:bg-muted active:bg-muted leading-relaxed text-foreground"
+                    >
+                      {link.label}
+                    </Link>
                   ))}
                 </div>
                 
@@ -286,12 +263,12 @@ export function Navbar() {
                       className="w-full py-4 text-sm font-semibold" 
                       asChild
                       onClick={() => {
-                        trackClick({ eventType: 'cta_inscription', source: 'navbar' });
+                        trackClick({ eventType: 'cta_comparateur', source: 'navbar' });
                         setIsMobileOpen(false);
                       }}
                     >
-                      <Link to="/inscription">
-                        Rejoindre l'achat groupé gratuitement
+                      <Link to="/comparer">
+                        Comparer gratuitement
                         <ArrowRight className="w-4 h-4 ml-2" />
                       </Link>
                     </Button>

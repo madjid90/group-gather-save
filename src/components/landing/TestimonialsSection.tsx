@@ -4,46 +4,11 @@ import { Link } from "react-router-dom";
 import { Star } from "lucide-react";
 
 const testimonials = [
-  {
-    name: "Julie M.",
-    location: "Lyon",
-    rating: 5,
-    text: "Inscription rapide, aucun appel, tout par SMS. J'économise 70€/mois sur l'électricité depuis 6 mois.",
-    textMobile: "70€/mois économisés, tout par SMS.",
-    avatar: "J",
-  },
-  {
-    name: "Thomas D.",
-    location: "Bordeaux",
-    rating: 5,
-    text: "J'étais sceptique mais zéro démarchage, juste un SMS avec l'offre. Résultat : 340€ économisés cette année.",
-    textMobile: "340€/an, zéro démarchage.",
-    avatar: "T",
-  },
-  {
-    name: "Camille P.",
-    location: "Nantes",
-    rating: 5,
-    text: "30 secondes d'inscription, offre reçue par SMS le lendemain. 23% moins cher avec EDF, je recommande.",
-    textMobile: "23% moins cher avec EDF.",
-    avatar: "C",
-  },
-  {
-    name: "Nadia K.",
-    location: "Marseille",
-    rating: 5,
-    text: "Ma box internet est passée de 45€ à 29€/mois grâce à l'achat groupé. Démarche 100% en ligne.",
-    textMobile: "Internet : 45€ → 29€/mois.",
-    avatar: "N",
-  },
-  {
-    name: "Karim B.",
-    location: "Toulouse",
-    rating: 5,
-    text: "Électricité + internet combinés : 412€ économisés en un an. Et jamais un seul coup de fil commercial.",
-    textMobile: "412€/an, zéro appel.",
-    avatar: "K",
-  },
+  { name: "Julie M.", location: "Lyon (69)", rating: 5, saving: "840€/an", type: "Électricité", text: "Inscription rapide, aucun appel, tout par SMS. J'économise 70€/mois sur l'électricité depuis 6 mois.", textMobile: "70€/mois économisés, tout par SMS.", avatar: "J" },
+  { name: "Thomas D.", location: "Bordeaux (33)", rating: 5, saving: "340€/an", type: "Électricité + Gaz", text: "J'étais sceptique mais zéro démarchage, juste un SMS avec l'offre. Résultat : 340€ économisés cette année.", textMobile: "340€/an, zéro démarchage.", avatar: "T" },
+  { name: "Camille P.", location: "Nantes (44)", rating: 5, saving: "276€/an", type: "Électricité", text: "30 secondes d'inscription, offre reçue par SMS le lendemain. 23% moins cher avec EDF, je recommande.", textMobile: "23% moins cher avec EDF.", avatar: "C" },
+  { name: "Nadia K.", location: "Marseille (13)", rating: 5, saving: "192€/an", type: "Internet", text: "Ma box internet est passée de 45€ à 29€/mois grâce à l'achat groupé. Démarche 100% en ligne.", textMobile: "Internet : 45€ → 29€/mois.", avatar: "N" },
+  { name: "Karim B.", location: "Toulouse (31)", rating: 5, saving: "412€/an", type: "Énergie + Internet", text: "Électricité + internet combinés : 412€ économisés en un an. Et jamais un seul coup de fil commercial.", textMobile: "412€/an, zéro appel.", avatar: "K" },
 ];
 
 export function TestimonialsSection() {
@@ -82,6 +47,13 @@ export function TestimonialsSection() {
               className={index >= 3 ? "hidden md:block" : ""}
             >
               <div className="bg-card rounded-lg md:rounded-2xl p-3 md:p-5 h-full border border-border shadow-switchly">
+                {/* Savings badge */}
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-semibold bg-secondary/20 text-secondary px-2 py-1 rounded-full">
+                    💰 {testimonial.saving}
+                  </span>
+                  <span className="text-xs text-muted-foreground">{testimonial.type}</span>
+                </div>
                 {/* Stars - smaller on mobile */}
                 <div className="flex gap-0.5 md:gap-1 mb-1.5 md:mb-3">
                   {Array.from({ length: testimonial.rating }).map((_, i) => (
@@ -126,7 +98,7 @@ export function TestimonialsSection() {
           className="hidden md:block text-center"
         >
           <Button variant="hero" size="lg" asChild>
-            <Link to="/inscription">Rejoindre l'achat groupé gratuitement</Link>
+            <Link to="/comparer">Comparer gratuitement</Link>
           </Button>
         </motion.div>
       </div>

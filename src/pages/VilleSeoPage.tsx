@@ -99,6 +99,15 @@ const VilleSeoPage = () => {
           <meta name="keywords" content={page.mots_cles.join(', ')} />
         )}
         <link rel="canonical" href={`https://switchly.fr/ville/${page.slug}`} />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://switchly.fr" },
+            { "@type": "ListItem", "position": 2, "name": "Énergie", "item": "https://switchly.fr/energie" },
+            { "@type": "ListItem", "position": 3, "name": page.ville, "item": `https://switchly.fr/ville/${page.slug}` }
+          ]
+        })}</script>
       </Helmet>
 
       <JsonLdSchema type="service" />
@@ -121,13 +130,13 @@ const VilleSeoPage = () => {
                 )}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button size="lg" asChild>
-                    <Link to="/inscription">
-                      Rejoindre le groupe
+                    <Link to={`/comparer?type=electricite`}>
+                      Comparer les offres à {page.ville}
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </Link>
                   </Button>
                   <Button size="lg" variant="outline" asChild>
-                    <Link to="/faq">En savoir plus</Link>
+                    <Link to="/energie">Voir toutes les villes</Link>
                   </Button>
                 </div>
               </div>
@@ -137,23 +146,11 @@ const VilleSeoPage = () => {
           {/* Stats */}
           <section className="py-12 bg-muted/30">
             <div className="container mx-auto px-4">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                <div>
-                  <div className="text-3xl md:text-4xl font-bold text-primary">-15%</div>
-                  <div className="text-sm text-muted-foreground">d'économies moyennes</div>
-                </div>
-                <div>
-                  <div className="text-3xl md:text-4xl font-bold text-primary">1000+</div>
-                  <div className="text-sm text-muted-foreground">foyers participants</div>
-                </div>
-                <div>
-                  <div className="text-3xl md:text-4xl font-bold text-primary">100%</div>
-                  <div className="text-sm text-muted-foreground">gratuit</div>
-                </div>
-                <div>
-                  <div className="text-3xl md:text-4xl font-bold text-primary">5 min</div>
-                  <div className="text-sm text-muted-foreground">d'inscription</div>
-                </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center max-w-3xl mx-auto">
+                <div><div className="text-3xl md:text-4xl font-bold text-primary">400€</div><div className="text-sm text-muted-foreground">max d'économies/an</div></div>
+                <div><div className="text-3xl md:text-4xl font-bold text-primary">2 500+</div><div className="text-sm text-muted-foreground">foyers inscrits</div></div>
+                <div><div className="text-3xl md:text-4xl font-bold text-primary">100%</div><div className="text-sm text-muted-foreground">gratuit</div></div>
+                <div><div className="text-3xl md:text-4xl font-bold text-primary">0</div><div className="text-sm text-muted-foreground">coupure garantie</div></div>
               </div>
             </div>
           </section>

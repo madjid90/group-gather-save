@@ -28,7 +28,7 @@ const partners: Partner[] = [
 ];
 
 function PartnerLogo({ partner }: { partner: Partner }) {
-  const defaultClass = "h-8 md:h-12 w-auto max-w-[80px] md:max-w-[100px] object-contain grayscale opacity-70";
+  const defaultClass = "h-8 md:h-12 w-auto max-w-[80px] md:max-w-[100px] object-contain transition-all duration-300 hover:scale-105";
   const logoClass = partner.className || defaultClass;
   
   return (
@@ -41,7 +41,7 @@ function PartnerLogo({ partner }: { partner: Partner }) {
           decoding="async"
           width={100}
           height={48}
-          className={`${logoClass} ${!partner.className ? '' : 'w-auto object-contain grayscale opacity-70'}`}
+          className={`${logoClass} ${!partner.className ? '' : 'w-auto object-contain'}`}
         />
       </div>
     </div>
@@ -111,6 +111,10 @@ export function PartnersSection() {
             </motion.div>
           </div>
         </motion.div>
+
+        <p className="text-center text-xs text-muted-foreground mt-4">
+          Switchly est rémunéré par commission sur les souscriptions. Service 100% gratuit pour vous.
+        </p>
       </div>
     </section>
   );

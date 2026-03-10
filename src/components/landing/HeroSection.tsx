@@ -1,293 +1,141 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { AnimatedCounter, useAnimatedSocialProof } from "@/components/ui/AnimatedCounter";
-import { CheckCircle, MessageSquare, Gift, Zap, Wifi, Flame, Bell, TrendingUp, Calendar, Clock } from "lucide-react";
-import { trackClick } from "@/hooks/useClickTracking";
-
-// Memoize static elements
-const TrustBadges = memo(() => (
-  <div className="flex items-center gap-3 flex-wrap">
-    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card border border-border shadow-sm">
-      <MessageSquare className="w-4 h-4 text-primary" />
-      <span className="text-sm font-medium text-foreground">100% digital</span>
-    </div>
-    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card border border-border shadow-sm">
-      <Gift className="w-4 h-4 text-secondary" />
-      <span className="text-sm font-medium text-foreground">100% gratuit</span>
-    </div>
-  </div>
-));
-TrustBadges.displayName = "TrustBadges";
-
-// Dashboard-style hero visual
-const HeroDashboard = memo(({ count, notification }: { count: number; notification: { name: string; city: string; time: string } | null }) => {
-  const recentMembers = [
-    { time: "10:00", name: "Marie D.", type: "Électricité + Gaz", status: "inscrit" },
-    { time: "11:30", name: "Sophie L.", type: "Électricité", status: "inscrit" },
-    { time: "14:00", name: "Emma R.", type: "Internet + Énergie", status: "en_attente" },
-  ];
-
-  return (
-    <div className="relative">
-      {/* Floating notification - top right */}
-      <motion.div
-        className="absolute -top-4 -right-4 bg-card border border-border rounded-2xl px-4 py-3 shadow-switchly-lg flex items-center gap-3 z-10"
-        initial={{ opacity: 0, y: -20, scale: 0.9 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ delay: 0.8, duration: 0.4 }}
-      >
-        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-          <Bell className="w-5 h-5 text-primary" />
-        </div>
-        <div className="text-left">
-          <p className="text-xs text-muted-foreground">Nouvelle inscription</p>
-          <p className="text-sm font-semibold text-foreground flex items-center gap-1.5">
-            {notification?.name || "Maxime"} confirmé
-            <CheckCircle className="w-4 h-4 text-secondary" />
-          </p>
-        </div>
-      </motion.div>
-
-      {/* Calendar icon - decorative */}
-      <motion.div
-        className="absolute top-16 -right-2 w-10 h-10 rounded-xl bg-destructive/10 flex items-center justify-center z-10"
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 1, duration: 0.3 }}
-      >
-        <Calendar className="w-5 h-5 text-destructive" />
-      </motion.div>
-
-      {/* Main dashboard card */}
-      <motion.div
-        className="bg-card rounded-3xl p-6 shadow-switchly-xl border border-border"
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.5, duration: 0.5 }}
-      >
-        {/* Header */}
-        <div className="mb-6">
-          <p className="text-sm text-muted-foreground">Aujourd'hui</p>
-          <h3 className="text-2xl font-bold text-foreground">
-            <AnimatedCounter 
-              target={count}
-              externalValue={count}
-              duration={2}
-              showLiveIndicator={false}
-            /> inscrits
-          </h3>
-        </div>
-
-        {/* Stats row */}
-        <div className="grid grid-cols-3 gap-3 mb-6">
-          <motion.div
-            className="bg-muted/50 rounded-xl p-3 text-center"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 }}
-          >
-            <p className="text-xl font-bold text-foreground">312€</p>
-            <p className="text-xs text-muted-foreground">Économie moy.</p>
-            <p className="text-xs font-semibold text-secondary">+15%</p>
-          </motion.div>
-          <motion.div
-            className="bg-muted/50 rounded-xl p-3 text-center"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
-          >
-            <p className="text-xl font-bold text-foreground">98%</p>
-            <p className="text-xs text-muted-foreground">Satisfaits</p>
-            <p className="text-xs font-semibold text-secondary">+12%</p>
-          </motion.div>
-          <motion.div
-            className="bg-muted/50 rounded-xl p-3 text-center"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9 }}
-          >
-            <p className="text-xl font-bold text-foreground">3</p>
-            <p className="text-xs text-muted-foreground">Offres</p>
-            <div className="flex items-center justify-center gap-1 mt-0.5">
-              <Zap className="w-3 h-3 text-primary" />
-              <Flame className="w-3 h-3 text-orange-500" />
-              <Wifi className="w-3 h-3 text-secondary" />
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Recent members list */}
-        <div className="space-y-3">
-          {recentMembers.map((member, index) => (
-            <motion.div
-              key={member.name}
-              className="bg-background rounded-xl p-3 flex items-center gap-4"
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 1 + index * 0.1 }}
-            >
-              <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm font-mono text-muted-foreground w-12">{member.time}</span>
-              </div>
-              <div className="flex-1">
-                <p className="text-sm font-semibold text-foreground">{member.name}</p>
-                <p className="text-xs text-muted-foreground">{member.type}</p>
-              </div>
-              <span className={`text-xs font-medium px-3 py-1 rounded-full ${
-                member.status === "inscrit" 
-                  ? "bg-secondary/20 text-secondary" 
-                  : "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
-              }`}>
-                {member.status === "inscrit" ? "Confirmé" : "En attente"}
-              </span>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
-
-      {/* Bottom floating stat */}
-      <motion.div
-        className="absolute -bottom-8 -left-4 bg-card border border-border rounded-2xl px-4 py-3 shadow-switchly-lg flex items-center gap-3"
-        initial={{ opacity: 0, y: 20, scale: 0.9 }}
-        animate={{ 
-          opacity: 1, 
-          y: [0, -4, 0], 
-          scale: 1 
-        }}
-        transition={{ 
-          opacity: { delay: 1.2, duration: 0.3 },
-          scale: { delay: 1.2, duration: 0.3 },
-          y: { delay: 1.5, duration: 3, repeat: Infinity, ease: "easeInOut" }
-        }}
-      >
-        <div className="w-10 h-10 rounded-full bg-destructive/10 flex items-center justify-center">
-          <TrendingUp className="w-5 h-5 text-destructive" />
-        </div>
-        <div className="text-left">
-          <p className="text-xs text-muted-foreground">Cette semaine</p>
-          <p className="text-sm font-bold text-foreground">+23% d'inscriptions</p>
-        </div>
-      </motion.div>
-    </div>
-  );
-});
-HeroDashboard.displayName = "HeroDashboard";
 
 export const HeroSection = memo(function HeroSection() {
-  const { count, notification } = useAnimatedSocialProof(2547, 12000);
+  const { count } = useAnimatedSocialProof(2547, 12000);
+  const [step, setStep] = useState<'cp' | 'type'>('cp');
+  const [cp, setCp] = useState('');
+
+  const handleCompare = (type: string) => {
+    window.location.href = `/comparer?cp=${cp}&type=${type}`;
+  };
 
   return (
-    <section className="relative min-h-[calc(100svh-4rem)] lg:min-h-[90svh] flex items-center overflow-hidden py-6 lg:py-0">
-      {/* Background gradient - simplified for performance */}
+    <section className="relative min-h-[85svh] flex items-center overflow-hidden py-8 lg:py-0">
       <div className="absolute inset-0 bg-gradient-subtle" aria-hidden="true" />
-      
-      {/* Animated background - desktop only, reduced motion */}
-      <div className="absolute inset-0 overflow-hidden hidden lg:block" aria-hidden="true">
-        <div className="absolute top-20 left-10 w-72 h-72 rounded-full bg-primary/5 blur-3xl opacity-30" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 rounded-full bg-secondary/5 blur-3xl opacity-30" />
-      </div>
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="max-w-3xl mx-auto text-center">
 
-      <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-6 lg:gap-12 items-center">
-          {/* Mobile counter - top */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="lg:hidden flex items-center justify-center"
+            className="inline-flex items-center gap-2 bg-primary/10 text-primary text-xs font-semibold px-3 py-1.5 rounded-full mb-6"
           >
-            <div className="flex items-center gap-2 bg-card/80 backdrop-blur-sm border border-border rounded-full px-3 py-2 shadow-lg">
-              <motion.span 
-                className="flex items-center gap-1 bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full text-[11px] font-semibold"
-                animate={{ scale: [1, 1.05, 1] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-secondary-foreground animate-pulse" />
-                en direct
-              </motion.span>
-              <span className="text-lg font-bold text-foreground">
-                <AnimatedCounter 
-                  target={2547}
-                  externalValue={count}
-                  duration={2}
-                  showLiveIndicator={false}
-                />
-              </span>
-              <span className="text-xs text-muted-foreground">inscrits</span>
-            </div>
+            <span className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
+            Comparateur 100% gratuit — <AnimatedCounter target={2547} externalValue={count} duration={2} showLiveIndicator={false} /> foyers accompagnés
           </motion.div>
 
-          {/* Content */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="space-y-4 lg:space-y-6 text-center lg:text-left"
+            transition={{ delay: 0.1 }}
+            className="text-3xl sm:text-4xl lg:text-6xl font-bold text-foreground mb-4 leading-tight"
           >
-            {/* Title */}
-            <h1 className="text-[22px] leading-tight sm:text-3xl lg:text-5xl xl:text-6xl font-bold text-foreground">
-              Économisez jusqu'à <span className="gradient-text">312€</span> par an sur vos factures{" "}
-              <span className="gradient-text">d'énergie et internet</span>
-            </h1>
+            Économisez jusqu'à <span className="gradient-text">400€/an</span> sur vos factures
+          </motion.h1>
 
-            {/* Description */}
-            <p className="text-[15px] leading-relaxed sm:text-base lg:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0">
-              Achat groupé sans engagement. Plus on est nombreux, plus les prix baissent.
-            </p>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-base lg:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto"
+          >
+            Comparez les offres électricité, gaz et internet en 30 secondes. Sans engagement. 100% gratuit.
+          </motion.p>
 
-            {/* CTA Button - Desktop only */}
-            <div className="hidden lg:flex flex-col items-start gap-4 pt-2">
-              <motion.div
-                animate={{ scale: [1, 1.02, 1] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <Button 
-                  variant="hero" 
-                  size="xl" 
-                  className="text-lg py-6 px-10" 
-                  asChild
-                  onClick={() => trackClick({ eventType: 'cta_inscription', source: 'hero' })}
-                >
-                  <Link to="/inscription">
-                    Rejoindre l'achat groupé gratuitement
-                  </Link>
-                </Button>
-              </motion.div>
-              <TrustBadges />
-            </div>
-            
-            {/* Trust badges - Mobile only */}
-            <div className="lg:hidden flex items-center justify-center gap-2 flex-wrap">
-              <TrustBadges />
-            </div>
-            
-            {/* Scroll indicator - Mobile/Tablet only */}
-            <motion.div 
-              className="lg:hidden pt-4 flex justify-center"
-              animate={{ y: [0, 6, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              <div className="w-5 h-8 rounded-full border-2 border-muted-foreground/30 flex items-start justify-center p-1">
-                <motion.div 
-                  className="w-1 h-2 bg-muted-foreground/50 rounded-full"
-                  animate={{ y: [0, 10, 0] }}
-                  transition={{ duration: 2, repeat: Infinity }}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="bg-card border border-border rounded-2xl p-4 shadow-lg max-w-xl mx-auto mb-6"
+          >
+            {step === 'cp' ? (
+              <div className="flex flex-col sm:flex-row gap-3">
+                <input
+                  type="text"
+                  value={cp}
+                  onChange={e => {
+                    const v = e.target.value.replace(/\D/g, '').slice(0, 5);
+                    setCp(v);
+                    if (v.length === 5) setStep('type');
+                  }}
+                  placeholder="Votre code postal (ex: 44000)"
+                  className="flex-1 bg-background border border-border rounded-xl px-4 py-3 text-sm outline-none focus:border-primary transition-colors"
+                  inputMode="numeric"
+                  maxLength={5}
+                  autoFocus
                 />
+                <Button
+                  variant="hero"
+                  size="lg"
+                  onClick={() => { if (cp.length === 5) setStep('type'); }}
+                  disabled={cp.length !== 5}
+                  className="whitespace-nowrap"
+                >
+                  Voir les offres →
+                </Button>
               </div>
-            </motion.div>
+            ) : (
+              <div className="space-y-3">
+                <p className="text-sm font-semibold text-center">Que souhaitez-vous comparer ?</p>
+                <div className="grid grid-cols-3 gap-2">
+                  {[
+                    { l: '⚡ Électricité', v: 'electricite' },
+                    { l: '🔥 Gaz', v: 'gaz' },
+                    { l: '📶 Internet', v: 'internet' },
+                  ].map(o => (
+                    <button
+                      key={o.v}
+                      onClick={() => handleCompare(o.v)}
+                      className="flex flex-col items-center gap-1 p-3 rounded-xl border border-border hover:border-primary hover:bg-primary/5 transition-all text-sm font-medium"
+                    >
+                      {o.l}
+                    </button>
+                  ))}
+                </div>
+                <button
+                  onClick={() => handleCompare('tous')}
+                  className="w-full py-2.5 bg-primary text-primary-foreground rounded-xl text-sm font-semibold hover:bg-primary/90 transition-colors"
+                >
+                  Comparer tout (électricité + gaz + internet)
+                </button>
+                <button
+                  onClick={() => setStep('cp')}
+                  className="w-full text-xs text-muted-foreground hover:text-foreground"
+                >
+                  ← Modifier le code postal ({cp})
+                </button>
+              </div>
+            )}
           </motion.div>
 
-          {/* Visual - desktop only - Dashboard style */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="relative hidden lg:block"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="flex flex-wrap items-center justify-center gap-3 text-xs text-muted-foreground"
           >
-            <HeroDashboard count={count} notification={notification} />
+            <span>✓ Sans coupure</span><span className="text-border">|</span>
+            <span>✓ 100% gratuit</span><span className="text-border">|</span>
+            <span>✓ Sans engagement</span><span className="text-border">|</span>
+            <span>✓ Résultat immédiat</span>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="mt-8 pt-6 border-t border-border"
+          >
+            <p className="text-xs text-muted-foreground">
+              Vous préférez des prix négociés collectivement ?{' '}
+              <Link to="/inscription" className="text-primary hover:underline font-medium">
+                Rejoindre l'achat groupé →
+              </Link>
+            </p>
           </motion.div>
         </div>
       </div>
