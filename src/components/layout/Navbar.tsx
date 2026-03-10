@@ -22,12 +22,13 @@ const legalLinks = [
 // All links for desktop hamburger menu
 const allDesktopLinks = [
   { href: "/", label: "Accueil" },
-  { href: "/#estimateur", label: "Voir mes économies", isScroll: true },
+  { href: "/comparer?type=electricite", label: "Électricité" },
+  { href: "/comparer?type=gaz", label: "Gaz" },
+  { href: "/comparer?type=internet", label: "Internet" },
+  { href: "/energie", label: "Toutes les villes" },
   { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact" },
   { href: "/mentions-legales", label: "Mentions légales" },
-  { href: "/politique-rgpd", label: "Politique RGPD" },
-  { href: "/cgu", label: "CGU" },
 ];
 
 export function Navbar() {
