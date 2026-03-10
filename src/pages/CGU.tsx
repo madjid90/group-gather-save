@@ -46,7 +46,7 @@ export default function CGU() {
                 1. Objet
               </h2>
               <p className="text-base text-muted-foreground leading-relaxed">
-                Les présentes Conditions Générales d'Utilisation (CGU) régissent l'utilisation du service Switchly, plateforme d'achat groupé d'énergie et d'internet.
+                Les présentes Conditions Générales d'Utilisation (CGU) régissent l'utilisation du service Switchly, comparateur d'énergie et d'internet.
               </p>
             </section>
 
