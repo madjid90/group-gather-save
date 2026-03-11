@@ -150,7 +150,14 @@ const Index = () => {
             <CollectivitesSection />
           </Suspense>
         </LazySection>
-        
+
+        {/* 10. Villes populaires */}
+        <LazySection>
+          <Suspense fallback={<SectionSkeleton />}>
+            <VillesPopulairesSection />
+          </Suspense>
+        </LazySection>
+
         {/* Spacer for fixed CTA on mobile */}
         <div className="h-24 md:hidden" />
       </div>
