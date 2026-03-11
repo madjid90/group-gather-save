@@ -1122,6 +1122,60 @@ export type Database = {
         }
         Relationships: []
       }
+      villes: {
+        Row: {
+          code_insee: string
+          code_postal: string
+          conso_moyenne_kwh: number | null
+          created_at: string | null
+          departement: string | null
+          id: string
+          nb_logements: number | null
+          nom: string
+          nom_eld: string | null
+          population: number | null
+          prix_moyen_kwh: number | null
+          region: string | null
+          reseau: string | null
+          slug: string
+          updated_at: string | null
+        }
+        Insert: {
+          code_insee: string
+          code_postal: string
+          conso_moyenne_kwh?: number | null
+          created_at?: string | null
+          departement?: string | null
+          id?: string
+          nb_logements?: number | null
+          nom: string
+          nom_eld?: string | null
+          population?: number | null
+          prix_moyen_kwh?: number | null
+          region?: string | null
+          reseau?: string | null
+          slug: string
+          updated_at?: string | null
+        }
+        Update: {
+          code_insee?: string
+          code_postal?: string
+          conso_moyenne_kwh?: number | null
+          created_at?: string | null
+          departement?: string | null
+          id?: string
+          nb_logements?: number | null
+          nom?: string
+          nom_eld?: string | null
+          population?: number | null
+          prix_moyen_kwh?: number | null
+          region?: string | null
+          reseau?: string | null
+          slug?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
