@@ -116,7 +116,7 @@ export const HeroSection = memo(function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="flex flex-wrap items-center justify-center gap-3 text-xs text-muted-foreground"
+            className="hidden md:flex flex-wrap items-center justify-center gap-3 text-xs text-muted-foreground"
           >
             <span>✓ Sans coupure</span><span className="text-border">|</span>
             <span>✓ 100% gratuit</span><span className="text-border">|</span>
