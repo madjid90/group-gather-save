@@ -207,7 +207,22 @@ export default function ResultatsPage() {
                           <Leaf className="w-3 h-3" /> Énergie verte
                         </span>
                       )}
-                    </div>
+            {/* Debug: Selectra API response */}
+            {selectraLoading && (
+              <div className="mt-6 flex items-center gap-2 text-sm text-muted-foreground">
+                <Loader2 className="w-4 h-4 animate-spin" /> Chargement Selectra...
+              </div>
+            )}
+            {selectraData && (
+              <details className="mt-6 border border-border rounded-xl p-4">
+                <summary className="text-xs font-medium cursor-pointer text-muted-foreground">
+                  🔍 Debug : réponse API Selectra (status {selectraData.status})
+                </summary>
+                <pre className="mt-2 text-xs bg-muted p-3 rounded-lg overflow-auto max-h-64">
+                  {JSON.stringify(selectraData, null, 2)}
+                </pre>
+              </details>
+            )}
                     <Button
                       className="w-full mt-4"
                       variant={i === 0 ? 'hero' : 'outline'}
