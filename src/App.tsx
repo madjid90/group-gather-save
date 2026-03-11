@@ -40,6 +40,7 @@ import PartageAccueil from "./pages/PartageAccueil";
 import Invitation from "./pages/Invitation";
 import NotFound from "./pages/NotFound";
 import VilleSeoPage from "./pages/VilleSeoPage";
+import ApiTest from "./pages/ApiTest";
 
 const queryClient = new QueryClient();
 
@@ -105,6 +106,7 @@ const App = () => (
             <Route path="audit" element={<AdminAuditLogs />} />
           </Route>
 
+          <Route path="/api-test" element={<ApiTest />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
