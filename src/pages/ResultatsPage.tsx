@@ -39,6 +39,8 @@ export default function ResultatsPage() {
   const [showModal, setShowModal] = useState(false);
   const [selected, setSelected] = useState<any>(null);
   const [lead, setLead] = useState({ prenom: '', telephone: '' });
+  const [selectraData, setSelectraData] = useState<any>(null);
+  const [selectraLoading, setSelectraLoading] = useState(false);
 
   const type = searchParams.get('type') || 'electricite';
   const superficie = searchParams.get('superficie') || '50-75m²';
@@ -46,6 +48,28 @@ export default function ResultatsPage() {
 
   const conso = CONSO[superficie] || 4000;
   const coutEDF = Math.round(conso * 0.2516 * 1.2 + 9.51 * 12 * 1.2);
+
+  // Fetch Selectra offers via edge function
+  useEffect(() => {
+    const fetchSelectra = async () => {
+      setSelectraLoading(true);
+      try {
+        const { data, error } = await supabase.functions.invoke('selectra-offers', {
+          body: { type },
+        });
+        if (!error && data) {
+          setSelectraData(data);
+          console.log('Selectra API response:', data);
+        } else {
+          console.warn('Selectra API error:', error);
+        }
+      } catch (e) {
+        console.error('Selectra fetch failed:', e);
+      }
+      setSelectraLoading(false);
+    };
+    fetchSelectra();
+  }, [type]);
 
   const base = type === 'internet' ? INTERNET : type === 'gaz' ? GAZ : ELEC;
   const offers = base.filter(o =>
