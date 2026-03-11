@@ -94,6 +94,7 @@ const App = () => (
 
           {/* SEO local pages */}
           <Route path="/ville/:slug" element={<VilleSeoPage />} />
+          <Route path="/electricite-gaz/:slug" element={<VillePage />} />
 
           {/* Admin pages */}
           <Route path="/admin" element={<AdminLayout />}>
