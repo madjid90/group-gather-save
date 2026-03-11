@@ -19,7 +19,7 @@ import MentionsLegales from "./pages/MentionsLegales";
 import PolitiqueRGPD from "./pages/PolitiqueRGPD";
 import CGU from "./pages/CGU";
 import PolitiqueConfidentialite from "./pages/PolitiqueConfidentialite";
-import OrganiserAchatGroupe from "./pages/OrganiserAchatGroupe";
+
 import DemandePartenaire from "./pages/DemandePartenaire";
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
