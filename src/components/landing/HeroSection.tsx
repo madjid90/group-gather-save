@@ -22,10 +22,10 @@ export const HeroSection = memo(function HeroSection() {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 bg-primary/10 text-primary text-xs font-semibold px-3 py-1.5 rounded-full mb-6"
+            className="inline-flex items-center gap-2 bg-primary/10 text-primary text-[11px] sm:text-xs font-semibold px-3 py-1.5 rounded-full mb-6 whitespace-nowrap"
           >
             <span className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
-            Comparateur 100% gratuit — <AnimatedCounter target={2547} externalValue={count} duration={2} showLiveIndicator={false} /> foyers accompagnés
+            Comparateur 100% gratuit — <AnimatedCounter target={2547} externalValue={count} duration={2} showLiveIndicator={false} />&nbsp;foyers accompagnés
           </motion.div>
 
           <motion.h1
