@@ -6,15 +6,24 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+const endpoints = [
+  "https://api.selectra.com/comparator/api/offers",
+  "https://api.selectra.com/comparator/api/electricite",
+  "https://api.selectra.com/comparator/api/suppliers",
+  "https://api.selectra.com/comparator/v1/offers",
+  "https://api.selectra.com/comparator/v1/suppliers",
+  "https://api.selectra.com/api/comparator/offers",
+  "https://api.selectra.com/api/v1/offers",
+  "https://api.selectra.com/energy/offers",
+];
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { type } = await req.json();
     const token = Deno.env.get("SELECTRA_TOKEN");
-
     if (!token) {
       return new Response(
         JSON.stringify({ error: "SELECTRA_TOKEN not configured" }),
@@ -22,29 +31,31 @@ Deno.serve(async (req) => {
       );
     }
 
-    const res = await fetch("https://api.selectra.com/comparator", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
-
-    const body = await res.text();
-    let data;
-    try {
-      data = JSON.parse(body);
-    } catch {
-      data = { raw: body, status: res.status };
-    }
-
-    return new Response(
-      JSON.stringify({ status: res.status, type, data }),
-      {
-        status: 200,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
+    const results = await Promise.all(
+      endpoints.map(async (url) => {
+        try {
+          const res = await fetch(url, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          });
+          const body = await res.text();
+          return {
+            url,
+            status: res.status,
+            contentType: res.headers.get("content-type") || "unknown",
+            body: body.substring(0, 100),
+          };
+        } catch (err) {
+          return { url, status: null, contentType: "error", body: err.message.substring(0, 100) };
+        }
+      })
     );
+
+    return new Response(JSON.stringify({ results }, null, 2), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   } catch (err) {
     return new Response(
       JSON.stringify({ error: err.message }),
