@@ -59,28 +59,47 @@ const Index = () => {
           <div className="container mx-auto px-4 max-w-4xl">
             <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">Combien pouvez-vous économiser ?</h2>
             <p className="text-center text-muted-foreground mb-8 text-sm">Estimations basées sur les tarifs moyens 2025 vs tarif réglementé EDF.</p>
-            <div className="overflow-x-auto rounded-xl border border-border -mx-2 px-2">
-              <table className="w-full text-sm min-w-[380px]">
+            
+            {/* Mobile: cards */}
+            <div className="flex flex-col gap-3 md:hidden">
+              {[['Studio 30m²','720€','500€','220€'],['T2 50m²','960€','672€','288€'],['T3 75m²','1 320€','924€','396€'],['Maison 100m²','1 680€','1 176€','504€'],['Maison 150m²+','2 280€','1 596€','684€']].map(([s,e,o,ec]) => (
+                <div key={s} className="bg-card rounded-xl border border-border p-4 flex items-center justify-between">
+                  <div>
+                    <p className="font-semibold text-sm">{s}</p>
+                    <p className="text-xs text-muted-foreground">EDF ~{e} → <span className="text-primary font-medium">~{o}</span></p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-lg font-bold text-secondary">-{ec}</p>
+                    <p className="text-[10px] text-muted-foreground">/an</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop: table */}
+            <div className="hidden md:block rounded-xl border border-border overflow-hidden">
+              <table className="w-full text-sm">
                 <thead className="bg-muted/50">
                   <tr>
-                    <th className="text-left py-3 px-3 whitespace-nowrap">Logement</th>
-                    <th className="text-center py-3 px-3 whitespace-nowrap">EDF actuel</th>
-                    <th className="text-center py-3 px-3 text-primary whitespace-nowrap">Meilleure offre</th>
-                    <th className="text-center py-3 px-3 text-secondary whitespace-nowrap">Économie/an</th>
+                    <th className="text-left py-3 px-4">Logement</th>
+                    <th className="text-center py-3 px-4">EDF actuel</th>
+                    <th className="text-center py-3 px-4 text-primary">Meilleure offre</th>
+                    <th className="text-center py-3 px-4 text-secondary">Économie/an</th>
                   </tr>
                 </thead>
                 <tbody>
                   {[['Studio 30m²','~720€','~500€','220€'],['T2 50m²','~960€','~672€','288€'],['T3 75m²','~1 320€','~924€','396€'],['Maison 100m²','~1 680€','~1 176€','504€'],['Maison 150m²+','~2 280€','~1 596€','684€']].map(([s,e,o,ec]) => (
                     <tr key={s} className="border-t border-border hover:bg-muted/20 transition-colors">
-                      <td className="py-3 px-3 font-medium whitespace-nowrap">{s}</td>
-                      <td className="py-3 px-3 text-center text-muted-foreground whitespace-nowrap">{e}</td>
-                      <td className="py-3 px-3 text-center font-semibold text-primary whitespace-nowrap">{o}</td>
-                      <td className="py-3 px-3 text-center font-bold text-secondary whitespace-nowrap">-{ec}</td>
+                      <td className="py-3 px-4 font-medium">{s}</td>
+                      <td className="py-3 px-4 text-center text-muted-foreground">{e}</td>
+                      <td className="py-3 px-4 text-center font-semibold text-primary">{o}</td>
+                      <td className="py-3 px-4 text-center font-bold text-secondary">-{ec}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
+
             <div className="text-center mt-6">
               <Button size="lg" asChild>
                 <Link to="/comparer">Calculer mes économies personnalisées →</Link>
