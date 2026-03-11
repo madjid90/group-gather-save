@@ -41,6 +41,8 @@ import Invitation from "./pages/Invitation";
 import NotFound from "./pages/NotFound";
 import VilleSeoPage from "./pages/VilleSeoPage";
 import ApiTest from "./pages/ApiTest";
+import VillePage from "./pages/VillePage";
+import AdminImportVilles from "./pages/admin/AdminImportVilles";
 
 const queryClient = new QueryClient();
 
