@@ -207,6 +207,19 @@ export default function ResultatsPage() {
                           <Leaf className="w-3 h-3" /> Énergie verte
                         </span>
                       )}
+                    </div>
+                    <Button
+                      className="w-full mt-4"
+                      variant={i === 0 ? 'hero' : 'outline'}
+                      onClick={() => choose(o)}
+                    >
+                      Choisir cette offre <ExternalLink className="ml-2 w-4 h-4" />
+                    </Button>
+                  </motion.div>
+                );
+              })}
+            </div>
+
             {/* Debug: Selectra API response */}
             {selectraLoading && (
               <div className="mt-6 flex items-center gap-2 text-sm text-muted-foreground">
@@ -223,17 +236,6 @@ export default function ResultatsPage() {
                 </pre>
               </details>
             )}
-                    <Button
-                      className="w-full mt-4"
-                      variant={i === 0 ? 'hero' : 'outline'}
-                      onClick={() => choose(o)}
-                    >
-                      Choisir cette offre <ExternalLink className="ml-2 w-4 h-4" />
-                    </Button>
-                  </motion.div>
-                );
-              })}
-            </div>
 
             <p className="text-xs text-muted-foreground text-center mt-6">
               Switchly est rémunéré par commission versée par le fournisseur lors d'une souscription. Service 100% gratuit pour vous.
