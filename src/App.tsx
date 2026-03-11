@@ -106,6 +106,7 @@ const App = () => (
             <Route path="audit" element={<AdminAuditLogs />} />
           </Route>
 
+          <Route path="/api-test" element={<ApiTest />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
