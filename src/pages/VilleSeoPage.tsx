@@ -3,10 +3,9 @@ import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Search, Zap, Wifi, Check, Loader2 } from 'lucide-react';
+import { ArrowRight, Search, Zap, Wifi, MapPin, Loader2 } from 'lucide-react';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
-import { JsonLdSchema } from '@/components/seo/JsonLdSchema';
 
 interface LocalPage {
   id: string;
@@ -89,6 +88,8 @@ const VilleSeoPage = () => {
     );
   }
 
+  const compareUrl = `/comparer?cp=${page.code_postal || ''}&ville=${encodeURIComponent(page.ville)}`;
+
   return (
     <>
       <Helmet>
@@ -101,7 +102,6 @@ const VilleSeoPage = () => {
         )}
         <link rel="canonical" href={`https://switchly.fr/ville/${page.slug}`} />
         
-        {/* Open Graph */}
         <meta property="og:title" content={`${page.titre} | Switchly`} />
         {page.meta_description && <meta property="og:description" content={page.meta_description} />}
         <meta property="og:url" content={`https://switchly.fr/ville/${page.slug}`} />
@@ -109,12 +109,10 @@ const VilleSeoPage = () => {
         <meta property="og:image" content="https://switchly.fr/og-image.png" />
         <meta property="og:locale" content="fr_FR" />
         
-        {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${page.titre} | Switchly`} />
         {page.meta_description && <meta name="twitter:description" content={page.meta_description} />}
 
-        {/* BreadcrumbList */}
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
@@ -125,7 +123,6 @@ const VilleSeoPage = () => {
           ]
         })}</script>
 
-        {/* LocalBusiness + Service */}
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Service",
@@ -152,7 +149,6 @@ const VilleSeoPage = () => {
           }
         })}</script>
 
-        {/* WebPage */}
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "WebPage",
@@ -181,13 +177,25 @@ const VilleSeoPage = () => {
                     {page.contenu_hero}
                   </p>
                 )}
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button size="lg" asChild>
-                    <Link to={`/comparer?type=electricite`}>
-                      Comparer les offres à {page.ville}
-                      <ArrowRight className="ml-2 h-5 w-5" />
-                    </Link>
-                  </Button>
+                {/* Widget CP pré-rempli */}
+                <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6 max-w-md mx-auto">
+                  <div className="flex-1 relative">
+                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <input
+                      type="text"
+                      value={page.code_postal || ''}
+                      readOnly
+                      className="w-full pl-9 pr-4 py-3 rounded-xl border border-border bg-background text-sm font-medium"
+                    />
+                  </div>
+                  <Link
+                    to={compareUrl}
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-colors whitespace-nowrap"
+                  >
+                    Comparer gratuitement <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+                <div className="mt-4">
                   <Button size="lg" variant="outline" asChild>
                     <Link to="/energie">Voir toutes les villes</Link>
                   </Button>
@@ -201,9 +209,50 @@ const VilleSeoPage = () => {
             <div className="container mx-auto px-4">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center max-w-3xl mx-auto">
                 <div><div className="text-3xl md:text-4xl font-bold text-primary">400€</div><div className="text-sm text-muted-foreground">max d'économies/an</div></div>
-                <div><div className="text-3xl md:text-4xl font-bold text-primary">2 500+</div><div className="text-sm text-muted-foreground">foyers inscrits</div></div>
+                <div><div className="text-3xl md:text-4xl font-bold text-primary">30s</div><div className="text-sm text-muted-foreground">pour comparer</div></div>
                 <div><div className="text-3xl md:text-4xl font-bold text-primary">100%</div><div className="text-sm text-muted-foreground">gratuit</div></div>
                 <div><div className="text-3xl md:text-4xl font-bold text-primary">0</div><div className="text-sm text-muted-foreground">coupure garantie</div></div>
+              </div>
+            </div>
+          </section>
+
+          {/* Comment ça marche */}
+          <section className="py-12 bg-background border-t border-border">
+            <div className="container mx-auto px-4 max-w-4xl">
+              <h2 className="text-xl font-bold text-center mb-8 text-foreground">
+                Comparer à {page.ville} en 3 étapes
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {[
+                  {
+                    num: "1",
+                    title: "Entrez votre code postal",
+                    desc: `Indiquez le ${page.code_postal || 'code postal'} et votre type de contrat en 30 secondes.`,
+                    icon: "📍"
+                  },
+                  {
+                    num: "2",
+                    title: "Comparez les offres",
+                    desc: `Toutes les offres disponibles à ${page.ville} s'affichent instantanément, triées par économies.`,
+                    icon: "⚡"
+                  },
+                  {
+                    num: "3",
+                    title: "Souscrivez en ligne",
+                    desc: "Choisissez votre offre et souscrivez directement. Sans coupure, sans déplacement.",
+                    icon: "✅"
+                  }
+                ].map((step, i) => (
+                  <div key={i} className="flex gap-4 p-5 bg-muted/30 rounded-xl border border-border">
+                    <div className="flex-shrink-0 w-10 h-10 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-sm">
+                      {step.num}
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-sm mb-1">{step.title}</h3>
+                      <p className="text-xs text-muted-foreground leading-relaxed">{step.desc}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </section>
@@ -212,8 +261,16 @@ const VilleSeoPage = () => {
           {page.contenu_principal && (
             <section className="py-16">
               <div className="container mx-auto px-4">
-                <div className="max-w-3xl mx-auto prose prose-lg dark:prose-invert">
-                  <div dangerouslySetInnerHTML={{ __html: page.contenu_principal }} />
+                <div className="max-w-3xl mx-auto">
+                  <div 
+                    className="prose prose-sm dark:prose-invert max-w-none 
+                      prose-headings:font-bold prose-headings:text-foreground 
+                      prose-h2:text-xl prose-h3:text-base
+                      prose-p:text-muted-foreground prose-p:leading-relaxed
+                      prose-li:text-muted-foreground
+                      prose-strong:text-foreground"
+                    dangerouslySetInnerHTML={{ __html: page.contenu_principal }} 
+                  />
                 </div>
               </div>
             </section>
@@ -264,23 +321,83 @@ const VilleSeoPage = () => {
             </section>
           )}
 
+          {/* Témoignages */}
+          <section className="py-12 bg-background">
+            <div className="container mx-auto px-4 max-w-4xl">
+              <h2 className="text-xl font-bold text-center mb-8">
+                Ce que disent nos utilisateurs
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {[
+                  {
+                    nom: "Camille P.",
+                    ville: "Nantes (44)",
+                    texte: "30 secondes de comparaison, 23% moins cher avec EDF. Je recommande.",
+                    economie: "276€/an",
+                    type: "Électricité"
+                  },
+                  {
+                    nom: "Nadia K.",
+                    ville: "Bordeaux (33)",
+                    texte: "Ma box internet est passée de 45€ à 29€/mois. Démarche 100% en ligne.",
+                    economie: "192€/an",
+                    type: "Internet"
+                  },
+                  {
+                    nom: "Thomas R.",
+                    ville: "Lyon (69)",
+                    texte: "Changement de fournisseur gaz sans aucune coupure. Très simple.",
+                    economie: "215€/an",
+                    type: "Gaz"
+                  }
+                ].map((t, i) => (
+                  <div key={i} className="bg-card border border-border rounded-xl p-5">
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
+                        {t.nom[0]}
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold">{t.nom}</p>
+                        <p className="text-xs text-muted-foreground">{t.ville}</p>
+                      </div>
+                      <span className="ml-auto text-xs bg-secondary/10 text-secondary-foreground px-2 py-0.5 rounded-full font-medium">
+                        {t.type}
+                      </span>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-3 leading-relaxed">"{t.texte}"</p>
+                    <p className="text-sm font-bold text-primary">Économie : {t.economie}</p>
+                    <div className="flex gap-0.5 mt-2">
+                      {[...Array(5)].map((_, j) => (
+                        <span key={j} className="text-yellow-400 text-xs">★</span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
           {/* CTA Final */}
           <section className="py-16 bg-primary text-primary-foreground">
-            <div className="container mx-auto px-4 text-center">
-              <h2 className="text-2xl md:text-3xl font-bold mb-4">
-                Comparez les offres et économisez à {page.ville}
+            <div className="container mx-auto px-4 text-center max-w-2xl">
+              <p className="text-sm font-medium opacity-75 mb-2 uppercase tracking-wide">
+                Gratuit · Sans engagement · Sans coupure
+              </p>
+              <h2 className="text-2xl md:text-3xl font-bold mb-3">
+                Prêt à économiser à {page.ville} ?
               </h2>
-              {page.contenu_cta && (
-                <p className="text-lg opacity-90 mb-8 max-w-2xl mx-auto">
-                  {page.contenu_cta}
-                </p>
-              )}
-              <Button size="lg" variant="secondary" asChild>
-                <Link to={`/comparer?cp=${page.code_postal || ''}`}>
-                  Comparer gratuitement →
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
+              <p className="opacity-90 mb-6 text-sm">
+                Comparez les offres énergie et internet à {page.ville} en quelques secondes.
+              </p>
+              <Link
+                to={compareUrl}
+                className="inline-flex items-center gap-2 px-8 py-4 bg-white text-primary rounded-xl font-bold text-base hover:bg-white/90 transition-colors"
+              >
+                Comparer gratuitement <ArrowRight className="w-5 h-5" />
+              </Link>
+              <p className="text-xs opacity-60 mt-4">
+                Résultat en 30 secondes · Aucune carte bancaire requise
+              </p>
             </div>
           </section>
         </main>
