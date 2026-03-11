@@ -150,10 +150,10 @@ export default function ResultatsPage() {
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex items-center gap-3">
                         <div
-                          className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
+                          className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-lg flex-shrink-0"
                           style={{ backgroundColor: o.couleur }}
                         >
-                          {o.fournisseur.slice(0, 2).toUpperCase()}
+                          {(o as any).logo || o.fournisseur.slice(0, 2).toUpperCase()}
                         </div>
                         <div>
                           <p className="font-semibold text-sm">{o.fournisseur}</p>

@@ -140,6 +140,9 @@ export default function Inscription() {
                     Comparer les offres maintenant →
                   </Button>
                 </Link>
+                <p className="text-xs text-center text-muted-foreground mt-3">
+                  Ou attendez notre appel — un conseiller vous contactera sous 24h au {form.telephone}.
+                </p>
               </div>
             )}
           </div>

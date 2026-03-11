@@ -72,10 +72,10 @@ const App = () => (
           {/* Comparateur pages */}
           <Route path="/comparer" element={<ComparerPage />} />
           <Route path="/resultats" element={<ResultatsPage />} />
-          <Route path="/achat-groupe" element={<Inscription />} />
+          <Route path="/achat-groupe" element={<Navigate to="/comparer" replace />} />
 
           {/* Partner journey pages */}
-          <Route path="/organiser-achat-groupe" element={<OrganiserAchatGroupe />} />
+          <Route path="/organiser-achat-groupe" element={<Navigate to="/demande-partenaire" replace />} />
           <Route path="/demande-partenaire" element={<DemandePartenaire />} />
 
           {/* Client journey pages (SMS-based) */}

@@ -30,7 +30,7 @@ export function MobileFixedCTAPartenaire() {
             asChild
           >
             <Link to="/demande-partenaire">
-              Demander l'organisation d'un achat groupé
+              Devenir partenaire Switchly →
             </Link>
           </Button>
         </motion.div>

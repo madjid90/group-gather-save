@@ -262,6 +262,17 @@ export default function DashboardClient() {
               </div>
             )}
 
+            {currentOffer?.statut === "refusee" && (
+              <div className="mt-3">
+                <Button variant="hero" size="sm" className="text-xs py-2 w-full" asChild>
+                  <Link to="/comparer">
+                    <ArrowRight className="w-3.5 h-3.5 mr-1.5" />
+                    Relancer une comparaison
+                  </Link>
+                </Button>
+              </div>
+            )}
+
             {hasHousingProfile && !currentOffer && (
               <div className="mt-3 p-3 bg-blue-50 rounded-xl flex items-start gap-2.5">
                 <Clock className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
