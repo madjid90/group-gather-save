@@ -59,23 +59,23 @@ const Index = () => {
           <div className="container mx-auto px-4 max-w-4xl">
             <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">Combien pouvez-vous économiser ?</h2>
             <p className="text-center text-muted-foreground mb-8 text-sm">Estimations basées sur les tarifs moyens 2025 vs tarif réglementé EDF.</p>
-            <div className="overflow-x-auto rounded-xl border border-border">
-              <table className="w-full text-sm">
+            <div className="overflow-x-auto rounded-xl border border-border -mx-2 px-2">
+              <table className="w-full text-sm min-w-[380px]">
                 <thead className="bg-muted/50">
                   <tr>
-                    <th className="text-left py-3 px-4">Votre logement</th>
-                    <th className="text-center py-3 px-4">EDF actuel</th>
-                    <th className="text-center py-3 px-4 text-primary">Meilleure offre</th>
-                    <th className="text-center py-3 px-4 text-secondary">Économie/an</th>
+                    <th className="text-left py-3 px-3 whitespace-nowrap">Logement</th>
+                    <th className="text-center py-3 px-3 whitespace-nowrap">EDF actuel</th>
+                    <th className="text-center py-3 px-3 text-primary whitespace-nowrap">Meilleure offre</th>
+                    <th className="text-center py-3 px-3 text-secondary whitespace-nowrap">Économie/an</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {[['Studio 30m²','~720€','~500€','220€'],['Appart T2 50m²','~960€','~672€','288€'],['Appart T3 75m²','~1 320€','~924€','396€'],['Maison 100m²','~1 680€','~1 176€','504€'],['Maison 150m²+','~2 280€','~1 596€','684€']].map(([s,e,o,ec]) => (
+                  {[['Studio 30m²','~720€','~500€','220€'],['T2 50m²','~960€','~672€','288€'],['T3 75m²','~1 320€','~924€','396€'],['Maison 100m²','~1 680€','~1 176€','504€'],['Maison 150m²+','~2 280€','~1 596€','684€']].map(([s,e,o,ec]) => (
                     <tr key={s} className="border-t border-border hover:bg-muted/20 transition-colors">
-                      <td className="py-3 px-4 font-medium">{s}</td>
-                      <td className="py-3 px-4 text-center text-muted-foreground">{e}</td>
-                      <td className="py-3 px-4 text-center font-semibold text-primary">{o}</td>
-                      <td className="py-3 px-4 text-center font-bold text-secondary">-{ec}</td>
+                      <td className="py-3 px-3 font-medium whitespace-nowrap">{s}</td>
+                      <td className="py-3 px-3 text-center text-muted-foreground whitespace-nowrap">{e}</td>
+                      <td className="py-3 px-3 text-center font-semibold text-primary whitespace-nowrap">{o}</td>
+                      <td className="py-3 px-3 text-center font-bold text-secondary whitespace-nowrap">-{ec}</td>
                     </tr>
                   ))}
                 </tbody>
