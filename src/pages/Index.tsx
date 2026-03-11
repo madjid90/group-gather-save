@@ -19,6 +19,7 @@ const PartnersSection = lazy(() => import("@/components/landing/PartnersSection"
 const FAQSection = lazy(() => import("@/components/landing/FAQSection").then(m => ({ default: m.FAQSection })));
 const CTASection = lazy(() => import("@/components/landing/CTASection").then(m => ({ default: m.CTASection })));
 const CollectivitesSection = lazy(() => import("@/components/landing/CollectivitesSection").then(m => ({ default: m.CollectivitesSection })));
+const VillesPopulairesSection = lazy(() => import("@/components/landing/VillesPopulairesSection").then(m => ({ default: m.VillesPopulairesSection })));
 
 // Lightweight placeholder
 const SectionSkeleton = () => (
