@@ -202,9 +202,9 @@ export default function Connexion() {
           {/* Footer */}
           <div className="mt-4 text-center">
             <p className="text-base text-muted-foreground">
-              Pas encore de compte ?{" "}
-              <Link to="/inscription" className="text-primary hover:underline font-medium">
-                Inscrivez-vous gratuitement
+              Vous voulez comparer ?{" "}
+              <Link to="/comparer" className="text-primary hover:underline font-medium">
+                Comparer gratuitement →
               </Link>
             </p>
           </div>

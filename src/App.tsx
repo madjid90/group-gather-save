@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { TrackingScripts } from "@/components/seo/TrackingScripts";
@@ -19,7 +19,7 @@ import MentionsLegales from "./pages/MentionsLegales";
 import PolitiqueRGPD from "./pages/PolitiqueRGPD";
 import CGU from "./pages/CGU";
 import PolitiqueConfidentialite from "./pages/PolitiqueConfidentialite";
-import OrganiserAchatGroupe from "./pages/OrganiserAchatGroupe";
+
 import DemandePartenaire from "./pages/DemandePartenaire";
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -72,10 +72,10 @@ const App = () => (
           {/* Comparateur pages */}
           <Route path="/comparer" element={<ComparerPage />} />
           <Route path="/resultats" element={<ResultatsPage />} />
-          <Route path="/achat-groupe" element={<Inscription />} />
+          <Route path="/achat-groupe" element={<Navigate to="/comparer" replace />} />
 
           {/* Partner journey pages */}
-          <Route path="/organiser-achat-groupe" element={<OrganiserAchatGroupe />} />
+          <Route path="/organiser-achat-groupe" element={<Navigate to="/demande-partenaire" replace />} />
           <Route path="/demande-partenaire" element={<DemandePartenaire />} />
 
           {/* Client journey pages (SMS-based) */}

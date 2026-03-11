@@ -239,7 +239,7 @@ export default function ComparerPage() {
 
             <div className="mt-6 flex flex-wrap justify-center gap-4 text-xs text-muted-foreground">
               <span>🔒 Données sécurisées</span>
-              <span>✅ Aucun appel commercial</span>
+              <span>✅ Aucune coupure garantie</span>
               <span>🆓 Totalement gratuit</span>
             </div>
           </div>

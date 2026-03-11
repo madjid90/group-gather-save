@@ -26,8 +26,7 @@ import {
   AlertCircle,
   LogOut,
   Zap,
-  Wifi,
-  WifiOff,
+  ArrowRight,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useRealtimeNotifications } from "@/hooks/useRealtimeNotifications";
@@ -260,6 +259,17 @@ export default function DashboardClient() {
                     </Link>
                   </Button>
                 </div>
+              </div>
+            )}
+
+            {currentOffer?.statut === "refusee" && (
+              <div className="mt-3">
+                <Button variant="hero" size="sm" className="text-xs py-2 w-full" asChild>
+                  <Link to="/comparer">
+                    <ArrowRight className="w-3.5 h-3.5 mr-1.5" />
+                    Relancer une comparaison
+                  </Link>
+                </Button>
               </div>
             )}
 

@@ -14,22 +14,23 @@ const CONSO: Record<string, number> = {
 };
 
 const ELEC = [
-  { id: 1, fournisseur: 'OHM Énergie', nom: 'OHM Initial', prix_kwh: 0.1820, abo: 9.00, vert: false, sans_eng: true, url: 'https://ohm-energie.fr', couleur: '#FF6B35', desc: 'Le moins cher du marché, sans engagement' },
-  { id: 2, fournisseur: 'Octopus Energy', nom: 'Offre Simone', prix_kwh: 0.1850, abo: 9.51, vert: true, sans_eng: true, url: 'https://octopusenergy.fr', couleur: '#E83E8C', desc: '100% renouvelable, prix fixe garanti 1 an' },
-  { id: 3, fournisseur: 'Mint Énergie', nom: 'Mint Zen', prix_kwh: 0.1890, abo: 9.51, vert: true, sans_eng: true, url: 'https://mint-energie.com', couleur: '#00C851', desc: 'Énergie verte, service client 5 étoiles' },
-  { id: 4, fournisseur: 'TotalEnergies', nom: 'Classique', prix_kwh: 0.1950, abo: 9.51, vert: false, sans_eng: false, url: 'https://totalenergies.fr', couleur: '#FF0000', desc: 'Grande marque, offre stable et fiable' },
+  { id: 1, fournisseur: 'OHM Énergie', nom: 'OHM Initial', prix_kwh: 0.1820, abo: 9.00, vert: false, sans_eng: true, url: 'https://www.awin1.com/cread.php?awinmid=48701&awinaffid=VOTRE_AWIN_ID&clickref=switchly&p=https%3A%2F%2Fohm-energie.fr', couleur: '#FF6B35', desc: 'Le moins cher du marché, sans engagement', logo: '⚡' },
+  { id: 2, fournisseur: 'Octopus Energy', nom: 'Offre Simone', prix_kwh: 0.1850, abo: 9.51, vert: true, sans_eng: true, url: 'https://octopusenergy.fr', couleur: '#E83E8C', desc: '100% renouvelable, prix fixe garanti 1 an', logo: '🐙' },
+  { id: 3, fournisseur: 'Mint Énergie', nom: 'Mint Zen', prix_kwh: 0.1890, abo: 9.51, vert: true, sans_eng: true, url: 'https://mint-energie.com', couleur: '#00C851', desc: 'Énergie verte, service client 5 étoiles', logo: '🌿' },
+  { id: 4, fournisseur: 'TotalEnergies', nom: 'Classique', prix_kwh: 0.1950, abo: 9.51, vert: false, sans_eng: false, url: 'https://totalenergies.fr/particuliers/electricite', couleur: '#EF4444', desc: 'Grande marque, offre stable et fiable', logo: '🔴' },
 ];
 
 const GAZ = [
-  { id: 5, fournisseur: 'OHM Énergie', nom: 'Gaz Initial', prix_kwh: 0.0830, abo: 10.65, vert: false, sans_eng: true, url: 'https://ohm-energie.fr', couleur: '#FF6B35', desc: 'Le moins cher du marché gaz' },
-  { id: 6, fournisseur: 'Ekwateur', nom: 'Gaz Vert', prix_kwh: 0.0889, abo: 10.65, vert: true, sans_eng: true, url: 'https://ekwateur.fr', couleur: '#7CB342', desc: 'Biogaz 100% renouvelable' },
-  { id: 7, fournisseur: 'ENI', nom: 'Gaz Garantie', prix_kwh: 0.0850, abo: 10.65, vert: false, sans_eng: false, url: 'https://eni.fr', couleur: '#FFDD00', desc: 'Prix fixe garanti 1 an' },
+  { id: 5, fournisseur: 'OHM Énergie', nom: 'Gaz Initial', prix_kwh: 0.0830, abo: 10.65, vert: false, sans_eng: true, url: 'https://www.awin1.com/cread.php?awinmid=48701&awinaffid=VOTRE_AWIN_ID&clickref=switchly-gaz&p=https%3A%2F%2Fohm-energie.fr', couleur: '#FF6B35', desc: 'Le moins cher du marché gaz', logo: '🔥' },
+  { id: 6, fournisseur: 'Ekwateur', nom: 'Gaz Vert', prix_kwh: 0.0889, abo: 10.65, vert: true, sans_eng: true, url: 'https://ekwateur.fr', couleur: '#7CB342', desc: 'Biogaz 100% renouvelable', logo: '🌱' },
+  { id: 7, fournisseur: 'ENI', nom: 'Gaz Garantie', prix_kwh: 0.0850, abo: 10.65, vert: false, sans_eng: false, url: 'https://eni.fr', couleur: '#FFDD00', desc: 'Prix fixe garanti 1 an', logo: '⭐' },
 ];
 
 const INTERNET = [
-  { id: 8, fournisseur: 'Free', nom: 'Freebox Revolution', prix_kwh: 0, abo: 29.99, vert: false, sans_eng: false, url: 'https://free.fr', couleur: '#CD2029', desc: 'Fibre 1 Gbit/s, TV incluse' },
-  { id: 9, fournisseur: 'Bouygues', nom: 'Bbox Must', prix_kwh: 0, abo: 27.99, vert: false, sans_eng: false, url: 'https://bouyguestelecom.fr', couleur: '#0066CC', desc: 'Wi-Fi 6, débit garanti' },
-  { id: 10, fournisseur: 'SFR', nom: 'Box Fibre', prix_kwh: 0, abo: 26.99, vert: false, sans_eng: false, url: 'https://sfr.fr', couleur: '#E2001A', desc: 'Fibre optique, SFR TV 6 mois' },
+  { id: 8, fournisseur: 'Free', nom: 'Freebox Revolution', prix_kwh: 0, abo: 29.99, vert: false, sans_eng: false, url: 'https://free.fr/freebox/', couleur: '#CD2029', desc: 'Fibre 1 Gbit/s, TV incluse', logo: '📡' },
+  { id: 9, fournisseur: 'Bouygues Telecom', nom: 'Bbox Must', prix_kwh: 0, abo: 27.99, vert: false, sans_eng: false, url: 'https://www.bouyguestelecom.fr/box-internet', couleur: '#0066CC', desc: 'Wi-Fi 6, débit garanti', logo: '📶' },
+  { id: 10, fournisseur: 'SFR', nom: 'Box Fibre', prix_kwh: 0, abo: 26.99, vert: false, sans_eng: false, url: 'https://www.awin1.com/cread.php?awinmid=7315&awinaffid=VOTRE_AWIN_ID&clickref=switchly-sfr&p=https%3A%2F%2Fwww.sfr.fr%2Foffre-internet%2F', couleur: '#E2001A', desc: 'Fibre optique, SFR TV 6 mois', logo: '🔴' },
+  { id: 11, fournisseur: 'RED by SFR', nom: 'Box Fibre RED', prix_kwh: 0, abo: 23.99, vert: false, sans_eng: true, url: 'https://www.awin1.com/cread.php?awinmid=7310&awinaffid=VOTRE_AWIN_ID&clickref=switchly-red&p=https%3A%2F%2Fwww.red-by-sfr.fr%2Fbox-internet%2F', couleur: '#CC0000', desc: 'Fibre sans engagement, le moins cher', logo: '🔴' },
 ];
 
 export default function ResultatsPage() {
@@ -149,10 +150,10 @@ export default function ResultatsPage() {
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex items-center gap-3">
                         <div
-                          className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
+                          className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-lg flex-shrink-0"
                           style={{ backgroundColor: o.couleur }}
                         >
-                          {o.fournisseur.slice(0, 2).toUpperCase()}
+                          {(o as any).logo || o.fournisseur.slice(0, 2).toUpperCase()}
                         </div>
                         <div>
                           <p className="font-semibold text-sm">{o.fournisseur}</p>

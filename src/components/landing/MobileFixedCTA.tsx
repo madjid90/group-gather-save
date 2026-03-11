@@ -29,7 +29,7 @@ export function MobileFixedCTA() {
           </Link>
         </Button>
         <p className="text-[11px] text-center text-muted-foreground mt-1.5">
-          ✓ 30 sec • ✓ Sans engagement • ✓ 2 500+ inscrits
+          ✓ 30 sec • ✓ Sans engagement • ✓ 0 coupure garantie
         </p>
       </motion.div>
     </>
