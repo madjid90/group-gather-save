@@ -107,6 +107,7 @@ const App = () => (
             <Route path="reactivation" element={<AdminReactivation />} />
             <Route path="seo" element={<AdminSEO />} />
             <Route path="audit" element={<AdminAuditLogs />} />
+            <Route path="import-villes" element={<AdminImportVilles />} />
           </Route>
 
           <Route path="/api-test" element={<ApiTest />} />
