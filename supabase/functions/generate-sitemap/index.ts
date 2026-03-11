@@ -112,7 +112,17 @@ serve(async (req) => {
       console.error('Error fetching local SEO pages:', seoError);
     }
 
-    console.log(`Found ${localSeoPages?.length || 0} published local SEO pages`);
+    // Récupérer les pages villes dynamiques
+    const { data: villesPages, error: villesError } = await supabase
+      .from('villes')
+      .select('slug, updated_at')
+      .order('population', { ascending: false });
+
+    if (villesError) {
+      console.error('Error fetching villes pages:', villesError);
+    }
+
+    console.log(`Found ${localSeoPages?.length || 0} local SEO pages, ${villesPages?.length || 0} villes pages`);
 
     // Générer les URLs du sitemap - Pages statiques
     const sitemapUrls: SitemapUrl[] = STATIC_PAGES.map(page => ({
@@ -131,6 +141,19 @@ serve(async (req) => {
           lastmod: lastmod,
           changefreq: 'weekly',
           priority: 0.7
+        });
+      }
+    }
+
+    // Ajouter les pages villes dynamiques
+    if (villesPages && villesPages.length > 0) {
+      for (const v of villesPages) {
+        const lastmod = v.updated_at ? v.updated_at.split('T')[0] : today;
+        sitemapUrls.push({
+          loc: `${SITE_URL}/electricite-gaz/${v.slug}`,
+          lastmod: lastmod,
+          changefreq: 'monthly',
+          priority: 0.8
         });
       }
     }
