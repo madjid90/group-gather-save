@@ -41,6 +41,8 @@ import Invitation from "./pages/Invitation";
 import NotFound from "./pages/NotFound";
 import VilleSeoPage from "./pages/VilleSeoPage";
 import ApiTest from "./pages/ApiTest";
+import VillePage from "./pages/VillePage";
+import AdminImportVilles from "./pages/admin/AdminImportVilles";
 
 const queryClient = new QueryClient();
 
@@ -92,6 +94,7 @@ const App = () => (
 
           {/* SEO local pages */}
           <Route path="/ville/:slug" element={<VilleSeoPage />} />
+          <Route path="/electricite-gaz/:slug" element={<VillePage />} />
 
           {/* Admin pages */}
           <Route path="/admin" element={<AdminLayout />}>
@@ -104,6 +107,7 @@ const App = () => (
             <Route path="reactivation" element={<AdminReactivation />} />
             <Route path="seo" element={<AdminSEO />} />
             <Route path="audit" element={<AdminAuditLogs />} />
+            <Route path="import-villes" element={<AdminImportVilles />} />
           </Route>
 
           <Route path="/api-test" element={<ApiTest />} />

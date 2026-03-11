@@ -74,3 +74,10 @@ verify_jwt = false
 
 [functions.analyze-page-seo]
 verify_jwt = false
+
+[functions.selectra-offers]
+verify_jwt = false
+
+[functions.ville-data]
+verify_jwt = false
+
