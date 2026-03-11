@@ -26,8 +26,7 @@ import {
   AlertCircle,
   LogOut,
   Zap,
-  Wifi,
-  WifiOff,
+  ArrowRight,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useRealtimeNotifications } from "@/hooks/useRealtimeNotifications";
