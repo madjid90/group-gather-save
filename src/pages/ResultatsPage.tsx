@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { supabase } from '@/integrations/supabase/client';
-import { ExternalLink, Leaf, Star } from 'lucide-react';
+import { ExternalLink, Leaf, Star, Loader2 } from 'lucide-react';
 
 const CONSO: Record<string, number> = {
   'Moins de 30m²': 1800, '30-50m²': 2800, '50-75m²': 4000,
@@ -39,6 +39,8 @@ export default function ResultatsPage() {
   const [showModal, setShowModal] = useState(false);
   const [selected, setSelected] = useState<any>(null);
   const [lead, setLead] = useState({ prenom: '', telephone: '' });
+  const [selectraData, setSelectraData] = useState<any>(null);
+  const [selectraLoading, setSelectraLoading] = useState(false);
 
   const type = searchParams.get('type') || 'electricite';
   const superficie = searchParams.get('superficie') || '50-75m²';
@@ -46,6 +48,28 @@ export default function ResultatsPage() {
 
   const conso = CONSO[superficie] || 4000;
   const coutEDF = Math.round(conso * 0.2516 * 1.2 + 9.51 * 12 * 1.2);
+
+  // Fetch Selectra offers via edge function
+  useEffect(() => {
+    const fetchSelectra = async () => {
+      setSelectraLoading(true);
+      try {
+        const { data, error } = await supabase.functions.invoke('selectra-offers', {
+          body: { type },
+        });
+        if (!error && data) {
+          setSelectraData(data);
+          console.log('Selectra API response:', data);
+        } else {
+          console.warn('Selectra API error:', error);
+        }
+      } catch (e) {
+        console.error('Selectra fetch failed:', e);
+      }
+      setSelectraLoading(false);
+    };
+    fetchSelectra();
+  }, [type]);
 
   const base = type === 'internet' ? INTERNET : type === 'gaz' ? GAZ : ELEC;
   const offers = base.filter(o =>
@@ -195,6 +219,23 @@ export default function ResultatsPage() {
                 );
               })}
             </div>
+
+            {/* Debug: Selectra API response */}
+            {selectraLoading && (
+              <div className="mt-6 flex items-center gap-2 text-sm text-muted-foreground">
+                <Loader2 className="w-4 h-4 animate-spin" /> Chargement Selectra...
+              </div>
+            )}
+            {selectraData && (
+              <details className="mt-6 border border-border rounded-xl p-4">
+                <summary className="text-xs font-medium cursor-pointer text-muted-foreground">
+                  🔍 Debug : réponse API Selectra (status {selectraData.status})
+                </summary>
+                <pre className="mt-2 text-xs bg-muted p-3 rounded-lg overflow-auto max-h-64">
+                  {JSON.stringify(selectraData, null, 2)}
+                </pre>
+              </details>
+            )}
 
             <p className="text-xs text-muted-foreground text-center mt-6">
               Switchly est rémunéré par commission versée par le fournisseur lors d'une souscription. Service 100% gratuit pour vous.
