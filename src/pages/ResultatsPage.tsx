@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { supabase } from '@/integrations/supabase/client';
-import { ExternalLink, Leaf, Star } from 'lucide-react';
+import { ExternalLink, Leaf, Star, Loader2 } from 'lucide-react';
 
 const CONSO: Record<string, number> = {
   'Moins de 30m²': 1800, '30-50m²': 2800, '50-75m²': 4000,
