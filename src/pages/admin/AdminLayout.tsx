@@ -16,6 +16,7 @@ import {
   BarChart3,
   Search,
   FileText,
+  MapPin,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -28,6 +29,7 @@ const adminLinks = [
   { href: "/admin/clics", label: "Statistiques clics", icon: BarChart3 },
   { href: "/admin/reactivation", label: "Réactivation", icon: RefreshCw },
   { href: "/admin/seo", label: "SEO", icon: Search },
+  { href: "/admin/import-villes", label: "Import Villes", icon: MapPin },
   { href: "/admin/audit", label: "Logs d'audit", icon: FileText },
 ];
 
