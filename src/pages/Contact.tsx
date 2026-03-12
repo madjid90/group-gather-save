@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
-import { Helmet } from "react-helmet-async";
+import { DynamicSEOHead } from "@/components/seo/DynamicSEOHead";
 
 const schema = z.object({
   nom:     z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
