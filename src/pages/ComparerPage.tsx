@@ -120,26 +120,25 @@ export default function ComparerPage() {
         <meta name="robots" content="noindex" />
       </Helmet>
 
-      {/* Hero header */}
+      {/* Hero header with gradient */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-mesh" aria-hidden="true" />
-        <div className="orb orb-blue w-[250px] h-[250px] -top-20 -right-10 opacity-30" aria-hidden="true" />
+        <div className="absolute inset-0 bg-gradient-subtle" aria-hidden="true" />
         <div className="relative z-10 container mx-auto px-4 pt-8 pb-6">
           <div className="max-w-[540px] mx-auto text-center">
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 glass rounded-full px-3 py-1.5 mb-4"
+              className="inline-flex items-center gap-2 bg-primary/10 text-primary text-[11px] sm:text-xs font-semibold px-3 py-1.5 rounded-full mb-4"
             >
-              <span className="w-1.5 h-1.5 bg-secondary rounded-full animate-pulse" />
-              <span className="text-[11px] sm:text-xs font-semibold">Comparateur 100% gratuit</span>
+              <span className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
+              Comparateur 100% gratuit
             </motion.div>
 
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.05 }}
-              className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-foreground mb-2 leading-tight tracking-tight"
+              className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-2 leading-tight"
             >
               Trouvez la <span className="gradient-text">meilleure offre</span>
             </motion.h1>
@@ -164,16 +163,15 @@ export default function ComparerPage() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
-            className="sticky top-16 z-10 glass-strong pb-4 pt-3 px-4 rounded-2xl mb-2"
+            className="sticky top-16 z-10 bg-background/80 backdrop-blur-sm pb-4 pt-2 rounded-b-xl"
           >
             <div className="flex justify-between text-xs text-muted-foreground mb-2">
               <span className="font-medium">Étape {step} sur 6</span>
-              <span className="font-semibold text-foreground">{STEP_LABELS[step - 1]}</span>
+              <span className="font-medium text-foreground">{STEP_LABELS[step - 1]}</span>
             </div>
-            <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
+            <div className="w-full bg-muted rounded-full h-2.5 overflow-hidden">
               <motion.div
-                className="h-2 rounded-full"
-                style={{ background: 'linear-gradient(90deg, hsl(217 91% 55%), hsl(200 80% 50%), hsl(145 58% 50%))' }}
+                className="bg-secondary h-2.5 rounded-full"
                 animate={{ width: `${(step / 6) * 100}%` }}
                 transition={{ duration: 0.4, ease: 'easeOut' }}
               />
@@ -207,7 +205,7 @@ export default function ComparerPage() {
                     value={form.code_postal}
                     onChange={e => update('code_postal', e.target.value.replace(/\D/g, '').slice(0, 5))}
                     placeholder="Ex: 44000"
-                    className="w-full bg-background/80 border border-border rounded-xl px-4 py-3.5 text-base outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                    className="w-full bg-background border border-border rounded-xl px-4 py-3.5 text-base outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                     inputMode="numeric"
                     maxLength={5}
                     autoFocus
@@ -216,10 +214,10 @@ export default function ComparerPage() {
                     <motion.div
                       initial={{ opacity: 0, y: -5 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="mt-3 flex items-center gap-2 bg-secondary/10 border border-secondary/20 rounded-xl px-3 py-2.5"
+                      className="mt-3 flex items-center gap-2 bg-secondary/10 border border-secondary/20 rounded-lg px-3 py-2"
                     >
                       <CheckCircle className="w-4 h-4 text-secondary flex-shrink-0" />
-                      <span className="text-sm font-semibold text-secondary">{villeNom}</span>
+                      <span className="text-sm font-medium text-secondary">{villeNom}</span>
                     </motion.div>
                   )}
                 </div>
@@ -353,8 +351,8 @@ export default function ComparerPage() {
             {step === 6 && (
               <StepWrapper key="s6">
                 <StepHeader title="Recevez vos résultats" subtitle="Dernière étape avant vos offres" />
-                <div className="rounded-xl p-4 text-center" style={{ background: 'linear-gradient(135deg, hsl(145 58% 55% / 0.1), hsl(217 91% 60% / 0.05))' }}>
-                  <p className="text-sm font-bold gradient-text">
+                <div className="bg-secondary/10 border border-secondary/20 rounded-xl p-4 text-center">
+                  <p className="text-sm font-bold text-secondary">
                     ~{conso.toLocaleString('fr-FR')} kWh/an · Économie jusqu'à {economie}€/an
                   </p>
                 </div>
@@ -365,12 +363,12 @@ export default function ComparerPage() {
                     value={form.telephone}
                     onChange={e => update('telephone', e.target.value)}
                     placeholder="06 12 34 56 78"
-                    className="w-full bg-background/80 border border-border rounded-xl px-4 py-3.5 text-base outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                    className="w-full bg-background border border-border rounded-xl px-4 py-3.5 text-base outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                   />
                   <p className="text-xs text-muted-foreground mt-1.5">Pour recevoir un récapitulatif par SMS</p>
                 </div>
                 {form.telephone && (
-                  <label className="flex items-start gap-2.5 cursor-pointer p-3 bg-muted/50 rounded-xl">
+                  <label className="flex items-start gap-2.5 cursor-pointer p-3 bg-muted/50 rounded-lg">
                     <input
                       type="checkbox"
                       checked={form.consentement}
@@ -403,8 +401,7 @@ export default function ComparerPage() {
               size="lg"
               onClick={handleNext}
               disabled={!canNext() || loading}
-              variant="hero"
-              className="flex-1 h-12 text-base font-semibold"
+              className="flex-1 h-12 text-base font-semibold bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-md"
             >
               {loading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -431,10 +428,10 @@ export default function ComparerPage() {
           >
             {[
               { icon: <Shield className="w-4 h-4 text-primary" />, label: 'Données sécurisées' },
-              { icon: <Zap className="w-4 h-4 text-primary" />, label: 'Sans coupure' },
+              { icon: <Zap className="w-4 h-4 text-secondary" />, label: 'Sans coupure' },
               { icon: <CheckCircle className="w-4 h-4 text-secondary" />, label: '100% gratuit' },
             ].map((item, i) => (
-              <div key={i} className="flex flex-col items-center gap-1.5 glass rounded-xl px-2 py-3 text-center">
+              <div key={i} className="flex flex-col items-center gap-1.5 bg-card border border-border rounded-xl px-2 py-3 shadow-sm text-center">
                 {item.icon}
                 <span className="text-[11px] font-medium text-foreground">{item.label}</span>
               </div>
@@ -452,8 +449,8 @@ function SelectCard({ selected, onClick, children, className = '' }: { selected:
       onClick={onClick}
       className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all text-sm font-medium text-left ${
         selected
-          ? 'border-primary bg-primary/5 text-foreground shadow-sm ring-1 ring-primary/20'
-          : 'border-border/60 bg-card hover:border-primary/30 hover:shadow-sm'
+          ? 'border-secondary bg-secondary/5 text-foreground shadow-sm ring-1 ring-secondary/20'
+          : 'border-border bg-card hover:border-primary/30 hover:shadow-sm'
       } ${className}`}
     >
       {children}
@@ -468,7 +465,7 @@ function StepWrapper({ children, ...props }: { children: React.ReactNode } & Rec
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
       transition={{ duration: 0.25 }}
-      className="bg-card border border-border/60 rounded-2xl p-5 sm:p-6 space-y-5 shadow-sm mt-4"
+      className="bg-card border border-border rounded-2xl p-5 sm:p-6 space-y-5 shadow-sm mt-4"
       {...props}
     >
       {children}
