@@ -44,6 +44,7 @@ export default function AdminLayout() {
         setIsAdmin(true);
       } else {
         navigate("/admin/login");
+      }
       setLoading(false);
     };
 
@@ -54,6 +55,7 @@ export default function AdminLayout() {
           setTimeout(() => checkAdminAccess(session.user.id), 0);
         } else {
           navigate("/admin/login");
+        }
       }
     );
 
