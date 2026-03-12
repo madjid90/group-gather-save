@@ -16,7 +16,13 @@ serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
 
   try {
-    const { profile } = await req.json() as { profile: CalculatorProfile };
+    const body = await req.json();
+    const profile: CalculatorProfile = body.profile || {
+      logement: body.logement || null,
+      surface: body.surface || null,
+      chauffage: body.chauffage || null,
+      facture: body.facture || null,
+    };
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
 
     if (!LOVABLE_API_KEY) {
