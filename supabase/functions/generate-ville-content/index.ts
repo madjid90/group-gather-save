@@ -166,7 +166,7 @@ Foyers élec   : ${foyersFormatted} foyers raccordés
 Conso moyenne : ${fmt(consoElec)} kWh/an
 Réseau distrib: ${reseau}${isELD ? " (ELD LOCALE — pas Enedis)" : " (réseau national Enedis)"}
 ${ville.nom_eld ? "Nom ELD      : " + ville.nom_eld : ""}
-TRV EDF ${T.periode}  : ${T.trv_elec.toFixed(4).replace(".", ",")} €/kWh (tarif réglementé — référence légale CRE)
+TRV EDF ${T.periode}  : ${T.trv_elec.toFixed(4).replace(".", ",")} €/kWh (tarif réglementé — référence légale CRE, barème en vigueur)
 Abonnement    : ~150€/an
 Facture TRV   : ~${fmt(factureTRV)}€/an
 Meilleure offre marché libre : ~${T.best_elec.toFixed(4).replace(".", ",")} €/kWh
