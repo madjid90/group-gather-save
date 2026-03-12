@@ -146,7 +146,7 @@ export const JsonLdSchema = ({ type = "auto", customData, faqItems, breadcrumbs 
           name: SITE_CONFIG.name
         },
         areaServed: "France",
-        serviceType: "Energy Buying Group"
+        serviceType: "Energy Price Comparison"
       });
     }
 
