@@ -89,7 +89,7 @@ export default function Contact() {
     <PageTransition className="min-h-screen py-10 md:py-20 bg-gradient-subtle">
       <DynamicSEOHead 
         defaultTitle="Contact - Switchly | Contactez notre équipe"
-        defaultDescription="Contactez l'équipe Switchly pour toute question sur notre comparateur énergie et internet. Réponse sous 24h garantie."
+        defaultDescription="Contactez l'équipe Switchly pour toute question sur notre comparateur d'électricité et de gaz. Réponse sous 24h garantie."
       />
       <div className="container mx-auto px-5 sm:px-6">
         {/* Back button */}

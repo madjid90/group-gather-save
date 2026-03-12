@@ -1,27 +1,27 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { TrendingDown, Scale, MessageSquare, Shield, Zap, Wifi } from "lucide-react";
+import { TrendingDown, Scale, MessageSquare, Shield, Zap, Flame } from "lucide-react";
 
 const advantages = [
   {
     icon: MessageSquare,
-    title: "100% digital par SMS",
-    description: "Tout se fait par SMS et sur votre espace. Aucun démarchage téléphonique.",
-    descriptionMobile: "Par SMS, zéro appel.",
+    title: "100% en ligne",
+    description: "Tout se fait en ligne, sans démarchage téléphonique. Simple et rapide.",
+    descriptionMobile: "En ligne, zéro appel.",
     color: "primary",
   },
   {
     icon: TrendingDown,
-    title: "312€ économisés/an",
-    description: "Économie moyenne constatée par nos membres sur leurs factures.",
+    title: "300€ économisés/an",
+    description: "Économie moyenne constatée sur les factures d'électricité et gaz.",
     descriptionMobile: "Économie moyenne constatée.",
     color: "secondary",
   },
   {
     icon: Shield,
     title: "Fournisseurs reconnus",
-    description: "EDF, Engie, TotalEnergies... Uniquement des acteurs établis.",
+    description: "EDF, Engie, TotalEnergies, OHM Énergie... Uniquement des acteurs établis.",
     descriptionMobile: "EDF, Engie, TotalEnergies...",
     color: "primary",
   },
@@ -57,11 +57,8 @@ export function AdvantagesSection() {
               <span className="text-xs font-medium">Électricité</span>
             </div>
             <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-orange-500/10 text-orange-500">
+              <Flame className="w-3 h-3" />
               <span className="text-xs font-medium">Gaz</span>
-            </div>
-            <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-secondary/10 text-secondary">
-              <Wifi className="w-3 h-3" />
-              <span className="text-xs font-medium">Internet</span>
             </div>
           </div>
           <p className="text-[13px] leading-relaxed lg:text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -80,7 +77,6 @@ export function AdvantagesSection() {
               className="group"
             >
               <div className="bg-background rounded-lg lg:rounded-2xl p-3 lg:p-8 h-full border border-border card-hover text-center">
-                {/* Icon */}
                 <div
                   className={`w-10 h-10 lg:w-16 lg:h-16 rounded-lg lg:rounded-2xl mx-auto mb-2 lg:mb-6 flex items-center justify-center transition-transform group-hover:scale-110 ${
                     advantage.color === "primary"
@@ -96,8 +92,6 @@ export function AdvantagesSection() {
                     }`}
                   />
                 </div>
-
-                {/* Content */}
                 <h3 className="text-xs lg:text-xl font-semibold text-foreground mb-1 lg:mb-3">
                   {advantage.title}
                 </h3>
@@ -110,7 +104,6 @@ export function AdvantagesSection() {
           ))}
         </div>
 
-        {/* CTA - hidden on mobile */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

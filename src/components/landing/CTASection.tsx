@@ -1,36 +1,10 @@
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, Zap, Wifi, Clock, Flame } from "lucide-react";
+import { ArrowRight, Zap, Flame } from "lucide-react";
 import { trackClick } from "@/hooks/useClickTracking";
 
 export function CTASection() {
-  const [timeLeft, setTimeLeft] = useState({ hours: 23, minutes: 59, seconds: 59 });
-
-  // Countdown timer (resets daily)
-  useEffect(() => {
-    const now = new Date();
-    const endOfDay = new Date(now);
-    endOfDay.setHours(23, 59, 59, 999);
-    
-    const updateTimer = () => {
-      const now = new Date();
-      const diff = endOfDay.getTime() - now.getTime();
-      if (diff > 0) {
-        setTimeLeft({
-          hours: Math.floor(diff / (1000 * 60 * 60)),
-          minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((diff % (1000 * 60)) / 1000),
-        });
-      }
-    };
-    
-    updateTimer();
-    const interval = setInterval(updateTimer, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <section className="py-10 sm:py-12 lg:py-16 bg-card">
       <div className="container mx-auto px-4 sm:px-6 w-full">
@@ -48,19 +22,6 @@ export function CTASection() {
           </div>
 
           <div className="relative z-10">
-            {/* Urgency timer */}
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary-foreground/20 text-primary-foreground">
-                <Clock className="w-3.5 h-3.5" />
-                <span className="text-xs font-medium">
-                  Clôture dans{" "}
-                  <span className="font-bold tabular-nums">
-                    {String(timeLeft.hours).padStart(2, "0")}:{String(timeLeft.minutes).padStart(2, "0")}:{String(timeLeft.seconds).padStart(2, "0")}
-                  </span>
-                </span>
-              </div>
-            </div>
-
             <div className="flex items-center justify-center gap-1.5 sm:gap-2 mb-4 flex-wrap">
               <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-primary-foreground/20 text-primary-foreground">
                 <Zap className="w-3 h-3" />
@@ -70,17 +31,13 @@ export function CTASection() {
                 <Flame className="w-3 h-3" />
                 <span className="text-xs font-medium">Gaz</span>
               </div>
-              <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-primary-foreground/20 text-primary-foreground">
-                <Wifi className="w-3 h-3" />
-                <span className="text-xs font-medium">Internet</span>
-              </div>
             </div>
             
             <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold text-primary-foreground mb-3 lg:mb-4">
-              Ne ratez pas cette opportunité
+              Payez moins cher votre énergie dès maintenant
             </h2>
             <p className="text-[14px] leading-relaxed lg:text-xl text-primary-foreground/90 mb-6 lg:mb-8 max-w-2xl mx-auto">
-              <span className="font-semibold">Plus de 2 500 foyers</span> ont déjà économisé grâce à Switchly.
+              <span className="font-semibold">Plus de 2 500 foyers</span> ont déjà économisé grâce à Switchly. Comparez en 30 secondes.
             </p>
             
             {/* CTA */}

@@ -110,7 +110,7 @@ export default function CGU() {
               <p className="text-base text-muted-foreground leading-relaxed">
                 Switchly s'engage à présenter les meilleures offres disponibles mais ne garantit pas un niveau d'économies spécifique. 
                 Les offres présentées sont indicatives et peuvent varier selon votre situation réelle.
-                Switchly n'est pas responsable des services fournis directement par les fournisseurs d'énergie ou d'internet.
+                Switchly n'est pas responsable des services fournis directement par les fournisseurs d'énergie.
               </p>
             </section>
 
