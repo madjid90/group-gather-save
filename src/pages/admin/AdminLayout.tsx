@@ -53,8 +53,7 @@ export default function AdminLayout() {
         if (session?.user) {
           setTimeout(() => checkAdminAccess(session.user.id), 0);
         } else {
-          navigate("/");
-        }
+          navigate("/admin/login");
       }
     );
 
