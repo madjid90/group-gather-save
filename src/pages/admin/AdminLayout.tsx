@@ -43,8 +43,7 @@ export default function AdminLayout() {
       if (data) {
         setIsAdmin(true);
       } else {
-        navigate("/");
-      }
+        navigate("/admin/login");
       setLoading(false);
     };
 
