@@ -8,6 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { ExternalLink, Leaf, Star, ChevronRight, Users, Zap, Globe, Phone, CheckCircle, Shield, ArrowRight, TrendingDown, MapPin, Home } from 'lucide-react';
 import { MobileFixedCTA } from '@/components/landing/MobileFixedCTA';
+import { LogoCarousel } from '@/components/landing/LogoCarousel';
 
 /* ── Types ──────────────────────────────────────────── */
 interface Ville {
@@ -430,6 +431,9 @@ export default function VillePage() {
           </div>
         </section>
 
+        {/* ── LOGO CAROUSEL FOURNISSEURS ────────────── */}
+        <LogoCarousel />
+
         {/* ── COMMENT CHANGER — style "How it works" ──── */}
         <section className="py-10 md:py-14 bg-card">
           <div className="container mx-auto px-4 max-w-3xl">
@@ -445,17 +449,19 @@ export default function VillePage() {
               className="grid grid-cols-2 md:grid-cols-4 gap-3"
             >
               {[
-                { icon: '🔍', step: '1', title: 'Comparer',  desc: `Entrez le CP ${ville.code_postal} et votre conso sur Switchly.` },
-                { icon: '✅', step: '2', title: 'Choisir',   desc: 'Sélectionnez l\'offre adaptée : fixe, verte, sans engagement...' },
-                { icon: '📝', step: '3', title: 'Souscrire', desc: 'Formulaire en ligne en 5 min. Ayez votre numéro de compteur.' },
-                { icon: '🔄', step: '4', title: 'Basculer',  desc: `Sous 21 jours max. Réseau ${reseau} — aucune coupure.` },
+                { icon: MapPin,       step: '1', title: 'Comparer',  desc: `Entrez le CP ${ville.code_postal} et votre conso sur Switchly.` },
+                { icon: CheckCircle,  step: '2', title: 'Choisir',   desc: 'Sélectionnez l\'offre adaptée : fixe, verte, sans engagement...' },
+                { icon: Home,         step: '3', title: 'Souscrire', desc: 'Formulaire en ligne en 5 min. Ayez votre numéro de compteur.' },
+                { icon: Zap,          step: '4', title: 'Basculer',  desc: `Sous 21 jours max. Réseau ${reseau} — aucune coupure.` },
               ].map(s => (
                 <motion.div
                   key={s.step}
                   variants={fadeUp}
                   className="bg-background border border-border rounded-2xl p-5 hover:shadow-md hover:border-primary/30 transition-all"
                 >
-                  <span className="text-2xl">{s.icon}</span>
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <s.icon className="w-5 h-5 text-primary" />
+                  </div>
                   <p className="text-xs text-secondary font-semibold mt-3 uppercase tracking-wider">Étape {s.step}</p>
                   <h3 className="font-bold text-sm mt-1 mb-1.5">{s.title}</h3>
                   <p className="text-xs text-muted-foreground leading-relaxed">{s.desc}</p>
