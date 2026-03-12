@@ -107,19 +107,27 @@ Deno.serve(async (req) => {
     let nb_logements_gaz: number | null = null;
     let conso_gaz_kwh: number | null = null;
     try {
-      const rows = await fetchRecords(
-        GRDF_BASE,
-        "consommation-annuelle-de-gaz-par-iris-et-code-naf0",
-        `code_insee_commune="${code_insee}" AND annee_consommation=date'2023' AND libelle_grand_secteur_activite="Résidentiel"`,
-        200 // Max IRIS par commune (ex: Paris en a ~120)
-      );
+      // Paginate (GRDF limit = 100 max)
+      const whereGaz = `code_insee_commune="${code_insee}" AND annee_consommation=date'2023' AND libelle_grand_secteur_activite="Résidentiel"`;
+      let allRows: any[] = [];
+      let offset = 0;
+      while (true) {
+        const params = new URLSearchParams({ where: whereGaz, limit: "100", offset: String(offset) });
+        const url = `${GRDF_BASE}/consommation-annuelle-de-gaz-par-iris-et-code-naf0/records?${params.toString()}`;
+        const res = await fetch(url, { headers: { Accept: "application/json" } });
+        if (!res.ok) throw new Error(`GRDF HTTP ${res.status}`);
+        const data = await res.json();
+        const rows = Array.isArray(data?.results) ? data.results : [];
+        allRows = allRows.concat(rows);
+        if (rows.length < 100) break;
+        offset += 100;
+      }
 
-      if (rows.length > 0) {
-        // Agréger les IRIS : somme des PDL et somme des MWh
+      if (allRows.length > 0) {
         let totalPdl = 0;
         let totalMwh = 0;
 
-        for (const row of rows) {
+        for (const row of allRows) {
           const pdl = toNumber(row.nombre_points_de_livraison);
           const mwh = toNumber(row.consommation_annuelle_en_mwh);
           if (pdl !== null) totalPdl += pdl;
