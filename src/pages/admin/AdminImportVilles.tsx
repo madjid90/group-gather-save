@@ -1,144 +1,315 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
-import { Loader2, CheckCircle, XCircle, Clock, ExternalLink, AlertTriangle } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
+import { Loader2, Play, Pause, RotateCcw, CheckCircle, XCircle, AlertTriangle, Clock, Zap } from 'lucide-react';
 
-interface LogEntry { cp: string; status: 'loading' | 'success' | 'partial' | 'error'; message?: string; }
-interface VilleRow { slug: string; nom: string; code_postal: string; population: number | null; conso_moyenne_kwh: number | null; conso_gaz_kwh: number | null; reseau_elec: string | null; contenu_genere_at: string | null; }
+interface Job {
+  batch_id: string;
+  statut: string;
+  total_cps: number;
+  traites: number;
+  publiees: number;
+  a_valider: number;
+  erreurs: number;
+  cp_restants: string[];
+  updated_at: string;
+}
 
-const DEFAULT_CPS = `44000\n75001\n69001\n13001\n33000\n31000\n06000\n67000\n59000\n34000`;
+const DEFAULT_CPS = `44000
+75001
+69001
+13001
+33000
+31000
+06000
+67000
+59000
+34000`;
 
 export default function AdminImportVilles() {
+  const { toast } = useToast();
   const [textarea, setTextarea] = useState(DEFAULT_CPS);
-  const [logs, setLogs] = useState<LogEntry[]>([]);
-  const [importing, setImporting] = useState(false);
-  const [progress, setProgress] = useState({ current: 0, total: 0 });
-  const [villes, setVilles] = useState<VilleRow[]>([]);
-  const [showVilles, setShowVilles] = useState(false);
+  const [job, setJob] = useState<Job | null>(null);
+  const [running, setRunning] = useState(false);
+  const [stats, setStats] = useState({ total: 0, publiees: 0, a_valider: 0, erreurs: 0 });
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const activeJobRef = useRef<string | null>(null);
 
-  const fetchVilles = async () => {
-    const { data } = await supabase.from('villes' as any).select('slug, nom, code_postal, population, conso_moyenne_kwh, conso_gaz_kwh, reseau_elec, contenu_genere_at').order('population', { ascending: false });
-    if (data) setVilles(data as any as VilleRow[]);
+  // Récupérer le job actif depuis localStorage au montage
+  useEffect(() => {
+    const savedBatchId = localStorage.getItem('switchly_batch_id');
+    if (savedBatchId) {
+      activeJobRef.current = savedBatchId;
+      pollJobStatus(savedBatchId);
+    }
+    fetchStats();
+  }, []);
+
+  const fetchStats = async () => {
+    const { data } = await (supabase.from('villes') as any)
+      .select('statut_publication');
+    if (data) {
+      setStats({
+        total:     data.length,
+        publiees:  data.filter((v: any) => v.statut_publication === 'publiee').length,
+        a_valider: data.filter((v: any) => v.statut_publication === 'a_valider_humain').length,
+        erreurs:   data.filter((v: any) => v.statut_publication === 'rejetee').length,
+      });
+    }
   };
 
-  useEffect(() => { fetchVilles(); }, []);
+  const pollJobStatus = useCallback(async (batchId: string) => {
+    const { data, error } = await supabase.functions.invoke('batch-import', {
+      body: { action: 'status', batch_id: batchId },
+    });
+    if (!error && data?.job) {
+      setJob(data.job);
+      if (data.job.statut === 'termine' || data.job.statut === 'erreur' || data.job.statut === 'pause') {
+        setRunning(false);
+        if (intervalRef.current) clearInterval(intervalRef.current);
+        if (data.job.statut === 'termine') {
+          toast({ title: '✅ Import terminé !', description: `${data.job.publiees} publiées · ${data.job.a_valider} à valider` });
+          localStorage.removeItem('switchly_batch_id');
+        }
+        fetchStats();
+      }
+    }
+  }, [toast]);
 
-  const handleImport = async () => {
+  // Lancer un nouveau batch
+  const startImport = async () => {
     const cps = textarea.split('\n').map(s => s.trim()).filter(Boolean);
     if (!cps.length) return;
-    setImporting(true); setLogs([]); setProgress({ current: 0, total: cps.length });
 
-    for (let i = 0; i < cps.length; i++) {
-      const cp = cps[i];
-      setLogs(prev => [...prev, { cp, status: 'loading', message: 'Import Enedis...' }]);
-      setProgress({ current: i + 1, total: cps.length });
+    setRunning(true);
+    const { data, error } = await supabase.functions.invoke('batch-import', {
+      body: { action: 'start', codes_postaux: cps, batch_size: 3 },
+    });
 
-      try {
-        const { data, error } = await supabase.functions.invoke('ville-data', { body: { code_postal: cp } });
-        if (error || !data?.success) {
-          setLogs(prev => prev.map(l => l.cp === cp ? { ...l, status: 'error', message: error?.message || data?.error || 'Erreur' } : l));
-          continue;
-        }
-
-        const villeSlug = data.data.slug;
-        setLogs(prev => prev.map(l => l.cp === cp ? { ...l, message: `✅ ${data.data.nom} importé · Génération IA...` } : l));
-
-        // Generate IA content
-        await new Promise(r => setTimeout(r, 2000));
-        const { error: iaError } = await supabase.functions.invoke('generate-ville-content', { body: { slug: villeSlug, type: 'both' } });
-
-        if (iaError) {
-          setLogs(prev => prev.map(l => l.cp === cp ? { ...l, status: 'partial', message: `✅ ${data.data.nom} · ⚠️ Contenu IA échoué` } : l));
-        } else {
-          setLogs(prev => prev.map(l => l.cp === cp ? { ...l, status: 'success', message: `✅ ${data.data.nom} — Données + Contenu IA ✓` } : l));
-        }
-      } catch (e: any) {
-        setLogs(prev => prev.map(l => l.cp === cp ? { ...l, status: 'error', message: e.message } : l));
-      }
-      await new Promise(r => setTimeout(r, 500));
+    if (error || !data?.batch_id) {
+      toast({ title: 'Erreur démarrage', description: error?.message, variant: 'destructive' });
+      setRunning(false);
+      return;
     }
-    setImporting(false); fetchVilles();
+
+    activeJobRef.current = data.batch_id;
+    localStorage.setItem('switchly_batch_id', data.batch_id);
+    toast({ title: '🚀 Import démarré', description: `${cps.length} communes · batch_id: ${data.batch_id}` });
+
+    // Démarrer le polling + déclencher les batches suivants
+    startAutoProcess(data.batch_id);
   };
+
+  // Reprendre un job en pause
+  const resumeImport = async () => {
+    if (!activeJobRef.current) return;
+    setRunning(true);
+    await supabase.functions.invoke('batch-import', {
+      body: { action: 'resume', batch_id: activeJobRef.current, batch_size: 3 },
+    });
+    startAutoProcess(activeJobRef.current);
+  };
+
+  // Pause
+  const pauseImport = async () => {
+    if (!activeJobRef.current) return;
+    await supabase.functions.invoke('batch-import', {
+      body: { action: 'pause', batch_id: activeJobRef.current },
+    });
+    setRunning(false);
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    toast({ title: '⏸️ Import mis en pause' });
+  };
+
+  // Auto-process : appelle resume toutes les 30s pour traiter le prochain batch
+  const startAutoProcess = (batchId: string) => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+
+    // Poller l'état toutes les 5s
+    intervalRef.current = setInterval(async () => {
+      const { data } = await supabase.functions.invoke('batch-import', {
+        body: { action: 'status', batch_id: batchId },
+      });
+
+      if (!data?.job) return;
+      setJob(data.job);
+
+      if (data.job.statut === 'termine') {
+        clearInterval(intervalRef.current!);
+        setRunning(false);
+        toast({ title: '✅ Import terminé !', description: `${data.job.publiees} publiées · ${data.job.a_valider} à valider` });
+        localStorage.removeItem('switchly_batch_id');
+        fetchStats();
+        return;
+      }
+
+      if (data.job.statut === 'pause') {
+        clearInterval(intervalRef.current!);
+        setRunning(false);
+        return;
+      }
+
+      // Si en attente (batch précédent fini), lancer le suivant
+      if (data.job.statut === 'en_attente' && data.job.cp_restants?.length > 0) {
+        await supabase.functions.invoke('batch-import', {
+          body: { action: 'resume', batch_id: batchId, batch_size: 3 },
+        });
+      }
+    }, 8000); // Check toutes les 8s
+  };
+
+  useEffect(() => {
+    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
+  }, []);
+
+  const progressPct = job ? Math.round((job.traites / job.total_cps) * 100) : 0;
 
   return (
     <>
-      <Helmet><title>Import des communes — Admin</title><meta name="robots" content="noindex" /></Helmet>
+      <Helmet><title>Import des communes — Admin Switchly</title><meta name="robots" content="noindex" /></Helmet>
+
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Import des communes</h1>
 
-        <div className="bg-card border border-border rounded-2xl p-6">
-          <label className="text-sm font-medium mb-2 block">Codes postaux (1 par ligne)</label>
-          <textarea value={textarea} onChange={e => setTextarea(e.target.value)} rows={8}
-            className="w-full bg-background border border-border rounded-xl px-4 py-3 text-sm font-mono outline-none focus:border-primary resize-none" disabled={importing} />
-          <div className="flex items-center gap-4 mt-4">
-            <Button onClick={handleImport} disabled={importing}>
-              {importing ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Import en cours...</> : "Lancer l'import"}
-            </Button>
-            {progress.total > 0 && <span className="text-sm text-muted-foreground">{progress.current} / {progress.total}</span>}
+        {/* Stats globales */}
+        <div className="grid grid-cols-4 gap-3">
+          <div className="bg-card border rounded-xl p-3 text-center">
+            <p className="text-xl font-bold">{stats.total}</p>
+            <p className="text-xs text-muted-foreground">Communes</p>
           </div>
-          {progress.total > 0 && (
-            <div className="mt-3 w-full bg-muted rounded-full h-2 overflow-hidden">
-              <div className="bg-primary h-full transition-all" style={{ width: `${(progress.current / progress.total) * 100}%` }} />
-            </div>
-          )}
+          <div className="bg-green-50 border border-green-200 rounded-xl p-3 text-center">
+            <p className="text-xl font-bold text-green-600">{stats.publiees * 2}</p>
+            <p className="text-xs text-green-500">Pages publiées</p>
+          </div>
+          <div className="bg-orange-50 border border-orange-200 rounded-xl p-3 text-center">
+            <p className="text-xl font-bold text-orange-500">{stats.a_valider}</p>
+            <p className="text-xs text-orange-400">À valider</p>
+          </div>
+          <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-center">
+            <p className="text-xl font-bold text-red-500">{stats.erreurs}</p>
+            <p className="text-xs text-red-400">Erreurs</p>
+          </div>
         </div>
 
-        {logs.length > 0 && (
-          <div className="bg-card border border-border rounded-2xl p-4 max-h-80 overflow-y-auto">
-            <h3 className="text-sm font-semibold mb-3">Journal</h3>
-            <div className="space-y-1.5">
-              {logs.map((l, i) => (
-                <div key={i} className="flex items-start gap-2 text-sm">
-                  {l.status === 'loading' && <Clock className="w-4 h-4 text-muted-foreground mt-0.5 animate-pulse" />}
-                  {l.status === 'success' && <CheckCircle className="w-4 h-4 text-green-600 mt-0.5" />}
-                  {l.status === 'partial' && <AlertTriangle className="w-4 h-4 text-orange-500 mt-0.5" />}
-                  {l.status === 'error' && <XCircle className="w-4 h-4 text-destructive mt-0.5" />}
-                  <span className="font-mono text-xs">{l.cp}</span>
-                  <span className="text-muted-foreground text-xs">{l.status === 'loading' ? 'En cours...' : l.message}</span>
-                </div>
-              ))}
+        {/* Import */}
+        <div className="bg-card border border-border rounded-2xl p-6">
+          <label className="text-sm font-medium mb-2 block">
+            Codes postaux (1 par ligne) — 35 000 communes possibles
+          </label>
+          <textarea
+            value={textarea}
+            onChange={e => setTextarea(e.target.value)}
+            rows={8}
+            placeholder={"44000\n75001\n69001\n..."}
+            className="w-full bg-background border border-border rounded-xl px-4 py-3 text-sm font-mono outline-none focus:border-primary resize-none"
+            disabled={running}
+          />
+          <p className="text-xs text-muted-foreground mt-1">
+            {textarea.split('\n').filter(s => s.trim()).length} codes postaux · Traitement : 3 communes toutes les ~30s
+          </p>
+
+          <div className="flex gap-3 mt-4">
+            {!running ? (
+              <>
+                <Button onClick={startImport} disabled={running} className="gap-2">
+                  <Play className="w-4 h-4" /> Lancer l'import en arrière-plan
+                </Button>
+                {job && job.statut === 'pause' && job.cp_restants?.length > 0 && (
+                  <Button variant="outline" onClick={resumeImport} className="gap-2">
+                    <Play className="w-4 h-4" /> Reprendre ({job.cp_restants.length} restants)
+                  </Button>
+                )}
+              </>
+            ) : (
+              <Button variant="outline" onClick={pauseImport} className="gap-2">
+                <Pause className="w-4 h-4" /> Mettre en pause
+              </Button>
+            )}
+          </div>
+        </div>
+
+        {/* Progression du job actif */}
+        {job && (
+          <div className="bg-card border border-border rounded-2xl p-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="font-semibold text-sm">Progression de l'import</h3>
+              <div className="flex items-center gap-2">
+                {running && <Zap className="w-4 h-4 text-yellow-500 animate-pulse" />}
+                <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                  job.statut === 'en_cours' ? 'bg-blue-100 text-blue-600 animate-pulse' :
+                  job.statut === 'termine'  ? 'bg-green-100 text-green-600' :
+                  job.statut === 'pause'    ? 'bg-orange-100 text-orange-600' :
+                  'bg-gray-100 text-gray-500'
+                }`}>{job.statut}</span>
+              </div>
             </div>
+
+            {/* Barre de progression */}
+            <div>
+              <div className="flex justify-between text-xs text-muted-foreground mb-1">
+                <span>{job.traites} / {job.total_cps} communes traitées</span>
+                <span>{progressPct}%</span>
+              </div>
+              <div className="w-full bg-muted rounded-full h-3 overflow-hidden">
+                <div
+                  className="bg-primary h-full transition-all duration-500 rounded-full"
+                  style={{ width: `${progressPct}%` }}
+                />
+              </div>
+            </div>
+
+            {/* Détail des résultats */}
+            <div className="grid grid-cols-4 gap-3">
+              <div className="text-center p-3 bg-muted rounded-xl">
+                <Clock className="w-4 h-4 mx-auto mb-1 text-muted-foreground" />
+                <p className="text-lg font-bold">{job.cp_restants?.length || 0}</p>
+                <p className="text-xs text-muted-foreground">Restants</p>
+              </div>
+              <div className="text-center p-3 bg-green-50 rounded-xl">
+                <CheckCircle className="w-4 h-4 mx-auto mb-1 text-green-500" />
+                <p className="text-lg font-bold text-green-600">{job.publiees}</p>
+                <p className="text-xs text-green-500">Publiées auto</p>
+              </div>
+              <div className="text-center p-3 bg-orange-50 rounded-xl">
+                <AlertTriangle className="w-4 h-4 mx-auto mb-1 text-orange-500" />
+                <p className="text-lg font-bold text-orange-500">{job.a_valider}</p>
+                <p className="text-xs text-orange-400">À valider</p>
+              </div>
+              <div className="text-center p-3 bg-red-50 rounded-xl">
+                <XCircle className="w-4 h-4 mx-auto mb-1 text-red-500" />
+                <p className="text-lg font-bold text-red-500">{job.erreurs}</p>
+                <p className="text-xs text-red-400">Erreurs</p>
+              </div>
+            </div>
+
+            <p className="text-xs text-muted-foreground">
+              batch_id : <code className="font-mono">{job.batch_id}</code> ·
+              Dernière mise à jour : {new Date(job.updated_at).toLocaleTimeString('fr-FR')}
+            </p>
           </div>
         )}
 
-        <div className="bg-card border border-border rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-semibold">Villes importées ({villes.length})</h3>
-            <Button variant="outline" size="sm" onClick={() => { setShowVilles(!showVilles); if (!showVilles) fetchVilles(); }}>
-              {showVilles ? 'Masquer' : 'Voir'}
-            </Button>
+        {/* Explication du pipeline */}
+        <div className="bg-muted/40 border border-border rounded-2xl p-5">
+          <h3 className="text-sm font-semibold mb-3">Pipeline de génération automatique</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs">
+            {[
+              { step: '1', icon: '📡', title: 'Données Enedis', desc: 'Population, conso, réseau (APIs publiques)' },
+              { step: '2', icon: '🤖', title: 'Contenu IA', desc: 'Gemini génère intro + contexte + conseils SEO' },
+              { step: '3', icon: '🔍', title: 'Validation IA', desc: 'Gemini audite la qualité (score /100)' },
+              { step: '4', icon: '✅', title: 'Publication', desc: 'Score ≥80 → auto · Score <80 → validation humaine' },
+            ].map(s => (
+              <div key={s.step} className="flex items-start gap-2">
+                <span className="text-lg flex-shrink-0">{s.icon}</span>
+                <div>
+                  <p className="font-medium">{s.step}. {s.title}</p>
+                  <p className="text-muted-foreground mt-0.5">{s.desc}</p>
+                </div>
+              </div>
+            ))}
           </div>
-          {showVilles && villes.length > 0 && (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead className="bg-muted/50"><tr>
-                  <th className="text-left py-2 px-3">Nom</th><th className="text-left py-2 px-3">CP</th>
-                  <th className="text-right py-2 px-3">Pop.</th><th className="text-right py-2 px-3">Élec kWh</th>
-                  <th className="text-right py-2 px-3">Gaz kWh</th><th className="text-left py-2 px-3">Réseau</th>
-                  <th className="text-center py-2 px-3">IA</th><th className="text-left py-2 px-3">Pages</th>
-                </tr></thead>
-                <tbody>
-                  {villes.map(v => (
-                    <tr key={v.slug} className="border-t border-border">
-                      <td className="py-2 px-3 font-medium">{v.nom}</td>
-                      <td className="py-2 px-3">{v.code_postal}</td>
-                      <td className="py-2 px-3 text-right">{v.population?.toLocaleString('fr-FR') || '-'}</td>
-                      <td className="py-2 px-3 text-right">{v.conso_moyenne_kwh || '-'}</td>
-                      <td className="py-2 px-3 text-right">{v.conso_gaz_kwh || '-'}</td>
-                      <td className="py-2 px-3">{v.reseau_elec}</td>
-                      <td className="py-2 px-3 text-center">{v.contenu_genere_at ? '✅' : '⏳'}</td>
-                      <td className="py-2 px-3 space-x-2">
-                        <Link to={`/electricite/${v.slug}`} className="text-primary hover:underline text-xs inline-flex items-center gap-0.5">Élec <ExternalLink className="w-3 h-3" /></Link>
-                        <Link to={`/gaz/${v.slug}`} className="text-primary hover:underline text-xs inline-flex items-center gap-0.5">Gaz <ExternalLink className="w-3 h-3" /></Link>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
         </div>
       </div>
     </>
