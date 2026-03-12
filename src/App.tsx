@@ -59,6 +59,7 @@ export default function App() {
               <Route index element={<AdminDashboard />} />
               <Route path="leads" element={<AdminLeads />} />
               <Route path="import-villes" element={<AdminImportVilles />} />
+              <Route path="validation" element={<AdminValidation />} />
               <Route path="seo" element={<AdminSEO />} />
             </Route>
 
