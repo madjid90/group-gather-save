@@ -253,7 +253,7 @@ Population    : ${popFormatted} habitants
 Foyers gaz    : ${foyersGazFmt} foyers raccordés au gaz naturel
 Conso moyenne : ${fmt(consoGaz)} kWh/an
 Distributeur  : GRDF (réseau national — 200 000 km de canalisations)
-Tarif repère  : ${T.trv_gaz.toFixed(4).replace(".", ",")} €/kWh (CRE ${T.periode} — référence légale)
+Tarif repère  : ${T.trv_gaz.toFixed(4).replace(".", ",")} €/kWh (CRE, barème en vigueur ${T.periode} — référence légale)
 Abonnement    : ~230€/an
 Facture repère: ~${fmt(factureTRV)}€/an
 Meilleure offre : ~${T.best_gaz.toFixed(4).replace(".", ",")} €/kWh
