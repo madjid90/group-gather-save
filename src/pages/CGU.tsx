@@ -79,12 +79,12 @@ export default function CGU() {
                 4. Fonctionnement
               </h2>
               <p className="text-base text-muted-foreground mb-4 leading-relaxed">
-                Le service fonctionne par campagnes trimestrielles :
+                Le service fonctionne de la manière suivante :
               </p>
               <ul className="list-disc pl-5 text-base text-muted-foreground space-y-2">
-                <li><strong className="text-foreground">Phase d'inscription</strong> : vous vous inscrivez et complétez votre profil</li>
-                <li><strong className="text-foreground">Phase de sélection</strong> : nous sélectionnons les meilleures offres disponibles pour votre profil</li>
-                <li><strong className="text-foreground">Phase d'offre</strong> : vous recevez une offre personnalisée par SMS</li>
+                <li><strong className="text-foreground">Comparaison</strong> : vous entrez votre code postal et renseignez votre consommation</li>
+                <li><strong className="text-foreground">Résultats</strong> : Switchly affiche les meilleures offres disponibles triées par économies</li>
+                <li><strong className="text-foreground">Souscription</strong> : vous choisissez l'offre qui vous convient et souscrivez en ligne</li>
                 <li><strong className="text-foreground">Choix libre</strong> : vous acceptez ou refusez l'offre sans obligation</li>
               </ul>
             </section>
