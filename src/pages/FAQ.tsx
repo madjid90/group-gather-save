@@ -4,7 +4,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { HelpCircle, ArrowLeft, Phone } from "lucide-react";
-import { Helmet } from "react-helmet-async";
+import { DynamicSEOHead } from "@/components/seo/DynamicSEOHead";
+import { JsonLdSchema } from "@/components/seo/JsonLdSchema";
 
 const faqItems = [
   {
@@ -42,10 +43,11 @@ export default function FAQ() {
 
   return (
     <>
-      <Helmet>
-        <title>FAQ — Switchly | Questions fréquentes sur le comparateur énergie</title>
-        <meta name="description" content="Toutes vos questions sur Switchly, comparateur gratuit d'électricité et de gaz. Fonctionnement, économies, fournisseurs partenaires." />
-      </Helmet>
+      <DynamicSEOHead
+        defaultTitle="FAQ — Questions Fréquentes | Switchly Comparateur Énergie"
+        defaultDescription="Toutes vos questions sur Switchly : fonctionnement du comparateur, économies, changement de fournisseur, gratuité."
+      />
+      <JsonLdSchema type="faq" faqItems={faqItems} />
 
       <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 max-w-2xl py-10 md:py-16">
