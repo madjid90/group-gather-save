@@ -13,7 +13,7 @@ export function VillesPopulairesSection() {
   const [villes, setVilles] = useState<VilleLink[]>([]);
 
   useEffect(() => {
-    const fetch = async () => {
+    const load = async () => {
       const { data } = await supabase
         .from('villes' as any)
         .select('slug, nom, code_postal')
@@ -21,7 +21,7 @@ export function VillesPopulairesSection() {
         .limit(12);
       if (data) setVilles(data as any as VilleLink[]);
     };
-    fetch();
+    load();
   }, []);
 
   if (villes.length === 0) return null;
@@ -37,7 +37,7 @@ export function VillesPopulairesSection() {
           {villes.map(v => (
             <Link
               key={v.slug}
-              to={`/electricite-gaz/${v.slug}`}
+              to={`/electricite/${v.slug}`}
               className="bg-card border border-border rounded-xl p-3 hover:border-primary transition-colors text-center group"
             >
               <p className="font-medium text-sm group-hover:text-primary transition-colors">{v.nom}</p>

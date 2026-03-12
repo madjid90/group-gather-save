@@ -1,27 +1,8 @@
-# Switchly robots.txt
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
 User-agent: *
 Allow: /
-
-# Pages privées
 Disallow: /admin/
-Disallow: /dashboard-client
-Disallow: /formulaire-logement/
-Disallow: /mon-offre/
-Disallow: /offre-confirmation
+Disallow: /comparer
 Disallow: /resultats
+Disallow: /politique-rgpd
 
-# Sitemaps
 Sitemap: https://switchly.fr/sitemap.xml
-Sitemap: https://kaebtbcufbpkhyrhuson.supabase.co/functions/v1/generate-sitemap
