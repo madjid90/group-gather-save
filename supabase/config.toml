@@ -92,3 +92,6 @@ verify_jwt = false
 
 [functions.validate-ville-content]
 verify_jwt = false
+
+[functions.batch-import]
+verify_jwt = false
