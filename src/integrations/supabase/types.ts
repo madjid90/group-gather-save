@@ -532,6 +532,51 @@ export type Database = {
         }
         Relationships: []
       }
+      import_jobs: {
+        Row: {
+          a_valider: number | null
+          batch_id: string
+          codes_postaux: string[] | null
+          cp_restants: string[] | null
+          created_at: string | null
+          erreurs: number | null
+          id: string
+          publiees: number | null
+          statut: string | null
+          total_cps: number | null
+          traites: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          a_valider?: number | null
+          batch_id: string
+          codes_postaux?: string[] | null
+          cp_restants?: string[] | null
+          created_at?: string | null
+          erreurs?: number | null
+          id?: string
+          publiees?: number | null
+          statut?: string | null
+          total_cps?: number | null
+          traites?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          a_valider?: number | null
+          batch_id?: string
+          codes_postaux?: string[] | null
+          cp_restants?: string[] | null
+          created_at?: string | null
+          erreurs?: number | null
+          id?: string
+          publiees?: number | null
+          statut?: string | null
+          total_cps?: number | null
+          traites?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       leads: {
         Row: {
           code_postal: string | null
@@ -1238,7 +1283,9 @@ export type Database = {
           contenu_genere_at: string | null
           created_at: string | null
           departement: string | null
+          generation_tentatives: number | null
           id: string
+          import_batch_id: string | null
           nb_logements_elec: number | null
           nb_logements_gaz: number | null
           nom: string
@@ -1249,7 +1296,16 @@ export type Database = {
           reseau_elec: string | null
           reseau_gaz: string | null
           slug: string
+          statut_publication: string | null
           updated_at: string | null
+          validation_humaine_at: string | null
+          validation_humaine_note: string | null
+          validation_humaine_par: string | null
+          validation_humaine_statut: string | null
+          validation_ia_at: string | null
+          validation_ia_commentaire: string | null
+          validation_ia_score: number | null
+          validation_ia_statut: string | null
         }
         Insert: {
           code_insee: string
@@ -1267,7 +1323,9 @@ export type Database = {
           contenu_genere_at?: string | null
           created_at?: string | null
           departement?: string | null
+          generation_tentatives?: number | null
           id?: string
+          import_batch_id?: string | null
           nb_logements_elec?: number | null
           nb_logements_gaz?: number | null
           nom: string
@@ -1278,7 +1336,16 @@ export type Database = {
           reseau_elec?: string | null
           reseau_gaz?: string | null
           slug: string
+          statut_publication?: string | null
           updated_at?: string | null
+          validation_humaine_at?: string | null
+          validation_humaine_note?: string | null
+          validation_humaine_par?: string | null
+          validation_humaine_statut?: string | null
+          validation_ia_at?: string | null
+          validation_ia_commentaire?: string | null
+          validation_ia_score?: number | null
+          validation_ia_statut?: string | null
         }
         Update: {
           code_insee?: string
@@ -1296,7 +1363,9 @@ export type Database = {
           contenu_genere_at?: string | null
           created_at?: string | null
           departement?: string | null
+          generation_tentatives?: number | null
           id?: string
+          import_batch_id?: string | null
           nb_logements_elec?: number | null
           nb_logements_gaz?: number | null
           nom?: string
@@ -1307,7 +1376,16 @@ export type Database = {
           reseau_elec?: string | null
           reseau_gaz?: string | null
           slug?: string
+          statut_publication?: string | null
           updated_at?: string | null
+          validation_humaine_at?: string | null
+          validation_humaine_note?: string | null
+          validation_humaine_par?: string | null
+          validation_humaine_statut?: string | null
+          validation_ia_at?: string | null
+          validation_ia_commentaire?: string | null
+          validation_ia_score?: number | null
+          validation_ia_statut?: string | null
         }
         Relationships: []
       }
