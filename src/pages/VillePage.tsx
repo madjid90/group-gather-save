@@ -15,6 +15,7 @@ interface Ville {
   conso_moyenne_kwh: number | null; conso_gaz_kwh: number | null;
   reseau_elec: string | null; reseau_gaz: string | null; nom_eld: string | null;
   prix_trv_kwh: number | null;
+  statut_publication: string | null;
   contenu_elec_intro: string | null; contenu_elec_contexte: string | null; contenu_elec_conseils: string | null;
   contenu_elec_meta: string | null;
   contenu_gaz_intro: string | null; contenu_gaz_contexte: string | null; contenu_gaz_conseils: string | null;
