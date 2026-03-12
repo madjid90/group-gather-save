@@ -1,149 +1,221 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
-import { ArrowRight, ArrowLeft, Building, Home } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { ArrowRight, ArrowLeft, Building, Home, Loader2 } from 'lucide-react';
+
+const CONSO_BASE: Record<string, number> = {
+  '<30m²': 1500, '30-50m²': 2500, '50-75m²': 3800,
+  '75-100m²': 5200, '100-150m²': 7000, '+150m²': 10500,
+};
+const C_TYPE: Record<string, number> = { maison: 1.2, appartement: 1.0 };
+const C_CHAUF: Record<string, number> = { electrique: 1.6, gaz: 1.0, autre: 1.1 };
+const C_PERS: Record<string, number> = { '1': 0.8, '2': 1.0, '3': 1.2, '4': 1.4, '5+': 1.6 };
+
+const SUPERFICIES = ['<30m²', '30-50m²', '50-75m²', '75-100m²', '100-150m²', '+150m²'];
+const FOURNISSEURS = ['EDF', 'Engie', 'TotalEnergies', 'OHM Énergie', 'Octopus Energy', 'Autre'];
+const STEP_LABELS = ['Localisation', 'Énergie', 'Logement', 'Chauffage', 'Fournisseur', 'Coordonnées'];
 
 export default function ComparerPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [step, setStep] = useState<1|2|3>(1);
+  const [step, setStep] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [villeNom, setVilleNom] = useState(searchParams.get('ville') || '');
   const [form, setForm] = useState({
-    codePostal: searchParams.get('cp') || '',
-    typeEnergie: searchParams.get('type') || '',
-    typeLogement: '',
+    code_postal: searchParams.get('cp') || '',
+    ville: searchParams.get('ville') || '',
+    type_energie: searchParams.get('type') || '',
+    type_logement: '',
     superficie: '',
-    occupants: '',
-    fournisseurActuel: '',
+    nb_personnes: '',
+    mode_chauffage: '',
+    eau_chaude: '',
+    fournisseur_actuel: '',
+    tarif_reglemente: null as boolean | null,
+    telephone: '',
+    consentement: false,
   });
 
-  const update = (k: string, v: string) => setForm(p => ({ ...p, [k]: v }));
-  const progressPct = (step / 3) * 100;
+  const update = (k: string, v: any) => setForm(p => ({ ...p, [k]: v }));
 
-  const handleNext = () => {
-    if (step < 3) setStep(s => (s + 1) as 1|2|3);
-    else {
-      const p = new URLSearchParams({
-        cp: form.codePostal,
-        type: form.typeEnergie,
-        logement: form.typeLogement,
-        superficie: form.superficie,
-        occupants: form.occupants,
-        fournisseur: form.fournisseurActuel,
-      });
-      navigate(`/resultats?${p.toString()}`);
+  // Auto-detect ville from CP
+  useEffect(() => {
+    if (form.code_postal.length === 5) {
+      fetch(`https://geo.api.gouv.fr/communes?codePostal=${form.code_postal}&fields=nom&limit=1`)
+        .then(r => r.json())
+        .then(data => {
+          if (data?.[0]?.nom) {
+            setVilleNom(data[0].nom);
+            update('ville', data[0].nom);
+          }
+        })
+        .catch(() => {});
+    } else {
+      setVilleNom('');
     }
-  };
+  }, [form.code_postal]);
+
+  const conso = Math.round(
+    (CONSO_BASE[form.superficie] || 4000) *
+    (C_TYPE[form.type_logement] || 1.0) *
+    (C_CHAUF[form.mode_chauffage] || 1.0) *
+    (C_PERS[form.nb_personnes] || 1.0)
+  );
+  const economie = Math.round(conso * (0.2516 - 0.2160));
 
   const canNext = () => {
-    if (step === 1) return form.codePostal.length === 5 && form.typeEnergie !== '';
-    if (step === 2) return form.typeLogement !== '' && form.superficie !== '';
+    if (step === 1) return form.code_postal.length === 5 && villeNom !== '';
+    if (step === 2) return form.type_energie !== '';
+    if (step === 3) return form.type_logement !== '' && form.superficie !== '' && form.nb_personnes !== '';
+    if (step === 4) return form.mode_chauffage !== '' && form.eau_chaude !== '';
+    if (step === 5) return true; // optional
+    if (step === 6) return !form.telephone || form.consentement;
     return true;
   };
 
-  const SUPERFICIES = ['Moins de 30m²','30-50m²','50-75m²','75-100m²','100-150m²','Plus de 150m²'];
-  const FOURNISSEURS = form.typeEnergie === 'internet'
-    ? ['Orange','SFR','Bouygues','Free','Autre']
-    : ['EDF (tarif réglementé)','Engie','TotalEnergies','Octopus Energy','OHM Énergie','Autre'];
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      const utm = new URLSearchParams(window.location.search);
+      await (supabase.from('leads') as any).insert({
+        code_postal: form.code_postal,
+        ville: form.ville,
+        type_energie: form.type_energie,
+        type_logement: form.type_logement,
+        superficie: form.superficie,
+        nb_personnes: parseInt(form.nb_personnes) || null,
+        mode_chauffage: form.mode_chauffage,
+        eau_chaude: form.eau_chaude,
+        fournisseur_actuel: form.fournisseur_actuel || null,
+        tarif_reglemente: form.tarif_reglemente,
+        conso_estimee_kwh: conso,
+        economie_estimee: economie,
+        telephone: form.telephone || null,
+        consentement: form.consentement,
+        source_url: window.location.pathname,
+        utm_source: utm.get('utm_source'),
+        utm_medium: utm.get('utm_medium'),
+        utm_campaign: utm.get('utm_campaign'),
+        statut: 'nouveau',
+      });
+    } catch (e) {
+      console.error('Lead insert error:', e);
+    }
+    navigate(`/resultats?type=${form.type_energie}&cp=${form.code_postal}&ville=${encodeURIComponent(form.ville)}&conso=${conso}&economie=${economie}`);
+  };
+
+  const handleNext = () => {
+    if (step < 6) setStep(s => s + 1);
+    else handleSubmit();
+  };
+
+  const SelectCard = ({ selected, onClick, children, className = '' }: { selected: boolean; onClick: () => void; children: React.ReactNode; className?: string }) => (
+    <button
+      onClick={onClick}
+      className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all text-sm font-medium text-left ${
+        selected ? 'border-secondary bg-secondary/5 text-foreground' : 'border-border hover:border-secondary/50'
+      } ${className}`}
+    >
+      {children}
+    </button>
+  );
 
   return (
     <>
       <Helmet>
-        <title>Comparer les offres énergie et internet | Switchly</title>
-        <meta name="description" content="Comparez électricité, gaz et internet en 30 secondes. Gratuit, sans engagement." />
+        <title>Comparer les offres énergie | Switchly</title>
+        <meta name="description" content="Comparez électricité et gaz en 30 secondes. Gratuit, sans engagement." />
         <meta name="robots" content="noindex" />
       </Helmet>
       <div className="min-h-screen flex flex-col bg-muted/20">
         <Navbar />
-        <main className="flex-1 py-8 px-4 pt-24">
-          <div className="max-w-lg mx-auto">
-            <div className="mb-8">
+        <main className="flex-1 py-6 px-4 pt-20">
+          <div className="max-w-[540px] mx-auto">
+            {/* Progress bar */}
+            <div className="sticky top-16 z-10 bg-muted/20 backdrop-blur-sm pb-4 pt-2">
               <div className="flex justify-between text-xs text-muted-foreground mb-2">
-                <span>Étape {step} sur 3</span>
-                <span>{Math.round(progressPct)}% complété</span>
+                <span>Étape {step} sur 6</span>
+                <span>{STEP_LABELS[step - 1]}</span>
               </div>
               <div className="w-full bg-muted rounded-full h-2">
                 <motion.div
-                  className="bg-gradient-to-r from-primary to-secondary h-2 rounded-full"
-                  animate={{ width: `${progressPct}%` }}
+                  className="bg-secondary h-2 rounded-full"
+                  animate={{ width: `${(step / 6) * 100}%` }}
                   transition={{ duration: 0.4 }}
                 />
+              </div>
+              <div className="flex justify-between mt-1.5">
+                {STEP_LABELS.map((l, i) => (
+                  <span key={l} className={`text-[10px] ${i + 1 <= step ? 'text-secondary font-medium' : 'text-muted-foreground/50'}`}>
+                    {i + 1 <= step ? '●' : '○'}
+                  </span>
+                ))}
               </div>
             </div>
 
             <AnimatePresence mode="wait">
+              {/* STEP 1 - Localisation */}
               {step === 1 && (
-                <motion.div key="s1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="bg-card border border-border rounded-2xl p-6 space-y-6">
+                <StepWrapper key="s1">
+                  <StepHeader title="Où êtes-vous situé ?" subtitle="Pour trouver les offres disponibles chez vous" />
                   <div>
-                    <h1 className="text-xl font-bold mb-1">Que souhaitez-vous comparer ?</h1>
-                    <p className="text-sm text-muted-foreground">Sélectionnez une catégorie</p>
-                  </div>
-                  <div className="grid grid-cols-2 gap-3">
-                    {[
-                      { label: '⚡ Électricité', v: 'electricite' },
-                      { label: '🔥 Gaz', v: 'gaz' },
-                      { label: '📶 Internet', v: 'internet' },
-                      { label: '🔄 Tout comparer', v: 'tous' },
-                    ].map(o => (
-                      <button
-                        key={o.v}
-                        onClick={() => update('typeEnergie', o.v)}
-                        className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all text-sm font-medium ${
-                          form.typeEnergie === o.v
-                            ? 'border-primary bg-primary/5'
-                            : 'border-border hover:border-primary/50'
-                        }`}
-                      >
-                        {o.label}
-                      </button>
-                    ))}
-                  </div>
-                  <div>
-                    <label className="text-sm font-semibold block mb-2">Votre code postal</label>
+                    <label className="text-sm font-semibold block mb-2">Code postal</label>
                     <input
                       type="text"
-                      value={form.codePostal}
-                      onChange={e => update('codePostal', e.target.value.replace(/\D/g, '').slice(0, 5))}
+                      value={form.code_postal}
+                      onChange={e => update('code_postal', e.target.value.replace(/\D/g, '').slice(0, 5))}
                       placeholder="Ex: 44000"
-                      className="w-full bg-background border border-border rounded-xl px-4 py-3 text-sm outline-none focus:border-primary"
+                      className="w-full bg-background border border-border rounded-xl px-4 py-3.5 text-sm outline-none focus:border-secondary transition-colors"
                       inputMode="numeric"
                       maxLength={5}
+                      autoFocus
                     />
+                    {villeNom && (
+                      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-2 text-sm text-secondary font-medium">
+                        📍 {villeNom}
+                      </motion.p>
+                    )}
                   </div>
-                  <Button className="w-full" size="lg" onClick={handleNext} disabled={!canNext()}>
-                    Continuer <ArrowRight className="ml-2 w-4 h-4" />
-                  </Button>
-                </motion.div>
+                </StepWrapper>
               )}
 
+              {/* STEP 2 - Énergie */}
               {step === 2 && (
-                <motion.div key="s2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="bg-card border border-border rounded-2xl p-6 space-y-6">
-                  <div>
-                    <h2 className="text-xl font-bold mb-1">Votre logement</h2>
-                    <p className="text-sm text-muted-foreground">Pour estimer votre consommation</p>
+                <StepWrapper key="s2">
+                  <StepHeader title="Que souhaitez-vous comparer ?" subtitle="Sélectionnez une catégorie" />
+                  <div className="grid grid-cols-1 gap-3">
+                    {[
+                      { label: '⚡ Électricité', v: 'electricite' },
+                      { label: '🔥 Gaz naturel', v: 'gaz' },
+                      { label: '⚡🔥 Électricité + Gaz', v: 'les_deux' },
+                    ].map(o => (
+                      <SelectCard key={o.v} selected={form.type_energie === o.v} onClick={() => update('type_energie', o.v)}>
+                        <span className="text-base">{o.label}</span>
+                      </SelectCard>
+                    ))}
                   </div>
+                </StepWrapper>
+              )}
+
+              {/* STEP 3 - Logement */}
+              {step === 3 && (
+                <StepWrapper key="s3">
+                  <StepHeader title="Votre logement" subtitle="Pour estimer votre consommation" />
                   <div>
                     <label className="text-sm font-semibold block mb-3">Type de logement</label>
                     <div className="grid grid-cols-2 gap-3">
                       {[
-                        { label: 'Appartement', icon: Building, v: 'appartement' },
-                        { label: 'Maison', icon: Home, v: 'maison' },
-                      ].map(({ label, icon: Icon, v }) => (
-                        <button
-                          key={v}
-                          onClick={() => update('typeLogement', v)}
-                          className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all ${
-                            form.typeLogement === v
-                              ? 'border-primary bg-primary/5'
-                              : 'border-border hover:border-primary/50'
-                          }`}
-                        >
-                          <Icon className="w-6 h-6 text-primary" />
-                          <span className="text-sm font-medium">{label}</span>
-                        </button>
+                        { label: '🏠 Maison', v: 'maison' },
+                        { label: '🏢 Appartement', v: 'appartement' },
+                      ].map(o => (
+                        <SelectCard key={o.v} selected={form.type_logement === o.v} onClick={() => update('type_logement', o.v)} className="justify-center">
+                          <span>{o.label}</span>
+                        </SelectCard>
                       ))}
                     </div>
                   </div>
@@ -151,101 +223,189 @@ export default function ComparerPage() {
                     <label className="text-sm font-semibold block mb-3">Superficie</label>
                     <div className="grid grid-cols-3 gap-2">
                       {SUPERFICIES.map(s => (
-                        <button
-                          key={s}
-                          onClick={() => update('superficie', s)}
-                          className={`py-2.5 px-2 rounded-xl border-2 text-xs font-medium transition-all ${
-                            form.superficie === s
-                              ? 'border-primary bg-primary/5 text-primary'
-                              : 'border-border hover:border-primary/50'
-                          }`}
-                        >
+                        <SelectCard key={s} selected={form.superficie === s} onClick={() => update('superficie', s)} className="justify-center py-2.5 text-xs">
                           {s}
-                        </button>
+                        </SelectCard>
                       ))}
                     </div>
                   </div>
                   <div>
                     <label className="text-sm font-semibold block mb-3">Nombre d'occupants</label>
                     <div className="grid grid-cols-5 gap-2">
-                      {['1','2','3','4','5+'].map(n => (
-                        <button
-                          key={n}
-                          onClick={() => update('occupants', n)}
-                          className={`py-2.5 rounded-xl border-2 text-sm font-bold transition-all ${
-                            form.occupants === n
-                              ? 'border-primary bg-primary/5 text-primary'
-                              : 'border-border hover:border-primary/50'
-                          }`}
-                        >
+                      {['1', '2', '3', '4', '5+'].map(n => (
+                        <SelectCard key={n} selected={form.nb_personnes === n} onClick={() => update('nb_personnes', n)} className="justify-center py-2.5 font-bold">
                           {n}
-                        </button>
+                        </SelectCard>
                       ))}
                     </div>
                   </div>
-                  <div className="flex gap-3">
-                    <Button variant="outline" size="lg" onClick={() => setStep(1)} className="flex-1">
-                      <ArrowLeft className="mr-2 w-4 h-4" /> Retour
-                    </Button>
-                    <Button size="lg" onClick={handleNext} disabled={!canNext()} className="flex-1">
-                      Continuer <ArrowRight className="ml-2 w-4 h-4" />
-                    </Button>
-                  </div>
-                </motion.div>
+                </StepWrapper>
               )}
 
-              {step === 3 && (
-                <motion.div key="s3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="bg-card border border-border rounded-2xl p-6 space-y-6">
+              {/* STEP 4 - Chauffage */}
+              {step === 4 && (
+                <StepWrapper key="s4">
+                  <StepHeader title="Votre chauffage" subtitle="Pour affiner l'estimation" />
                   <div>
-                    <h2 className="text-xl font-bold mb-1">Votre situation actuelle</h2>
-                    <p className="text-sm text-muted-foreground">Pour calculer vos économies réelles</p>
-                  </div>
-                  <div>
-                    <label className="text-sm font-semibold block mb-3">Votre fournisseur actuel</label>
-                    <div className="space-y-2">
-                      {FOURNISSEURS.map(f => (
-                        <button
-                          key={f}
-                          onClick={() => update('fournisseurActuel', f)}
-                          className={`w-full flex items-center justify-between p-3.5 rounded-xl border-2 text-sm transition-all text-left ${
-                            form.fournisseurActuel === f
-                              ? 'border-primary bg-primary/5 font-semibold'
-                              : 'border-border hover:border-primary/50'
-                          }`}
-                        >
-                          {f}
-                          {form.fournisseurActuel === f && <span className="text-primary text-xs">✓</span>}
-                        </button>
+                    <label className="text-sm font-semibold block mb-3">Mode de chauffage</label>
+                    <div className="grid grid-cols-3 gap-3">
+                      {[
+                        { label: '⚡ Électrique', v: 'electrique' },
+                        { label: '🔥 Gaz', v: 'gaz' },
+                        { label: '🔆 Autre', v: 'autre' },
+                      ].map(o => (
+                        <SelectCard key={o.v} selected={form.mode_chauffage === o.v} onClick={() => update('mode_chauffage', o.v)} className="justify-center flex-col text-center">
+                          <span className="text-xs">{o.label}</span>
+                        </SelectCard>
                       ))}
                     </div>
                   </div>
-                  <div className="bg-secondary/10 border border-secondary/20 rounded-xl p-3 text-xs text-muted-foreground">
-                    💡 90% des Français chez EDF peuvent économiser en changeant de fournisseur.
+                  <div>
+                    <label className="text-sm font-semibold block mb-3">Eau chaude</label>
+                    <div className="grid grid-cols-2 gap-3">
+                      {[
+                        { label: '⚡ Électrique', v: 'electrique' },
+                        { label: '🔥 Gaz', v: 'gaz' },
+                      ].map(o => (
+                        <SelectCard key={o.v} selected={form.eau_chaude === o.v} onClick={() => update('eau_chaude', o.v)} className="justify-center">
+                          <span>{o.label}</span>
+                        </SelectCard>
+                      ))}
+                    </div>
                   </div>
-                  <div className="flex gap-3">
-                    <Button variant="outline" size="lg" onClick={() => setStep(2)} className="flex-1">
-                      <ArrowLeft className="mr-2 w-4 h-4" /> Retour
-                    </Button>
-                    <Button size="lg" onClick={handleNext} className="flex-1">
-                      Voir les offres 🎉
-                    </Button>
+                </StepWrapper>
+              )}
+
+              {/* STEP 5 - Fournisseur */}
+              {step === 5 && (
+                <StepWrapper key="s5">
+                  <StepHeader title="Votre situation actuelle" subtitle="Optionnel — pour calculer vos économies" />
+                  <div>
+                    <label className="text-sm font-semibold block mb-3">Fournisseur actuel</label>
+                    <div className="space-y-2">
+                      {FOURNISSEURS.map(f => (
+                        <SelectCard key={f} selected={form.fournisseur_actuel === f} onClick={() => update('fournisseur_actuel', f)} className="w-full">
+                          {f}
+                          {form.fournisseur_actuel === f && <span className="ml-auto text-secondary text-xs">✓</span>}
+                        </SelectCard>
+                      ))}
+                    </div>
                   </div>
-                  <button onClick={handleNext} className="w-full text-xs text-muted-foreground hover:text-foreground text-center">
-                    Passer cette étape →
-                  </button>
-                </motion.div>
+                  <div>
+                    <label className="text-sm font-semibold block mb-3">Êtes-vous au tarif réglementé ?</label>
+                    <div className="grid grid-cols-3 gap-2">
+                      {[
+                        { label: 'Oui', v: true },
+                        { label: 'Non', v: false },
+                        { label: 'Je ne sais pas', v: null },
+                      ].map(o => (
+                        <SelectCard key={String(o.v)} selected={form.tarif_reglemente === o.v} onClick={() => update('tarif_reglemente', o.v)} className="justify-center text-xs">
+                          {o.label}
+                        </SelectCard>
+                      ))}
+                    </div>
+                  </div>
+                </StepWrapper>
+              )}
+
+              {/* STEP 6 - Coordonnées */}
+              {step === 6 && (
+                <StepWrapper key="s6">
+                  <StepHeader title="Recevez vos résultats" subtitle="Dernière étape avant vos offres" />
+                  <div className="bg-secondary/10 border border-secondary/20 rounded-xl p-4 text-center">
+                    <p className="text-sm font-semibold text-secondary">
+                      ~{conso.toLocaleString('fr-FR')} kWh/an · Économie jusqu'à {economie}€/an
+                    </p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-semibold block mb-2">Téléphone (optionnel)</label>
+                    <input
+                      type="tel"
+                      value={form.telephone}
+                      onChange={e => update('telephone', e.target.value)}
+                      placeholder="06 12 34 56 78"
+                      className="w-full bg-background border border-border rounded-xl px-4 py-3.5 text-sm outline-none focus:border-secondary transition-colors"
+                    />
+                    <p className="text-xs text-muted-foreground mt-1">Pour recevoir un récapitulatif par SMS</p>
+                  </div>
+                  {form.telephone && (
+                    <label className="flex items-start gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={form.consentement}
+                        onChange={e => update('consentement', e.target.checked)}
+                        className="mt-0.5 accent-secondary"
+                      />
+                      <span className="text-xs text-muted-foreground">
+                        J'accepte de recevoir mon récapitulatif par SMS. Données jamais revendues. <a href="/politique-confidentialite" className="underline">Politique de confidentialité</a>
+                      </span>
+                    </label>
+                  )}
+                </StepWrapper>
               )}
             </AnimatePresence>
 
+            {/* Navigation buttons */}
+            <div className="flex gap-3 mt-6">
+              {step > 1 && (
+                <Button variant="outline" size="lg" onClick={() => setStep(s => s - 1)} className="flex-1">
+                  <ArrowLeft className="mr-2 w-4 h-4" /> Retour
+                </Button>
+              )}
+              <Button
+                size="lg"
+                onClick={handleNext}
+                disabled={!canNext() || loading}
+                className="flex-1 bg-secondary hover:bg-secondary/90 text-secondary-foreground"
+              >
+                {loading ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : step === 6 ? (
+                  'Voir mes offres →'
+                ) : (
+                  <>Continuer <ArrowRight className="ml-2 w-4 h-4" /></>
+                )}
+              </Button>
+            </div>
+
+            {step === 5 && (
+              <button onClick={handleNext} className="w-full mt-3 text-xs text-muted-foreground hover:text-foreground text-center">
+                Passer cette étape →
+              </button>
+            )}
+
             <div className="mt-6 flex flex-wrap justify-center gap-4 text-xs text-muted-foreground">
               <span>🔒 Données sécurisées</span>
-              <span>✅ Aucune coupure garantie</span>
-              <span>🆓 Totalement gratuit</span>
+              <span>✅ Sans coupure</span>
+              <span>🆓 100% gratuit</span>
             </div>
           </div>
         </main>
         <Footer />
       </div>
     </>
+  );
+}
+
+function StepWrapper({ children, ...props }: { children: React.ReactNode } & Record<string, any>) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      className="bg-card border border-border rounded-2xl p-6 space-y-5"
+      {...props}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function StepHeader({ title, subtitle }: { title: string; subtitle: string }) {
+  return (
+    <div>
+      <h1 className="text-xl font-bold mb-1">{title}</h1>
+      <p className="text-sm text-muted-foreground">{subtitle}</p>
+    </div>
   );
 }
