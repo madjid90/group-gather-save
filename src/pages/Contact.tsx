@@ -56,9 +56,10 @@ export default function Contact() {
 
   return (
     <>
-      <Helmet>
-        <title>Contact — Switchly</title>
-        <meta name="description" content="Contactez l'équipe Switchly. Comparateur d'électricité et de gaz gratuit." />
+      <DynamicSEOHead
+        defaultTitle="Contactez Switchly — Comparateur Énergie Gratuit"
+        defaultDescription="Une question sur le comparateur énergie Switchly ? Contactez notre équipe par email ou téléphone. Réponse sous 24h."
+      />
       </Helmet>
 
       <div className="min-h-screen bg-background">

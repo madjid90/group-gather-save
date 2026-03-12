@@ -157,9 +157,10 @@ export default function ComparerPage() {
 
   return (
     <>
-      <Helmet>
-        <title>Comparer les offres énergie | Switchly</title>
-        <meta name="description" content="Comparez électricité et gaz en 30 secondes. Gratuit, sans engagement." />
+      <DynamicSEOHead
+        defaultTitle="Comparateur Électricité & Gaz Gratuit | Switchly"
+        defaultDescription="Comparez les offres d'électricité et de gaz en 30 secondes. Trouvez le fournisseur le moins cher sans engagement. 100% gratuit."
+      />
         <meta name="robots" content="noindex" />
       </Helmet>
 
