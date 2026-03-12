@@ -1074,6 +1074,60 @@ export type Database = {
         }
         Relationships: []
       }
+      tarifs_energie: {
+        Row: {
+          id: string
+          meilleure_offre_elec_kwh: number
+          meilleure_offre_gaz_kwh: number
+          offres_elec_fallback: Json | null
+          offres_gaz_fallback: Json | null
+          periode_validite: string | null
+          source_offres: string | null
+          source_trv_elec: string | null
+          source_trv_gaz: string | null
+          trv_elec_abo_annuel: number
+          trv_elec_kwh: number
+          trv_gaz_abo_annuel: number
+          trv_gaz_kwh: number
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          id?: string
+          meilleure_offre_elec_kwh?: number
+          meilleure_offre_gaz_kwh?: number
+          offres_elec_fallback?: Json | null
+          offres_gaz_fallback?: Json | null
+          periode_validite?: string | null
+          source_offres?: string | null
+          source_trv_elec?: string | null
+          source_trv_gaz?: string | null
+          trv_elec_abo_annuel?: number
+          trv_elec_kwh?: number
+          trv_gaz_abo_annuel?: number
+          trv_gaz_kwh?: number
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          id?: string
+          meilleure_offre_elec_kwh?: number
+          meilleure_offre_gaz_kwh?: number
+          offres_elec_fallback?: Json | null
+          offres_gaz_fallback?: Json | null
+          periode_validite?: string | null
+          source_offres?: string | null
+          source_trv_elec?: string | null
+          source_trv_gaz?: string | null
+          trv_elec_abo_annuel?: number
+          trv_elec_kwh?: number
+          trv_gaz_abo_annuel?: number
+          trv_gaz_kwh?: number
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       user_offers: {
         Row: {
           abonnement_mensuel: number | null

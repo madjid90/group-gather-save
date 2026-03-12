@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -9,7 +10,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Users, FileText, Send, CheckCircle, TrendingUp, Euro, Loader2 } from "lucide-react";
+import { Users, FileText, Send, CheckCircle, TrendingUp, Euro, Loader2, RefreshCw } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface CampaignStats {
   id: string;
@@ -21,6 +23,8 @@ interface CampaignStats {
 
 export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
+  const [updatingTarifs, setUpdatingTarifs] = useState(false);
+  const { toast } = useToast();
   const [stats, setStats] = useState({
     totalUsers: 0,
     formulairesCompletes: 0,
@@ -127,6 +131,21 @@ export default function AdminDashboard() {
     }
   };
 
+  const updateTarifs = async () => {
+    setUpdatingTarifs(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('update-tarifs', { body: {} });
+      if (!error && data) {
+        toast({ title: "Tarifs mis à jour", description: data.log?.join(' | ') || 'Mise à jour terminée' });
+      } else {
+        toast({ title: "Erreur", description: error?.message || 'Erreur inconnue', variant: "destructive" });
+      }
+    } catch (e: any) {
+      toast({ title: "Erreur", description: e.message, variant: "destructive" });
+    }
+    setUpdatingTarifs(false);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -137,9 +156,15 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-4">
-      <div>
-        <h1 className="text-xl sm:text-2xl font-bold text-foreground">Dashboard</h1>
-        <p className="text-sm text-muted-foreground">Vue d'ensemble de votre activité</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-xl sm:text-2xl font-bold text-foreground">Dashboard</h1>
+          <p className="text-sm text-muted-foreground">Vue d'ensemble de votre activité</p>
+        </div>
+        <Button onClick={updateTarifs} disabled={updatingTarifs} variant="outline" size="sm">
+          {updatingTarifs ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <RefreshCw className="mr-2 h-4 w-4" />}
+          {updatingTarifs ? "Mise à jour..." : "Maj tarifs CRE"}
+        </Button>
       </div>
 
       {/* Stats Cards */}
