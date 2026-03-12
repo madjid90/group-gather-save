@@ -148,6 +148,18 @@ export default function VillePage() {
     );
   }
 
+  // Bloquer les pages non publiées (sauf admin en preview)
+  const isPreview = window.location.search.includes('preview=admin');
+  if (!isPreview && ville.statut_publication && ville.statut_publication !== 'publiee') {
+    return (
+      <div className="flex-1 flex flex-col items-center justify-center py-20 gap-4">
+        <h1 className="text-2xl font-bold">Page en cours de validation</h1>
+        <p className="text-muted-foreground">Cette page sera bientôt disponible.</p>
+        <Button asChild><Link to="/">Retour à l'accueil</Link></Button>
+      </div>
+    );
+  }
+
   const prix_ref = isElec ? tarifs.trv_elec : tarifs.trv_gaz;
   const ref_abo = isElec ? tarifs.abo_elec : tarifs.abo_gaz;
   const ref_label = isElec ? 'tarif réglementé EDF' : 'tarif repère gaz';
