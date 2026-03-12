@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { HeroSection } from "@/components/landing/HeroSection";
+import { LogoCarousel } from "@/components/landing/LogoCarousel";
 import { SavingsCalculator } from "@/components/landing/SavingsCalculator";
 import { MobileFixedCTA } from "@/components/landing/MobileFixedCTA";
 import { PageTransition } from "@/components/PageTransition";
