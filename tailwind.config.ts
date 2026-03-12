@@ -17,7 +17,6 @@ export default {
         sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
       },
       fontSize: {
-        // Consistent typography scale
         'heading-1': ['clamp(1.5rem, 4vw, 2.25rem)', { lineHeight: '1.2', fontWeight: '700' }],
         'heading-2': ['clamp(1.25rem, 3vw, 2rem)', { lineHeight: '1.25', fontWeight: '700' }],
         'heading-3': ['clamp(1rem, 2vw, 1.25rem)', { lineHeight: '1.3', fontWeight: '600' }],
@@ -58,6 +57,9 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        amber: {
+          400: "hsl(45 93% 47%)",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -83,7 +85,8 @@ export default {
         'switchly-lg': 'var(--shadow-lg)',
         'switchly-xl': 'var(--shadow-xl)',
         'glow': 'var(--shadow-glow)',
-        'glow-success': 'var(--shadow-success-glow)',
+        'glow-green': 'var(--shadow-glow-green)',
+        'glass': 'var(--shadow-glass)',
       },
       backgroundImage: {
         'gradient-primary': 'var(--gradient-primary)',
@@ -91,6 +94,8 @@ export default {
         'gradient-hero': 'var(--gradient-hero)',
         'gradient-subtle': 'var(--gradient-subtle)',
         'gradient-card': 'var(--gradient-card)',
+        'gradient-glass': 'var(--gradient-glass)',
+        'gradient-dark': 'var(--gradient-dark)',
       },
       keyframes: {
         "accordion-down": {
@@ -121,6 +126,11 @@ export default {
           "0%, 100%": { boxShadow: "0 0 20px hsl(var(--primary) / 0.3)" },
           "50%": { boxShadow: "0 0 40px hsl(var(--primary) / 0.5)" },
         },
+        "shimmer": {
+          "0%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+          "100%": { backgroundPosition: "0% 50%" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -130,6 +140,7 @@ export default {
         "slide-down": "slide-down 0.5s ease-out forwards",
         "scale-in": "scale-in 0.3s ease-out forwards",
         "pulse-glow": "pulse-glow 2s ease-in-out infinite",
+        "shimmer": "shimmer 4s ease-in-out infinite",
       },
     },
   },
