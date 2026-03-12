@@ -30,6 +30,8 @@ export function Footer() {
               <li><Link to="/contact" className="hover:text-foreground transition-colors">Contact</Link></li>
               <li><Link to="/mentions-legales" className="hover:text-foreground transition-colors">Mentions légales</Link></li>
               <li><Link to="/cgu" className="hover:text-foreground transition-colors">CGU</Link></li>
+              <li><Link to="/politique-confidentialite" className="hover:text-foreground transition-colors">Confidentialité</Link></li>
+              <li><Link to="/politique-rgpd" className="hover:text-foreground transition-colors">Politique RGPD</Link></li>
             </ul>
           </div>
           <div>
