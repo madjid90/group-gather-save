@@ -1,11 +1,13 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const FALLBACK: Record<string, any[]> = {
+// Fallback statique ultime (si DB indisponible)
+const FALLBACK_STATIC: Record<string, any[]> = {
   electricite: [
     { id: "ohm-extra-eco", fournisseur: "OHM Énergie", nom_offre: "Extra Eco", type: "fixe", prix_kwh: 0.2180, abonnement_annuel: 149, label_vert: false, url_souscription: "https://selectra.info/energie/fournisseurs/ohm-energie" },
     { id: "octopus-eco", fournisseur: "Octopus Energy", nom_offre: "Eco-conso Fixe", type: "fixe", prix_kwh: 0.2210, abonnement_annuel: 155, label_vert: true, url_souscription: "https://selectra.info/energie/fournisseurs/octopus-energy" },
@@ -27,7 +29,28 @@ Deno.serve(async (req) => {
   try {
     const { type = "electricite", code_postal = "" } = await req.json();
     const TOKEN = Deno.env.get("SELECTRA_TOKEN");
-    let offres = FALLBACK[type] || FALLBACK.electricite;
+
+    // Lire offres fallback depuis tarifs_energie
+    let fallbackElec = FALLBACK_STATIC.electricite;
+    let fallbackGaz = FALLBACK_STATIC.gaz;
+
+    try {
+      const supabase = createClient(
+        Deno.env.get("SUPABASE_URL")!,
+        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+      );
+      const { data: tarifs } = await supabase
+        .from("tarifs_energie")
+        .select("offres_elec_fallback, offres_gaz_fallback")
+        .eq("id", "current")
+        .single();
+      if (tarifs?.offres_elec_fallback?.length) fallbackElec = tarifs.offres_elec_fallback;
+      if (tarifs?.offres_gaz_fallback?.length) fallbackGaz = tarifs.offres_gaz_fallback;
+    } catch (e) { console.error("Tarifs offres lecture:", e); }
+
+    const FALLBACK = { electricite: fallbackElec, gaz: fallbackGaz };
+
+    let offres = FALLBACK[type as keyof typeof FALLBACK] || FALLBACK.electricite;
     let source = "fallback";
 
     if (TOKEN) {

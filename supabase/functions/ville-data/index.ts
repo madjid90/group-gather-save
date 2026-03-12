@@ -77,9 +77,22 @@ Deno.serve(async (req) => {
     } catch (e) { console.error("Enedis gaz:", e); }
 
     const supabase = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+
+    // Lire le TRV depuis la table tarifs_energie
+    let prix_trv_kwh = 0.2516;
+    try {
+      const { data: tarifs } = await supabase
+        .from("tarifs_energie")
+        .select("trv_elec_kwh")
+        .eq("id", "current")
+        .single();
+      if (tarifs?.trv_elec_kwh) prix_trv_kwh = tarifs.trv_elec_kwh;
+    } catch (e) { console.error("Tarifs lecture failed:", e); }
+
     const villeData = {
       slug, nom, code_postal, code_insee, departement, region, population,
-      nb_logements_elec, conso_moyenne_kwh, reseau_elec, nom_eld, prix_trv_kwh: 0.2516,
+      nb_logements_elec, conso_moyenne_kwh, reseau_elec, nom_eld,
+      prix_trv_kwh,
       nb_logements_gaz, conso_gaz_kwh, reseau_gaz: "GRDF",
       updated_at: new Date().toISOString(),
     };

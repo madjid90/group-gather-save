@@ -22,14 +22,41 @@ Deno.serve(async (req) => {
     const { data: ville, error } = await supabase.from("villes").select("*").eq("slug", slug).single();
     if (error || !ville) return new Response(JSON.stringify({ error: "Ville introuvable" }), { status: 404, headers: { ...cors, "Content-Type": "application/json" } });
 
+    // ── LECTURE TARIFS DEPUIS DB ──
+    let T = {
+      trv_elec: 0.2516,
+      abo_elec: 150,
+      best_elec: 0.2160,
+      trv_gaz: 0.1244,
+      abo_gaz: 230,
+      best_gaz: 0.0870,
+      periode: "2026",
+    };
+    try {
+      const { data: tarifs } = await supabase
+        .from("tarifs_energie")
+        .select("trv_elec_kwh, trv_elec_abo_annuel, meilleure_offre_elec_kwh, trv_gaz_kwh, trv_gaz_abo_annuel, meilleure_offre_gaz_kwh, periode_validite")
+        .eq("id", "current")
+        .single();
+      if (tarifs) {
+        T.trv_elec = tarifs.trv_elec_kwh || T.trv_elec;
+        T.abo_elec = tarifs.trv_elec_abo_annuel || T.abo_elec;
+        T.best_elec = tarifs.meilleure_offre_elec_kwh || T.best_elec;
+        T.trv_gaz = tarifs.trv_gaz_kwh || T.trv_gaz;
+        T.abo_gaz = tarifs.trv_gaz_abo_annuel || T.abo_gaz;
+        T.best_gaz = tarifs.meilleure_offre_gaz_kwh || T.best_gaz;
+        T.periode = tarifs.periode_validite || T.periode;
+      }
+    } catch (e) { console.error("Tarifs lecture:", e); }
+
     const result: any = {};
 
     // Generate electricity content
     if (type === "electricite" || type === "both") {
       const consoElec = ville.conso_moyenne_kwh || 4800;
       const reseau = ville.reseau_elec || "Enedis";
-      const factureTRV = Math.round(consoElec * 0.2516 + 150);
-      const econoEstim = Math.round((0.2516 - 0.2160) * consoElec);
+      const factureTRV = Math.round(consoElec * T.trv_elec + T.abo_elec);
+      const econoEstim = Math.round((T.trv_elec - T.best_elec) * consoElec);
 
       const prompt = `Tu es un expert SEO spécialisé dans les comparateurs d'énergie en France. Rédige pour Switchly.fr.
 
@@ -38,10 +65,10 @@ DONNÉES OFFICIELLES pour ${ville.nom} (${ville.code_postal}) — ${ville.depart
 - Foyers élec : ${ville.nb_logements_elec || 'N/A'} foyers raccordés
 - Conso locale : ${consoElec} kWh/an (moyenne Enedis 2023)
 - Réseau : ${reseau}${ville.nom_eld ? ' — ELD : ' + ville.nom_eld : ''}
-- TRV EDF 2026 : 0,2516 €/kWh — Facture TRV : ~${factureTRV}€/an
-- Meilleure offre marché libre : ~0,2160 €/kWh — Économie max : ${econoEstim}€/an
+- TRV EDF ${T.periode} : ${Number(T.trv_elec).toFixed(4).replace(".", ",")} €/kWh — Facture TRV : ~${factureTRV}€/an
+- Meilleure offre marché libre : ~${Number(T.best_elec).toFixed(4).replace(".", ",")} €/kWh — Économie max : ${econoEstim}€/an
 
-Génère 3 sections de texte unique pour la page /electricite/${ville.slug}. Chaque section ~210 mots. Texte continu sans listes. "${ville.nom}" minimum 4 fois par section. Cite les sources (Enedis, CRE 2026). Une phrase de conversion naturelle par section vers Switchly.
+Génère 3 sections de texte unique pour la page /electricite/${ville.slug}. Chaque section ~210 mots. Texte continu sans listes. "${ville.nom}" minimum 4 fois par section. Cite les sources (Enedis, CRE ${T.periode}). Une phrase de conversion naturelle par section vers Switchly.
 
 IMPORTANT: Réponds UNIQUEMENT en JSON valide, sans backticks, sans texte avant/après.`;
 
@@ -63,8 +90,8 @@ IMPORTANT: Réponds UNIQUEMENT en JSON valide, sans backticks, sans texte avant/
     // Generate gas content
     if (type === "gaz" || type === "both") {
       const consoGaz = ville.conso_gaz_kwh || 11000;
-      const factureTRV = Math.round(consoGaz * 0.1244 + 230);
-      const econoEstim = Math.round((0.1244 - 0.0870) * consoGaz);
+      const factureTRV = Math.round(consoGaz * T.trv_gaz + T.abo_gaz);
+      const econoEstim = Math.round((T.trv_gaz - T.best_gaz) * consoGaz);
 
       const prompt = `Tu es un expert SEO spécialisé dans les comparateurs d'énergie en France. Rédige pour Switchly.fr.
 
@@ -73,10 +100,10 @@ DONNÉES OFFICIELLES pour ${ville.nom} (${ville.code_postal}) — ${ville.depart
 - Foyers gaz : ${ville.nb_logements_gaz || 'N/A'} foyers raccordés
 - Conso locale : ${consoGaz} kWh/an (moyenne GRDF 2023)
 - Distributeur : GRDF
-- Tarif repère 2026 : 0,1244 €/kWh — Facture repère : ~${factureTRV}€/an
-- Meilleure offre marché libre : ~0,0870 €/kWh — Économie max : ${econoEstim}€/an
+- Tarif repère ${T.periode} : ${Number(T.trv_gaz).toFixed(4).replace(".", ",")} €/kWh — Facture repère : ~${factureTRV}€/an
+- Meilleure offre marché libre : ~${Number(T.best_gaz).toFixed(4).replace(".", ",")} €/kWh — Économie max : ${econoEstim}€/an
 
-Génère 3 sections de texte unique pour la page /gaz/${ville.slug}. Chaque section ~210 mots. Texte continu sans listes. "${ville.nom}" minimum 4 fois par section. Cite les sources (GRDF, CRE 2026). Une phrase de conversion naturelle par section vers Switchly.
+Génère 3 sections de texte unique pour la page /gaz/${ville.slug}. Chaque section ~210 mots. Texte continu sans listes. "${ville.nom}" minimum 4 fois par section. Cite les sources (GRDF, CRE ${T.periode}). Une phrase de conversion naturelle par section vers Switchly.
 
 IMPORTANT: Réponds UNIQUEMENT en JSON valide, sans backticks, sans texte avant/après.`;
 
