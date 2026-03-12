@@ -58,13 +58,13 @@ export default function ResultatsPage() {
       </Helmet>
 
       {/* Header */}
-      <section className="bg-gradient-subtle px-4 pt-8 pb-6">
+      <section className="bg-background px-4 pt-8 pb-6">
         <div className="max-w-2xl mx-auto">
           <Link to="/comparer" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline mb-4 transition-colors">
             <ArrowLeft className="w-4 h-4" /> Modifier mes critères
           </Link>
           <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-3 leading-tight">
-            Vos offres <span className="gradient-text">{typeLabel}</span>
+            Vos offres <span className="text-secondary font-extrabold">{typeLabel}</span>
             {ville ? ` à ${ville}` : ''}
           </h1>
           <div className="flex flex-wrap gap-2">

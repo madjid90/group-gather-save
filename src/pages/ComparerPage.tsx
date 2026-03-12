@@ -147,14 +147,14 @@ export default function ComparerPage() {
       </Helmet>
 
       {/* Header minimal */}
-      <section className="bg-gradient-subtle px-4 pt-8 pb-4">
+      <section className="bg-background px-4 pt-8 pb-4">
         <div className="max-w-lg mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary text-xs font-semibold px-3 py-1.5 rounded-full mb-4">
             <span className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
             Comparateur 100% gratuit
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
-            Trouvez la <span className="gradient-text">meilleure offre</span>
+            Trouvez la <span className="text-secondary font-extrabold">meilleure offre</span>
           </h1>
           <p className="text-sm text-muted-foreground">Résultat en 30 secondes · Sans engagement</p>
         </div>

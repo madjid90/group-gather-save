@@ -273,7 +273,7 @@ export const SavingsCalculator = memo(function SavingsCalculator() {
               </div>
               <div className="h-2 bg-muted rounded-full overflow-hidden">
                 <motion.div
-                  className="h-full bg-gradient-hero rounded-full"
+                  className="h-full bg-primary rounded-full"
                   animate={{ width: `${(currentStep / 4) * 100}%` }}
                   transition={{ duration: 0.3 }}
                 />

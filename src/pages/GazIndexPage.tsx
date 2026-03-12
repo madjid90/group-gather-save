@@ -42,7 +42,7 @@ export default function GazIndexPage() {
       </Helmet>
 
       {/* Hero */}
-      <section className="py-12 bg-gradient-to-br from-orange-500/10 via-background to-secondary/5">
+      <section className="py-12 bg-background">
         <div className="container mx-auto px-4 max-w-2xl text-center">
           <div className="inline-flex items-center gap-2 bg-orange-500/10 text-orange-600 text-xs font-semibold px-3 py-1.5 rounded-full mb-4">
             <Flame className="w-3.5 h-3.5" /> Gaz naturel

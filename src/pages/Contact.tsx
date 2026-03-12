@@ -61,7 +61,7 @@ export default function Contact() {
         <meta name="description" content="Contactez l'équipe Switchly. Comparateur d'électricité et de gaz gratuit." />
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-subtle">
+      <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 max-w-lg py-10 md:py-16">
 
           <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6">

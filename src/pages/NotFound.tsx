@@ -21,7 +21,7 @@ const NotFound = () => {
       >
         {/* Logo */}
         <Link to="/" className="inline-flex items-center gap-2 mb-4">
-          <div className="w-9 h-9 rounded-xl bg-gradient-hero flex items-center justify-center">
+          <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
             <Zap className="w-4 h-4 text-primary-foreground" />
           </div>
           <span className="text-lg font-bold text-foreground">Switchly</span>

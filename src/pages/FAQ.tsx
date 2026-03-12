@@ -47,7 +47,7 @@ export default function FAQ() {
         <meta name="description" content="Toutes vos questions sur Switchly, comparateur gratuit d'électricité et de gaz. Fonctionnement, économies, fournisseurs partenaires." />
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-subtle">
+      <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 max-w-2xl py-10 md:py-16">
 
           <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6">
