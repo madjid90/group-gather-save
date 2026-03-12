@@ -15,6 +15,7 @@ interface Ville {
   conso_moyenne_kwh: number | null; conso_gaz_kwh: number | null;
   reseau_elec: string | null; reseau_gaz: string | null; nom_eld: string | null;
   prix_trv_kwh: number | null;
+  statut_publication: string | null;
   contenu_elec_intro: string | null; contenu_elec_contexte: string | null; contenu_elec_conseils: string | null;
   contenu_elec_meta: string | null;
   contenu_gaz_intro: string | null; contenu_gaz_contexte: string | null; contenu_gaz_conseils: string | null;
@@ -142,6 +143,18 @@ export default function VillePage() {
       <div className="flex-1 flex flex-col items-center justify-center py-20 gap-4">
         <h1 className="text-2xl font-bold">Commune non trouvée</h1>
         <p className="text-muted-foreground">Cette page n'existe pas encore.</p>
+        <Button asChild><Link to="/">Retour à l'accueil</Link></Button>
+      </div>
+    );
+  }
+
+  // Bloquer les pages non publiées (sauf admin en preview)
+  const isPreview = window.location.search.includes('preview=admin');
+  if (!isPreview && ville.statut_publication && ville.statut_publication !== 'publiee') {
+    return (
+      <div className="flex-1 flex flex-col items-center justify-center py-20 gap-4">
+        <h1 className="text-2xl font-bold">Page en cours de validation</h1>
+        <p className="text-muted-foreground">Cette page sera bientôt disponible.</p>
         <Button asChild><Link to="/">Retour à l'accueil</Link></Button>
       </div>
     );
