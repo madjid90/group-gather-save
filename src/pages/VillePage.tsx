@@ -8,6 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { ExternalLink, Leaf, Star, ChevronRight, Users, Zap, Globe, Phone, CheckCircle, Shield, ArrowRight, TrendingDown, MapPin, Home } from 'lucide-react';
 import { MobileFixedCTA } from '@/components/landing/MobileFixedCTA';
+import { LogoCarousel } from '@/components/landing/LogoCarousel';
 
 /* ── Types ──────────────────────────────────────────── */
 interface Ville {
