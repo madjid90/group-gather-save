@@ -13,10 +13,7 @@ export const HeroSection = memo(function HeroSection() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-gradient-subtle py-14 md:py-20">
-      {/* Subtle decorative blobs */}
-      <div className="absolute top-0 right-0 w-72 h-72 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-56 h-56 bg-secondary/5 rounded-full blur-3xl pointer-events-none" />
+    <section className="relative overflow-hidden bg-background py-14 md:py-20">
 
       <div className="container mx-auto px-4 max-w-2xl relative z-10 text-center">
         {/* Badge */}
@@ -37,7 +34,7 @@ export const HeroSection = memo(function HeroSection() {
           className="text-3xl sm:text-5xl font-bold text-foreground mb-4 leading-tight tracking-tight"
         >
           Économisez jusqu'à{" "}
-          <span className="gradient-text">300€/an</span>
+          <span className="text-secondary font-extrabold">300€/an</span>
           <br className="hidden sm:block" /> sur votre énergie
         </motion.h1>
 
