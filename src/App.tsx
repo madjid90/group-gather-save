@@ -46,8 +46,8 @@ export default function App() {
             <Route path="/resultats" element={<ResultatsPage />} />
             <Route path="/electricite/:slug" element={<VillePage />} />
             <Route path="/gaz/:slug" element={<VillePage />} />
-            <Route path="/electricite-gaz/:slug" element={<Navigate to="/electricite/:slug" replace />} />
-            <Route path="/ville/:slug" element={<Navigate to="/electricite/:slug" replace />} />
+            <Route path="/electricite-gaz/:slug" element={<Navigate to="../electricite/" replace />} />
+            <Route path="/ville/:slug" element={<Navigate to="../electricite/" replace />} />
 
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminDashboard />} />
