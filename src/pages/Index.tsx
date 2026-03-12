@@ -34,6 +34,7 @@ const Index = () => {
       
       <div className="w-full">
         <HeroSection />
+        <LogoCarousel />
         <SavingsCalculator />
         
         <LazySection>
