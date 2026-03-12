@@ -1,15 +1,16 @@
 import { memo, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { CheckCircle, Shield, Zap } from "lucide-react";
 
 export const HeroSection = memo(function HeroSection() {
+  const navigate = useNavigate();
   const [step, setStep] = useState<"cp" | "type">("cp");
   const [cp, setCp] = useState("");
 
   const go = (type: string) => {
-    window.location.href = `/comparer?cp=${cp}&type=${type}`;
+    navigate(`/comparer?cp=${cp}&type=${type}`);
   };
 
   return (
