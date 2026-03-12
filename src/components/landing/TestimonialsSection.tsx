@@ -30,7 +30,7 @@ const testimonials = [
 
 export function TestimonialsSection() {
   return (
-    <section className="py-16 md:py-20 bg-gradient-subtle">
+    <section className="py-16 md:py-20 bg-background">
       <div className="container mx-auto px-4 max-w-4xl">
         {/* Header */}
         <motion.div
@@ -81,7 +81,7 @@ export function TestimonialsSection() {
 
                 {/* Author */}
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-full bg-gradient-hero flex items-center justify-center text-white font-semibold text-xs flex-shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-white font-semibold text-xs flex-shrink-0">
                     {t.avatar}
                   </div>
                   <div>
