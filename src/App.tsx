@@ -36,6 +36,12 @@ export default function App() {
           <Routes>
             <Route element={<PublicLayout />}>
               <Route path="/" element={<Index />} />
+              <Route path="/comparer" element={<ComparerPage />} />
+              <Route path="/resultats" element={<ResultatsPage />} />
+              <Route path="/electricite" element={<ElectriciteIndexPage />} />
+              <Route path="/electricite/:slug" element={<VillePage />} />
+              <Route path="/gaz" element={<GazIndexPage />} />
+              <Route path="/gaz/:slug" element={<VillePage />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/mentions-legales" element={<MentionsLegales />} />
@@ -43,15 +49,6 @@ export default function App() {
               <Route path="/cgu" element={<CGU />} />
               <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
             </Route>
-
-            <Route path="/comparer" element={<ComparerPage />} />
-            <Route path="/resultats" element={<ResultatsPage />} />
-            <Route path="/electricite" element={<ElectriciteIndexPage />} />
-            <Route path="/electricite/" element={<ElectriciteIndexPage />} />
-            <Route path="/electricite/:slug" element={<VillePage />} />
-            <Route path="/gaz" element={<GazIndexPage />} />
-            <Route path="/gaz/" element={<GazIndexPage />} />
-            <Route path="/gaz/:slug" element={<VillePage />} />
             <Route path="/electricite-gaz/:slug" element={<Navigate to="../electricite/" replace />} />
             <Route path="/ville/:slug" element={<Navigate to="../electricite/" replace />} />
 
