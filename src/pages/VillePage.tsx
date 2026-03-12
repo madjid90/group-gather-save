@@ -40,7 +40,7 @@ const LOGEMENTS = [
 function PageSkeleton() {
   return (
     <div>
-      <section className="py-10 bg-gradient-to-br from-primary/10 via-background to-secondary/5">
+      <section className="py-10 bg-background">
         <div className="container mx-auto px-4 max-w-2xl text-center space-y-4">
           <Skeleton className="h-8 w-3/4 mx-auto" />
           <Skeleton className="h-5 w-1/2 mx-auto" />
