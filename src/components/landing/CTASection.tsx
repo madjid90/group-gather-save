@@ -11,20 +11,16 @@ export function CTASection() {
           initial={{ opacity: 0, scale: 0.97 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          className="relative overflow-hidden rounded-3xl bg-gradient-hero p-8 md:p-12 text-center"
+          className="relative overflow-hidden rounded-3xl bg-primary p-8 md:p-12 text-center"
         >
-          {/* Decorative circles */}
-          <div className="absolute top-0 left-0 w-48 h-48 rounded-full bg-white/5 blur-2xl pointer-events-none" />
-          <div className="absolute bottom-0 right-0 w-64 h-64 rounded-full bg-white/5 blur-2xl pointer-events-none" />
-
           <div className="relative z-10">
-            <p className="text-white/70 text-xs font-semibold uppercase tracking-widest mb-4">
+            <p className="text-primary-foreground/70 text-xs font-semibold uppercase tracking-widest mb-4">
               Économisez dès maintenant
             </p>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary-foreground mb-4 leading-tight">
               Payez moins cher votre énergie
             </h2>
-            <p className="text-base text-white/85 mb-8 max-w-md mx-auto">
+            <p className="text-base text-primary-foreground/85 mb-8 max-w-md mx-auto">
               Plus de 2 500 foyers ont déjà économisé grâce à Switchly.
               <br />Comparez en 30 secondes — gratuit, sans engagement.
             </p>

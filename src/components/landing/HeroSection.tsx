@@ -34,7 +34,7 @@ export const HeroSection = memo(function HeroSection() {
           className="text-3xl sm:text-5xl font-bold text-foreground mb-4 leading-tight tracking-tight"
         >
           Économisez jusqu'à{" "}
-          <span className="gradient-text">300€/an</span>
+          <span className="text-secondary font-extrabold">300€/an</span>
           <br className="hidden sm:block" /> sur votre énergie
         </motion.h1>
 
