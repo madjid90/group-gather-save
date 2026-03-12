@@ -17,7 +17,13 @@ const C_PERS:  Record<string, number> = { '1': 0.8, '2': 1.0, '3': 1.2, '4': 1.4
 
 const SUPERFICIES  = ['<30m²', '30-50m²', '50-75m²', '75-100m²', '100-150m²', '+150m²'];
 const FOURNISSEURS = ['EDF', 'Engie', 'TotalEnergies', 'OHM Énergie', 'Octopus Energy', 'Autre'];
-const STEP_LABELS  = ['Localisation', 'Énergie', 'Logement', 'Chauffage', 'Fournisseur', 'Coordonnées'];
+
+const TOTAL_STEPS = 10;
+const STEP_LABELS: Record<number, string> = {
+  1: 'Localisation', 2: 'Énergie', 3: 'Logement', 4: 'Superficie',
+  5: 'Occupants', 6: 'Chauffage', 7: 'Eau chaude', 8: 'Fournisseur',
+  9: 'Tarif', 10: 'Coordonnées',
+};
 
 /* ── Sub-composants ───────────────────────────────────── */
 function Card({
@@ -85,6 +91,13 @@ export default function ComparerPage() {
 
   const set = (k: string, v: any) => setForm(p => ({ ...p, [k]: v }));
 
+  // Auto-advance on single-select steps
+  const autoAdvance = (k: string, v: any) => {
+    set(k, v);
+    // Small delay for visual feedback
+    setTimeout(() => setStep(s => s + 1), 180);
+  };
+
   // Lookup ville from CP
   useEffect(() => {
     if (form.code_postal.length === 5) {
@@ -108,10 +121,14 @@ export default function ComparerPage() {
   const canNext = () => {
     if (step === 1) return form.code_postal.length === 5 && !!villeNom;
     if (step === 2) return !!form.type_energie;
-    if (step === 3) return !!form.type_logement && !!form.superficie && !!form.nb_personnes;
-    if (step === 4) return !!form.mode_chauffage && !!form.eau_chaude;
-    if (step === 5) return true;
-    if (step === 6) return !form.telephone || form.consentement;
+    if (step === 3) return !!form.type_logement;
+    if (step === 4) return !!form.superficie;
+    if (step === 5) return !!form.nb_personnes;
+    if (step === 6) return !!form.mode_chauffage;
+    if (step === 7) return !!form.eau_chaude;
+    if (step === 8) return true; // optional
+    if (step === 9) return true; // optional
+    if (step === 10) return !form.telephone || form.consentement;
     return true;
   };
 
@@ -136,7 +153,7 @@ export default function ComparerPage() {
     navigate(`/resultats?type=${form.type_energie}&cp=${form.code_postal}&ville=${encodeURIComponent(form.ville)}&conso=${conso}&economie=${economie}`);
   };
 
-  const next = () => { if (step < 6) setStep(s => s + 1); else submit(); };
+  const next = () => { if (step < TOTAL_STEPS) setStep(s => s + 1); else submit(); };
 
   return (
     <>
@@ -167,13 +184,13 @@ export default function ComparerPage() {
           {/* Progress sticky */}
           <div className="sticky top-14 z-20 bg-background/95 backdrop-blur-sm pb-3 pt-3">
             <div className="flex justify-between text-xs text-muted-foreground mb-1.5">
-              <span className="font-medium">Étape {step}/6</span>
-              <span className="font-semibold text-foreground">{STEP_LABELS[step - 1]}</span>
+              <span className="font-medium">Étape {step}/{TOTAL_STEPS}</span>
+              <span className="font-semibold text-foreground">{STEP_LABELS[step]}</span>
             </div>
             <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
               <motion.div
                 className="bg-secondary h-2 rounded-full"
-                animate={{ width: `${(step / 6) * 100}%` }}
+                animate={{ width: `${(step / TOTAL_STEPS) * 100}%` }}
                 transition={{ duration: 0.35 }}
               />
             </div>
@@ -220,7 +237,7 @@ export default function ComparerPage() {
                     { label: '🔥 Gaz naturel', v: 'gaz' },
                     { label: '⚡🔥 Électricité + Gaz', v: 'les_deux' },
                   ].map(o => (
-                    <Card key={o.v} selected={form.type_energie === o.v} onClick={() => set('type_energie', o.v)}>
+                    <Card key={o.v} selected={form.type_energie === o.v} onClick={() => autoAdvance('type_energie', o.v)}>
                       {o.label}
                     </Card>
                   ))}
@@ -228,101 +245,108 @@ export default function ComparerPage() {
               </StepBox>
             )}
 
-            {/* Étape 3 — Logement */}
+            {/* Étape 3 — Type de logement */}
             {step === 3 && (
               <StepBox key="s3">
-                <StepHead title="Votre logement" subtitle="Pour estimer votre consommation" />
-                <div>
-                  <label className="text-sm font-semibold block mb-2">Type de logement</label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {[{ label: '🏠 Maison', v: 'maison' }, { label: '🏢 Appartement', v: 'appartement' }].map(o => (
-                      <Card key={o.v} selected={form.type_logement === o.v} onClick={() => set('type_logement', o.v)} className="justify-center">
-                        {o.label}
-                      </Card>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <label className="text-sm font-semibold block mb-2">Superficie</label>
-                  <div className="grid grid-cols-3 gap-2">
-                    {SUPERFICIES.map(s => (
-                      <Card key={s} selected={form.superficie === s} onClick={() => set('superficie', s)} className="justify-center py-3 text-xs">
-                        {s}
-                      </Card>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <label className="text-sm font-semibold block mb-2">Nombre d'occupants</label>
-                  <div className="grid grid-cols-5 gap-2">
-                    {['1', '2', '3', '4', '5+'].map(n => (
-                      <Card key={n} selected={form.nb_personnes === n} onClick={() => set('nb_personnes', n)} className="justify-center py-3 font-bold text-base">
-                        {n}
-                      </Card>
-                    ))}
-                  </div>
+                <StepHead title="Quel est votre type de logement ?" subtitle="Pour estimer votre consommation" />
+                <div className="grid grid-cols-2 gap-2">
+                  {[{ label: '🏠 Maison', v: 'maison' }, { label: '🏢 Appartement', v: 'appartement' }].map(o => (
+                    <Card key={o.v} selected={form.type_logement === o.v} onClick={() => autoAdvance('type_logement', o.v)} className="justify-center">
+                      {o.label}
+                    </Card>
+                  ))}
                 </div>
               </StepBox>
             )}
 
-            {/* Étape 4 — Chauffage */}
+            {/* Étape 4 — Superficie */}
             {step === 4 && (
               <StepBox key="s4">
-                <StepHead title="Votre chauffage" subtitle="Pour affiner l'estimation" />
-                <div>
-                  <label className="text-sm font-semibold block mb-2">Mode de chauffage</label>
-                  <div className="grid grid-cols-3 gap-2">
-                    {[{ label: '⚡ Électrique', v: 'electrique' }, { label: '🔥 Gaz', v: 'gaz' }, { label: '🔆 Autre', v: 'autre' }].map(o => (
-                      <Card key={o.v} selected={form.mode_chauffage === o.v} onClick={() => set('mode_chauffage', o.v)} className="justify-center text-center flex-col gap-0.5">
-                        <span className="text-sm">{o.label}</span>
-                      </Card>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <label className="text-sm font-semibold block mb-2">Eau chaude</label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {[{ label: '⚡ Électrique', v: 'electrique' }, { label: '🔥 Gaz', v: 'gaz' }].map(o => (
-                      <Card key={o.v} selected={form.eau_chaude === o.v} onClick={() => set('eau_chaude', o.v)} className="justify-center">
-                        {o.label}
-                      </Card>
-                    ))}
-                  </div>
+                <StepHead title="Quelle est la superficie ?" subtitle="Surface approximative de votre logement" />
+                <div className="grid grid-cols-3 gap-2">
+                  {SUPERFICIES.map(s => (
+                    <Card key={s} selected={form.superficie === s} onClick={() => autoAdvance('superficie', s)} className="justify-center py-3 text-xs">
+                      {s}
+                    </Card>
+                  ))}
                 </div>
               </StepBox>
             )}
 
-            {/* Étape 5 — Fournisseur actuel */}
+            {/* Étape 5 — Nombre d'occupants */}
             {step === 5 && (
               <StepBox key="s5">
-                <StepHead title="Votre situation actuelle" subtitle="Optionnel — pour calculer vos économies exactes" />
-                <div>
-                  <label className="text-sm font-semibold block mb-2">Fournisseur actuel</label>
-                  <div className="space-y-2">
-                    {FOURNISSEURS.map(f => (
-                      <Card key={f} selected={form.fournisseur_actuel === f} onClick={() => set('fournisseur_actuel', f)}>
-                        {f}
-                        {form.fournisseur_actuel === f && <CheckCircle className="w-4 h-4 text-secondary ml-auto" />}
-                      </Card>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <label className="text-sm font-semibold block mb-2">Êtes-vous au tarif réglementé ?</label>
-                  <div className="grid grid-cols-3 gap-2">
-                    {[{ label: 'Oui', v: true }, { label: 'Non', v: false }, { label: 'Je ne sais pas', v: null }].map(o => (
-                      <Card key={String(o.v)} selected={form.tarif_reglemente === o.v} onClick={() => set('tarif_reglemente', o.v)} className="justify-center text-xs py-3">
-                        {o.label}
-                      </Card>
-                    ))}
-                  </div>
+                <StepHead title="Combien de personnes vivent chez vous ?" subtitle="Pour affiner l'estimation de consommation" />
+                <div className="grid grid-cols-5 gap-2">
+                  {['1', '2', '3', '4', '5+'].map(n => (
+                    <Card key={n} selected={form.nb_personnes === n} onClick={() => autoAdvance('nb_personnes', n)} className="justify-center py-3 font-bold text-base">
+                      {n}
+                    </Card>
+                  ))}
                 </div>
               </StepBox>
             )}
 
-            {/* Étape 6 — Contact */}
+            {/* Étape 6 — Mode de chauffage */}
             {step === 6 && (
               <StepBox key="s6">
+                <StepHead title="Quel est votre mode de chauffage ?" subtitle="Pour affiner l'estimation" />
+                <div className="grid grid-cols-3 gap-2">
+                  {[{ label: '⚡ Électrique', v: 'electrique' }, { label: '🔥 Gaz', v: 'gaz' }, { label: '🔆 Autre', v: 'autre' }].map(o => (
+                    <Card key={o.v} selected={form.mode_chauffage === o.v} onClick={() => autoAdvance('mode_chauffage', o.v)} className="justify-center text-center flex-col gap-0.5">
+                      <span className="text-sm">{o.label}</span>
+                    </Card>
+                  ))}
+                </div>
+              </StepBox>
+            )}
+
+            {/* Étape 7 — Eau chaude */}
+            {step === 7 && (
+              <StepBox key="s7">
+                <StepHead title="Comment est chauffée votre eau ?" subtitle="Eau chaude sanitaire" />
+                <div className="grid grid-cols-2 gap-2">
+                  {[{ label: '⚡ Électrique', v: 'electrique' }, { label: '🔥 Gaz', v: 'gaz' }].map(o => (
+                    <Card key={o.v} selected={form.eau_chaude === o.v} onClick={() => autoAdvance('eau_chaude', o.v)} className="justify-center">
+                      {o.label}
+                    </Card>
+                  ))}
+                </div>
+              </StepBox>
+            )}
+
+            {/* Étape 8 — Fournisseur actuel */}
+            {step === 8 && (
+              <StepBox key="s8">
+                <StepHead title="Quel est votre fournisseur actuel ?" subtitle="Optionnel — pour calculer vos économies exactes" />
+                <div className="space-y-2">
+                  {FOURNISSEURS.map(f => (
+                    <Card key={f} selected={form.fournisseur_actuel === f} onClick={() => autoAdvance('fournisseur_actuel', f)}>
+                      {f}
+                      {form.fournisseur_actuel === f && <CheckCircle className="w-4 h-4 text-secondary ml-auto" />}
+                    </Card>
+                  ))}
+                </div>
+              </StepBox>
+            )}
+
+            {/* Étape 9 — Tarif réglementé */}
+            {step === 9 && (
+              <StepBox key="s9">
+                <StepHead title="Êtes-vous au tarif réglementé ?" subtitle="Optionnel — aide à calculer vos économies" />
+                <div className="grid grid-cols-3 gap-2">
+                  {[{ label: 'Oui', v: true }, { label: 'Non', v: false }, { label: 'Je ne sais pas', v: null }].map(o => (
+                    <Card key={String(o.v)} selected={form.tarif_reglemente === o.v} onClick={() => { set('tarif_reglemente', o.v); setTimeout(() => setStep(s => s + 1), 180); }} className="justify-center text-xs py-3">
+                      {o.label}
+                    </Card>
+                  ))}
+                </div>
+              </StepBox>
+            )}
+
+            {/* Étape 10 — Contact */}
+            {step === 10 && (
+              <StepBox key="s10">
                 <StepHead title="Recevez vos résultats" subtitle="Dernière étape avant vos offres" />
                 <div className="bg-secondary/10 border border-secondary/20 rounded-xl p-4 text-center">
                   <p className="text-sm font-bold text-secondary">
@@ -375,7 +399,7 @@ export default function ComparerPage() {
             >
               {loading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
-              ) : step === 6 ? (
+              ) : step === TOTAL_STEPS ? (
                 'Voir mes offres →'
               ) : (
                 <>Continuer <ArrowRight className="ml-2 w-4 h-4" /></>
@@ -383,7 +407,8 @@ export default function ComparerPage() {
             </Button>
           </div>
 
-          {step === 5 && (
+          {/* Skip on optional steps */}
+          {(step === 8 || step === 9) && (
             <button onClick={next} className="w-full mt-3 text-xs text-muted-foreground hover:text-foreground text-center transition-colors">
               Passer cette étape →
             </button>
