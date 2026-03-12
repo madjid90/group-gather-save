@@ -25,14 +25,9 @@ export function Navbar() {
             </Button>
           </div>
 
-          <div className="flex md:hidden items-center gap-2">
-            <Button size="sm" asChild>
-              <Link to="/comparer">Comparer →</Link>
-            </Button>
-            <button onClick={() => setOpen(!open)} className="p-2">
-              {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-          </div>
+          <button onClick={() => setOpen(!open)} className="md:hidden p-2">
+            {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
         </nav>
 
         {open && (
