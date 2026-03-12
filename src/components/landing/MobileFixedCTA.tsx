@@ -38,16 +38,17 @@ export function MobileFixedCTA() {
               animate={{ scale: [1, 1.04, 0.97, 1.02, 1] }}
               transition={{ delay: 0.3, duration: 0.5, ease: "easeOut" }}
             >
-            <Button
-              size="lg"
-              className="w-full h-12 bg-secondary hover:bg-secondary/90 text-white font-bold text-sm shadow-lg"
-              asChild
-            >
-              <Link to="/comparer">
-                Comparer gratuitement
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Link>
-            </Button>
+              <Button
+                size="lg"
+                className="w-full h-12 bg-secondary hover:bg-secondary/90 text-white font-bold text-sm shadow-lg"
+                asChild
+              >
+                <Link to="/comparer">
+                  Comparer gratuitement
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Link>
+              </Button>
+            </motion.div>
             <p className="text-xs text-center text-muted-foreground mt-1.5">
               ✓ 30 sec · ✓ Sans engagement · ✓ Zéro coupure
             </p>
