@@ -126,7 +126,7 @@ const ResultView = memo(function ResultView({
       className="text-center"
     >
       {/* Savings highlight */}
-      <div className="bg-gradient-hero rounded-2xl p-6 mb-5">
+      <div className="bg-primary rounded-2xl p-6 mb-5">
         <p className="text-white/80 text-xs mb-2">Économies estimées par an</p>
         <div className="flex items-baseline justify-center gap-2">
           <span className="text-4xl font-bold text-white">{estimation.minEconomie}€</span>
@@ -273,7 +273,7 @@ export const SavingsCalculator = memo(function SavingsCalculator() {
               </div>
               <div className="h-2 bg-muted rounded-full overflow-hidden">
                 <motion.div
-                  className="h-full bg-gradient-hero rounded-full"
+                  className="h-full bg-primary rounded-full"
                   animate={{ width: `${(currentStep / 4) * 100}%` }}
                   transition={{ duration: 0.3 }}
                 />

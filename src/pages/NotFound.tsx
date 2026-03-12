@@ -13,7 +13,7 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-subtle py-6 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-background py-6 px-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -21,7 +21,7 @@ const NotFound = () => {
       >
         {/* Logo */}
         <Link to="/" className="inline-flex items-center gap-2 mb-4">
-          <div className="w-9 h-9 rounded-xl bg-gradient-hero flex items-center justify-center">
+          <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
             <Zap className="w-4 h-4 text-primary-foreground" />
           </div>
           <span className="text-lg font-bold text-foreground">Switchly</span>

@@ -9,7 +9,7 @@ export default function MentionsLegales() {
   }, []);
 
   return (
-    <div className="min-h-screen py-10 md:py-20 bg-gradient-subtle">
+    <div className="min-h-screen py-10 md:py-20 bg-background">
       <div className="container mx-auto px-5 sm:px-6">
         {/* Back button */}
         <Link 
