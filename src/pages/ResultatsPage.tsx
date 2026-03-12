@@ -21,6 +21,7 @@ export default function ResultatsPage() {
   const [searchParams] = useSearchParams();
   const [offres, setOffres] = useState<Offre[]>([]);
   const [loading, setLoading] = useState(true);
+  const [tarifs, setTarifs] = useState({ trv_elec: 0.2516, trv_gaz: 0.1244 });
 
   const type = searchParams.get('type') || 'electricite';
   const cp = searchParams.get('cp') || '';
@@ -28,26 +29,41 @@ export default function ResultatsPage() {
   const conso = parseInt(searchParams.get('conso') || '4000');
   const economie = parseInt(searchParams.get('economie') || '0');
 
-  const prix_ref = type === 'gaz' ? 0.1244 : 0.2516;
+  const prix_ref = type === 'gaz' ? tarifs.trv_gaz : tarifs.trv_elec;
   const ref_label = type === 'gaz' ? 'tarif repère gaz' : 'tarif réglementé EDF';
   const typeLabel = type === 'gaz' ? 'gaz' : 'électricité';
 
   useEffect(() => {
-    const fetchOffers = async () => {
+    const fetchData = async () => {
       setLoading(true);
       try {
-        const { data, error } = await supabase.functions.invoke('selectra-offers', {
-          body: { type: type === 'les_deux' ? 'electricite' : type, code_postal: cp },
-        });
-        if (!error && data?.offres) {
-          setOffres(data.offres);
+        // Fetch tarifs + offers in parallel
+        const [tarifsRes, offersRes] = await Promise.all([
+          (supabase.from('tarifs_energie') as any)
+            .select('trv_elec_kwh, trv_gaz_kwh')
+            .eq('id', 'current')
+            .single(),
+          supabase.functions.invoke('selectra-offers', {
+            body: { type: type === 'les_deux' ? 'electricite' : type, code_postal: cp },
+          }),
+        ]);
+
+        if (tarifsRes.data) {
+          setTarifs({
+            trv_elec: tarifsRes.data.trv_elec_kwh || 0.2516,
+            trv_gaz: tarifsRes.data.trv_gaz_kwh || 0.1244,
+          });
+        }
+
+        if (!offersRes.error && offersRes.data?.offres) {
+          setOffres(offersRes.data.offres);
         }
       } catch (e) {
-        console.error('Fetch offers error:', e);
+        console.error('Fetch error:', e);
       }
       setLoading(false);
     };
-    fetchOffers();
+    fetchData();
   }, [type, cp]);
 
   const prixAnnuel = (o: Offre) => Math.round(o.prix_kwh * conso + o.abonnement_annuel);

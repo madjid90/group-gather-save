@@ -37,8 +37,8 @@ export function Navbar() {
 
         {open && (
           <div className="md:hidden border-t border-border bg-background px-4 py-3 space-y-2">
-            <Link to="/comparer?type=electricite" onClick={() => setOpen(false)} className="block py-2 text-sm">⚡ Électricité</Link>
-            <Link to="/comparer?type=gaz" onClick={() => setOpen(false)} className="block py-2 text-sm">🔥 Gaz</Link>
+            <Link to="/electricite/" onClick={() => setOpen(false)} className="block py-2 text-sm">⚡ Électricité</Link>
+            <Link to="/gaz/" onClick={() => setOpen(false)} className="block py-2 text-sm">🔥 Gaz</Link>
             <Link to="/faq" onClick={() => setOpen(false)} className="block py-2 text-sm">FAQ</Link>
             <Link to="/contact" onClick={() => setOpen(false)} className="block py-2 text-sm">Contact</Link>
           </div>

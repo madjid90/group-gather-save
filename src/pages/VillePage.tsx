@@ -16,7 +16,9 @@ interface Ville {
   reseau_elec: string | null; reseau_gaz: string | null; nom_eld: string | null;
   prix_trv_kwh: number | null;
   contenu_elec_intro: string | null; contenu_elec_contexte: string | null; contenu_elec_conseils: string | null;
+  contenu_elec_meta: string | null;
   contenu_gaz_intro: string | null; contenu_gaz_contexte: string | null; contenu_gaz_conseils: string | null;
+  contenu_gaz_meta: string | null;
 }
 
 interface Offre {
@@ -36,7 +38,6 @@ const LOGEMENTS = [
 function VillePageSkeleton() {
   return (
     <div className="bg-muted/20">
-      {/* Hero skeleton */}
       <section className="pt-10 pb-8 bg-gradient-to-br from-primary/10 via-background to-secondary/5">
         <div className="container mx-auto px-4 max-w-3xl text-center space-y-4">
           <Skeleton className="h-8 w-3/4 mx-auto" />
@@ -44,7 +45,6 @@ function VillePageSkeleton() {
           <Skeleton className="h-10 w-64 mx-auto rounded-xl" />
         </div>
       </section>
-      {/* Stats skeleton */}
       <section className="py-8">
         <div className="container mx-auto px-4 max-w-3xl">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -58,7 +58,6 @@ function VillePageSkeleton() {
           </div>
         </div>
       </section>
-      {/* Offers skeleton */}
       <section className="py-8 bg-muted/30">
         <div className="container mx-auto px-4 max-w-2xl space-y-4">
           <Skeleton className="h-7 w-2/3" />
@@ -86,8 +85,6 @@ export default function VillePage() {
   const labelCourt = isElec ? 'électricité' : 'gaz';
   const labelCap = isElec ? 'Électricité' : 'Gaz';
   const emoji = isElec ? '⚡' : '🔥';
-  const prix_ref = isElec ? 0.2516 : 0.1244;
-  const ref_label = isElec ? 'tarif réglementé EDF' : 'tarif repère gaz';
   const alt_type = isElec ? 'gaz' : 'electricite';
   const alt_label = isElec ? 'gaz' : 'électricité';
 
@@ -96,16 +93,31 @@ export default function VillePage() {
   const [villesProches, setVillesProches] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [tarifs, setTarifs] = useState({ trv_elec: 0.2516, trv_gaz: 0.1244, abo_elec: 150, abo_gaz: 230 });
 
   useEffect(() => {
     if (!slug) return;
     const fetchData = async () => {
       setLoading(true);
-      const { data: villeData, error } = await (supabase.from('villes') as any)
-        .select('*').eq('slug', slug).single();
-      if (error || !villeData) { setNotFound(true); setLoading(false); return; }
-      const v = villeData as Ville;
+
+      // Fetch tarifs + ville in parallel
+      const [villeRes, tarifsRes] = await Promise.all([
+        (supabase.from('villes') as any).select('*').eq('slug', slug).single(),
+        (supabase.from('tarifs_energie') as any).select('trv_elec_kwh, trv_gaz_kwh, trv_elec_abo_annuel, trv_gaz_abo_annuel').eq('id', 'current').single(),
+      ]);
+
+      if (villeRes.error || !villeRes.data) { setNotFound(true); setLoading(false); return; }
+      const v = villeRes.data as Ville;
       setVille(v);
+
+      if (tarifsRes.data) {
+        setTarifs({
+          trv_elec: tarifsRes.data.trv_elec_kwh || 0.2516,
+          trv_gaz: tarifsRes.data.trv_gaz_kwh || 0.1244,
+          abo_elec: tarifsRes.data.trv_elec_abo_annuel || 150,
+          abo_gaz: tarifsRes.data.trv_gaz_abo_annuel || 230,
+        });
+      }
 
       const [offresRes, prochesRes] = await Promise.all([
         supabase.functions.invoke('selectra-offers', { body: { type, code_postal: v.code_postal } }),
@@ -135,6 +147,10 @@ export default function VillePage() {
     );
   }
 
+  const prix_ref = isElec ? tarifs.trv_elec : tarifs.trv_gaz;
+  const ref_abo = isElec ? tarifs.abo_elec : tarifs.abo_gaz;
+  const ref_label = isElec ? 'tarif réglementé EDF' : 'tarif repère gaz';
+
   const conso = isElec ? (ville.conso_moyenne_kwh || 4800) : (ville.conso_gaz_kwh || 11000);
   const reseau = isElec ? (ville.reseau_elec || 'Enedis') : (ville.reseau_gaz || 'GRDF');
   const nb_foyers = isElec ? ville.nb_logements_elec : ville.nb_logements_gaz;
@@ -145,6 +161,9 @@ export default function VillePage() {
   const contenu_intro = isElec ? ville.contenu_elec_intro : ville.contenu_gaz_intro;
   const contenu_contexte = isElec ? ville.contenu_elec_contexte : ville.contenu_gaz_contexte;
   const contenu_conseils = isElec ? ville.contenu_elec_conseils : ville.contenu_gaz_conseils;
+  const metaIA = isElec ? ville.contenu_elec_meta : ville.contenu_gaz_meta;
+
+  const metaDescription = metaIA || `Comparez les offres ${label} à ${ville.nom} (${ville.code_postal}). ${ville.population?.toLocaleString('fr-FR') || ''} habitants. Économisez jusqu'à ${econoMax}€/an. Réseau ${reseau}. Gratuit, sans engagement.`;
 
   // Schema.org
   const schemaFAQ = {
@@ -181,7 +200,7 @@ export default function VillePage() {
     <>
       <Helmet>
         <title>Comparateur {label} {ville.nom} ({ville.code_postal}) — Meilleure offre 2026</title>
-        <meta name="description" content={`Comparez les offres ${label} à ${ville.nom} (${ville.code_postal}). ${ville.population?.toLocaleString('fr-FR') || ''} habitants. Économisez jusqu'à ${econoMax}€/an. Réseau ${reseau}. Gratuit, sans engagement.`} />
+        <meta name="description" content={metaDescription} />
         <link rel="canonical" href={`https://switchly.fr/${type}/${ville.slug}`} />
         <script type="application/ld+json">{JSON.stringify(schemaFAQ)}</script>
         <script type="application/ld+json">{JSON.stringify(schemaService)}</script>
@@ -392,7 +411,7 @@ export default function VillePage() {
                   </thead>
                   <tbody>
                     {LOGEMENTS.map((l, i) => {
-                      const trv = Math.round(l.conso * prix_ref + (isElec ? 150 : 230));
+                      const trv = Math.round(l.conso * prix_ref + ref_abo);
                       const best = Math.round(l.conso * offres[0].prix_kwh + abo);
                       const eco = Math.round((prix_ref - offres[0].prix_kwh) * l.conso);
                       return (
@@ -444,7 +463,7 @@ export default function VillePage() {
                     ['Nombre de foyers raccordés', nb_foyers?.toLocaleString('fr-FR') || 'N/A'],
                     ['Gestionnaire réseau', `${reseau}${isElec && ville.nom_eld ? ` — ${ville.nom_eld}` : ''}`],
                     ['Prix de référence TRV 2026', `${prix_ref.toFixed(4).replace('.', ',')} €/kWh`],
-                    ['Facture annuelle moyenne TRV', `~${Math.round(conso * prix_ref + (isElec ? 150 : 230)).toLocaleString('fr-FR')}€`],
+                    ['Facture annuelle moyenne TRV', `~${Math.round(conso * prix_ref + ref_abo).toLocaleString('fr-FR')}€`],
                     ['Économie potentielle', `jusqu'à ${econoMax}€/an`],
                     ['Population', `${ville.population?.toLocaleString('fr-FR') || 'N/A'} habitants`],
                     ['Département', ville.departement || 'N/A'],
