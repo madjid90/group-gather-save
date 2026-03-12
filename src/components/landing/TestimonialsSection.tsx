@@ -30,7 +30,7 @@ const testimonials = [
 
 export function TestimonialsSection() {
   return (
-    <section className="py-16 md:py-20 bg-gradient-subtle">
+    <section className="py-16 md:py-20 bg-background">
       <div className="container mx-auto px-4 max-w-4xl">
         {/* Header */}
         <motion.div
