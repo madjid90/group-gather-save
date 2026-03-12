@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { supabase } from '@/integrations/supabase/client';
-import { Navbar } from '@/components/layout/Navbar';
-import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Loader2, Zap, Flame } from 'lucide-react';
 
