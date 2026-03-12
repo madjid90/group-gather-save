@@ -141,7 +141,7 @@ export default function Contact() {
                 <Phone className="w-6 h-6 text-primary" />
               </div>
               <h3 className="text-lg font-semibold text-foreground mb-2">Téléphone</h3>
-              <p className="text-base text-muted-foreground">01 23 45 67 89</p>
+              <a href="tel:0973727300" className="text-base text-muted-foreground hover:text-primary transition-colors">09 73 72 73 00</a>
             </div>
 
             <div className="bg-card rounded-2xl p-6 border border-border shadow-switchly card-hover">

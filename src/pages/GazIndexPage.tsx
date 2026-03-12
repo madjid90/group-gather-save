@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { supabase } from '@/integrations/supabase/client';
-import { Navbar } from '@/components/layout/Navbar';
-import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Loader2, Zap, Flame } from 'lucide-react';
 
@@ -31,9 +29,7 @@ export default function GazIndexPage() {
         <meta name="description" content="Comparez les offres de gaz naturel dans votre ville. Trouvez le fournisseur le moins cher près de chez vous. 100% gratuit, sans engagement." />
         <link rel="canonical" href="https://switchly.fr/gaz/" />
       </Helmet>
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-1 pt-20">
+      <div>
           <section className="py-10 bg-gradient-to-br from-orange-500/10 via-background to-secondary/5">
             <div className="container mx-auto px-4 max-w-3xl text-center">
               <div className="inline-flex items-center gap-2 bg-orange-500/10 text-orange-600 text-xs font-semibold px-3 py-1.5 rounded-full mb-4">
@@ -72,8 +68,6 @@ export default function GazIndexPage() {
               </div>
             </div>
           </section>
-        </main>
-        <Footer />
       </div>
     </>
   );

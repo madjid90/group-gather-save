@@ -78,7 +78,7 @@ interface JsonLdSchemaProps {
 const SITE_CONFIG = {
   name: "Switchly",
   url: "https://switchly.fr",
-  description: "Comparateur gratuit d'énergie et d'internet. Comparez les meilleures offres en 30 secondes et économisez jusqu'à 400€/an.",
+  description: "Comparateur gratuit d'électricité et de gaz. Comparez les meilleures offres en 30 secondes et économisez jusqu'à 400€/an.",
   logo: "https://switchly.fr/favicon.png",
 };
 
@@ -139,14 +139,14 @@ export const JsonLdSchema = ({ type = "auto", customData, faqItems, breadcrumbs 
       generatedSchemas.push({
         "@context": "https://schema.org",
         "@type": "Service",
-        name: "Comparateur énergie et internet",
-        description: "Comparateur gratuit pour trouver les meilleures offres d'électricité, gaz et internet en France.",
+        name: "Comparateur électricité et gaz",
+        description: "Comparateur gratuit pour trouver les meilleures offres d'électricité et de gaz en France.",
         provider: {
           "@type": "Organization",
           name: SITE_CONFIG.name
         },
         areaServed: "France",
-        serviceType: "Energy Buying Group"
+        serviceType: "Energy Price Comparison"
       });
     }
 

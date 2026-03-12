@@ -23,6 +23,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminLeads from "./pages/admin/AdminLeads";
 import AdminImportVilles from "./pages/admin/AdminImportVilles";
 import AdminSEO from "./pages/admin/AdminSEO";
+import AdminLogin from "./pages/admin/AdminLogin";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +53,7 @@ export default function App() {
             <Route path="/electricite-gaz/:slug" element={<Navigate to="../electricite/" replace />} />
             <Route path="/ville/:slug" element={<Navigate to="../electricite/" replace />} />
 
+            <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminDashboard />} />
               <Route path="leads" element={<AdminLeads />} />
