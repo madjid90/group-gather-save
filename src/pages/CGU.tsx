@@ -55,8 +55,8 @@ export default function CGU() {
                 2. Description du service
               </h2>
               <p className="text-base text-muted-foreground leading-relaxed">
-                Switchly est un comparateur gratuit qui permet aux utilisateurs de trouver et comparer les meilleures offres d'électricité, gaz et internet disponibles chez eux. 
-                Switchly agit en tant qu'intermédiaire entre les utilisateurs et les fournisseurs.
+                Switchly est un comparateur gratuit qui permet aux utilisateurs de trouver et comparer les meilleures offres d'électricité et de gaz disponibles chez eux. 
+                Switchly agit en tant qu'intermédiaire entre les utilisateurs et les fournisseurs d'énergie.
               </p>
             </section>
 
