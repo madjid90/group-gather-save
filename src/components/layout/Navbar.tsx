@@ -16,8 +16,8 @@ export function Navbar() {
           </Link>
 
           <div className="hidden md:flex items-center gap-6 text-sm">
-            <Link to="/comparer?type=electricite" className="text-muted-foreground hover:text-foreground transition-colors">Électricité</Link>
-            <Link to="/comparer?type=gaz" className="text-muted-foreground hover:text-foreground transition-colors">Gaz</Link>
+            <Link to="/electricite/" className="text-muted-foreground hover:text-foreground transition-colors">Électricité</Link>
+            <Link to="/gaz/" className="text-muted-foreground hover:text-foreground transition-colors">Gaz</Link>
             <Link to="/faq" className="text-muted-foreground hover:text-foreground transition-colors">FAQ</Link>
             <Link to="/contact" className="text-muted-foreground hover:text-foreground transition-colors">Contact</Link>
             <Button size="sm" asChild>
@@ -37,8 +37,8 @@ export function Navbar() {
 
         {open && (
           <div className="md:hidden border-t border-border bg-background px-4 py-3 space-y-2">
-            <Link to="/comparer?type=electricite" onClick={() => setOpen(false)} className="block py-2 text-sm">⚡ Électricité</Link>
-            <Link to="/comparer?type=gaz" onClick={() => setOpen(false)} className="block py-2 text-sm">🔥 Gaz</Link>
+            <Link to="/electricite/" onClick={() => setOpen(false)} className="block py-2 text-sm">⚡ Électricité</Link>
+            <Link to="/gaz/" onClick={() => setOpen(false)} className="block py-2 text-sm">🔥 Gaz</Link>
             <Link to="/faq" onClick={() => setOpen(false)} className="block py-2 text-sm">FAQ</Link>
             <Link to="/contact" onClick={() => setOpen(false)} className="block py-2 text-sm">Contact</Link>
           </div>
