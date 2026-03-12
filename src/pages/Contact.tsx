@@ -1,289 +1,209 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Mail, Phone, MapPin, ArrowRight, Loader2, CheckCircle, ArrowLeft } from "lucide-react";
+import { Mail, Phone, ArrowLeft, Loader2, CheckCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
-import { PageTransition } from "@/components/PageTransition";
-import { DynamicSEOHead } from "@/components/seo/DynamicSEOHead";
+import { Helmet } from "react-helmet-async";
 
-const contactSchema = z.object({
-  nom: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
-  email: z.string().email("Email invalide"),
-  sujet: z.string().min(5, "Le sujet doit contenir au moins 5 caractères"),
+const schema = z.object({
+  nom:     z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
+  email:   z.string().email("Adresse email invalide"),
+  sujet:   z.string().min(5, "Le sujet doit contenir au moins 5 caractères"),
   message: z.string().min(20, "Le message doit contenir au moins 20 caractères"),
 });
 
 export default function Contact() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [formData, setFormData] = useState({
-    nom: "",
-    email: "",
-    sujet: "",
-    message: "",
-  });
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [loading,     setLoading]     = useState(false);
+  const [submitted,   setSubmitted]   = useState(false);
+  const [errors,      setErrors]      = useState<Record<string, string>>({});
+  const [form, setForm] = useState({ nom: "", email: "", sujet: "", message: "" });
 
-  // Scroll to top on mount
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  useEffect(() => { window.scrollTo(0, 0); }, []);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const change = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
-    }
+    setForm(p => ({ ...p, [name]: value }));
+    if (errors[name]) setErrors(p => ({ ...p, [name]: "" }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
-
-    const result = contactSchema.safeParse(formData);
+    const result = schema.safeParse(form);
     if (!result.success) {
-      const fieldErrors: Record<string, string> = {};
-      result.error.errors.forEach((err) => {
-        if (err.path[0]) {
-          fieldErrors[err.path[0] as string] = err.message;
-        }
-      });
-      setErrors(fieldErrors);
+      const fe: Record<string, string> = {};
+      result.error.errors.forEach(err => { if (err.path[0]) fe[err.path[0] as string] = err.message; });
+      setErrors(fe);
       return;
     }
-
-    setIsLoading(true);
-
+    setLoading(true);
     try {
       const { error } = await supabase.functions.invoke("send-contact-email", {
-        body: {
-          name: formData.nom,
-          email: formData.email,
-          subject: formData.sujet,
-          message: formData.message,
-        },
+        body: { name: form.nom, email: form.email, subject: form.sujet, message: form.message },
       });
-
       if (error) throw error;
-
-      setIsSubmitted(true);
+      setSubmitted(true);
       toast.success("Message envoyé avec succès !");
-    } catch (error: any) {
-      console.error("Error sending contact email:", error);
-      toast.error("Erreur lors de l'envoi du message. Veuillez réessayer.");
+    } catch {
+      toast.error("Erreur lors de l'envoi. Réessayez ou appelez-nous.");
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
   return (
-    <PageTransition className="min-h-screen py-10 md:py-20 bg-gradient-subtle">
-      <DynamicSEOHead 
-        defaultTitle="Contact - Switchly | Contactez notre équipe"
-        defaultDescription="Contactez l'équipe Switchly pour toute question sur notre comparateur d'électricité et de gaz. Réponse sous 24h garantie."
-      />
-      <div className="container mx-auto px-5 sm:px-6">
-        {/* Back button */}
-        <Link 
-          to="/" 
-          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Retour à l'accueil
-        </Link>
+    <>
+      <Helmet>
+        <title>Contact — Switchly</title>
+        <meta name="description" content="Contactez l'équipe Switchly. Comparateur d'électricité et de gaz gratuit." />
+      </Helmet>
 
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-10 md:mb-16"
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-4">
-            <Mail className="w-4 h-4" />
-            <span className="text-sm font-medium">Contact</span>
-          </div>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4">
-            Contactez notre équipe
-          </h1>
-          <p className="text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Une question sur Switchly ? Notre équipe vous répond sous 24h.
-          </p>
-        </motion.div>
+      <div className="min-h-screen bg-gradient-subtle">
+        <div className="container mx-auto px-4 max-w-lg py-10 md:py-16">
 
-        <div className="grid lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {/* Contact Info */}
+          <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6">
+            <ArrowLeft className="w-4 h-4" /> Retour à l'accueil
+          </Link>
+
+          {/* Header */}
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">Nous contacter</h1>
+            <p className="text-base text-muted-foreground">
+              Une question, une suggestion ? On vous répond sous 24h.
+            </p>
+          </motion.div>
+
+          {/* Infos rapides */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="space-y-4"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.05 }}
+            className="grid grid-cols-2 gap-3 mb-6"
           >
-            <div className="bg-card rounded-2xl p-6 border border-border shadow-switchly card-hover">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
-                <Mail className="w-6 h-6 text-primary" />
+            <a
+              href="tel:0973727300"
+              className="flex items-center gap-2.5 bg-card border border-border rounded-xl p-3.5 hover:border-primary transition-colors group"
+            >
+              <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Phone className="w-4 h-4 text-primary" />
               </div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">Email</h3>
-              <p className="text-base text-muted-foreground">contact@switchly.fr</p>
-            </div>
-
-            <div className="bg-card rounded-2xl p-6 border border-border shadow-switchly card-hover">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
-                <Phone className="w-6 h-6 text-primary" />
+              <div>
+                <p className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">09 73 72 73 00</p>
+                <p className="text-xs text-muted-foreground">Lun–Ven 7h–21h</p>
               </div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">Téléphone</h3>
-              <a href="tel:0973727300" className="text-base text-muted-foreground hover:text-primary transition-colors">09 73 72 73 00</a>
-            </div>
-
-            <div className="bg-card rounded-2xl p-6 border border-border shadow-switchly card-hover">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
-                <MapPin className="w-6 h-6 text-primary" />
+            </a>
+            <div className="flex items-center gap-2.5 bg-card border border-border rounded-xl p-3.5">
+              <div className="w-8 h-8 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Mail className="w-4 h-4 text-secondary" />
               </div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">Adresse</h3>
-              <p className="text-base text-muted-foreground">
-                123 Avenue de la République<br />75011 Paris
-              </p>
+              <div>
+                <p className="text-xs font-bold text-foreground">Email</p>
+                <p className="text-xs text-muted-foreground">Réponse sous 24h</p>
+              </div>
             </div>
           </motion.div>
 
-          {/* Contact Form */}
+          {/* Formulaire / Succès */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="lg:col-span-2"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="bg-card border border-border rounded-2xl p-5 sm:p-6"
           >
-            <div className="bg-card rounded-2xl p-6 md:p-8 border border-border shadow-switchly-lg">
-              {isSubmitted ? (
-                <div className="text-center py-8">
-                  <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center mx-auto mb-4">
-                    <CheckCircle className="w-8 h-8 text-secondary" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-foreground mb-3">
-                    Message envoyé !
-                  </h3>
-                  <p className="text-base text-muted-foreground mb-6">
-                    Nous vous répondrons dans les plus brefs délais.
-                  </p>
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="h-12 text-base"
-                    onClick={() => {
-                      setIsSubmitted(false);
-                      setFormData({ nom: "", email: "", sujet: "", message: "" });
-                    }}
-                  >
-                    Envoyer un autre message
-                  </Button>
+            {submitted ? (
+              <div className="text-center py-8">
+                <div className="w-14 h-14 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CheckCircle className="w-7 h-7 text-secondary" />
                 </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="nom" className="text-sm font-medium text-foreground">
-                        Nom complet
-                      </Label>
-                      <Input
-                        id="nom"
-                        name="nom"
-                        value={formData.nom}
-                        onChange={handleChange}
-                        placeholder="Jean Dupont"
-                        className={`h-12 text-base ${errors.nom ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
-                      />
-                      {errors.nom && (
-                        <p className="text-sm text-destructive">{errors.nom}</p>
-                      )}
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email" className="text-sm font-medium text-foreground">
-                        Email
-                      </Label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder="jean.dupont@email.com"
-                        className={`h-12 text-base ${errors.email ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
-                      />
-                      {errors.email && (
-                        <p className="text-sm text-destructive">{errors.email}</p>
-                      )}
-                    </div>
-                  </div>
+                <h2 className="text-xl font-bold mb-2">Message envoyé !</h2>
+                <p className="text-sm text-muted-foreground mb-6">
+                  Nous vous répondrons dans les 24 heures ouvrées.
+                </p>
+                <Button size="lg" className="h-11 bg-secondary hover:bg-secondary/90 text-white font-bold" asChild>
+                  <Link to="/">Retour à l'accueil</Link>
+                </Button>
+              </div>
+            ) : (
+              <form onSubmit={submit} className="space-y-4">
+                {/* Nom */}
+                <div>
+                  <label className="text-sm font-semibold block mb-1.5" htmlFor="nom">Nom complet</label>
+                  <input
+                    id="nom" name="nom" type="text" value={form.nom} onChange={change}
+                    placeholder="Jean Dupont"
+                    className={`w-full bg-background border rounded-xl px-4 py-3 text-base outline-none transition-all ${
+                      errors.nom ? 'border-destructive focus:ring-destructive/20' : 'border-border focus:border-primary focus:ring-2 focus:ring-primary/20'
+                    }`}
+                  />
+                  {errors.nom && <p className="text-xs text-destructive mt-1">{errors.nom}</p>}
+                </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="sujet" className="text-sm font-medium text-foreground">
-                      Sujet
-                    </Label>
-                    <Input
-                      id="sujet"
-                      name="sujet"
-                      value={formData.sujet}
-                      onChange={handleChange}
-                      placeholder="Votre question"
-                      className={`h-12 text-base ${errors.sujet ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
-                    />
-                    {errors.sujet && (
-                      <p className="text-sm text-destructive">{errors.sujet}</p>
-                    )}
-                  </div>
+                {/* Email */}
+                <div>
+                  <label className="text-sm font-semibold block mb-1.5" htmlFor="email">Adresse email</label>
+                  <input
+                    id="email" name="email" type="email" value={form.email} onChange={change}
+                    placeholder="jean@exemple.fr"
+                    className={`w-full bg-background border rounded-xl px-4 py-3 text-base outline-none transition-all ${
+                      errors.email ? 'border-destructive focus:ring-destructive/20' : 'border-border focus:border-primary focus:ring-2 focus:ring-primary/20'
+                    }`}
+                  />
+                  {errors.email && <p className="text-xs text-destructive mt-1">{errors.email}</p>}
+                </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="message" className="text-sm font-medium text-foreground">
-                      Message
-                    </Label>
-                    <Textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      placeholder="Décrivez votre question ou demande..."
-                      rows={4}
-                      className={`text-base ${errors.message ? "border-destructive focus-visible:ring-destructive/30" : ""}`}
-                    />
-                    {errors.message && (
-                      <p className="text-sm text-destructive">{errors.message}</p>
-                    )}
-                  </div>
+                {/* Sujet */}
+                <div>
+                  <label className="text-sm font-semibold block mb-1.5" htmlFor="sujet">Sujet</label>
+                  <input
+                    id="sujet" name="sujet" type="text" value={form.sujet} onChange={change}
+                    placeholder="Question sur une offre…"
+                    className={`w-full bg-background border rounded-xl px-4 py-3 text-base outline-none transition-all ${
+                      errors.sujet ? 'border-destructive focus:ring-destructive/20' : 'border-border focus:border-primary focus:ring-2 focus:ring-primary/20'
+                    }`}
+                  />
+                  {errors.sujet && <p className="text-xs text-destructive mt-1">{errors.sujet}</p>}
+                </div>
 
-                  <Button
-                    type="submit"
-                    variant="hero"
-                    size="lg"
-                    className="w-full h-12 text-base"
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="w-5 h-5 animate-spin" />
-                        Envoi en cours...
-                      </>
-                    ) : (
-                      <>
-                        Envoyer ma demande
-                        <ArrowRight className="w-5 h-5 ml-2" />
-                      </>
-                    )}
-                  </Button>
-                </form>
-              )}
-            </div>
+                {/* Message */}
+                <div>
+                  <label className="text-sm font-semibold block mb-1.5" htmlFor="message">Message</label>
+                  <textarea
+                    id="message" name="message" value={form.message} onChange={change}
+                    rows={4}
+                    placeholder="Décrivez votre demande…"
+                    className={`w-full bg-background border rounded-xl px-4 py-3 text-base outline-none transition-all resize-none ${
+                      errors.message ? 'border-destructive focus:ring-destructive/20' : 'border-border focus:border-primary focus:ring-2 focus:ring-primary/20'
+                    }`}
+                  />
+                  {errors.message && <p className="text-xs text-destructive mt-1">{errors.message}</p>}
+                </div>
+
+                {/* Submit */}
+                <Button
+                  type="submit"
+                  size="lg"
+                  disabled={loading}
+                  className="w-full h-12 bg-secondary hover:bg-secondary/90 text-white font-bold text-base"
+                >
+                  {loading ? (
+                    <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Envoi en cours…</>
+                  ) : (
+                    'Envoyer le message →'
+                  )}
+                </Button>
+
+                <p className="text-xs text-muted-foreground text-center">
+                  En envoyant ce formulaire, vous acceptez notre{' '}
+                  <Link to="/politique-confidentialite" className="underline text-primary">politique de confidentialité</Link>.
+                </p>
+              </form>
+            )}
           </motion.div>
         </div>
       </div>
-    </PageTransition>
+    </>
   );
 }

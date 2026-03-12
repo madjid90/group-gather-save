@@ -4,58 +4,46 @@
 
 @layer base {
   :root {
-    /* Switchly Brand Colors */
-    --primary: 217 91% 60%; /* Blue #4C8BF5 */
+    /* ── Switchly Brand Colors ─────────────────────── */
+    --primary: 217 91% 60%;          /* Blue  #4C8BF5 */
     --primary-foreground: 0 0% 100%;
-    
-    --secondary: 145 58% 55%; /* Green #47C777 */
+
+    --secondary: 145 58% 48%;        /* Green #38B26A — légèrement plus saturé */
     --secondary-foreground: 0 0% 100%;
-    
+
     --background: 210 20% 98%;
     --foreground: 222 47% 11%;
-    
+
     --card: 0 0% 100%;
     --card-foreground: 222 47% 11%;
-    
+
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
-    
+
     --muted: 210 40% 96%;
     --muted-foreground: 215 16% 47%;
-    
+
     --accent: 210 40% 96%;
     --accent-foreground: 222 47% 11%;
-    
+
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    
+
     --border: 214 32% 91%;
     --input: 214 32% 91%;
     --ring: 217 91% 60%;
-    
+
     --radius: 0.75rem;
-    
-    /* Custom Switchly tokens */
-    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(217 91% 70%) 100%);
-    --gradient-secondary: linear-gradient(135deg, hsl(145 58% 55%) 0%, hsl(145 58% 65%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(217 91% 55%) 0%, hsl(180 70% 45%) 50%, hsl(145 65% 50%) 100%);
-    --gradient-subtle: linear-gradient(180deg, hsl(210 20% 98%) 0%, hsl(210 40% 96%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 20% 99%) 100%);
-    
-    --shadow-sm: 0 1px 2px 0 hsl(217 91% 60% / 0.05);
-    --shadow-md: 0 4px 6px -1px hsl(217 91% 60% / 0.1), 0 2px 4px -2px hsl(217 91% 60% / 0.1);
-    --shadow-lg: 0 10px 15px -3px hsl(217 91% 60% / 0.1), 0 4px 6px -4px hsl(217 91% 60% / 0.1);
-    --shadow-xl: 0 20px 25px -5px hsl(217 91% 60% / 0.1), 0 8px 10px -6px hsl(217 91% 60% / 0.1);
-    --shadow-glow: 0 0 40px hsl(217 91% 60% / 0.3);
-    --shadow-success-glow: 0 0 40px hsl(145 58% 55% / 0.3);
-    
-    /* Spacing tokens for consistency */
-    --section-py-mobile: 2.5rem;
-    --section-py-desktop: 5rem;
-    --section-gap-mobile: 1.5rem;
-    --section-gap-desktop: 3rem;
-    
-    /* Sidebar */
+
+    /* ── Gradients ─────────────────────────────────── */
+    --gradient-hero:    linear-gradient(135deg, hsl(217 91% 55%) 0%, hsl(180 70% 45%) 50%, hsl(145 65% 50%) 100%);
+    --gradient-subtle:  linear-gradient(180deg, hsl(210 20% 98%) 0%, hsl(210 40% 96%) 100%);
+
+    /* ── Spacing système ────────────────────────────── */
+    --section-py: 4rem;
+    --section-py-sm: 2.5rem;
+
+    /* ── Sidebar ────────────────────────────────────── */
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 222 47% 11%;
     --sidebar-primary: 217 91% 60%;
@@ -69,32 +57,23 @@
   .dark {
     --background: 222 47% 6%;
     --foreground: 210 40% 98%;
-    
     --card: 222 47% 8%;
     --card-foreground: 210 40% 98%;
-    
     --popover: 222 47% 8%;
     --popover-foreground: 210 40% 98%;
-    
     --primary: 217 91% 60%;
     --primary-foreground: 0 0% 100%;
-    
-    --secondary: 145 58% 55%;
+    --secondary: 145 58% 48%;
     --secondary-foreground: 0 0% 100%;
-    
     --muted: 217 33% 17%;
     --muted-foreground: 215 20% 65%;
-    
     --accent: 217 33% 17%;
     --accent-foreground: 210 40% 98%;
-    
     --destructive: 0 63% 31%;
     --destructive-foreground: 210 40% 98%;
-    
     --border: 217 33% 17%;
     --input: 217 33% 17%;
     --ring: 217 91% 60%;
-    
     --sidebar-background: 222 47% 8%;
     --sidebar-foreground: 210 40% 98%;
     --sidebar-primary: 217 91% 60%;
@@ -115,208 +94,123 @@
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
   }
-  
-  /* Mobile-first viewport height */
-  :root {
-    --vh: 1vh;
-  }
-  
-  /* Reduce motion for users who prefer it */
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
     }
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground antialiased;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overscroll-behavior-y: none;
   }
 
-  /* Prevent zoom on input focus for iOS */
+  /* ── Prévenir zoom sur input iOS ─────────────────── */
   input, select, textarea {
     font-size: 16px !important;
   }
 
-  @media screen and (max-width: 768px) {
-    input, select, textarea {
-      font-size: 16px !important;
-    }
-  }
-  
-  /* Smooth snap scroll for mobile */
-  .snap-section {
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-  }
-  
-  /* Disable snap on desktop */
-  @media (min-width: 1024px) {
-    .snap-section {
-      scroll-snap-align: unset;
-      scroll-snap-stop: unset;
-    }
-  }
-  
-  /* Touch-friendly tap targets */
+  /* ── Touch targets minimum 44px ─────────────────── */
   @media (max-width: 768px) {
     button, a, [role="button"] {
       min-height: 44px;
     }
   }
+
+  /* ── Typographie harmonisée ──────────────────────── */
+  h1 { @apply text-2xl sm:text-4xl font-bold tracking-tight leading-tight; }
+  h2 { @apply text-xl sm:text-2xl font-bold tracking-tight leading-snug; }
+  h3 { @apply text-base sm:text-lg font-semibold leading-snug; }
+  h4 { @apply text-sm font-semibold; }
+  p  { @apply leading-relaxed; }
 }
 
 @layer components {
-  /* Animated counter */
-  .counter-animate {
-    @apply tabular-nums;
-  }
-  
-  /* Glass effect */
-  .glass {
-    @apply bg-card/80 backdrop-blur-md border border-border/50;
-  }
-  
-  /* Gradient text - static for GPU performance */
+  /* ── Gradient text ────────────────────────────────── */
   .gradient-text {
-    background: linear-gradient(
-      135deg,
-      hsl(217 91% 55%) 0%,
-      hsl(180 70% 45%) 35%,
-      hsl(145 65% 50%) 65%,
-      hsl(217 91% 55%) 100%
-    );
+    background: var(--gradient-hero);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent;
   }
-  
-  /* Card hover effect */
+
+  /* ── Gradient backgrounds ─────────────────────────── */
+  .bg-gradient-hero {
+    background: var(--gradient-hero);
+  }
+  .bg-gradient-subtle {
+    background: var(--gradient-subtle);
+  }
+
+  /* ── Card hover ───────────────────────────────────── */
   .card-hover {
-    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+    @apply transition-all duration-200 hover:shadow-md hover:-translate-y-0.5;
   }
-  
-  /* Button glow effect */
-  .btn-glow {
-    @apply relative overflow-hidden;
+
+  /* ── Section layout standard ─────────────────────── */
+  .section-container {
+    @apply container mx-auto px-4 max-w-4xl;
   }
-  
-  .btn-glow::before {
-    content: '';
-    @apply absolute inset-0 opacity-0 transition-opacity duration-300;
-    background: radial-gradient(circle at center, hsl(217 91% 60% / 0.3) 0%, transparent 70%);
+  .section-container-sm {
+    @apply container mx-auto px-4 max-w-2xl;
   }
-  
-  .btn-glow:hover::before {
-    @apply opacity-100;
+
+  /* ── Form inputs harmonisés ──────────────────────── */
+  .input-base {
+    @apply w-full bg-background border border-border rounded-xl px-4 py-3.5 text-base outline-none
+           focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all;
   }
-  
-  /* Step indicator */
-  .step-active {
-    @apply bg-primary text-primary-foreground;
+
+  /* ── Prose SEO ────────────────────────────────────── */
+  .prose-seo {
+    @apply text-sm text-muted-foreground leading-relaxed space-y-3;
   }
-  
-  .step-completed {
-    @apply bg-secondary text-secondary-foreground;
+
+  /* ── Trust badge inline ───────────────────────────── */
+  .trust-badge {
+    @apply inline-flex items-center gap-1.5 text-xs text-muted-foreground font-medium;
   }
-  
-  .step-pending {
-    @apply bg-muted text-muted-foreground;
+
+  /* ── Sticky phone banner ─────────────────────────── */
+  .phone-banner {
+    @apply sticky top-14 z-20 bg-secondary text-white py-2.5 text-center text-sm shadow-sm;
   }
+
+  /* ── Offre card best ─────────────────────────────── */
+  .offre-best {
+    @apply border-secondary shadow-sm ring-1 ring-secondary/20;
+  }
+
+  /* ── Step indicator dots ──────────────────────────── */
+  .step-dot {
+    @apply w-2 h-2 rounded-full transition-all duration-200;
+  }
+  .step-dot-active    { @apply bg-primary scale-125; }
+  .step-dot-done      { @apply bg-secondary; }
+  .step-dot-pending   { @apply bg-border; }
 }
 
 @layer utilities {
-  /* Animation utilities */
   .animate-fade-in {
-    animation: fadeIn 0.5s ease-out forwards;
+    animation: fadeIn 0.4s ease-out forwards;
   }
-  
   .animate-slide-up {
-    animation: slideUp 0.5s ease-out forwards;
+    animation: slideUp 0.4s ease-out forwards;
   }
-  
-  .animate-slide-in-right {
-    animation: slideInRight 0.5s ease-out forwards;
-  }
-  
-  .animate-scale-in {
-    animation: scaleIn 0.3s ease-out forwards;
-  }
-  
-  .animate-pulse-slow {
-    animation: pulse 3s ease-in-out infinite;
-  }
-  
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-  
-  .animate-count {
-    animation: countUp 2s ease-out forwards;
-  }
-  
-  /* Stagger children animation */
-  .stagger-children > * {
-    @apply opacity-0;
-  }
-  
-  .stagger-children.animate > *:nth-child(1) { animation-delay: 0.1s; }
-  .stagger-children.animate > *:nth-child(2) { animation-delay: 0.2s; }
-  .stagger-children.animate > *:nth-child(3) { animation-delay: 0.3s; }
-  .stagger-children.animate > *:nth-child(4) { animation-delay: 0.4s; }
-  .stagger-children.animate > *:nth-child(5) { animation-delay: 0.5s; }
 }
 
 @keyframes fadeIn {
   from { opacity: 0; }
-  to { opacity: 1; }
+  to   { opacity: 1; }
 }
 
 @keyframes slideUp {
-  from { 
-    opacity: 0; 
-    transform: translateY(20px); 
-  }
-  to { 
-    opacity: 1; 
-    transform: translateY(0); 
-  }
-}
-
-@keyframes slideInRight {
-  from { 
-    opacity: 0; 
-    transform: translateX(20px); 
-  }
-  to { 
-    opacity: 1; 
-    transform: translateX(0); 
-  }
-}
-
-@keyframes scaleIn {
-  from { 
-    opacity: 0; 
-    transform: scale(0.95); 
-  }
-  to { 
-    opacity: 1; 
-    transform: scale(1); 
-  }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-@keyframes countUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
