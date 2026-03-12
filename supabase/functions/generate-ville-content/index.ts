@@ -159,7 +159,7 @@ OBJECTIF — RANKER SUR GOOGLE POUR :
 • "fournisseur électricité ${ville.nom}"  
 • "changer fournisseur électricité ${ville.nom} ${ville.code_postal}"
 
-DONNÉES OFFICIELLES (Enedis Open Data 2023 + CRE 2026) :
+DONNÉES OFFICIELLES (Enedis Open Data 2023 + CRE, barème en vigueur ${T.periode}) :
 Ville         : ${ville.nom} (${ville.code_postal}) — ${ville.departement} — ${ville.region}
 Population    : ${popFormatted} habitants
 Foyers élec   : ${foyersFormatted} foyers raccordés
