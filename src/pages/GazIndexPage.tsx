@@ -68,8 +68,6 @@ export default function GazIndexPage() {
               </div>
             </div>
           </section>
-        </main>
-        <Footer />
       </div>
     </>
   );

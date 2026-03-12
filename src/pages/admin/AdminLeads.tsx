@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
-import { Loader2, Download, Search } from 'lucide-react';
+import { Loader2, Download, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface Lead {
   id: string; created_at: string; code_postal: string; ville: string; type_energie: string;
@@ -10,26 +10,44 @@ interface Lead {
   economie_estimee: number; statut: string; note: string;
 }
 
+const PAGE_SIZE = 50;
+
 export default function AdminLeads() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const [page, setPage] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
+  const [globalStats, setGlobalStats] = useState({ total: 0, nouveau: 0, contacte: 0, converti: 0 });
 
-  const fetchLeads = async () => {
+  const fetchStats = useCallback(async () => {
+    const { count: total } = await supabase.from('leads' as any).select('*', { count: 'exact', head: true });
+    const { count: nouveau } = await supabase.from('leads' as any).select('*', { count: 'exact', head: true }).eq('statut', 'nouveau');
+    const { count: contacte } = await supabase.from('leads' as any).select('*', { count: 'exact', head: true }).eq('statut', 'contacte');
+    const { count: converti } = await supabase.from('leads' as any).select('*', { count: 'exact', head: true }).eq('statut', 'converti');
+    setGlobalStats({ total: total || 0, nouveau: nouveau || 0, contacte: contacte || 0, converti: converti || 0 });
+  }, []);
+
+  const fetchLeads = useCallback(async () => {
     setLoading(true);
-    let query = supabase.from('leads' as any).select('*').order('created_at', { ascending: false }).limit(50);
+    const from = page * PAGE_SIZE;
+    const to = from + PAGE_SIZE - 1;
+    let query = supabase.from('leads' as any).select('*', { count: 'exact' }).order('created_at', { ascending: false }).range(from, to);
     if (statusFilter) query = query.eq('statut', statusFilter);
-    const { data } = await query;
+    const { data, count } = await query;
     setLeads((data as any as Lead[]) || []);
+    setTotalCount(count || 0);
     setLoading(false);
-  };
+  }, [page, statusFilter]);
 
-  useEffect(() => { fetchLeads(); }, [statusFilter]);
+  useEffect(() => { fetchStats(); }, [fetchStats]);
+  useEffect(() => { fetchLeads(); }, [fetchLeads]);
 
   const updateStatus = async (id: string, statut: string) => {
     await supabase.from('leads' as any).update({ statut } as any).eq('id', id);
     fetchLeads();
+    fetchStats();
   };
 
   const updateNote = async (id: string) => {
@@ -40,20 +58,26 @@ export default function AdminLeads() {
     }
   };
 
-  const exportCSV = () => {
+  const exportCSV = async () => {
+    // Export ALL leads, not just current page
+    let allLeads: Lead[] = [];
+    let from = 0;
+    while (true) {
+      let q = supabase.from('leads' as any).select('*').order('created_at', { ascending: false }).range(from, from + 999);
+      if (statusFilter) q = q.eq('statut', statusFilter);
+      const { data } = await q;
+      if (!data || data.length === 0) break;
+      allLeads = allLeads.concat(data as any);
+      if (data.length < 1000) break;
+      from += 1000;
+    }
     const headers = 'Date,CP,Ville,Énergie,Surface,Téléphone,Fournisseur,Conso,Économie,Statut\n';
-    const rows = leads.map(l => `${new Date(l.created_at).toLocaleDateString('fr-FR')},${l.code_postal},${l.ville || ''},${l.type_energie || ''},${l.superficie || ''},${l.telephone || ''},${l.fournisseur_actuel || ''},${l.conso_estimee_kwh || ''},${l.economie_estimee || ''},${l.statut || ''}`).join('\n');
+    const rows = allLeads.map(l => `${new Date(l.created_at).toLocaleDateString('fr-FR')},${l.code_postal},${l.ville || ''},${l.type_energie || ''},${l.superficie || ''},${l.telephone || ''},${l.fournisseur_actuel || ''},${l.conso_estimee_kwh || ''},${l.economie_estimee || ''},${l.statut || ''}`).join('\n');
     const blob = new Blob([headers + rows], { type: 'text/csv' });
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'leads-switchly.csv'; a.click();
   };
 
-  const stats = {
-    total: leads.length,
-    nouveau: leads.filter(l => l.statut === 'nouveau').length,
-    contacte: leads.filter(l => l.statut === 'contacte').length,
-    converti: leads.filter(l => l.statut === 'converti').length,
-  };
-
+  const totalPages = Math.ceil(totalCount / PAGE_SIZE);
   const filtered = leads.filter(l => !filter || l.code_postal?.includes(filter) || l.telephone?.includes(filter) || l.ville?.toLowerCase().includes(filter.toLowerCase()));
 
   return (
@@ -62,15 +86,15 @@ export default function AdminLeads() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">Leads</h1>
-          <Button variant="outline" size="sm" onClick={exportCSV}><Download className="w-4 h-4 mr-1" /> CSV</Button>
+          <Button variant="outline" size="sm" onClick={exportCSV}><Download className="w-4 h-4 mr-1" /> CSV (tout)</Button>
         </div>
 
-        {/* Stats */}
+        {/* Stats globales */}
         <div className="grid grid-cols-4 gap-3">
-          <div className="bg-card border border-border rounded-xl p-4 text-center"><p className="text-2xl font-bold">{stats.total}</p><p className="text-xs text-muted-foreground">Total</p></div>
-          <div className="bg-card border border-border rounded-xl p-4 text-center"><p className="text-2xl font-bold text-yellow-600">{stats.nouveau}</p><p className="text-xs text-muted-foreground">Nouveaux</p></div>
-          <div className="bg-card border border-border rounded-xl p-4 text-center"><p className="text-2xl font-bold text-blue-600">{stats.contacte}</p><p className="text-xs text-muted-foreground">Contactés</p></div>
-          <div className="bg-card border border-border rounded-xl p-4 text-center"><p className="text-2xl font-bold text-green-600">{stats.converti}</p><p className="text-xs text-muted-foreground">Convertis</p></div>
+          <div className="bg-card border border-border rounded-xl p-4 text-center"><p className="text-2xl font-bold">{globalStats.total}</p><p className="text-xs text-muted-foreground">Total</p></div>
+          <div className="bg-card border border-border rounded-xl p-4 text-center"><p className="text-2xl font-bold text-yellow-600">{globalStats.nouveau}</p><p className="text-xs text-muted-foreground">Nouveaux</p></div>
+          <div className="bg-card border border-border rounded-xl p-4 text-center"><p className="text-2xl font-bold text-blue-600">{globalStats.contacte}</p><p className="text-xs text-muted-foreground">Contactés</p></div>
+          <div className="bg-card border border-border rounded-xl p-4 text-center"><p className="text-2xl font-bold text-green-600">{globalStats.converti}</p><p className="text-xs text-muted-foreground">Convertis</p></div>
         </div>
 
         {/* Filtres */}
@@ -80,7 +104,7 @@ export default function AdminLeads() {
             <input placeholder="Rechercher CP, ville, tél..." value={filter} onChange={e => setFilter(e.target.value)}
               className="w-full bg-background border border-border rounded-xl pl-9 pr-4 py-2.5 text-sm" />
           </div>
-          <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)}
+          <select value={statusFilter} onChange={e => { setStatusFilter(e.target.value); setPage(0); }}
             className="bg-background border border-border rounded-xl px-4 py-2.5 text-sm">
             <option value="">Tous</option>
             <option value="nouveau">Nouveau</option>
@@ -124,6 +148,23 @@ export default function AdminLeads() {
                 ))}
               </tbody>
             </table>
+          </div>
+        )}
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between">
+            <p className="text-sm text-muted-foreground">
+              Page {page + 1} / {totalPages} · {totalCount} lead{totalCount > 1 ? 's' : ''}
+            </p>
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" disabled={page === 0} onClick={() => setPage(p => p - 1)}>
+                <ChevronLeft className="w-4 h-4" />
+              </Button>
+              <Button variant="outline" size="sm" disabled={page >= totalPages - 1} onClick={() => setPage(p => p + 1)}>
+                <ChevronRight className="w-4 h-4" />
+              </Button>
+            </div>
           </div>
         )}
       </div>

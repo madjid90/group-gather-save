@@ -21,7 +21,7 @@ interface DynamicSEOHeadProps {
 
 export function DynamicSEOHead({ 
   defaultTitle = 'Switchly — Comparateur énergie et internet gratuit',
-  defaultDescription = 'Comparez gratuitement les offres électricité, gaz et internet. Économisez jusqu\'à 400€/an en changeant de fournisseur. 30 secondes, sans engagement.'
+  defaultDescription = 'Comparez gratuitement les offres d\'électricité et de gaz. Économisez jusqu\'à 400€/an en changeant de fournisseur. 30 secondes, sans engagement.'
 }: DynamicSEOHeadProps) {
   const location = useLocation();
   const [settings, setSettings] = useState<SEOSettings | null>(null);

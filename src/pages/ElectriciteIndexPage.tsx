@@ -70,8 +70,6 @@ export default function ElectriciteIndexPage() {
               </div>
             </div>
           </section>
-        </main>
-        <Footer />
       </div>
     </>
   );
