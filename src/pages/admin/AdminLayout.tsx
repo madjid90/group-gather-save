@@ -12,6 +12,7 @@ import {
   Loader2,
   Search,
   MapPin,
+  CheckSquare,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -19,7 +20,8 @@ import { cn } from "@/lib/utils";
 const adminLinks = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/leads", label: "Leads", icon: Users },
-  { href: "/admin/import-villes", label: "Import Villes", icon: MapPin },
+  { href: "/admin/import-villes", label: "Import", icon: MapPin },
+  { href: "/admin/validation", label: "Validation", icon: CheckSquare },
   { href: "/admin/seo", label: "SEO", icon: Search },
 ];
 
