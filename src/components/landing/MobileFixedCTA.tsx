@@ -33,6 +33,11 @@ export function MobileFixedCTA() {
             }}
             className="fixed bottom-0 left-0 right-0 z-50 px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] bg-background border-t border-border md:hidden"
           >
+            <motion.div
+              initial={{ scale: 1 }}
+              animate={{ scale: [1, 1.04, 0.97, 1.02, 1] }}
+              transition={{ delay: 0.3, duration: 0.5, ease: "easeOut" }}
+            >
             <Button
               size="lg"
               className="w-full h-12 bg-secondary hover:bg-secondary/90 text-white font-bold text-sm shadow-lg"
