@@ -22,6 +22,7 @@ import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminLeads from "./pages/admin/AdminLeads";
 import AdminImportVilles from "./pages/admin/AdminImportVilles";
+import AdminValidation from "./pages/admin/AdminValidation";
 import AdminSEO from "./pages/admin/AdminSEO";
 import AdminLogin from "./pages/admin/AdminLogin";
 
@@ -58,6 +59,7 @@ export default function App() {
               <Route index element={<AdminDashboard />} />
               <Route path="leads" element={<AdminLeads />} />
               <Route path="import-villes" element={<AdminImportVilles />} />
+              <Route path="validation" element={<AdminValidation />} />
               <Route path="seo" element={<AdminSEO />} />
             </Route>
 
