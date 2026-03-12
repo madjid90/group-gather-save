@@ -536,50 +536,95 @@ export type Database = {
         Row: {
           code_postal: string | null
           commission_eur: number | null
+          consentement: boolean | null
+          conso_estimee_kwh: number | null
           created_at: string | null
+          eau_chaude: string | null
+          economie_estimee: number | null
           email: string | null
+          fournisseur_actuel: string | null
           fournisseur_choisi: string | null
           id: string
+          mode_chauffage: string | null
+          nb_personnes: number | null
+          note: string | null
           offre_choisie: string | null
           prenom: string | null
           source: string | null
+          source_url: string | null
           statut: string | null
           superficie: string | null
+          tarif_reglemente: boolean | null
           telephone: string | null
           type_energie: string | null
+          type_logement: string | null
           url_affiliation: string | null
+          utm_campaign: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          ville: string | null
         }
         Insert: {
           code_postal?: string | null
           commission_eur?: number | null
+          consentement?: boolean | null
+          conso_estimee_kwh?: number | null
           created_at?: string | null
+          eau_chaude?: string | null
+          economie_estimee?: number | null
           email?: string | null
+          fournisseur_actuel?: string | null
           fournisseur_choisi?: string | null
           id?: string
+          mode_chauffage?: string | null
+          nb_personnes?: number | null
+          note?: string | null
           offre_choisie?: string | null
           prenom?: string | null
           source?: string | null
+          source_url?: string | null
           statut?: string | null
           superficie?: string | null
+          tarif_reglemente?: boolean | null
           telephone?: string | null
           type_energie?: string | null
+          type_logement?: string | null
           url_affiliation?: string | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          ville?: string | null
         }
         Update: {
           code_postal?: string | null
           commission_eur?: number | null
+          consentement?: boolean | null
+          conso_estimee_kwh?: number | null
           created_at?: string | null
+          eau_chaude?: string | null
+          economie_estimee?: number | null
           email?: string | null
+          fournisseur_actuel?: string | null
           fournisseur_choisi?: string | null
           id?: string
+          mode_chauffage?: string | null
+          nb_personnes?: number | null
+          note?: string | null
           offre_choisie?: string | null
           prenom?: string | null
           source?: string | null
+          source_url?: string | null
           statut?: string | null
           superficie?: string | null
+          tarif_reglemente?: boolean | null
           telephone?: string | null
           type_energie?: string | null
+          type_logement?: string | null
           url_affiliation?: string | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          ville?: string | null
         }
         Relationships: []
       }
@@ -1126,51 +1171,87 @@ export type Database = {
         Row: {
           code_insee: string
           code_postal: string
+          conso_gaz_kwh: number | null
           conso_moyenne_kwh: number | null
+          contenu_elec_conseils: string | null
+          contenu_elec_contexte: string | null
+          contenu_elec_intro: string | null
+          contenu_elec_meta: string | null
+          contenu_gaz_conseils: string | null
+          contenu_gaz_contexte: string | null
+          contenu_gaz_intro: string | null
+          contenu_gaz_meta: string | null
+          contenu_genere_at: string | null
           created_at: string | null
           departement: string | null
           id: string
-          nb_logements: number | null
+          nb_logements_elec: number | null
+          nb_logements_gaz: number | null
           nom: string
           nom_eld: string | null
           population: number | null
-          prix_moyen_kwh: number | null
+          prix_trv_kwh: number | null
           region: string | null
-          reseau: string | null
+          reseau_elec: string | null
+          reseau_gaz: string | null
           slug: string
           updated_at: string | null
         }
         Insert: {
           code_insee: string
           code_postal: string
+          conso_gaz_kwh?: number | null
           conso_moyenne_kwh?: number | null
+          contenu_elec_conseils?: string | null
+          contenu_elec_contexte?: string | null
+          contenu_elec_intro?: string | null
+          contenu_elec_meta?: string | null
+          contenu_gaz_conseils?: string | null
+          contenu_gaz_contexte?: string | null
+          contenu_gaz_intro?: string | null
+          contenu_gaz_meta?: string | null
+          contenu_genere_at?: string | null
           created_at?: string | null
           departement?: string | null
           id?: string
-          nb_logements?: number | null
+          nb_logements_elec?: number | null
+          nb_logements_gaz?: number | null
           nom: string
           nom_eld?: string | null
           population?: number | null
-          prix_moyen_kwh?: number | null
+          prix_trv_kwh?: number | null
           region?: string | null
-          reseau?: string | null
+          reseau_elec?: string | null
+          reseau_gaz?: string | null
           slug: string
           updated_at?: string | null
         }
         Update: {
           code_insee?: string
           code_postal?: string
+          conso_gaz_kwh?: number | null
           conso_moyenne_kwh?: number | null
+          contenu_elec_conseils?: string | null
+          contenu_elec_contexte?: string | null
+          contenu_elec_intro?: string | null
+          contenu_elec_meta?: string | null
+          contenu_gaz_conseils?: string | null
+          contenu_gaz_contexte?: string | null
+          contenu_gaz_intro?: string | null
+          contenu_gaz_meta?: string | null
+          contenu_genere_at?: string | null
           created_at?: string | null
           departement?: string | null
           id?: string
-          nb_logements?: number | null
+          nb_logements_elec?: number | null
+          nb_logements_gaz?: number | null
           nom?: string
           nom_eld?: string | null
           population?: number | null
-          prix_moyen_kwh?: number | null
+          prix_trv_kwh?: number | null
           region?: string | null
-          reseau?: string | null
+          reseau_elec?: string | null
+          reseau_gaz?: string | null
           slug?: string
           updated_at?: string | null
         }
