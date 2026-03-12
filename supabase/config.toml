@@ -1,90 +1,18 @@
 project_id = "kaebtbcufbpkhyrhuson"
 
-[functions.create-test-admin]
-verify_jwt = false
-
-[functions.send-welcome-sms]
-verify_jwt = false
-
-[functions.send-offer-sms]
-verify_jwt = false
-
-[functions.send-relance-sms]
-verify_jwt = false
-
-[functions.export-campaign-anonymous]
-verify_jwt = false
-
-[functions.import-supplier-offers]
-verify_jwt = false
-
-[functions.send-campaign-offers-sms]
-verify_jwt = false
-
-[functions.export-accepted-offers]
-verify_jwt = false
-
 [functions.send-contact-email]
-verify_jwt = false
-
-[functions.create-test-client]
-verify_jwt = false
-
-[functions.send-form-completed-sms]
-verify_jwt = false
-
-[functions.send-negotiation-start-sms]
-verify_jwt = false
-
-[functions.send-acceptance-sms]
-verify_jwt = false
-
-[functions.send-refusal-sms]
-verify_jwt = false
-
-[functions.send-reset-code-sms]
-verify_jwt = false
-
-[functions.verify-reset-code]
-verify_jwt = false
-
-[functions.update-password]
 verify_jwt = false
 
 [functions.seo-analyzer]
 verify_jwt = false
 
-[functions.generate-sitemap]
-verify_jwt = false
-
-[functions.generate-local-seo]
-verify_jwt = false
-
-[functions.scheduled-seo-analysis]
-verify_jwt = false
-
 [functions.estimate-savings]
-verify_jwt = false
-
-[functions.scheduled-relances]
-verify_jwt = false
-
-[functions.scrape-competitor]
-verify_jwt = false
-
-[functions.analyze-page-seo]
 verify_jwt = false
 
 [functions.selectra-offers]
 verify_jwt = false
 
 [functions.ville-data]
-verify_jwt = false
-
-[functions.prerender]
-verify_jwt = false
-
-[functions.sitemap]
 verify_jwt = false
 
 [functions.generate-ville-content]
@@ -94,4 +22,10 @@ verify_jwt = false
 verify_jwt = false
 
 [functions.batch-import]
+verify_jwt = false
+
+[functions.update-tarifs]
+verify_jwt = false
+
+[functions.generate-local-seo]
 verify_jwt = false
