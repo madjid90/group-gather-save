@@ -126,7 +126,7 @@ const ResultView = memo(function ResultView({
       className="text-center"
     >
       {/* Savings highlight */}
-      <div className="bg-gradient-hero rounded-2xl p-6 mb-5">
+      <div className="bg-primary rounded-2xl p-6 mb-5">
         <p className="text-white/80 text-xs mb-2">Économies estimées par an</p>
         <div className="flex items-baseline justify-center gap-2">
           <span className="text-4xl font-bold text-white">{estimation.minEconomie}€</span>
