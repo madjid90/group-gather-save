@@ -31,9 +31,7 @@ export default function ElectriciteIndexPage() {
         <meta name="description" content="Comparez les offres d'électricité dans votre ville. Trouvez le fournisseur le moins cher près de chez vous. 100% gratuit, sans engagement." />
         <link rel="canonical" href="https://switchly.fr/electricite/" />
       </Helmet>
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-1 pt-20">
+      <div>
           <section className="py-10 bg-gradient-to-br from-primary/10 via-background to-secondary/5">
             <div className="container mx-auto px-4 max-w-3xl text-center">
               <div className="inline-flex items-center gap-2 bg-primary/10 text-primary text-xs font-semibold px-3 py-1.5 rounded-full mb-4">
