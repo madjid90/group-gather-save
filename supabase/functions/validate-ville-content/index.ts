@@ -60,14 +60,14 @@ Deno.serve(async (req) => {
 
     // ── CONSTRUCTION DU CONTENU À VALIDER ──
     const contenuElec = [
-      ville.contenu_elec_meta,
+      ville.contenu_elec_meta ? `META DESCRIPTION ÉLEC: ${ville.contenu_elec_meta}` : null,
       ville.contenu_elec_intro,
       ville.contenu_elec_contexte,
       ville.contenu_elec_conseils,
     ].filter(Boolean).join("\n\n");
 
     const contenuGaz = [
-      ville.contenu_gaz_meta,
+      ville.contenu_gaz_meta ? `META DESCRIPTION GAZ: ${ville.contenu_gaz_meta}` : null,
       ville.contenu_gaz_intro,
       ville.contenu_gaz_contexte,
       ville.contenu_gaz_conseils,

@@ -159,14 +159,14 @@ OBJECTIF — RANKER SUR GOOGLE POUR :
 • "fournisseur électricité ${ville.nom}"  
 • "changer fournisseur électricité ${ville.nom} ${ville.code_postal}"
 
-DONNÉES OFFICIELLES (Enedis Open Data 2023 + CRE 2026) :
+DONNÉES OFFICIELLES (Enedis Open Data 2023 + CRE, barème en vigueur ${T.periode}) :
 Ville         : ${ville.nom} (${ville.code_postal}) — ${ville.departement} — ${ville.region}
 Population    : ${popFormatted} habitants
 Foyers élec   : ${foyersFormatted} foyers raccordés
 Conso moyenne : ${fmt(consoElec)} kWh/an
 Réseau distrib: ${reseau}${isELD ? " (ELD LOCALE — pas Enedis)" : " (réseau national Enedis)"}
 ${ville.nom_eld ? "Nom ELD      : " + ville.nom_eld : ""}
-TRV EDF ${T.periode}  : ${T.trv_elec.toFixed(4).replace(".", ",")} €/kWh (tarif réglementé — référence légale CRE)
+TRV EDF ${T.periode}  : ${T.trv_elec.toFixed(4).replace(".", ",")} €/kWh (tarif réglementé — référence légale CRE, barème en vigueur)
 Abonnement    : ~150€/an
 Facture TRV   : ~${fmt(factureTRV)}€/an
 Meilleure offre marché libre : ~${T.best_elec.toFixed(4).replace(".", ",")} €/kWh
@@ -183,7 +183,7 @@ RÈGLES RÉDACTIONNELLES (toutes obligatoires) :
 3.  Section conseils → "changer de fournisseur électricité à ${ville.nom}" dans les 10 premiers mots
 4.  Texte CONTINU dans chaque section — zéro liste, zéro tiret, zéro sous-titre
 5.  "${ville.nom}" minimum 4 fois par section
-6.  Sources dans les phrases : "selon Enedis Open Data 2023" ou "d'après la CRE 2026" (jamais seuls)
+6.  Sources dans les phrases : "selon Enedis Open Data 2023" ou "d'après la CRE, barème en vigueur" (jamais seuls, jamais "CRE 2026")
 7.  Longueur : 200-220 mots par section — COMPTER avant de répondre
 8.  Varier les débuts de phrase — jamais 2 phrases consécutives commençant de la même façon
 9.  BANNIS absolus : "En conclusion" · "Il est important" · "N'hésitez pas" · "En effet" · "Ainsi" · "Notons que" · "Il convient"
@@ -247,13 +247,13 @@ OBJECTIF — RANKER SUR GOOGLE POUR :
 • "fournisseur gaz naturel ${ville.nom}"
 • "changer fournisseur gaz ${ville.nom} ${ville.code_postal}"
 
-DONNÉES OFFICIELLES (GRDF Open Data 2023 + CRE 2026) :
+DONNÉES OFFICIELLES (GRDF Open Data 2023 + CRE, barème en vigueur ${T.periode}) :
 Ville         : ${ville.nom} (${ville.code_postal}) — ${ville.departement} — ${ville.region}
 Population    : ${popFormatted} habitants
 Foyers gaz    : ${foyersGazFmt} foyers raccordés au gaz naturel
 Conso moyenne : ${fmt(consoGaz)} kWh/an
 Distributeur  : GRDF (réseau national — 200 000 km de canalisations)
-Tarif repère  : ${T.trv_gaz.toFixed(4).replace(".", ",")} €/kWh (CRE ${T.periode} — référence légale)
+Tarif repère  : ${T.trv_gaz.toFixed(4).replace(".", ",")} €/kWh (CRE, barème en vigueur ${T.periode} — référence légale)
 Abonnement    : ~230€/an
 Facture repère: ~${fmt(factureTRV)}€/an
 Meilleure offre : ~${T.best_gaz.toFixed(4).replace(".", ",")} €/kWh
@@ -272,7 +272,7 @@ RÈGLES RÉDACTIONNELLES (toutes obligatoires) :
 3.  Section conseils → "changer de fournisseur gaz à ${ville.nom}" dans les 10 premiers mots
 4.  Texte CONTINU — zéro liste, zéro tiret, zéro sous-titre dans le corps
 5.  "${ville.nom}" minimum 4 fois par section
-6.  Sources dans les phrases : "selon GRDF Open Data 2023" ou "d'après la CRE 2026"
+6.  Sources dans les phrases : "selon GRDF Open Data 2023" ou "d'après la CRE, barème en vigueur" (jamais "CRE 2026")
 7.  Longueur : 200-220 mots par section — COMPTER avant de répondre
 8.  Varier les débuts de phrase — jamais 2 phrases consécutives commençant pareil
 9.  BANNIS absolus : "En conclusion" · "Il est important" · "N'hésitez pas" · "En effet" · "Ainsi" · "Notons que"
