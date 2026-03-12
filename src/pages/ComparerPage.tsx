@@ -161,8 +161,6 @@ export default function ComparerPage() {
         defaultTitle="Comparateur Électricité & Gaz Gratuit | Switchly"
         defaultDescription="Comparez les offres d'électricité et de gaz en 30 secondes. Trouvez le fournisseur le moins cher sans engagement. 100% gratuit."
       />
-        <meta name="robots" content="noindex" />
-      </Helmet>
 
       {/* Header minimal */}
       <section className="bg-background px-4 pt-8 pb-4">

@@ -60,7 +60,7 @@ export default function Contact() {
         defaultTitle="Contactez Switchly — Comparateur Énergie Gratuit"
         defaultDescription="Une question sur le comparateur énergie Switchly ? Contactez notre équipe par email ou téléphone. Réponse sous 24h."
       />
-      </Helmet>
+      
 
       <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 max-w-lg py-10 md:py-16">
