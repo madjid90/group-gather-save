@@ -183,7 +183,7 @@ RÈGLES RÉDACTIONNELLES (toutes obligatoires) :
 3.  Section conseils → "changer de fournisseur électricité à ${ville.nom}" dans les 10 premiers mots
 4.  Texte CONTINU dans chaque section — zéro liste, zéro tiret, zéro sous-titre
 5.  "${ville.nom}" minimum 4 fois par section
-6.  Sources dans les phrases : "selon Enedis Open Data 2023" ou "d'après la CRE 2026" (jamais seuls)
+6.  Sources dans les phrases : "selon Enedis Open Data 2023" ou "d'après la CRE, barème en vigueur" (jamais seuls, jamais "CRE 2026")
 7.  Longueur : 200-220 mots par section — COMPTER avant de répondre
 8.  Varier les débuts de phrase — jamais 2 phrases consécutives commençant de la même façon
 9.  BANNIS absolus : "En conclusion" · "Il est important" · "N'hésitez pas" · "En effet" · "Ainsi" · "Notons que" · "Il convient"
