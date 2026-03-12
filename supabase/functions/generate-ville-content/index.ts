@@ -247,7 +247,7 @@ OBJECTIF — RANKER SUR GOOGLE POUR :
 • "fournisseur gaz naturel ${ville.nom}"
 • "changer fournisseur gaz ${ville.nom} ${ville.code_postal}"
 
-DONNÉES OFFICIELLES (GRDF Open Data 2023 + CRE 2026) :
+DONNÉES OFFICIELLES (GRDF Open Data 2023 + CRE, barème en vigueur ${T.periode}) :
 Ville         : ${ville.nom} (${ville.code_postal}) — ${ville.departement} — ${ville.region}
 Population    : ${popFormatted} habitants
 Foyers gaz    : ${foyersGazFmt} foyers raccordés au gaz naturel
