@@ -1,94 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Page principale -->
   <url>
     <loc>https://switchly.fr/</loc>
-    <lastmod>2026-03-10</lastmod>
+    <lastmod>2026-03-12</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
-  
-  <!-- Comparateur -->
   <url>
     <loc>https://switchly.fr/comparer</loc>
-    <lastmod>2026-03-10</lastmod>
+    <lastmod>2026-03-12</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://switchly.fr/energie</loc>
-    <lastmod>2026-03-10</lastmod>
+    <loc>https://switchly.fr/electricite</loc>
+    <lastmod>2026-03-12</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- Pages d'inscription et connexion -->
-  <url>
-    <loc>https://switchly.fr/inscription</loc>
-    <lastmod>2026-03-10</lastmod>
-    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://switchly.fr/connexion</loc>
-    <lastmod>2026-03-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://switchly.fr/gaz</loc>
+    <lastmod>2026-03-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
-
-  <!-- Pages publiques principales -->
   <url>
     <loc>https://switchly.fr/faq</loc>
-    <lastmod>2026-03-10</lastmod>
+    <lastmod>2026-03-12</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://switchly.fr/contact</loc>
-    <lastmod>2026-03-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <!-- Pages partenaires -->
-  <url>
-    <loc>https://switchly.fr/organiser-achat-groupe</loc>
-    <lastmod>2026-03-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://switchly.fr/demande-partenaire</loc>
-    <lastmod>2026-03-10</lastmod>
+    <lastmod>2026-03-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-
-  <!-- Pages légales -->
   <url>
     <loc>https://switchly.fr/mentions-legales</loc>
-    <lastmod>2026-03-10</lastmod>
+    <lastmod>2026-03-12</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://switchly.fr/politique-rgpd</loc>
-    <lastmod>2026-03-10</lastmod>
+    <lastmod>2026-03-12</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://switchly.fr/cgu</loc>
-    <lastmod>2026-03-10</lastmod>
+    <lastmod>2026-03-12</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://switchly.fr/politique-confidentialite</loc>
-    <lastmod>2026-03-10</lastmod>
+    <lastmod>2026-03-12</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
-
-  <!-- Note: Les pages /ville/* sont générées dynamiquement via l'edge function generate-sitemap -->
+  <!-- Les pages /electricite/:slug et /gaz/:slug sont générées dynamiquement via l'edge function generate-sitemap -->
 </urlset>

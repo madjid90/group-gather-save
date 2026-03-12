@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+import { DynamicSEOHead } from '@/components/seo/DynamicSEOHead';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
@@ -157,11 +157,10 @@ export default function ComparerPage() {
 
   return (
     <>
-      <Helmet>
-        <title>Comparer les offres énergie | Switchly</title>
-        <meta name="description" content="Comparez électricité et gaz en 30 secondes. Gratuit, sans engagement." />
-        <meta name="robots" content="noindex" />
-      </Helmet>
+      <DynamicSEOHead
+        defaultTitle="Comparateur Électricité & Gaz Gratuit | Switchly"
+        defaultDescription="Comparez les offres d'électricité et de gaz en 30 secondes. Trouvez le fournisseur le moins cher sans engagement. 100% gratuit."
+      />
 
       {/* Header minimal */}
       <section className="bg-background px-4 pt-8 pb-4">

@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
-import { Helmet } from "react-helmet-async";
+import { DynamicSEOHead } from "@/components/seo/DynamicSEOHead";
 
 const schema = z.object({
   nom:     z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
@@ -56,10 +56,11 @@ export default function Contact() {
 
   return (
     <>
-      <Helmet>
-        <title>Contact — Switchly</title>
-        <meta name="description" content="Contactez l'équipe Switchly. Comparateur d'électricité et de gaz gratuit." />
-      </Helmet>
+      <DynamicSEOHead
+        defaultTitle="Contactez Switchly — Comparateur Énergie Gratuit"
+        defaultDescription="Une question sur le comparateur énergie Switchly ? Contactez notre équipe par email ou téléphone. Réponse sous 24h."
+      />
+      
 
       <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 max-w-lg py-10 md:py-16">
