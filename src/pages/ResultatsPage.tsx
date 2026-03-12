@@ -95,6 +95,21 @@ export default function ResultatsPage() {
               <div className="flex items-center justify-center py-16">
                 <Loader2 className="w-8 h-8 animate-spin text-primary" />
               </div>
+            ) : offres.length === 0 ? (
+              <div className="bg-card border border-border rounded-2xl p-8 text-center">
+                <p className="text-lg font-semibold mb-2">Aucune offre disponible pour le moment</p>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Nous n'avons pas trouvé d'offres pour votre profil actuellement. Essayez de modifier vos critères ou contactez un conseiller.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <Button variant="outline" asChild>
+                    <Link to="/comparer"><ArrowLeft className="mr-2 w-4 h-4" /> Modifier mes critères</Link>
+                  </Button>
+                  <Button asChild>
+                    <a href="tel:0973727300"><Phone className="mr-2 w-4 h-4" /> Appeler un conseiller</a>
+                  </Button>
+                </div>
+              </div>
             ) : (
               <div className="space-y-3">
                 {offres.map((o, i) => {

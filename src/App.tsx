@@ -9,6 +9,8 @@ import Index from "./pages/Index";
 import ComparerPage from "./pages/ComparerPage";
 import ResultatsPage from "./pages/ResultatsPage";
 import VillePage from "./pages/VillePage";
+import ElectriciteIndexPage from "./pages/ElectriciteIndexPage";
+import GazIndexPage from "./pages/GazIndexPage";
 import FAQ from "./pages/FAQ";
 import Contact from "./pages/Contact";
 import MentionsLegales from "./pages/MentionsLegales";
@@ -44,7 +46,11 @@ export default function App() {
 
             <Route path="/comparer" element={<ComparerPage />} />
             <Route path="/resultats" element={<ResultatsPage />} />
+            <Route path="/electricite" element={<ElectriciteIndexPage />} />
+            <Route path="/electricite/" element={<ElectriciteIndexPage />} />
             <Route path="/electricite/:slug" element={<VillePage />} />
+            <Route path="/gaz" element={<GazIndexPage />} />
+            <Route path="/gaz/" element={<GazIndexPage />} />
             <Route path="/gaz/:slug" element={<VillePage />} />
             <Route path="/electricite-gaz/:slug" element={<Navigate to="../electricite/" replace />} />
             <Route path="/ville/:slug" element={<Navigate to="../electricite/" replace />} />
