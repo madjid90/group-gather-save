@@ -272,7 +272,7 @@ RÈGLES RÉDACTIONNELLES (toutes obligatoires) :
 3.  Section conseils → "changer de fournisseur gaz à ${ville.nom}" dans les 10 premiers mots
 4.  Texte CONTINU — zéro liste, zéro tiret, zéro sous-titre dans le corps
 5.  "${ville.nom}" minimum 4 fois par section
-6.  Sources dans les phrases : "selon GRDF Open Data 2023" ou "d'après la CRE 2026"
+6.  Sources dans les phrases : "selon GRDF Open Data 2023" ou "d'après la CRE, barème en vigueur" (jamais "CRE 2026")
 7.  Longueur : 200-220 mots par section — COMPTER avant de répondre
 8.  Varier les débuts de phrase — jamais 2 phrases consécutives commençant pareil
 9.  BANNIS absolus : "En conclusion" · "Il est important" · "N'hésitez pas" · "En effet" · "Ainsi" · "Notons que"
