@@ -1,11 +1,5 @@
 import { motion } from "framer-motion";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { HelpCircle } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const faqItems = [
   {
@@ -17,67 +11,58 @@ const faqItems = [
     answer: "Oui, 100% gratuit. Comparer ne vous coûte rien. Si vous souscrivez à une offre, c'est le fournisseur qui verse une commission à Switchly. Cette commission n'impacte pas votre tarif, qui reste le meilleur disponible sur le marché.",
   },
   {
-    question: "Y a-t-il une coupure lors du changement de fournisseur ?",
+    question: "Y a-t-il une coupure lors du changement ?",
     answer: "Aucune coupure. Le réseau de distribution (Enedis pour l'électricité, GRDF pour le gaz) ne change pas. Seul votre fournisseur change. La transition est transparente et se fait en quelques jours ouvrés.",
   },
   {
-    question: "Je suis locataire, puis-je changer de fournisseur ?",
+    question: "Je suis locataire, puis-je changer ?",
     answer: "Oui. Propriétaire ou locataire, vous êtes libre de choisir votre fournisseur d'énergie. Le changement se fait sans intervention du propriétaire et sans modification du logement.",
   },
   {
     question: "Combien de temps prend la souscription ?",
-    answer: "La comparaison prend 30 secondes. La souscription en ligne prend 5 minutes supplémentaires. Le changement de fournisseur est ensuite effectif sous 1 à 5 jours ouvrés.",
+    answer: "La comparaison prend 30 secondes. La souscription en ligne prend 5 minutes supplémentaires. Le changement de fournisseur est effectif sous 1 à 21 jours ouvrés.",
   },
 ];
 
 export function FAQSection() {
   return (
-    <section className="py-10 sm:py-12 lg:py-16 bg-background">
-      <div className="container mx-auto px-4 sm:px-6 w-full">
+    <section className="py-16 md:py-20 bg-card">
+      <div className="container mx-auto px-4 max-w-2xl">
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-6 lg:mb-10"
+          className="text-center mb-8"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary mb-2">
-            <HelpCircle className="w-3.5 h-3.5" />
-            <span className="text-xs font-medium">FAQ</span>
-          </div>
-          <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold text-foreground mb-2 lg:mb-4">
-            Questions fréquentes
-          </h2>
-          <p className="text-[13px] leading-relaxed lg:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Tout ce que vous devez savoir sur Switchly.
-          </p>
+          <span className="inline-block text-primary font-semibold text-xs uppercase tracking-widest mb-3">FAQ</span>
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Questions fréquentes</h2>
+          <p className="text-base text-muted-foreground">Tout ce que vous devez savoir sur Switchly.</p>
         </motion.div>
 
+        {/* Accordion */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="max-w-3xl mx-auto"
+          transition={{ delay: 0.1 }}
         >
-          <div className="bg-card rounded-lg md:rounded-2xl p-3 sm:p-4 md:p-8 border border-border shadow-switchly-lg">
-            <Accordion type="single" collapsible className="space-y-1.5 md:space-y-4">
-              {faqItems.map((item, index) => (
-                <AccordionItem
-                  key={index}
-                  value={`item-${index}`}
-                  className="border border-border rounded-md md:rounded-xl px-3 md:px-6 data-[state=open]:bg-muted/50"
-                >
-                  <AccordionTrigger className="text-left text-xs md:text-lg font-medium hover:no-underline py-2.5 md:py-5">
-                    {item.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-xs md:text-lg text-muted-foreground pb-2.5 md:pb-5">
-                    {item.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </div>
+          <Accordion type="single" collapsible className="space-y-2">
+            {faqItems.map((item, i) => (
+              <AccordionItem
+                key={i}
+                value={`item-${i}`}
+                className="bg-background border border-border rounded-xl px-4 data-[state=open]:bg-muted/40 transition-colors"
+              >
+                <AccordionTrigger className="text-left text-sm font-semibold hover:no-underline py-4 text-foreground">
+                  {item.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-sm text-muted-foreground pb-4 leading-relaxed">
+                  {item.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </motion.div>
       </div>
     </section>

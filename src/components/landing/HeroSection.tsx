@@ -2,128 +2,139 @@ import { memo, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { AnimatedCounter, useAnimatedSocialProof } from "@/components/ui/AnimatedCounter";
+import { CheckCircle, Shield, Zap } from "lucide-react";
 
 export const HeroSection = memo(function HeroSection() {
-  const { count } = useAnimatedSocialProof(2547, 12000);
-  const [step, setStep] = useState<'cp' | 'type'>('cp');
-  const [cp, setCp] = useState('');
+  const [step, setStep] = useState<"cp" | "type">("cp");
+  const [cp, setCp] = useState("");
 
-  const handleCompare = (type: string) => {
+  const go = (type: string) => {
     window.location.href = `/comparer?cp=${cp}&type=${type}`;
   };
 
   return (
-    <section className="relative min-h-[85svh] flex items-center overflow-hidden py-8 lg:py-0">
-      <div className="absolute inset-0 bg-gradient-subtle" aria-hidden="true" />
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-3xl mx-auto text-center">
+    <section className="relative overflow-hidden bg-gradient-subtle py-14 md:py-20">
+      {/* Subtle decorative blobs */}
+      <div className="absolute top-0 right-0 w-72 h-72 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-56 h-56 bg-secondary/5 rounded-full blur-3xl pointer-events-none" />
 
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 bg-primary/10 text-primary text-[11px] sm:text-xs font-semibold px-3 py-1.5 rounded-full mb-6 whitespace-nowrap"
-          >
-            <span className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
-            Comparateur 100% gratuit — <AnimatedCounter target={2547} externalValue={count} duration={2} showLiveIndicator={false} />&nbsp;foyers accompagnés
-          </motion.div>
+      <div className="container mx-auto px-4 max-w-2xl relative z-10 text-center">
+        {/* Badge */}
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="inline-flex items-center gap-2 bg-primary/10 text-primary text-xs font-semibold px-3 py-1.5 rounded-full mb-6"
+        >
+          <span className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
+          Comparateur 100% gratuit — 2 547 foyers accompagnés
+        </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-3xl sm:text-4xl lg:text-6xl font-bold text-foreground mb-4 leading-tight"
-          >
-            Économisez jusqu'à <span className="gradient-text">300€/an</span> sur votre énergie
-          </motion.h1>
+        {/* H1 */}
+        <motion.h1
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.08 }}
+          className="text-3xl sm:text-5xl font-bold text-foreground mb-4 leading-tight tracking-tight"
+        >
+          Économisez jusqu'à{" "}
+          <span className="gradient-text">300€/an</span>
+          <br className="hidden sm:block" /> sur votre énergie
+        </motion.h1>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="text-base lg:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto"
-          >
-            Comparez les offres électricité et gaz en 30 secondes. Sans engagement. 100% gratuit.
-          </motion.p>
+        {/* Subtitle */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.16 }}
+          className="text-base sm:text-lg text-muted-foreground mb-8"
+        >
+          Comparez électricité et gaz en 30 secondes.
+          <br className="hidden sm:block" /> Sans engagement. 100% gratuit.
+        </motion.p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="bg-card border border-border rounded-2xl p-4 shadow-lg max-w-xl mx-auto mb-6"
-          >
-            {step === 'cp' ? (
-              <div className="flex flex-col sm:flex-row gap-3">
-                <input
-                  type="text"
-                  value={cp}
-                  onChange={e => {
-                    const v = e.target.value.replace(/\D/g, '').slice(0, 5);
-                    setCp(v);
-                    if (v.length === 5) setStep('type');
-                  }}
-                  placeholder="Votre code postal (ex: 44000)"
-                  className="flex-1 bg-background border border-border rounded-xl px-4 py-3 text-sm outline-none focus:border-primary transition-colors"
-                  inputMode="numeric"
-                  maxLength={5}
-                  autoFocus
-                />
-                <Button
-                  variant="hero"
-                  size="lg"
-                  onClick={() => { if (cp.length === 5) setStep('type'); }}
-                  disabled={cp.length !== 5}
-                  className="whitespace-nowrap"
-                >
-                  Voir les offres →
-                </Button>
+        {/* Search box */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.24 }}
+          className="bg-card border border-border rounded-2xl p-4 shadow-md mb-6"
+        >
+          {step === "cp" ? (
+            <div className="flex flex-col sm:flex-row gap-3">
+              <input
+                type="text"
+                value={cp}
+                onChange={e => {
+                  const v = e.target.value.replace(/\D/g, "").slice(0, 5);
+                  setCp(v);
+                  if (v.length === 5) setStep("type");
+                }}
+                placeholder="Votre code postal — ex : 44000"
+                className="flex-1 bg-background border border-border rounded-xl px-4 py-3 text-base outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                inputMode="numeric"
+                maxLength={5}
+                autoFocus
+              />
+              <Button
+                size="lg"
+                className="bg-secondary hover:bg-secondary/90 text-white font-semibold h-12 px-6 whitespace-nowrap"
+                onClick={() => { if (cp.length === 5) setStep("type"); }}
+                disabled={cp.length !== 5}
+              >
+                Voir les offres →
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              <p className="text-sm font-semibold text-center text-foreground">Que souhaitez-vous comparer ?</p>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { l: "⚡ Électricité", v: "electricite" },
+                  { l: "🔥 Gaz", v: "gaz" },
+                ].map(o => (
+                  <button
+                    key={o.v}
+                    onClick={() => go(o.v)}
+                    className="py-3 rounded-xl border-2 border-border hover:border-secondary hover:bg-secondary/5 transition-all text-sm font-semibold text-foreground"
+                  >
+                    {o.l}
+                  </button>
+                ))}
               </div>
-            ) : (
-              <div className="space-y-3">
-                <p className="text-sm font-semibold text-center">Que souhaitez-vous comparer ?</p>
-                <div className="grid grid-cols-2 gap-2">
-                  {[
-                    { l: '⚡ Électricité', v: 'electricite' },
-                    { l: '🔥 Gaz', v: 'gaz' },
-                  ].map(o => (
-                    <button
-                      key={o.v}
-                      onClick={() => handleCompare(o.v)}
-                      className="flex flex-col items-center gap-1 p-3 rounded-xl border border-border hover:border-primary hover:bg-primary/5 transition-all text-sm font-medium"
-                    >
-                      {o.l}
-                    </button>
-                  ))}
-                </div>
-                <button
-                  onClick={() => handleCompare('les_deux')}
-                  className="w-full py-2.5 bg-primary text-primary-foreground rounded-xl text-sm font-semibold hover:bg-primary/90 transition-colors"
-                >
-                  Comparer électricité + gaz
-                </button>
-                <button
-                  onClick={() => setStep('cp')}
-                  className="w-full text-xs text-muted-foreground hover:text-foreground"
-                >
-                  ← Modifier le code postal ({cp})
-                </button>
-              </div>
-            )}
-          </motion.div>
+              <button
+                onClick={() => go("les_deux")}
+                className="w-full py-3 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-primary/90 transition-colors"
+              >
+                Comparer électricité + gaz
+              </button>
+              <button
+                onClick={() => setStep("cp")}
+                className="w-full text-xs text-muted-foreground hover:text-foreground transition-colors"
+              >
+                ← Modifier le code postal ({cp})
+              </button>
+            </div>
+          )}
+        </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="hidden md:flex flex-wrap items-center justify-center gap-3 text-xs text-muted-foreground"
-          >
-            <span>✓ Sans coupure</span><span className="text-border">|</span>
-            <span>✓ 100% gratuit</span><span className="text-border">|</span>
-            <span>✓ Sans engagement</span><span className="text-border">|</span>
-            <span>✓ Résultat immédiat</span>
-          </motion.div>
-
-        </div>
+        {/* Trust badges */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.32 }}
+          className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-muted-foreground"
+        >
+          {[
+            { icon: CheckCircle, label: "Sans coupure" },
+            { icon: Zap, label: "Sans engagement" },
+            { icon: Shield, label: "Données sécurisées" },
+          ].map(({ icon: Icon, label }) => (
+            <span key={label} className="flex items-center gap-1.5">
+              <Icon className="w-3.5 h-3.5 text-secondary" />
+              {label}
+            </span>
+          ))}
+        </motion.div>
       </div>
     </section>
   );
