@@ -10,7 +10,7 @@ import { HelpCircle } from "lucide-react";
 const faqItems = [
   {
     question: "Comment fonctionne Switchly ?",
-    answer: "Switchly est un comparateur gratuit. Entrez votre code postal, indiquez vos contrats actuels, et comparez en 30 secondes toutes les offres électricité, gaz et internet disponibles chez vous. Vous choisissez librement l'offre qui vous convient et souscrivez directement. Switchly est rémunéré par une commission du fournisseur — jamais par vous.",
+    answer: "Switchly est un comparateur gratuit d'électricité et de gaz. Entrez votre code postal, indiquez votre consommation, et comparez en 30 secondes toutes les offres disponibles chez vous. Vous choisissez librement l'offre qui vous convient et souscrivez directement. Switchly est rémunéré par une commission du fournisseur — jamais par vous.",
   },
   {
     question: "La comparaison est-elle vraiment gratuite ?",
@@ -19,10 +19,6 @@ const faqItems = [
   {
     question: "Y a-t-il une coupure lors du changement de fournisseur ?",
     answer: "Aucune coupure. Le réseau de distribution (Enedis pour l'électricité, GRDF pour le gaz) ne change pas. Seul votre fournisseur change. La transition est transparente et se fait en quelques jours ouvrés.",
-  },
-  {
-    question: "Puis-je comparer l'internet aussi ?",
-    answer: "Oui. Switchly compare aussi les offres fibre et ADSL. Selon votre éligibilité, vous pouvez économiser jusqu'à 16€/mois sur votre box, soit près de 200€/an. Combinez économies énergie et internet pour atteindre 400€/an.",
   },
   {
     question: "Je suis locataire, puis-je changer de fournisseur ?",

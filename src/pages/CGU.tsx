@@ -46,7 +46,7 @@ export default function CGU() {
                 1. Objet
               </h2>
               <p className="text-base text-muted-foreground leading-relaxed">
-                Les présentes Conditions Générales d'Utilisation (CGU) régissent l'utilisation du service Switchly, comparateur d'énergie et d'internet.
+                Les présentes Conditions Générales d'Utilisation (CGU) régissent l'utilisation du service Switchly, comparateur d'électricité et de gaz.
               </p>
             </section>
 
@@ -55,8 +55,8 @@ export default function CGU() {
                 2. Description du service
               </h2>
               <p className="text-base text-muted-foreground leading-relaxed">
-                Switchly est un comparateur gratuit qui permet aux utilisateurs de trouver et comparer les meilleures offres d'électricité, gaz et internet disponibles chez eux. 
-                Switchly agit en tant qu'intermédiaire entre les utilisateurs et les fournisseurs.
+                Switchly est un comparateur gratuit qui permet aux utilisateurs de trouver et comparer les meilleures offres d'électricité et de gaz disponibles chez eux. 
+                Switchly agit en tant qu'intermédiaire entre les utilisateurs et les fournisseurs d'énergie.
               </p>
             </section>
 
@@ -79,12 +79,12 @@ export default function CGU() {
                 4. Fonctionnement
               </h2>
               <p className="text-base text-muted-foreground mb-4 leading-relaxed">
-                Le service fonctionne par campagnes trimestrielles :
+                Le service fonctionne de la manière suivante :
               </p>
               <ul className="list-disc pl-5 text-base text-muted-foreground space-y-2">
-                <li><strong className="text-foreground">Phase d'inscription</strong> : vous vous inscrivez et complétez votre profil</li>
-                <li><strong className="text-foreground">Phase de sélection</strong> : nous sélectionnons les meilleures offres disponibles pour votre profil</li>
-                <li><strong className="text-foreground">Phase d'offre</strong> : vous recevez une offre personnalisée par SMS</li>
+                <li><strong className="text-foreground">Comparaison</strong> : vous entrez votre code postal et renseignez votre consommation</li>
+                <li><strong className="text-foreground">Résultats</strong> : Switchly affiche les meilleures offres disponibles triées par économies</li>
+                <li><strong className="text-foreground">Souscription</strong> : vous choisissez l'offre qui vous convient et souscrivez en ligne</li>
                 <li><strong className="text-foreground">Choix libre</strong> : vous acceptez ou refusez l'offre sans obligation</li>
               </ul>
             </section>
@@ -110,7 +110,7 @@ export default function CGU() {
               <p className="text-base text-muted-foreground leading-relaxed">
                 Switchly s'engage à présenter les meilleures offres disponibles mais ne garantit pas un niveau d'économies spécifique. 
                 Les offres présentées sont indicatives et peuvent varier selon votre situation réelle.
-                Switchly n'est pas responsable des services fournis directement par les fournisseurs d'énergie ou d'internet.
+                Switchly n'est pas responsable des services fournis directement par les fournisseurs d'énergie.
               </p>
             </section>
 

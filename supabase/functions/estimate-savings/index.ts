@@ -10,246 +10,133 @@ interface CalculatorProfile {
   surface: "moins_60" | "60_100" | "plus_100" | null;
   chauffage: "electrique" | "gaz" | "pompe_chaleur" | "fioul" | "collectif" | "autre" | null;
   facture: "moins_80" | "80_120" | "plus_120" | "inconnu" | null;
-  internet: boolean;
 }
 
 serve(async (req) => {
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
-  }
+  if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
 
   try {
     const { profile } = await req.json() as { profile: CalculatorProfile };
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
 
     if (!LOVABLE_API_KEY) {
-      console.log("No Lovable API key, using fallback estimation");
-      const fallback = calculateFallbackEstimation(profile);
-      return new Response(JSON.stringify(fallback), {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
+      return new Response(JSON.stringify(calculateFallbackEstimation(profile)), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
     const prompt = buildPrompt(profile);
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
+      headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         model: "google/gemini-2.5-flash",
         messages: [
           { 
             role: "system", 
-            content: `Tu es un expert en énergie et économies domestiques en France pour Switchly, plateforme d'achat groupé d'électricité, gaz et internet. Tu dois estimer les économies potentielles qu'un foyer peut réaliser en participant à un achat groupé.
+            content: `Tu es un expert en énergie et économies domestiques en France pour Switchly, comparateur gratuit d'électricité et de gaz. Tu dois estimer les économies potentielles qu'un foyer peut réaliser en changeant de fournisseur via Switchly.
 
 CONTEXTE SWITCHLY:
-- Switchly négocie des tarifs groupés auprès de fournisseurs d'énergie (électricité ET gaz) et box internet
-- Économie moyenne constatée: 312€/an pour les foyers participants
-- 100% gratuit et sans engagement pour les participants
-- Démarches simplifiées par Switchly
+- Switchly compare les offres de 20+ fournisseurs d'électricité et de gaz
+- Économie moyenne constatée: 300€/an
+- 100% gratuit et sans engagement
+- Rémunéré par commission fournisseur
 
-RÈGLES IMPORTANTES:
-- Donne TOUJOURS une fourchette (min et max), jamais un montant unique
-- Les estimations doivent être RÉALISTES et CRÉDIBLES
+RÈGLES:
+- Donne TOUJOURS une fourchette (min et max)
+- Estimations RÉALISTES et CRÉDIBLES
 - N'utilise JAMAIS le mot "garanti"
-- Arrondis les montants à la dizaine
-- Base tes estimations sur les tarifs réglementés français et les retours d'achats groupés
-- Adapte ton explication au profil spécifique du logement
-- Mentionne explicitement électricité ET/OU gaz selon le chauffage
+- Arrondis à la dizaine
+- Mentionne électricité ET/OU gaz selon le chauffage
 
 FOURCHETTES DE RÉFÉRENCE (par an):
-- Petit appartement (< 60 m²): 180-280€
-- Appartement moyen (60-100 m²): 250-380€
-- Grande maison (> 100 m²): 350-520€
-- Chauffage électrique: utiliser la fourchette haute
-- Chauffage gaz: ajouter 80-150€ pour les économies gaz
-- Avec Internet: ajouter 60-120€
+- Petit appartement (< 60 m²): 150-250€
+- Appartement moyen (60-100 m²): 220-350€
+- Grande maison (> 100 m²): 300-480€
+- Chauffage électrique: fourchette haute
+- Chauffage gaz: ajouter 80-150€ pour économies gaz
 
-Réponds UNIQUEMENT en JSON valide avec ce format exact:
+Réponds UNIQUEMENT en JSON:
 {
   "minEconomie": number,
   "maxEconomie": number,
-  "explication": "string (1-2 phrases max expliquant l'estimation, mentionner les types d'économies: électricité, gaz, internet)"
+  "explication": "1-2 phrases max"
 }`
           },
           { role: "user", content: prompt }
         ],
-        tools: [
-          {
-            type: "function",
-            function: {
-              name: "estimate_savings",
-              description: "Retourne l'estimation des économies pour le profil donné",
-              parameters: {
-                type: "object",
-                properties: {
-                  minEconomie: { 
-                    type: "number",
-                    description: "Montant minimum d'économies en euros par an (arrondi à la dizaine)"
-                  },
-                  maxEconomie: { 
-                    type: "number",
-                    description: "Montant maximum d'économies en euros par an (arrondi à la dizaine)"
-                  },
-                  explication: { 
-                    type: "string",
-                    description: "Explication courte et personnalisée (1-2 phrases max)"
-                  }
-                },
-                required: ["minEconomie", "maxEconomie", "explication"],
-                additionalProperties: false
-              }
+        tools: [{
+          type: "function",
+          function: {
+            name: "estimate_savings",
+            description: "Estimation des économies",
+            parameters: {
+              type: "object",
+              properties: {
+                minEconomie: { type: "number" },
+                maxEconomie: { type: "number" },
+                explication: { type: "string" }
+              },
+              required: ["minEconomie", "maxEconomie", "explication"],
+              additionalProperties: false
             }
           }
-        ],
+        }],
         tool_choice: { type: "function", function: { name: "estimate_savings" } }
       }),
     });
 
     if (!response.ok) {
-      console.error("AI gateway error:", response.status);
-      const fallback = calculateFallbackEstimation(profile);
-      return new Response(JSON.stringify(fallback), {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
+      return new Response(JSON.stringify(calculateFallbackEstimation(profile)), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
     const data = await response.json();
-    console.log("AI response:", JSON.stringify(data));
-
-    // Extract tool call result
     const toolCall = data.choices?.[0]?.message?.tool_calls?.[0];
     if (toolCall?.function?.arguments) {
-      const result = JSON.parse(toolCall.function.arguments);
-      return new Response(JSON.stringify(result), {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
+      return new Response(JSON.stringify(JSON.parse(toolCall.function.arguments)), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
-    // Try to parse content as JSON if no tool call
     const content = data.choices?.[0]?.message?.content;
     if (content) {
       try {
-        const parsed = JSON.parse(content);
-        return new Response(JSON.stringify(parsed), {
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        });
-      } catch {
-        console.log("Could not parse AI content as JSON");
-      }
+        return new Response(JSON.stringify(JSON.parse(content)), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      } catch { /* fallback */ }
     }
 
-    // Fallback
-    const fallback = calculateFallbackEstimation(profile);
-    return new Response(JSON.stringify(fallback), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
+    return new Response(JSON.stringify(calculateFallbackEstimation(profile)), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
 
   } catch (error: unknown) {
-    console.error('Error in estimate-savings:', error);
-    const message = error instanceof Error ? error.message : 'Unknown error';
-    return new Response(JSON.stringify({ error: message }), {
-      status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
+    return new Response(JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error' }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
   }
 });
 
 function buildPrompt(profile: CalculatorProfile): string {
   const logement = profile.logement === "maison" ? "une maison" : "un appartement";
-  const surface = profile.surface === "moins_60" ? "moins de 60 m²" : 
-                  profile.surface === "60_100" ? "60 à 100 m²" : "plus de 100 m²";
-  const chauffage = profile.chauffage === "electrique" ? "électrique" :
-                    profile.chauffage === "gaz" ? "au gaz" : 
-                    profile.chauffage === "pompe_chaleur" ? "par pompe à chaleur" :
-                    profile.chauffage === "fioul" ? "au fioul" :
-                    profile.chauffage === "collectif" ? "collectif" : "autre type de chauffage";
-  const facture = profile.facture === "moins_80" ? "moins de 80€/mois" :
-                  profile.facture === "80_120" ? "80 à 120€/mois" :
-                  profile.facture === "plus_120" ? "plus de 120€/mois" : "montant inconnu";
-  const internet = profile.internet ? "Inclure également les économies Internet potentielles." : "";
+  const surface = profile.surface === "moins_60" ? "moins de 60 m²" : profile.surface === "60_100" ? "60 à 100 m²" : "plus de 100 m²";
+  const chauffage = profile.chauffage === "electrique" ? "électrique" : profile.chauffage === "gaz" ? "au gaz" : profile.chauffage === "pompe_chaleur" ? "par pompe à chaleur" : profile.chauffage === "fioul" ? "au fioul" : profile.chauffage === "collectif" ? "collectif" : "autre";
+  const facture = profile.facture === "moins_80" ? "moins de 80€/mois" : profile.facture === "80_120" ? "80 à 120€/mois" : profile.facture === "plus_120" ? "plus de 120€/mois" : "montant inconnu";
 
-  return `Estime les économies annuelles potentielles pour ce profil:
-- Logement: ${logement}
-- Surface: ${surface}
-- Chauffage: ${chauffage}
-- Facture énergie: ${facture}
-${internet}
-
-Donne une estimation réaliste sous forme de fourchette.`;
+  return `Estime les économies annuelles pour:\n- Logement: ${logement}\n- Surface: ${surface}\n- Chauffage: ${chauffage}\n- Facture énergie: ${facture}`;
 }
 
 function calculateFallbackEstimation(profile: CalculatorProfile) {
-  let min = 180;
-  let max = 280;
-
-  // Adjust based on housing type
-  if (profile.logement === "maison") {
-    min += 70;
-    max += 120;
-  }
-
-  // Adjust based on surface
-  if (profile.surface === "60_100") {
-    min += 50;
-    max += 80;
-  } else if (profile.surface === "plus_100") {
-    min += 120;
-    max += 180;
-  }
-
-  // Adjust based on heating type
-  if (profile.chauffage === "electrique") {
-    min += 30;
-    max += 50;
-  } else if (profile.chauffage === "gaz") {
-    min += 80;
-    max += 150;
-  } else if (profile.chauffage === "pompe_chaleur") {
-    min += 40;
-    max += 70;
-  } else if (profile.chauffage === "fioul") {
-    min += 100;
-    max += 180;
-  } else if (profile.chauffage === "collectif") {
-    min -= 30;
-    max -= 20;
-  }
-
-  // Adjust based on bill
-  if (profile.facture === "80_120") {
-    min += 40;
-    max += 60;
-  } else if (profile.facture === "plus_120") {
-    min += 80;
-    max += 120;
-  }
-
-  // Add internet savings
-  if (profile.internet) {
-    min += 60;
-    max += 120;
-  }
+  let min = 150, max = 250;
+  if (profile.logement === "maison") { min += 70; max += 120; }
+  if (profile.surface === "60_100") { min += 50; max += 80; }
+  else if (profile.surface === "plus_100") { min += 120; max += 180; }
+  if (profile.chauffage === "electrique") { min += 30; max += 50; }
+  else if (profile.chauffage === "gaz") { min += 80; max += 150; }
+  else if (profile.chauffage === "pompe_chaleur") { min += 40; max += 70; }
+  else if (profile.chauffage === "fioul") { min += 100; max += 180; }
+  else if (profile.chauffage === "collectif") { min -= 30; max -= 20; }
+  if (profile.facture === "80_120") { min += 40; max += 60; }
+  else if (profile.facture === "plus_120") { min += 80; max += 120; }
 
   const logementLabel = profile.logement === "maison" ? "une maison" : "un appartement";
-  const getChauffageLabel = () => {
-    switch (profile.chauffage) {
-      case "electrique": return "l'électricité";
-      case "gaz": return "l'électricité et le gaz";
-      case "pompe_chaleur": return "l'électricité (pompe à chaleur)";
-      case "fioul": return "l'énergie (fioul)";
-      case "collectif": return "vos charges de chauffage collectif";
-      default: return "l'énergie";
-    }
-  };
-  const internetLabel = profile.internet ? " et votre box internet" : "";
+  const chauffageLabel = profile.chauffage === "electrique" ? "l'électricité" : profile.chauffage === "gaz" ? "l'électricité et le gaz" : "l'énergie";
 
   return {
     minEconomie: Math.round(min / 10) * 10,
     maxEconomie: Math.round(max / 10) * 10,
-    explication: `Pour ${logementLabel} avec votre profil, vous pouvez économiser sur ${getChauffageLabel()}${internetLabel} grâce à l'achat groupé Switchly. Cette estimation est basée sur les économies réalisées par des foyers similaires.`
+    explication: `Pour ${logementLabel} avec votre profil, vous pouvez économiser sur ${chauffageLabel} en changeant de fournisseur via Switchly. Estimation basée sur des foyers similaires.`
   };
 }

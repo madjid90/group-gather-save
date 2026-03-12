@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 import { Star } from "lucide-react";
 
 const testimonials = [
-  { name: "Julie M.", location: "Lyon (69)", rating: 5, saving: "840€/an", type: "Électricité", text: "Inscription rapide, aucun appel, tout par SMS. J'économise 70€/mois sur l'électricité depuis 6 mois.", textMobile: "70€/mois économisés, tout par SMS.", avatar: "J" },
-  { name: "Thomas D.", location: "Bordeaux (33)", rating: 5, saving: "340€/an", type: "Électricité + Gaz", text: "J'étais sceptique mais zéro démarchage, juste un SMS avec l'offre. Résultat : 340€ économisés cette année.", textMobile: "340€/an, zéro démarchage.", avatar: "T" },
-  { name: "Camille P.", location: "Nantes (44)", rating: 5, saving: "276€/an", type: "Électricité", text: "30 secondes d'inscription, offre reçue par SMS le lendemain. 23% moins cher avec EDF, je recommande.", textMobile: "23% moins cher avec EDF.", avatar: "C" },
-  { name: "Nadia K.", location: "Marseille (13)", rating: 5, saving: "192€/an", type: "Internet", text: "Ma box internet est passée de 45€ à 29€/mois grâce à Switchly. Démarche 100% en ligne.", textMobile: "Internet : 45€ → 29€/mois.", avatar: "N" },
-  { name: "Karim B.", location: "Toulouse (31)", rating: 5, saving: "412€/an", type: "Énergie + Internet", text: "Électricité + internet combinés : 412€ économisés en un an. Et jamais un seul coup de fil commercial.", textMobile: "412€/an, zéro appel.", avatar: "K" },
+  { name: "Julie M.", location: "Lyon (69)", rating: 5, saving: "312€/an", type: "Électricité", text: "Comparaison ultra rapide, j'ai trouvé une offre 23% moins chère en 30 secondes. Changement sans coupure, je recommande.", textMobile: "23% moins cher, tout en 30 secondes.", avatar: "J" },
+  { name: "Thomas D.", location: "Bordeaux (33)", rating: 5, saving: "340€/an", type: "Électricité + Gaz", text: "J'ai comparé électricité et gaz en même temps. Résultat : 340€ économisés cette année, zéro prise de tête.", textMobile: "340€/an, zéro prise de tête.", avatar: "T" },
+  { name: "Camille P.", location: "Nantes (44)", rating: 5, saving: "276€/an", type: "Électricité", text: "30 secondes de comparaison, offre souscrite en 5 minutes. 276€ de moins sur ma facture annuelle.", textMobile: "276€/an économisés.", avatar: "C" },
+  { name: "Marc L.", location: "Lille (59)", rating: 5, saving: "198€/an", type: "Gaz", text: "Mon contrat gaz était bien trop cher. Grâce à Switchly, j'ai trouvé une offre à -18% par rapport au tarif repère.", textMobile: "Gaz : -18% vs tarif repère.", avatar: "M" },
+  { name: "Karim B.", location: "Toulouse (31)", rating: 5, saving: "412€/an", type: "Électricité + Gaz", text: "Électricité + gaz combinés : 412€ économisés en un an. Gratuit, simple et efficace.", textMobile: "412€/an, simple et efficace.", avatar: "K" },
 ];
 
 export function TestimonialsSection() {
@@ -31,11 +31,10 @@ export function TestimonialsSection() {
             Ils ont économisé avec Switchly
           </h2>
           <p className="text-[13px] leading-relaxed lg:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Économies réelles réalisées par nos membres sur leurs factures.
+            Économies réelles réalisées par nos utilisateurs sur leurs factures énergie.
           </p>
         </motion.div>
 
-        {/* Desktop: Show all 5, Mobile: Show first 3 */}
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-2 md:gap-4 mb-4 md:mb-10">
           {testimonials.map((testimonial, index) => (
             <motion.div
@@ -47,41 +46,28 @@ export function TestimonialsSection() {
               className={index >= 3 ? "hidden md:block" : ""}
             >
               <div className="bg-card rounded-lg md:rounded-2xl p-3 md:p-5 h-full border border-border shadow-switchly">
-                {/* Savings badge */}
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-semibold bg-secondary/20 text-secondary px-2 py-1 rounded-full">
                     💰 {testimonial.saving}
                   </span>
                   <span className="text-xs text-muted-foreground">{testimonial.type}</span>
                 </div>
-                {/* Stars - smaller on mobile */}
                 <div className="flex gap-0.5 md:gap-1 mb-1.5 md:mb-3">
                   {Array.from({ length: testimonial.rating }).map((_, i) => (
-                    <Star
-                      key={i}
-                      className="w-4 h-4 md:w-4 md:h-4 fill-primary text-primary"
-                    />
+                    <Star key={i} className="w-4 h-4 md:w-4 md:h-4 fill-primary text-primary" />
                   ))}
                 </div>
-
-                {/* Quote - smaller on mobile */}
                 <p className="text-foreground mb-2 md:mb-4 text-xs md:text-sm leading-relaxed">
                   "<span className="hidden md:inline">{testimonial.text}</span>
                   <span className="md:hidden">{testimonial.textMobile}</span>"
                 </p>
-
-                {/* Author - smaller on mobile */}
                 <div className="flex items-center gap-2">
                   <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-gradient-hero flex items-center justify-center text-primary-foreground font-semibold text-xs">
                     {testimonial.avatar}
                   </div>
                   <div>
-                    <p className="font-medium text-foreground text-xs">
-                      {testimonial.name}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      Membre Switchly
-                    </p>
+                    <p className="font-medium text-foreground text-xs">{testimonial.name}</p>
+                    <p className="text-xs text-muted-foreground">{testimonial.location}</p>
                   </div>
                 </div>
               </div>
@@ -89,7 +75,6 @@ export function TestimonialsSection() {
           ))}
         </div>
 
-        {/* CTA - hidden on mobile */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

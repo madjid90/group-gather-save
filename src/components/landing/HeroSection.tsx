@@ -34,7 +34,7 @@ export const HeroSection = memo(function HeroSection() {
             transition={{ delay: 0.1 }}
             className="text-3xl sm:text-4xl lg:text-6xl font-bold text-foreground mb-4 leading-tight"
           >
-            Économisez jusqu'à <span className="gradient-text">400€/an</span> sur vos factures
+            Économisez jusqu'à <span className="gradient-text">300€/an</span> sur votre énergie
           </motion.h1>
 
           <motion.p
@@ -43,7 +43,7 @@ export const HeroSection = memo(function HeroSection() {
             transition={{ delay: 0.2 }}
             className="text-base lg:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto"
           >
-            Comparez les offres électricité, gaz et internet en 30 secondes. Sans engagement. 100% gratuit.
+            Comparez les offres électricité et gaz en 30 secondes. Sans engagement. 100% gratuit.
           </motion.p>
 
           <motion.div
@@ -81,11 +81,10 @@ export const HeroSection = memo(function HeroSection() {
             ) : (
               <div className="space-y-3">
                 <p className="text-sm font-semibold text-center">Que souhaitez-vous comparer ?</p>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 gap-2">
                   {[
                     { l: '⚡ Électricité', v: 'electricite' },
                     { l: '🔥 Gaz', v: 'gaz' },
-                    { l: '📶 Internet', v: 'internet' },
                   ].map(o => (
                     <button
                       key={o.v}
@@ -97,10 +96,10 @@ export const HeroSection = memo(function HeroSection() {
                   ))}
                 </div>
                 <button
-                  onClick={() => handleCompare('tous')}
+                  onClick={() => handleCompare('les_deux')}
                   className="w-full py-2.5 bg-primary text-primary-foreground rounded-xl text-sm font-semibold hover:bg-primary/90 transition-colors"
                 >
-                  Comparer tout (électricité + gaz + internet)
+                  Comparer électricité + gaz
                 </button>
                 <button
                   onClick={() => setStep('cp')}
